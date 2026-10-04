@@ -1,0 +1,30 @@
+# Modulo de comentarios masivos del Fixture 2030 - Hito 6 (Grupo 8)
+# Basado en el ambiente de la Clase 6: un unico nodo Apache Cassandra local,
+# usado con cqlsh desde el propio contenedor (RF1, RNF1).
+#
+# AMBIENTE DE APRENDIZAJE: un solo nodo, sin credenciales (autenticacion por
+# defecto de la imagen). No representa un cluster productivo con varias
+# replicas ni varios datacenters (RNF8).
+services:
+  cassandra:
+    image: cassandra:latest              # RNF1: imagen oficial, etiqueta latest
+    container_name: fixture2030-cassandra
+    restart: unless-stopped
+    ports:
+      - "9042:9042"                      # puerto CQL
+    environment:
+      CASSANDRA_CLUSTER_NAME: fixture2030-lab   # nombre del cluster de laboratorio
+    volumes:
+      # RNF2: los datos de Cassandra persisten en ~/docker/data/cassandra
+      - ~/docker/data/cassandra:/var/lib/cassandra
+      # Scripts CQL del modulo: cqlsh -f /scripts/<archivo>.cql
+      - ./scripts:/scripts:ro
+      # CSV de carga masiva: COPY ... FROM '/data/generado/<archivo>.csv'
+      - ./data:/data:ro
+    healthcheck:
+      # El nodo esta listo cuando cqlsh logra conectarse (el primer inicio tarda)
+      test: ["CMD-SHELL", "cqlsh -e 'DESCRIBE KEYSPACES' > /dev/null 2>&1"]
+      interval: 15s
+      timeout: 15s
+      retries: 20
+      start_period: 60s

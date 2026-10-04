@@ -1,0 +1,46 @@
+RESUMEN DE DISTRIBUCION DE LA CARGA GENERADA
+semilla=2030 total_solicitado=1100000 ventana=5 min inicio_supuesto=20:00 UTC
+filas_generadas=1100000 (se escriben en 2 tablas -> 2200000 filas fisicas)
+partidos=96 usuarios_distintos=195180
+
+Estados de moderacion:
+  visible      1023168  (93.02%)
+  pendiente      44090  (4.01%)
+  oculto         32742  (2.98%)
+
+Partido caliente: F2030-063 -> 132000 comentarios (12.0% del total) en 28 ventanas
+Top 5 partidos por comentarios:
+  F2030-063    132000
+  F2030-028     45568
+  F2030-065     36351
+  F2030-070     34803
+  F2030-066     28820
+Partido con menos comentarios: ('F2030-036', 2401)
+
+Particiones de comentarios_por_partido = (partido_id, ventana):
+  cantidad=2688
+  filas por particion: min=35 mediana=215 p95=1253 p99=3250 max=12087
+  bytes estimados de la particion maxima (~170 B/fila): 1.96 MiB (ESTIMACION, no medicion)
+  Top 10 particiones mas grandes:
+    F2030-063  2030-06-22 20:45:00+0000    12087 filas
+    F2030-063  2030-06-22 20:30:00+0000     9221 filas
+    F2030-063  2030-06-22 20:35:00+0000     9165 filas
+    F2030-063  2030-06-22 21:00:00+0000     8339 filas
+    F2030-063  2030-06-22 20:20:00+0000     7661 filas
+    F2030-043  2030-06-20 21:25:00+0000     6345 filas
+    F2030-063  2030-06-22 20:50:00+0000     6339 filas
+    F2030-063  2030-06-22 21:20:00+0000     5997 filas
+    F2030-063  2030-06-22 21:15:00+0000     5745 filas
+    F2030-085  2030-06-26 20:10:00+0000     5655 filas
+
+Particiones de comentarios_por_usuario = (usuario_id):
+  cantidad=195180
+  filas por usuario: min=1 mediana=4 p99=29 max=2438
+  Top 5 usuarios con mas comentarios:
+    U000001    2438
+    U000002    1003
+    U000003     753
+    U000004     660
+    U000005     572
+
+Archivos: data/generado/comentarios_por_partido.csv | data/generado/comentarios_por_usuario.csv

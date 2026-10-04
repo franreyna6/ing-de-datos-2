@@ -1,0 +1,9 @@
+# Volumen masivo generado (cada CSV pesa ~130 MB): se regenera con scripts/generar_datos.py
+cassandra/data/generado/
+
+# Python
+__pycache__/
+*.pyc
+
+# Datos locales de Cassandra, por si se montan dentro del repositorio
+cassandra/.cassandra-data/

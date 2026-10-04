@@ -1,0 +1,65 @@
+codigo,nombre,confederacion,rankingFIFA,esAnfitrion,grupo
+ARG,Argentina,CONMEBOL,1,true,K
+BRA,Brasil,CONMEBOL,5,false,F
+URU,Uruguay,CONMEBOL,16,true,L
+COL,Colombia,CONMEBOL,12,false,N
+ECU,Ecuador,CONMEBOL,31,false,B
+PAR,Paraguay,CONMEBOL,48,true,A
+CHI,Chile,CONMEBOL,45,false,M
+PER,Peru,CONMEBOL,40,false,I
+VEN,Venezuela,CONMEBOL,50,false,E
+BOL,Bolivia,CONMEBOL,85,false,B
+ESP,Espana,UEFA,2,true,E
+FRA,Francia,UEFA,3,false,O
+ENG,Inglaterra,UEFA,4,false,H
+POR,Portugal,UEFA,6,true,L
+NED,Paises Bajos,UEFA,7,false,G
+BEL,Belgica,UEFA,8,false,L
+GER,Alemania,UEFA,9,false,M
+ITA,Italia,UEFA,10,false,I
+CRO,Croacia,UEFA,11,false,G
+SUI,Suiza,UEFA,18,false,B
+DEN,Dinamarca,UEFA,19,false,P
+AUT,Austria,UEFA,22,false,J
+UKR,Ucrania,UEFA,25,false,H
+SWE,Suecia,UEFA,33,false,N
+POL,Polonia,UEFA,34,false,O
+TUR,Turquia,UEFA,27,false,P
+MEX,Mexico,CONCACAF,17,false,A
+USA,Estados Unidos,CONCACAF,15,false,G
+CAN,Canada,CONCACAF,30,false,C
+PAN,Panama,CONCACAF,41,false,H
+CRC,Costa Rica,CONCACAF,46,false,J
+JAM,Jamaica,CONCACAF,55,false,G
+HON,Honduras,CONCACAF,72,false,L
+HAI,Haiti,CONCACAF,83,false,M
+MAR,Marruecos,CAF,14,true,E
+SEN,Senegal,CAF,20,false,H
+EGY,Egipto,CAF,32,false,P
+NGA,Nigeria,CAF,43,false,P
+ALG,Argelia,CAF,36,false,C
+CIV,Costa de Marfil,CAF,37,false,C
+TUN,Tunez,CAF,47,false,C
+CMR,Camerun,CAF,51,false,D
+MLI,Mali,CAF,52,false,D
+GHA,Ghana,CAF,71,false,I
+RSA,Sudafrica,CAF,60,false,F
+BFA,Burkina Faso,CAF,63,false,N
+JPN,Japon,AFC,15,false,D
+IRN,Iran,AFC,21,false,F
+KOR,Corea del Sur,AFC,23,false,J
+AUS,Australia,AFC,26,false,K
+KSA,Arabia Saudita,AFC,58,false,A
+QAT,Qatar,AFC,44,false,K
+UAE,Emiratos Arabes Unidos,AFC,65,false,O
+IRQ,Irak,AFC,57,false,I
+UZB,Uzbekistan,AFC,68,false,O
+JOR,Jordania,AFC,70,false,K
+CHN,China,AFC,90,false,N
+VIE,Vietnam,AFC,116,false,B
+NZL,Nueva Zelanda,OFC,89,false,M
+NCL,Nueva Caledonia,OFC,152,false,J
+FIJ,Fiyi,OFC,165,false,E
+SOL,Islas Salomon,OFC,138,false,A
+VAN,Vanuatu,OFC,168,false,F
+TAH,Tahiti,OFC,158,false,D
