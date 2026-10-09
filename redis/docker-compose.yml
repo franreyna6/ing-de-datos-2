@@ -1,0 +1,35 @@
+# Modulo de cache de usuarios y sesiones del Fixture 2030 - Hito 7 (Grupo 8)
+# Basado en el ambiente de la Clase 8: un unico nodo Redis local, usado con
+# redis-cli desde el propio contenedor (RF1, RNF1).
+#
+# AMBIENTE DE APRENDIZAJE: un solo nodo (standalone), sin replicas, sin Sentinel
+# y sin Redis Cluster, y sin contrasena. NO representa un despliegue de alta
+# disponibilidad ni distribuido (ver docs/memoria_y_escalabilidad.md).
+services:
+  redis:
+    image: redis:latest                  # RNF1: imagen oficial, etiqueta latest (se registra la version observada)
+    container_name: fixture2030-redis
+    restart: unless-stopped
+    # Persistencia: AOF + snapshot RDB basico (config de la Clase 8).
+    # Memoria (RF10): limite de 100 MB y politica volatile-lru. Ver docs/memoria_y_escalabilidad.md.
+    command: >
+      redis-server
+      --appendonly yes
+      --save 60 1
+      --loglevel notice
+      --maxmemory 100mb
+      --maxmemory-policy volatile-lru
+    ports:
+      - "6379:6379"                      # puerto estandar de Redis
+    volumes:
+      # RNF2: los datos persisten en ~/docker/data/redis
+      - ~/docker/data/redis:/data
+      # Scripts del modulo: se ejecutan dentro del contenedor con sh /scripts/<archivo>
+      - ./scripts:/scripts:ro
+      # CSV de origen (Hito 5): fuente simulada de la prueba de Cache-Aside
+      - ./data:/datos:ro
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

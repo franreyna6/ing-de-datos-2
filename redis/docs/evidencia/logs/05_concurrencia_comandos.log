@@ -1,0 +1,92 @@
+# =============================================================================
+# concurrencia.redis - Hito 7 (Grupo 8)
+# Operaciones concurrentes del Fixture: contador de visitas, votos de la encuesta
+# "figura del partido" con su ranking Top N, y actividad de sesion (RF8, RF9, RNF6).
+# Aqui se muestra el comportamiento de cada comando; la prueba con VARIOS clientes
+# en paralelo esta en concurrencia_paralela.sh (docs/concurrencia.md).
+#
+# Todas las claves de prueba llevan el prefijo prueba: y un TTL de 600 s.
+# Ejecucion: sh /scripts/ejecutar_bloques.sh /scripts/concurrencia.redis
+# =============================================================================
+
+# --- 1. Contador de visitas: INCR / INCRBY son atomicos (RF8) ---
+# Antipatron: GET, sumar en la aplicacion y SET. Dos clientes pueden leer el mismo
+# valor y pisar el incremento del otro (se pierde una visita).
+# Operacion nativa: el servidor lee, suma y escribe como una unidad, sin intercalarse.
+# INCR no modifica el TTL de la clave.
+> SET prueba:visitas 0 EX 600
+  OK
+> INCR prueba:visitas
+  (integer) 1
+> INCRBY prueba:visitas 50
+  (integer) 51
+> GET prueba:visitas
+  "51"
+> TTL prueba:visitas
+  (integer) 600
+
+# --- 2. Votos de la encuesta y ranking Top N (RF8, RF9) ---
+# Sorted Set: cada voto es un ZINCRBY (atomico) sobre el candidato; el ranking se
+# recupera ya ordenado con ZREVRANGE, sin ordenar en la aplicacion.
+# ZADD inicial en 0 deja la prueba repetible.
+> ZADD prueba:encuesta:figura 0 jugador-A 0 jugador-B 0 jugador-C
+  (integer) 3
+> EXPIRE prueba:encuesta:figura 600
+  (integer) 1
+> ZINCRBY prueba:encuesta:figura 1 jugador-A
+  "1"
+> ZINCRBY prueba:encuesta:figura 1 jugador-B
+  "1"
+> ZINCRBY prueba:encuesta:figura 1 jugador-B
+  "2"
+> ZINCRBY prueba:encuesta:figura 3 jugador-C
+  "3"
+> ZREVRANGE prueba:encuesta:figura 0 2 WITHSCORES
+  1) "jugador-C"
+  2) "3"
+  3) "jugador-B"
+  4) "2"
+  5) "jugador-A"
+  6) "1"
+
+# --- 3. Ranking real de la muestra: Top 3 de la encuesta del partido F2030-001 (RF9) ---
+# Solo lectura. Candidatos: jugadores de ambos equipos (jugadores.csv del Hito 5).
+> ZREVRANGE encuesta:F2030-001:figura 0 2 WITHSCORES
+  1) "SOL-4-c3lnht"
+  2) "372"
+  3) "MEX-1-db2bt0"
+  4) "344"
+  5) "MEX-23-4pvag9"
+  6) "206"
+
+# --- 4. Actividad de sesion como unidad atomica (RF8) ---
+# Una peticion valida actualiza ultimo acceso, suma una accion y renueva el TTL.
+# MULTI/EXEC encola los tres comandos y los ejecuta consecutivamente: ningun otro
+# cliente se intercala entre ellos. Redis NO ofrece rollback general: si un comando
+# fallara en tiempo de ejecucion, los demas igual se aplican (por eso el flujo se
+# valida antes y los comandos usados no fallan sobre un Hash).
+> MULTI
+> HSET prueba:sesion usuario_id U9100 estado activa acciones 0
+> EXPIRE prueba:sesion 600
+> EXEC
+  OK
+  QUEUED
+  QUEUED
+  1) (integer) 3
+  2) (integer) 1
+> MULTI
+> HSET prueba:sesion ultimo_acceso 2030-06-14T21:00:00Z
+> HINCRBY prueba:sesion acciones 1
+> EXPIRE prueba:sesion 1800
+> EXEC
+  OK
+  QUEUED
+  QUEUED
+  QUEUED
+  1) (integer) 1
+  2) (integer) 1
+  3) (integer) 1
+> HGET prueba:sesion acciones
+  "1"
+> TTL prueba:sesion
+  (integer) 1800

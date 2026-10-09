@@ -1,0 +1,67 @@
+# =============================================================================
+# cache.redis - Hito 7 (Grupo 8)
+# Patron Cache-Aside sobre la ficha de partido y la ficha de equipo del Fixture
+# (RF6, RF7, RNF4, RNF6): cache hit, cache miss, carga con TTL, invalidacion
+# cuando cambia la fuente de verdad y la trampa de perder el TTL.
+#
+# Fuente de verdad (NO es Redis):
+#   - ficha de partido -> grafo de Neo4j (Hito 5, nodo Partido; mismos datos que partidos.csv)
+#   - ficha de equipo  -> coleccion equipos de MongoDB (Hito 4)
+# Esas bases no se ejecutan en este laboratorio: la lectura de la fuente se
+# SIMULA copiando el valor desde data/origen/*.csv, que es de donde salieron.
+#
+# Requiere la muestra cargada (carga_muestra.redis): precarga los primeros 20
+# partidos (TTL 300 s) y 16 equipos (TTL 3600 s). Si pasaron mas de 300 s desde
+# la carga, repetirla para renovar esas copias.
+# Ejecucion: sh /scripts/ejecutar_bloques.sh /scripts/cache.redis
+# =============================================================================
+
+# --- 1. Cache MISS (RF7) ---
+# El partido F2030-050 no esta precargado. Se borra por si quedo de una corrida
+# anterior. GET devuelve (nil) y TTL devuelve -2: la clave no existe.
+# Camino ante un miss: consultar la fuente de verdad, guardar la copia con TTL, responder.
+DEL cache:partido:F2030-050
+GET cache:partido:F2030-050
+TTL cache:partido:F2030-050
+
+# --- 2. Carga de la copia tras el miss (RF6, RF7) ---
+# Valor leido de la fuente (simulado desde partidos.csv, fila F2030-050).
+# SET ... EX 300 guarda la copia con TTL: 5 minutos es el maximo de obsolescencia admisible.
+SET cache:partido:F2030-050 '{"codigo":"F2030-050","fecha":"2030-06-27","fase":"Grupos","grupo":"I","golesLocal":0,"golesVisitante":0,"sedeCodigo":"BERN"}' EX 300
+TTL cache:partido:F2030-050
+GET cache:partido:F2030-050
+
+# --- 3. Cache HIT (RF6) ---
+# Condicion de hit: la clave existe. Se responde desde memoria sin tocar la fuente.
+# F2030-001 fue precargado por carga_muestra.redis.
+GET cache:partido:F2030-001
+TTL cache:partido:F2030-001
+
+# --- 4. Invalidacion cuando cambia la fuente de verdad (RF7) ---
+# Caso: se corrige el acta del partido F2030-001 (de 1-1 a 2-1). La actualizacion
+# ocurre en la fuente (simulada). Para que NINGUN usuario vea la copia vieja,
+# el flujo de escritura invalida la copia con DEL justo despues de actualizar la fuente.
+# El TTL de 300 s solo acota el peor caso (si la invalidacion fallara); no reemplaza a DEL.
+DEL cache:partido:F2030-001
+GET cache:partido:F2030-001
+
+# El siguiente lector provoca un miss, lee la fuente ya corregida y recarga la copia.
+SET cache:partido:F2030-001 '{"codigo":"F2030-001","fecha":"2030-06-14","fase":"Grupos","grupo":"A","golesLocal":2,"golesVisitante":1,"sedeCodigo":"CHAC"}' EX 300
+GET cache:partido:F2030-001
+TTL cache:partido:F2030-001
+
+# --- 5. Ficha de equipo: dato de lectura frecuente y casi estatico (RF6) ---
+# Fuente: MongoDB (Hito 4). TTL de 1 hora porque ranking y confederacion casi no cambian.
+GET cache:equipo:ARG
+TTL cache:equipo:ARG
+
+# --- 6. Trampa: SET sin EX borra el TTL (RNF6) ---
+# Reescribir una copia con SET a secas la deja SIN vencimiento (TTL -1): quedaria
+# como copia eterna y, ademas, no seria candidata a eviccion bajo volatile-lru.
+# Regla del modulo: toda copia de cache se escribe SIEMPRE con EX.
+# Se muestra con una clave de prueba (prefijo prueba:), no con una de cache real.
+SET prueba:ttl_trampa "v1" EX 100
+TTL prueba:ttl_trampa
+SET prueba:ttl_trampa "v2"
+TTL prueba:ttl_trampa
+DEL prueba:ttl_trampa

@@ -1,0 +1,22 @@
+Distribucion de la muestra generada (semilla 2030)
+Generador: scripts/generar_datos.py - archivo: scripts/carga_muestra.redis
+
+Comandos del archivo (sin comentarios): 944
+
+Sesiones (clave sesion:<id>, Hash, TTL 1800 s): 200
+  rol fan:        177
+  rol periodista: 16
+  rol admin:      7
+  estado activa:  200
+
+Cache de ficha de partido (cache:partido:<codigo>, String JSON, TTL 300 s): 20 de 96 partidos
+Cache de ficha de equipo (cache:equipo:<codigo>, String JSON, TTL 3600 s): 16 de 64 equipos
+
+Contadores de visitas (partido:<codigo>:visitas, String, sin TTL): 96
+  minimo 2434 - maximo 59829 - suma 2874331
+
+Encuestas figura del partido (encuesta:<codigo>:figura, Sorted Set, sin TTL): 12
+  candidatos por encuesta: 6 (jugadores de ambos equipos) - votos cargados en total: 12291
+
+Claves totales cargadas: 344
+  con TTL: 236 - sin TTL (conservadas por decision): 108

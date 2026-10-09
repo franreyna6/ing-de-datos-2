@@ -1,0 +1,93 @@
+# =============================================================================
+# sesiones.redis - Hito 7 (Grupo 8)
+# Ciclo de vida de una sesion de usuario: crear, recuperar, actualizar,
+# renovar, suspender, vencer, cerrar y consultar una sesion inexistente
+# (RF3, RF4, RF5, RNF6). Estructura: Hash sesion:<sesionId> + TTL de la CLAVE.
+#
+# Decision de expiracion: 1800 s (30 min) de INACTIVIDAD. Cada actividad valida
+# renueva el TTL. Reglas completas en docs/ciclo_de_vida_e_invalidacion.md.
+# Las sesiones de este script usan ids fuera de la muestra (S9001, S9002).
+#
+# Ejecucion: sh /scripts/ejecutar_bloques.sh /scripts/sesiones.redis
+# Los bloques se separan con lineas vacias. MULTI...EXEC viaja por UNA conexion.
+# =============================================================================
+
+# --- 1. Crear la sesion (RF3, RF5) ---
+# Se crean el Hash y su TTL dentro de MULTI/EXEC: si el cliente se cae antes de
+# EXEC no se aplica NINGUN comando, asi nunca queda una sesion sin vencimiento.
+# Atributos: usuario asociado, rol, estado de acceso, creacion, ultimo acceso y
+# contador de acciones. No hay datos personales ni tokens reales (RNF7).
+MULTI
+HSET sesion:S9001 usuario_id U9001 rol fan estado activa creada_en 2030-06-14T20:00:00Z ultimo_acceso 2030-06-14T20:00:00Z acciones 0
+EXPIRE sesion:S9001 1800
+EXEC
+TTL sesion:S9001
+HGETALL sesion:S9001
+
+# --- 2. Recuperar y validar la sesion (RF3) ---
+# Regla de validez: la clave existe (TTL distinto de -2) Y estado = activa.
+# Se leen solo los campos necesarios (HGET), no el Hash completo.
+HGET sesion:S9001 usuario_id
+HGET sesion:S9001 estado
+
+# --- 3. Pasa el tiempo sin actividad (simulado) ---
+# Se fuerza el TTL a 100 s para simular que ya transcurrieron ~28 minutos.
+EXPIRE sesion:S9001 100
+TTL sesion:S9001
+
+# --- 4. Actualizar un atributo NO renueva el TTL (RF4) ---
+# HSET modifica el campo pero no extiende la vida de la sesion: el TTL sigue
+# siendo menor o igual a 100. Actualizar contenido y renovar vida son decisiones distintas.
+HSET sesion:S9001 rol periodista
+TTL sesion:S9001
+
+# --- 5. Renovar por actividad (RF4) ---
+# Evento que renueva: cualquier peticion autenticada y valida de la sesion
+# (consultar un partido, votar). Se aplica como UNA unidad: ultimo acceso,
+# contador y renovacion del TTL. Resultado esperado: TTL de nuevo en 1800.
+MULTI
+HSET sesion:S9001 ultimo_acceso 2030-06-14T20:28:00Z
+HINCRBY sesion:S9001 acciones 1
+EXPIRE sesion:S9001 1800
+EXEC
+TTL sesion:S9001
+HGETALL sesion:S9001
+
+# --- 6. Suspender el acceso sin borrar la sesion (RF5) ---
+# El estado cambia a suspendida: la aplicacion debe negar el acceso y NO renovar
+# el TTL. La clave se conserva para distinguir "cuenta suspendida" de "sesion vencida".
+HSET sesion:S9001 estado suspendida
+HGET sesion:S9001 estado
+
+# --- 7. Vencimiento por inactividad (RF4, RNF6) ---
+# Sesion de prueba con TTL de 3 s. Se espera 4 s SIN actividad. Redis elimina la
+# clave por su mecanismo nativo de expiracion: no hay proceso que recorra sesiones.
+# Se comprueba con TTL = -2 y con lecturas vacias.
+MULTI
+HSET sesion:S9002 usuario_id U9002 rol fan estado activa creada_en 2030-06-14T20:00:00Z ultimo_acceso 2030-06-14T20:00:00Z acciones 0
+EXPIRE sesion:S9002 3
+EXEC
+TTL sesion:S9002
+#@esperar 4
+TTL sesion:S9002
+HGETALL sesion:S9002
+HGET sesion:S9002 usuario_id
+
+# --- 8. Cierre explicito (logout) o invalidacion (RF3) ---
+# DEL elimina la sesion completa. Devuelve 1 si existia y 0 si ya no estaba:
+# cerrar dos veces es inocuo.
+DEL sesion:S9001
+TTL sesion:S9001
+DEL sesion:S9001
+
+# --- 9. Sesion inexistente o vencida (RF3, RF4) ---
+# Redis responde vacio / TTL -2. Comportamiento esperado de la aplicacion: tratar
+# la peticion como NO autenticada y pedir un nuevo inicio de sesion. No se
+# reconstruye la sesion desde otra fuente: una sesion es estado temporal.
+HGETALL sesion:S0000
+TTL sesion:S0000
+
+# --- 10. Inspeccion segura con cursor (RNF8) ---
+# SCAN reemplaza a KEYS *. Si el primer valor devuelto (cursor) no es 0, se repite
+# la llamada con ese cursor. Aqui se busca una clave exacta de la muestra.
+SCAN 0 MATCH sesion:S0001 COUNT 1000

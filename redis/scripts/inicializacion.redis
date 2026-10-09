@@ -1,0 +1,32 @@
+# =============================================================================
+# inicializacion.redis - Hito 7 (Grupo 8)
+# Verifica el servidor y registra el ambiente: version observada de redis:latest,
+# persistencia (AOF + snapshot) y politica de memoria (RF1, RF10, RNF1, RNF10).
+# Es de SOLO LECTURA: no crea ni modifica claves.
+# Ejecucion: sh /scripts/ejecutar_bloques.sh /scripts/inicializacion.redis
+# =============================================================================
+
+# --- 1. Disponibilidad del servidor (RF1) ---
+# Resultado esperado: PONG
+PING
+
+# --- 2. Version del servidor (RNF1, RNF10) ---
+# Se usa la etiqueta latest: la version observada se registra en cada ejecucion
+# porque puede cambiar entre corridas. Nodo unico (standalone): sin replicas,
+# Sentinel ni Cluster.
+#@campos redis_version|redis_mode|os|arch_bits|tcp_port|uptime_in_seconds
+INFO server
+
+# --- 3. Persistencia (RNF2) ---
+# aof_enabled:1 -> el Compose arranca con --appendonly yes; ademas hay snapshot
+# RDB con --save 60 1. Los datos se montan en ~/docker/data/redis.
+#@campos aof_enabled|aof_last_write_status|rdb_last_bgsave_status|rdb_changes_since_last_save
+INFO persistence
+
+# --- 4. Memoria y politica de eviccion (RF10) ---
+# maxmemory y maxmemory_policy vienen de los argumentos de redis-server del Compose.
+#@campos used_memory_human|maxmemory_human|maxmemory_policy
+INFO memory
+
+# --- 5. Claves presentes (vacio antes de la primera carga) ---
+INFO keyspace

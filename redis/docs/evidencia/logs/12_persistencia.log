@@ -1,0 +1,72 @@
+=== ANTES del reinicio (22:42:10Z) ===
+# =============================================================================
+# persistencia.redis - Hito 7 (Grupo 8)
+# Estado que debe sobrevivir a un reinicio del contenedor (RNF2, RF1).
+# ejecutar_todo lo corre ANTES y DESPUES de 'docker compose restart redis'.
+# Persistencia configurada en el Compose: AOF (--appendonly yes) + snapshot
+# RDB (--save 60 1), con los datos en ~/docker/data/redis.
+# Es de SOLO LECTURA.
+# Ejecucion: sh /scripts/ejecutar_bloques.sh /scripts/persistencia.redis
+# =============================================================================
+
+# --- 1. Sesion de la muestra: el Hash y su TTL ---
+# El TTL debe seguir corriendo (menor o igual al anterior), no reiniciarse ni perderse (-1).
+> HGET sesion:S0001 usuario_id
+  "U0001"
+> TTL sesion:S0001
+  (integer) 1799
+
+# --- 2. Datos conservados (sin TTL): contador de visitas y ranking de la encuesta ---
+> GET partido:F2030-001:visitas
+  "11892"
+> ZREVRANGE encuesta:F2030-001:figura 0 2 WITHSCORES
+  1) "SOL-4-c3lnht"
+  2) "372"
+  3) "MEX-1-db2bt0"
+  4) "344"
+  5) "MEX-23-4pvag9"
+  6) "206"
+
+# --- 3. Claves totales y claves con TTL ---
+> INFO keyspace
+  # Keyspace
+  db0:keys=346,expires=238,avg_ttl=839576,subexpiry=0
+
+=== docker compose restart redis ===
+ Container fixture2030-redis Restarting 
+ Container fixture2030-redis Started 
+Redis volvio a responder: si
+
+=== DESPUES del reinicio (22:42:13Z) ===
+# =============================================================================
+# persistencia.redis - Hito 7 (Grupo 8)
+# Estado que debe sobrevivir a un reinicio del contenedor (RNF2, RF1).
+# ejecutar_todo lo corre ANTES y DESPUES de 'docker compose restart redis'.
+# Persistencia configurada en el Compose: AOF (--appendonly yes) + snapshot
+# RDB (--save 60 1), con los datos en ~/docker/data/redis.
+# Es de SOLO LECTURA.
+# Ejecucion: sh /scripts/ejecutar_bloques.sh /scripts/persistencia.redis
+# =============================================================================
+
+# --- 1. Sesion de la muestra: el Hash y su TTL ---
+# El TTL debe seguir corriendo (menor o igual al anterior), no reiniciarse ni perderse (-1).
+> HGET sesion:S0001 usuario_id
+  "U0001"
+> TTL sesion:S0001
+  (integer) 1795
+
+# --- 2. Datos conservados (sin TTL): contador de visitas y ranking de la encuesta ---
+> GET partido:F2030-001:visitas
+  "11892"
+> ZREVRANGE encuesta:F2030-001:figura 0 2 WITHSCORES
+  1) "SOL-4-c3lnht"
+  2) "372"
+  3) "MEX-1-db2bt0"
+  4) "344"
+  5) "MEX-23-4pvag9"
+  6) "206"
+
+# --- 3. Claves totales y claves con TTL ---
+> INFO keyspace
+  # Keyspace
+  db0:keys=346,expires=238,avg_ttl=1790750,subexpiry=0

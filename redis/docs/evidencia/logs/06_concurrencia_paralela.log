@@ -1,0 +1,11 @@
+Fecha de ejecucion (UTC): 2026-10-09T22:41:15Z
+Clientes simultaneos: 4 | operaciones por cliente: 500 (atomicas) y 100 (antipatron)
+
+Prueba                               Esperado   Obtenido   Resultado
+INCR (atomico)                           2000       2000   correcto
+ZINCRBY (atomico)                        2000       2000   correcto
+MULTI/EXEC (acciones de sesion)          2000       2000   correcto
+GET+SET (antipatron)                      400        141   PERDIO 259 actualizaciones
+
+TTL de la sesion tras las renovaciones concurrentes: 1800 s (esperado: cerca de 1800, nunca -1 ni -2)
+Nota: el antipatron pierde actualizaciones por intercalado; la cantidad varia en cada corrida.

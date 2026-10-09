@@ -1,0 +1,41 @@
+Fecha de ejecucion (UTC): 2026-10-09T22:41:41Z
+Redis (version observada): 8.10.2
+
+=== Estado inicial ===
+maxmemory original: 104857600 bytes | politica original: volatile-lru
+Memoria usada: 1949648 bytes | sesiones: 200 | claves de cache: 104 | evicted_keys: 0
+
+=== 1. Se baja maxmemory a (usada + 3 MB) = 5095376 bytes ===
+OK
+
+=== 2. Politica volatile-lru: se escriben 6000 claves de ~1 KB con TTL ===
+Escrituras OK: 6000 | rechazadas por OOM: 0
+evicted_keys: 0 -> 3435 (evicciones de esta prueba: 3435)
+Sesiones vigentes: 200 -> 2
+Claves de cache:   104 -> 2
+Memoria usada ahora: 4.86M (limite 4.86M)
+Lectura: ninguna clave vencio por TTL (todas tenian cientos de segundos); las que desaparecieron
+fueron eliminadas por EVICCION al alcanzar maxmemory. Una sesion evictada se comporta como una
+sesion inexistente: el usuario debe iniciar sesion de nuevo.
+
+=== 3. Politica noeviction: se escribe otro lote de 6000 claves ===
+OK
+Escrituras OK: 15 | rechazadas por OOM: 5985
+evicted_keys: 3435 -> 3435 (con noeviction no se elimina nada)
+Ejemplo de respuesta de error: OOM command not allowed when used memory > 'maxmemory'.
+Lectura: la aplicacion debe manejar el error OOM; el dato existente se conserva pero no se aceptan datos nuevos.
+
+=== 4. Restauracion ===
+OK
+OK
+Claves de prueba borradas: 2891
+Archivo: /scripts/carga_muestra.redis
+Comandos enviados: 944
+Respuestas con error: 0
+Respuestas mas frecuentes (cantidad, respuesta):
+      400 QUEUED
+      332 OK
+      200 1
+      198 6
+       14 0
+maxmemory: 100.00M | politica: volatile-lru | sesiones: 200

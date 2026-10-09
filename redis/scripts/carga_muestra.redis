@@ -1,0 +1,968 @@
+# =============================================================================
+# carga_muestra.redis - Hito 7 (Grupo 8)
+# ARCHIVO GENERADO por scripts/generar_datos.py (semilla 2030). No editar a mano.
+# Carga idempotente: HSET/SET/ZADD con claves fijas (repetir no duplica datos).
+# Se ejecuta con: sh /scripts/ejecutar_bloques.sh /scripts/carga_muestra.redis carga
+# (redis-cli no admite comentarios con # al leer un archivo: el ejecutor los filtra).
+# =============================================================================
+
+# --- 1. Sesiones de usuarios (Hash + TTL de 1800 s = inactividad) ---
+# Clave: sesion:<sesionId>. Campos: usuario_id, rol, estado, creada_en, ultimo_acceso, acciones.
+MULTI
+HSET sesion:S0001 usuario_id U0001 rol fan estado activa creada_en 2030-06-14T17:35:19Z ultimo_acceso 2030-06-14T19:33:43Z acciones 14
+EXPIRE sesion:S0001 1800
+EXEC
+MULTI
+HSET sesion:S0002 usuario_id U0002 rol fan estado activa creada_en 2030-06-14T13:04:00Z ultimo_acceso 2030-06-14T13:33:34Z acciones 57
+EXPIRE sesion:S0002 1800
+EXEC
+MULTI
+HSET sesion:S0003 usuario_id U0003 rol fan estado activa creada_en 2030-06-14T16:37:29Z ultimo_acceso 2030-06-14T17:12:04Z acciones 4
+EXPIRE sesion:S0003 1800
+EXEC
+MULTI
+HSET sesion:S0004 usuario_id U0004 rol fan estado activa creada_en 2030-06-14T16:09:49Z ultimo_acceso 2030-06-14T16:59:41Z acciones 17
+EXPIRE sesion:S0004 1800
+EXEC
+MULTI
+HSET sesion:S0005 usuario_id U0005 rol fan estado activa creada_en 2030-06-14T15:36:58Z ultimo_acceso 2030-06-14T15:49:03Z acciones 44
+EXPIRE sesion:S0005 1800
+EXEC
+MULTI
+HSET sesion:S0006 usuario_id U0006 rol fan estado activa creada_en 2030-06-14T16:33:33Z ultimo_acceso 2030-06-14T16:34:59Z acciones 2
+EXPIRE sesion:S0006 1800
+EXEC
+MULTI
+HSET sesion:S0007 usuario_id U0007 rol fan estado activa creada_en 2030-06-14T14:31:48Z ultimo_acceso 2030-06-14T15:47:28Z acciones 58
+EXPIRE sesion:S0007 1800
+EXEC
+MULTI
+HSET sesion:S0008 usuario_id U0008 rol fan estado activa creada_en 2030-06-14T14:30:33Z ultimo_acceso 2030-06-14T15:27:44Z acciones 56
+EXPIRE sesion:S0008 1800
+EXEC
+MULTI
+HSET sesion:S0009 usuario_id U0009 rol fan estado activa creada_en 2030-06-14T16:48:06Z ultimo_acceso 2030-06-14T17:54:23Z acciones 58
+EXPIRE sesion:S0009 1800
+EXEC
+MULTI
+HSET sesion:S0010 usuario_id U0010 rol fan estado activa creada_en 2030-06-14T16:46:03Z ultimo_acceso 2030-06-14T17:00:13Z acciones 41
+EXPIRE sesion:S0010 1800
+EXEC
+MULTI
+HSET sesion:S0011 usuario_id U0011 rol periodista estado activa creada_en 2030-06-14T16:55:49Z ultimo_acceso 2030-06-14T17:00:19Z acciones 17
+EXPIRE sesion:S0011 1800
+EXEC
+MULTI
+HSET sesion:S0012 usuario_id U0012 rol fan estado activa creada_en 2030-06-14T13:08:38Z ultimo_acceso 2030-06-14T15:07:03Z acciones 20
+EXPIRE sesion:S0012 1800
+EXEC
+MULTI
+HSET sesion:S0013 usuario_id U0013 rol fan estado activa creada_en 2030-06-14T13:00:22Z ultimo_acceso 2030-06-14T13:39:52Z acciones 8
+EXPIRE sesion:S0013 1800
+EXEC
+MULTI
+HSET sesion:S0014 usuario_id U0014 rol fan estado activa creada_en 2030-06-14T13:43:34Z ultimo_acceso 2030-06-14T14:21:33Z acciones 52
+EXPIRE sesion:S0014 1800
+EXEC
+MULTI
+HSET sesion:S0015 usuario_id U0015 rol fan estado activa creada_en 2030-06-14T14:10:27Z ultimo_acceso 2030-06-14T14:14:06Z acciones 51
+EXPIRE sesion:S0015 1800
+EXEC
+MULTI
+HSET sesion:S0016 usuario_id U0016 rol fan estado activa creada_en 2030-06-14T15:28:39Z ultimo_acceso 2030-06-14T17:20:07Z acciones 41
+EXPIRE sesion:S0016 1800
+EXEC
+MULTI
+HSET sesion:S0017 usuario_id U0017 rol periodista estado activa creada_en 2030-06-14T12:49:21Z ultimo_acceso 2030-06-14T14:05:06Z acciones 50
+EXPIRE sesion:S0017 1800
+EXEC
+MULTI
+HSET sesion:S0018 usuario_id U0018 rol fan estado activa creada_en 2030-06-14T12:38:13Z ultimo_acceso 2030-06-14T14:33:58Z acciones 55
+EXPIRE sesion:S0018 1800
+EXEC
+MULTI
+HSET sesion:S0019 usuario_id U0019 rol fan estado activa creada_en 2030-06-14T13:09:27Z ultimo_acceso 2030-06-14T14:51:58Z acciones 10
+EXPIRE sesion:S0019 1800
+EXEC
+MULTI
+HSET sesion:S0020 usuario_id U0020 rol fan estado activa creada_en 2030-06-14T12:37:18Z ultimo_acceso 2030-06-14T13:42:12Z acciones 3
+EXPIRE sesion:S0020 1800
+EXEC
+MULTI
+HSET sesion:S0021 usuario_id U0021 rol fan estado activa creada_en 2030-06-14T16:32:23Z ultimo_acceso 2030-06-14T17:37:29Z acciones 55
+EXPIRE sesion:S0021 1800
+EXEC
+MULTI
+HSET sesion:S0022 usuario_id U0022 rol fan estado activa creada_en 2030-06-14T14:29:01Z ultimo_acceso 2030-06-14T14:54:42Z acciones 25
+EXPIRE sesion:S0022 1800
+EXEC
+MULTI
+HSET sesion:S0023 usuario_id U0023 rol fan estado activa creada_en 2030-06-14T13:25:44Z ultimo_acceso 2030-06-14T13:52:26Z acciones 4
+EXPIRE sesion:S0023 1800
+EXEC
+MULTI
+HSET sesion:S0024 usuario_id U0024 rol periodista estado activa creada_en 2030-06-14T16:55:56Z ultimo_acceso 2030-06-14T17:02:05Z acciones 35
+EXPIRE sesion:S0024 1800
+EXEC
+MULTI
+HSET sesion:S0025 usuario_id U0025 rol fan estado activa creada_en 2030-06-14T12:41:18Z ultimo_acceso 2030-06-14T13:48:36Z acciones 2
+EXPIRE sesion:S0025 1800
+EXEC
+MULTI
+HSET sesion:S0026 usuario_id U0026 rol fan estado activa creada_en 2030-06-14T17:21:16Z ultimo_acceso 2030-06-14T18:14:32Z acciones 3
+EXPIRE sesion:S0026 1800
+EXEC
+MULTI
+HSET sesion:S0027 usuario_id U0027 rol fan estado activa creada_en 2030-06-14T13:03:12Z ultimo_acceso 2030-06-14T14:29:18Z acciones 53
+EXPIRE sesion:S0027 1800
+EXEC
+MULTI
+HSET sesion:S0028 usuario_id U0028 rol fan estado activa creada_en 2030-06-14T12:05:37Z ultimo_acceso 2030-06-14T13:16:12Z acciones 42
+EXPIRE sesion:S0028 1800
+EXEC
+MULTI
+HSET sesion:S0029 usuario_id U0029 rol fan estado activa creada_en 2030-06-14T12:17:18Z ultimo_acceso 2030-06-14T12:49:36Z acciones 31
+EXPIRE sesion:S0029 1800
+EXEC
+MULTI
+HSET sesion:S0030 usuario_id U0030 rol fan estado activa creada_en 2030-06-14T14:01:17Z ultimo_acceso 2030-06-14T14:15:21Z acciones 8
+EXPIRE sesion:S0030 1800
+EXEC
+MULTI
+HSET sesion:S0031 usuario_id U0031 rol fan estado activa creada_en 2030-06-14T17:35:46Z ultimo_acceso 2030-06-14T18:09:41Z acciones 40
+EXPIRE sesion:S0031 1800
+EXEC
+MULTI
+HSET sesion:S0032 usuario_id U0032 rol fan estado activa creada_en 2030-06-14T17:40:18Z ultimo_acceso 2030-06-14T17:56:55Z acciones 48
+EXPIRE sesion:S0032 1800
+EXEC
+MULTI
+HSET sesion:S0033 usuario_id U0033 rol fan estado activa creada_en 2030-06-14T15:54:13Z ultimo_acceso 2030-06-14T16:03:52Z acciones 35
+EXPIRE sesion:S0033 1800
+EXEC
+MULTI
+HSET sesion:S0034 usuario_id U0034 rol fan estado activa creada_en 2030-06-14T14:15:49Z ultimo_acceso 2030-06-14T14:56:31Z acciones 44
+EXPIRE sesion:S0034 1800
+EXEC
+MULTI
+HSET sesion:S0035 usuario_id U0035 rol fan estado activa creada_en 2030-06-14T14:25:30Z ultimo_acceso 2030-06-14T14:38:00Z acciones 21
+EXPIRE sesion:S0035 1800
+EXEC
+MULTI
+HSET sesion:S0036 usuario_id U0036 rol fan estado activa creada_en 2030-06-14T16:06:18Z ultimo_acceso 2030-06-14T16:28:00Z acciones 60
+EXPIRE sesion:S0036 1800
+EXEC
+MULTI
+HSET sesion:S0037 usuario_id U0037 rol fan estado activa creada_en 2030-06-14T17:48:15Z ultimo_acceso 2030-06-14T18:10:14Z acciones 56
+EXPIRE sesion:S0037 1800
+EXEC
+MULTI
+HSET sesion:S0038 usuario_id U0038 rol fan estado activa creada_en 2030-06-14T13:16:47Z ultimo_acceso 2030-06-14T13:41:49Z acciones 47
+EXPIRE sesion:S0038 1800
+EXEC
+MULTI
+HSET sesion:S0039 usuario_id U0039 rol fan estado activa creada_en 2030-06-14T17:04:54Z ultimo_acceso 2030-06-14T17:42:13Z acciones 19
+EXPIRE sesion:S0039 1800
+EXEC
+MULTI
+HSET sesion:S0040 usuario_id U0040 rol fan estado activa creada_en 2030-06-14T17:22:55Z ultimo_acceso 2030-06-14T18:36:04Z acciones 9
+EXPIRE sesion:S0040 1800
+EXEC
+MULTI
+HSET sesion:S0041 usuario_id U0041 rol fan estado activa creada_en 2030-06-14T17:15:15Z ultimo_acceso 2030-06-14T17:45:52Z acciones 13
+EXPIRE sesion:S0041 1800
+EXEC
+MULTI
+HSET sesion:S0042 usuario_id U0042 rol fan estado activa creada_en 2030-06-14T16:03:22Z ultimo_acceso 2030-06-14T16:36:32Z acciones 32
+EXPIRE sesion:S0042 1800
+EXEC
+MULTI
+HSET sesion:S0043 usuario_id U0043 rol fan estado activa creada_en 2030-06-14T13:22:53Z ultimo_acceso 2030-06-14T13:41:16Z acciones 13
+EXPIRE sesion:S0043 1800
+EXEC
+MULTI
+HSET sesion:S0044 usuario_id U0044 rol admin estado activa creada_en 2030-06-14T16:16:34Z ultimo_acceso 2030-06-14T16:50:44Z acciones 10
+EXPIRE sesion:S0044 1800
+EXEC
+MULTI
+HSET sesion:S0045 usuario_id U0045 rol fan estado activa creada_en 2030-06-14T17:11:01Z ultimo_acceso 2030-06-14T18:49:52Z acciones 60
+EXPIRE sesion:S0045 1800
+EXEC
+MULTI
+HSET sesion:S0046 usuario_id U0046 rol periodista estado activa creada_en 2030-06-14T12:34:54Z ultimo_acceso 2030-06-14T14:15:01Z acciones 39
+EXPIRE sesion:S0046 1800
+EXEC
+MULTI
+HSET sesion:S0047 usuario_id U0047 rol fan estado activa creada_en 2030-06-14T14:02:49Z ultimo_acceso 2030-06-14T15:39:55Z acciones 33
+EXPIRE sesion:S0047 1800
+EXEC
+MULTI
+HSET sesion:S0048 usuario_id U0048 rol fan estado activa creada_en 2030-06-14T13:10:40Z ultimo_acceso 2030-06-14T13:14:53Z acciones 45
+EXPIRE sesion:S0048 1800
+EXEC
+MULTI
+HSET sesion:S0049 usuario_id U0049 rol fan estado activa creada_en 2030-06-14T12:51:43Z ultimo_acceso 2030-06-14T13:30:23Z acciones 18
+EXPIRE sesion:S0049 1800
+EXEC
+MULTI
+HSET sesion:S0050 usuario_id U0050 rol fan estado activa creada_en 2030-06-14T14:58:56Z ultimo_acceso 2030-06-14T16:07:13Z acciones 33
+EXPIRE sesion:S0050 1800
+EXEC
+MULTI
+HSET sesion:S0051 usuario_id U0051 rol periodista estado activa creada_en 2030-06-14T12:00:28Z ultimo_acceso 2030-06-14T12:39:56Z acciones 30
+EXPIRE sesion:S0051 1800
+EXEC
+MULTI
+HSET sesion:S0052 usuario_id U0052 rol periodista estado activa creada_en 2030-06-14T12:32:02Z ultimo_acceso 2030-06-14T13:01:33Z acciones 25
+EXPIRE sesion:S0052 1800
+EXEC
+MULTI
+HSET sesion:S0053 usuario_id U0053 rol fan estado activa creada_en 2030-06-14T14:56:51Z ultimo_acceso 2030-06-14T16:53:14Z acciones 30
+EXPIRE sesion:S0053 1800
+EXEC
+MULTI
+HSET sesion:S0054 usuario_id U0054 rol fan estado activa creada_en 2030-06-14T16:16:22Z ultimo_acceso 2030-06-14T17:52:03Z acciones 7
+EXPIRE sesion:S0054 1800
+EXEC
+MULTI
+HSET sesion:S0055 usuario_id U0055 rol fan estado activa creada_en 2030-06-14T16:41:41Z ultimo_acceso 2030-06-14T18:12:32Z acciones 40
+EXPIRE sesion:S0055 1800
+EXEC
+MULTI
+HSET sesion:S0056 usuario_id U0056 rol fan estado activa creada_en 2030-06-14T12:48:05Z ultimo_acceso 2030-06-14T13:32:27Z acciones 60
+EXPIRE sesion:S0056 1800
+EXEC
+MULTI
+HSET sesion:S0057 usuario_id U0057 rol fan estado activa creada_en 2030-06-14T12:28:02Z ultimo_acceso 2030-06-14T12:38:43Z acciones 23
+EXPIRE sesion:S0057 1800
+EXEC
+MULTI
+HSET sesion:S0058 usuario_id U0058 rol fan estado activa creada_en 2030-06-14T13:19:53Z ultimo_acceso 2030-06-14T13:29:49Z acciones 44
+EXPIRE sesion:S0058 1800
+EXEC
+MULTI
+HSET sesion:S0059 usuario_id U0059 rol admin estado activa creada_en 2030-06-14T17:47:27Z ultimo_acceso 2030-06-14T19:39:28Z acciones 35
+EXPIRE sesion:S0059 1800
+EXEC
+MULTI
+HSET sesion:S0060 usuario_id U0060 rol fan estado activa creada_en 2030-06-14T14:39:16Z ultimo_acceso 2030-06-14T15:14:15Z acciones 27
+EXPIRE sesion:S0060 1800
+EXEC
+MULTI
+HSET sesion:S0061 usuario_id U0061 rol fan estado activa creada_en 2030-06-14T12:34:51Z ultimo_acceso 2030-06-14T13:31:48Z acciones 20
+EXPIRE sesion:S0061 1800
+EXEC
+MULTI
+HSET sesion:S0062 usuario_id U0062 rol fan estado activa creada_en 2030-06-14T13:39:21Z ultimo_acceso 2030-06-14T15:00:49Z acciones 22
+EXPIRE sesion:S0062 1800
+EXEC
+MULTI
+HSET sesion:S0063 usuario_id U0063 rol periodista estado activa creada_en 2030-06-14T13:50:12Z ultimo_acceso 2030-06-14T13:58:45Z acciones 47
+EXPIRE sesion:S0063 1800
+EXEC
+MULTI
+HSET sesion:S0064 usuario_id U0064 rol fan estado activa creada_en 2030-06-14T15:59:29Z ultimo_acceso 2030-06-14T16:13:14Z acciones 31
+EXPIRE sesion:S0064 1800
+EXEC
+MULTI
+HSET sesion:S0065 usuario_id U0065 rol fan estado activa creada_en 2030-06-14T14:52:35Z ultimo_acceso 2030-06-14T15:13:12Z acciones 37
+EXPIRE sesion:S0065 1800
+EXEC
+MULTI
+HSET sesion:S0066 usuario_id U0066 rol admin estado activa creada_en 2030-06-14T16:01:33Z ultimo_acceso 2030-06-14T17:59:45Z acciones 41
+EXPIRE sesion:S0066 1800
+EXEC
+MULTI
+HSET sesion:S0067 usuario_id U0067 rol fan estado activa creada_en 2030-06-14T13:07:46Z ultimo_acceso 2030-06-14T13:21:23Z acciones 5
+EXPIRE sesion:S0067 1800
+EXEC
+MULTI
+HSET sesion:S0068 usuario_id U0068 rol periodista estado activa creada_en 2030-06-14T12:07:12Z ultimo_acceso 2030-06-14T12:49:38Z acciones 16
+EXPIRE sesion:S0068 1800
+EXEC
+MULTI
+HSET sesion:S0069 usuario_id U0069 rol fan estado activa creada_en 2030-06-14T17:35:16Z ultimo_acceso 2030-06-14T18:10:07Z acciones 3
+EXPIRE sesion:S0069 1800
+EXEC
+MULTI
+HSET sesion:S0070 usuario_id U0070 rol fan estado activa creada_en 2030-06-14T16:09:05Z ultimo_acceso 2030-06-14T17:25:03Z acciones 4
+EXPIRE sesion:S0070 1800
+EXEC
+MULTI
+HSET sesion:S0071 usuario_id U0071 rol fan estado activa creada_en 2030-06-14T14:40:35Z ultimo_acceso 2030-06-14T14:56:28Z acciones 27
+EXPIRE sesion:S0071 1800
+EXEC
+MULTI
+HSET sesion:S0072 usuario_id U0072 rol fan estado activa creada_en 2030-06-14T13:52:47Z ultimo_acceso 2030-06-14T14:21:07Z acciones 47
+EXPIRE sesion:S0072 1800
+EXEC
+MULTI
+HSET sesion:S0073 usuario_id U0073 rol fan estado activa creada_en 2030-06-14T14:29:27Z ultimo_acceso 2030-06-14T14:34:35Z acciones 4
+EXPIRE sesion:S0073 1800
+EXEC
+MULTI
+HSET sesion:S0074 usuario_id U0074 rol fan estado activa creada_en 2030-06-14T17:09:36Z ultimo_acceso 2030-06-14T18:58:14Z acciones 60
+EXPIRE sesion:S0074 1800
+EXEC
+MULTI
+HSET sesion:S0075 usuario_id U0075 rol fan estado activa creada_en 2030-06-14T16:02:32Z ultimo_acceso 2030-06-14T16:48:29Z acciones 33
+EXPIRE sesion:S0075 1800
+EXEC
+MULTI
+HSET sesion:S0076 usuario_id U0076 rol fan estado activa creada_en 2030-06-14T13:01:37Z ultimo_acceso 2030-06-14T14:31:06Z acciones 8
+EXPIRE sesion:S0076 1800
+EXEC
+MULTI
+HSET sesion:S0077 usuario_id U0077 rol fan estado activa creada_en 2030-06-14T15:22:18Z ultimo_acceso 2030-06-14T16:35:31Z acciones 22
+EXPIRE sesion:S0077 1800
+EXEC
+MULTI
+HSET sesion:S0078 usuario_id U0078 rol fan estado activa creada_en 2030-06-14T16:19:26Z ultimo_acceso 2030-06-14T16:36:50Z acciones 6
+EXPIRE sesion:S0078 1800
+EXEC
+MULTI
+HSET sesion:S0079 usuario_id U0079 rol fan estado activa creada_en 2030-06-14T13:26:33Z ultimo_acceso 2030-06-14T13:36:42Z acciones 24
+EXPIRE sesion:S0079 1800
+EXEC
+MULTI
+HSET sesion:S0080 usuario_id U0080 rol fan estado activa creada_en 2030-06-14T15:37:09Z ultimo_acceso 2030-06-14T17:06:13Z acciones 1
+EXPIRE sesion:S0080 1800
+EXEC
+MULTI
+HSET sesion:S0081 usuario_id U0081 rol fan estado activa creada_en 2030-06-14T16:29:24Z ultimo_acceso 2030-06-14T17:01:25Z acciones 2
+EXPIRE sesion:S0081 1800
+EXEC
+MULTI
+HSET sesion:S0082 usuario_id U0082 rol fan estado activa creada_en 2030-06-14T16:57:19Z ultimo_acceso 2030-06-14T18:50:54Z acciones 44
+EXPIRE sesion:S0082 1800
+EXEC
+MULTI
+HSET sesion:S0083 usuario_id U0083 rol periodista estado activa creada_en 2030-06-14T15:36:01Z ultimo_acceso 2030-06-14T16:26:52Z acciones 8
+EXPIRE sesion:S0083 1800
+EXEC
+MULTI
+HSET sesion:S0084 usuario_id U0084 rol fan estado activa creada_en 2030-06-14T15:48:55Z ultimo_acceso 2030-06-14T16:33:55Z acciones 8
+EXPIRE sesion:S0084 1800
+EXEC
+MULTI
+HSET sesion:S0085 usuario_id U0085 rol fan estado activa creada_en 2030-06-14T13:05:40Z ultimo_acceso 2030-06-14T14:37:25Z acciones 39
+EXPIRE sesion:S0085 1800
+EXEC
+MULTI
+HSET sesion:S0086 usuario_id U0086 rol fan estado activa creada_en 2030-06-14T17:19:52Z ultimo_acceso 2030-06-14T17:51:31Z acciones 49
+EXPIRE sesion:S0086 1800
+EXEC
+MULTI
+HSET sesion:S0087 usuario_id U0087 rol fan estado activa creada_en 2030-06-14T13:59:13Z ultimo_acceso 2030-06-14T15:03:20Z acciones 42
+EXPIRE sesion:S0087 1800
+EXEC
+MULTI
+HSET sesion:S0088 usuario_id U0088 rol admin estado activa creada_en 2030-06-14T17:20:37Z ultimo_acceso 2030-06-14T18:59:35Z acciones 38
+EXPIRE sesion:S0088 1800
+EXEC
+MULTI
+HSET sesion:S0089 usuario_id U0089 rol fan estado activa creada_en 2030-06-14T17:04:39Z ultimo_acceso 2030-06-14T17:55:06Z acciones 33
+EXPIRE sesion:S0089 1800
+EXEC
+MULTI
+HSET sesion:S0090 usuario_id U0090 rol fan estado activa creada_en 2030-06-14T12:33:42Z ultimo_acceso 2030-06-14T14:25:15Z acciones 26
+EXPIRE sesion:S0090 1800
+EXEC
+MULTI
+HSET sesion:S0091 usuario_id U0091 rol fan estado activa creada_en 2030-06-14T16:27:43Z ultimo_acceso 2030-06-14T16:39:28Z acciones 35
+EXPIRE sesion:S0091 1800
+EXEC
+MULTI
+HSET sesion:S0092 usuario_id U0092 rol fan estado activa creada_en 2030-06-14T17:48:30Z ultimo_acceso 2030-06-14T18:35:38Z acciones 33
+EXPIRE sesion:S0092 1800
+EXEC
+MULTI
+HSET sesion:S0093 usuario_id U0093 rol fan estado activa creada_en 2030-06-14T16:18:43Z ultimo_acceso 2030-06-14T16:51:11Z acciones 30
+EXPIRE sesion:S0093 1800
+EXEC
+MULTI
+HSET sesion:S0094 usuario_id U0094 rol periodista estado activa creada_en 2030-06-14T17:30:21Z ultimo_acceso 2030-06-14T18:42:47Z acciones 27
+EXPIRE sesion:S0094 1800
+EXEC
+MULTI
+HSET sesion:S0095 usuario_id U0095 rol fan estado activa creada_en 2030-06-14T12:57:00Z ultimo_acceso 2030-06-14T14:50:45Z acciones 34
+EXPIRE sesion:S0095 1800
+EXEC
+MULTI
+HSET sesion:S0096 usuario_id U0096 rol fan estado activa creada_en 2030-06-14T16:54:14Z ultimo_acceso 2030-06-14T17:24:13Z acciones 24
+EXPIRE sesion:S0096 1800
+EXEC
+MULTI
+HSET sesion:S0097 usuario_id U0097 rol admin estado activa creada_en 2030-06-14T16:16:39Z ultimo_acceso 2030-06-14T18:03:32Z acciones 46
+EXPIRE sesion:S0097 1800
+EXEC
+MULTI
+HSET sesion:S0098 usuario_id U0098 rol fan estado activa creada_en 2030-06-14T16:13:47Z ultimo_acceso 2030-06-14T16:58:08Z acciones 33
+EXPIRE sesion:S0098 1800
+EXEC
+MULTI
+HSET sesion:S0099 usuario_id U0099 rol fan estado activa creada_en 2030-06-14T13:52:22Z ultimo_acceso 2030-06-14T15:09:02Z acciones 58
+EXPIRE sesion:S0099 1800
+EXEC
+MULTI
+HSET sesion:S0100 usuario_id U0100 rol fan estado activa creada_en 2030-06-14T16:35:06Z ultimo_acceso 2030-06-14T18:18:35Z acciones 50
+EXPIRE sesion:S0100 1800
+EXEC
+MULTI
+HSET sesion:S0101 usuario_id U0101 rol periodista estado activa creada_en 2030-06-14T13:44:52Z ultimo_acceso 2030-06-14T14:09:16Z acciones 35
+EXPIRE sesion:S0101 1800
+EXEC
+MULTI
+HSET sesion:S0102 usuario_id U0102 rol fan estado activa creada_en 2030-06-14T17:34:14Z ultimo_acceso 2030-06-14T19:04:08Z acciones 39
+EXPIRE sesion:S0102 1800
+EXEC
+MULTI
+HSET sesion:S0103 usuario_id U0103 rol admin estado activa creada_en 2030-06-14T12:24:32Z ultimo_acceso 2030-06-14T13:23:00Z acciones 22
+EXPIRE sesion:S0103 1800
+EXEC
+MULTI
+HSET sesion:S0104 usuario_id U0104 rol fan estado activa creada_en 2030-06-14T13:06:02Z ultimo_acceso 2030-06-14T13:55:01Z acciones 11
+EXPIRE sesion:S0104 1800
+EXEC
+MULTI
+HSET sesion:S0105 usuario_id U0105 rol fan estado activa creada_en 2030-06-14T13:38:00Z ultimo_acceso 2030-06-14T14:36:55Z acciones 32
+EXPIRE sesion:S0105 1800
+EXEC
+MULTI
+HSET sesion:S0106 usuario_id U0106 rol fan estado activa creada_en 2030-06-14T12:50:40Z ultimo_acceso 2030-06-14T12:56:22Z acciones 50
+EXPIRE sesion:S0106 1800
+EXEC
+MULTI
+HSET sesion:S0107 usuario_id U0107 rol fan estado activa creada_en 2030-06-14T15:28:12Z ultimo_acceso 2030-06-14T16:26:37Z acciones 38
+EXPIRE sesion:S0107 1800
+EXEC
+MULTI
+HSET sesion:S0108 usuario_id U0108 rol fan estado activa creada_en 2030-06-14T14:01:57Z ultimo_acceso 2030-06-14T15:01:17Z acciones 40
+EXPIRE sesion:S0108 1800
+EXEC
+MULTI
+HSET sesion:S0109 usuario_id U0109 rol fan estado activa creada_en 2030-06-14T15:01:33Z ultimo_acceso 2030-06-14T16:16:52Z acciones 28
+EXPIRE sesion:S0109 1800
+EXEC
+MULTI
+HSET sesion:S0110 usuario_id U0110 rol fan estado activa creada_en 2030-06-14T17:22:24Z ultimo_acceso 2030-06-14T18:20:19Z acciones 47
+EXPIRE sesion:S0110 1800
+EXEC
+MULTI
+HSET sesion:S0111 usuario_id U0111 rol fan estado activa creada_en 2030-06-14T17:00:30Z ultimo_acceso 2030-06-14T18:03:02Z acciones 41
+EXPIRE sesion:S0111 1800
+EXEC
+MULTI
+HSET sesion:S0112 usuario_id U0112 rol fan estado activa creada_en 2030-06-14T15:50:11Z ultimo_acceso 2030-06-14T17:25:48Z acciones 54
+EXPIRE sesion:S0112 1800
+EXEC
+MULTI
+HSET sesion:S0113 usuario_id U0113 rol fan estado activa creada_en 2030-06-14T12:49:00Z ultimo_acceso 2030-06-14T13:27:49Z acciones 9
+EXPIRE sesion:S0113 1800
+EXEC
+MULTI
+HSET sesion:S0114 usuario_id U0114 rol fan estado activa creada_en 2030-06-14T15:06:48Z ultimo_acceso 2030-06-14T15:16:55Z acciones 35
+EXPIRE sesion:S0114 1800
+EXEC
+MULTI
+HSET sesion:S0115 usuario_id U0115 rol fan estado activa creada_en 2030-06-14T14:15:58Z ultimo_acceso 2030-06-14T14:38:05Z acciones 15
+EXPIRE sesion:S0115 1800
+EXEC
+MULTI
+HSET sesion:S0116 usuario_id U0116 rol fan estado activa creada_en 2030-06-14T14:05:18Z ultimo_acceso 2030-06-14T16:00:49Z acciones 9
+EXPIRE sesion:S0116 1800
+EXEC
+MULTI
+HSET sesion:S0117 usuario_id U0117 rol fan estado activa creada_en 2030-06-14T13:52:57Z ultimo_acceso 2030-06-14T13:56:50Z acciones 18
+EXPIRE sesion:S0117 1800
+EXEC
+MULTI
+HSET sesion:S0118 usuario_id U0118 rol periodista estado activa creada_en 2030-06-14T17:13:30Z ultimo_acceso 2030-06-14T17:44:30Z acciones 50
+EXPIRE sesion:S0118 1800
+EXEC
+MULTI
+HSET sesion:S0119 usuario_id U0119 rol fan estado activa creada_en 2030-06-14T14:32:37Z ultimo_acceso 2030-06-14T16:02:40Z acciones 18
+EXPIRE sesion:S0119 1800
+EXEC
+MULTI
+HSET sesion:S0120 usuario_id U0120 rol fan estado activa creada_en 2030-06-14T16:36:16Z ultimo_acceso 2030-06-14T16:56:38Z acciones 17
+EXPIRE sesion:S0120 1800
+EXEC
+MULTI
+HSET sesion:S0121 usuario_id U0121 rol fan estado activa creada_en 2030-06-14T12:11:45Z ultimo_acceso 2030-06-14T12:27:51Z acciones 17
+EXPIRE sesion:S0121 1800
+EXEC
+MULTI
+HSET sesion:S0122 usuario_id U0122 rol fan estado activa creada_en 2030-06-14T16:01:24Z ultimo_acceso 2030-06-14T16:27:55Z acciones 3
+EXPIRE sesion:S0122 1800
+EXEC
+MULTI
+HSET sesion:S0123 usuario_id U0123 rol fan estado activa creada_en 2030-06-14T12:30:53Z ultimo_acceso 2030-06-14T13:36:12Z acciones 46
+EXPIRE sesion:S0123 1800
+EXEC
+MULTI
+HSET sesion:S0124 usuario_id U0124 rol fan estado activa creada_en 2030-06-14T16:52:30Z ultimo_acceso 2030-06-14T17:27:24Z acciones 23
+EXPIRE sesion:S0124 1800
+EXEC
+MULTI
+HSET sesion:S0125 usuario_id U0125 rol fan estado activa creada_en 2030-06-14T14:35:03Z ultimo_acceso 2030-06-14T15:02:26Z acciones 40
+EXPIRE sesion:S0125 1800
+EXEC
+MULTI
+HSET sesion:S0126 usuario_id U0126 rol fan estado activa creada_en 2030-06-14T13:06:35Z ultimo_acceso 2030-06-14T13:53:49Z acciones 12
+EXPIRE sesion:S0126 1800
+EXEC
+MULTI
+HSET sesion:S0127 usuario_id U0127 rol fan estado activa creada_en 2030-06-14T13:33:26Z ultimo_acceso 2030-06-14T13:44:06Z acciones 53
+EXPIRE sesion:S0127 1800
+EXEC
+MULTI
+HSET sesion:S0128 usuario_id U0128 rol fan estado activa creada_en 2030-06-14T17:55:50Z ultimo_acceso 2030-06-14T18:47:38Z acciones 14
+EXPIRE sesion:S0128 1800
+EXEC
+MULTI
+HSET sesion:S0129 usuario_id U0129 rol fan estado activa creada_en 2030-06-14T13:58:23Z ultimo_acceso 2030-06-14T15:04:33Z acciones 28
+EXPIRE sesion:S0129 1800
+EXEC
+MULTI
+HSET sesion:S0130 usuario_id U0130 rol fan estado activa creada_en 2030-06-14T15:12:31Z ultimo_acceso 2030-06-14T15:30:24Z acciones 10
+EXPIRE sesion:S0130 1800
+EXEC
+MULTI
+HSET sesion:S0131 usuario_id U0131 rol fan estado activa creada_en 2030-06-14T17:02:13Z ultimo_acceso 2030-06-14T17:22:34Z acciones 3
+EXPIRE sesion:S0131 1800
+EXEC
+MULTI
+HSET sesion:S0132 usuario_id U0132 rol fan estado activa creada_en 2030-06-14T16:56:59Z ultimo_acceso 2030-06-14T18:23:52Z acciones 41
+EXPIRE sesion:S0132 1800
+EXEC
+MULTI
+HSET sesion:S0133 usuario_id U0133 rol fan estado activa creada_en 2030-06-14T14:14:30Z ultimo_acceso 2030-06-14T15:44:56Z acciones 13
+EXPIRE sesion:S0133 1800
+EXEC
+MULTI
+HSET sesion:S0134 usuario_id U0134 rol fan estado activa creada_en 2030-06-14T14:33:45Z ultimo_acceso 2030-06-14T14:59:01Z acciones 10
+EXPIRE sesion:S0134 1800
+EXEC
+MULTI
+HSET sesion:S0135 usuario_id U0135 rol fan estado activa creada_en 2030-06-14T17:56:43Z ultimo_acceso 2030-06-14T19:54:09Z acciones 40
+EXPIRE sesion:S0135 1800
+EXEC
+MULTI
+HSET sesion:S0136 usuario_id U0136 rol fan estado activa creada_en 2030-06-14T15:09:53Z ultimo_acceso 2030-06-14T15:16:08Z acciones 54
+EXPIRE sesion:S0136 1800
+EXEC
+MULTI
+HSET sesion:S0137 usuario_id U0137 rol fan estado activa creada_en 2030-06-14T17:45:03Z ultimo_acceso 2030-06-14T18:09:25Z acciones 1
+EXPIRE sesion:S0137 1800
+EXEC
+MULTI
+HSET sesion:S0138 usuario_id U0138 rol admin estado activa creada_en 2030-06-14T13:14:00Z ultimo_acceso 2030-06-14T13:26:02Z acciones 57
+EXPIRE sesion:S0138 1800
+EXEC
+MULTI
+HSET sesion:S0139 usuario_id U0139 rol fan estado activa creada_en 2030-06-14T14:40:01Z ultimo_acceso 2030-06-14T15:18:44Z acciones 4
+EXPIRE sesion:S0139 1800
+EXEC
+MULTI
+HSET sesion:S0140 usuario_id U0140 rol fan estado activa creada_en 2030-06-14T13:42:19Z ultimo_acceso 2030-06-14T14:04:07Z acciones 53
+EXPIRE sesion:S0140 1800
+EXEC
+MULTI
+HSET sesion:S0141 usuario_id U0141 rol fan estado activa creada_en 2030-06-14T14:32:44Z ultimo_acceso 2030-06-14T15:49:18Z acciones 5
+EXPIRE sesion:S0141 1800
+EXEC
+MULTI
+HSET sesion:S0142 usuario_id U0142 rol fan estado activa creada_en 2030-06-14T14:38:30Z ultimo_acceso 2030-06-14T15:04:52Z acciones 3
+EXPIRE sesion:S0142 1800
+EXEC
+MULTI
+HSET sesion:S0143 usuario_id U0143 rol fan estado activa creada_en 2030-06-14T12:41:46Z ultimo_acceso 2030-06-14T13:32:47Z acciones 57
+EXPIRE sesion:S0143 1800
+EXEC
+MULTI
+HSET sesion:S0144 usuario_id U0144 rol fan estado activa creada_en 2030-06-14T14:34:54Z ultimo_acceso 2030-06-14T14:59:05Z acciones 9
+EXPIRE sesion:S0144 1800
+EXEC
+MULTI
+HSET sesion:S0145 usuario_id U0145 rol fan estado activa creada_en 2030-06-14T15:27:42Z ultimo_acceso 2030-06-14T15:33:34Z acciones 31
+EXPIRE sesion:S0145 1800
+EXEC
+MULTI
+HSET sesion:S0146 usuario_id U0146 rol fan estado activa creada_en 2030-06-14T15:00:19Z ultimo_acceso 2030-06-14T16:52:36Z acciones 19
+EXPIRE sesion:S0146 1800
+EXEC
+MULTI
+HSET sesion:S0147 usuario_id U0147 rol fan estado activa creada_en 2030-06-14T17:27:30Z ultimo_acceso 2030-06-14T17:35:40Z acciones 55
+EXPIRE sesion:S0147 1800
+EXEC
+MULTI
+HSET sesion:S0148 usuario_id U0148 rol fan estado activa creada_en 2030-06-14T14:18:26Z ultimo_acceso 2030-06-14T15:12:17Z acciones 60
+EXPIRE sesion:S0148 1800
+EXEC
+MULTI
+HSET sesion:S0149 usuario_id U0149 rol periodista estado activa creada_en 2030-06-14T17:07:30Z ultimo_acceso 2030-06-14T18:57:40Z acciones 26
+EXPIRE sesion:S0149 1800
+EXEC
+MULTI
+HSET sesion:S0150 usuario_id U0150 rol fan estado activa creada_en 2030-06-14T12:21:19Z ultimo_acceso 2030-06-14T12:55:27Z acciones 59
+EXPIRE sesion:S0150 1800
+EXEC
+MULTI
+HSET sesion:S0151 usuario_id U0151 rol fan estado activa creada_en 2030-06-14T15:31:26Z ultimo_acceso 2030-06-14T17:04:00Z acciones 21
+EXPIRE sesion:S0151 1800
+EXEC
+MULTI
+HSET sesion:S0152 usuario_id U0152 rol fan estado activa creada_en 2030-06-14T14:25:26Z ultimo_acceso 2030-06-14T14:59:25Z acciones 13
+EXPIRE sesion:S0152 1800
+EXEC
+MULTI
+HSET sesion:S0153 usuario_id U0153 rol fan estado activa creada_en 2030-06-14T17:52:17Z ultimo_acceso 2030-06-14T19:04:43Z acciones 8
+EXPIRE sesion:S0153 1800
+EXEC
+MULTI
+HSET sesion:S0154 usuario_id U0154 rol fan estado activa creada_en 2030-06-14T14:06:29Z ultimo_acceso 2030-06-14T14:49:45Z acciones 31
+EXPIRE sesion:S0154 1800
+EXEC
+MULTI
+HSET sesion:S0155 usuario_id U0155 rol fan estado activa creada_en 2030-06-14T12:06:11Z ultimo_acceso 2030-06-14T13:06:53Z acciones 48
+EXPIRE sesion:S0155 1800
+EXEC
+MULTI
+HSET sesion:S0156 usuario_id U0156 rol fan estado activa creada_en 2030-06-14T13:15:33Z ultimo_acceso 2030-06-14T14:52:22Z acciones 43
+EXPIRE sesion:S0156 1800
+EXEC
+MULTI
+HSET sesion:S0157 usuario_id U0157 rol fan estado activa creada_en 2030-06-14T17:28:45Z ultimo_acceso 2030-06-14T18:05:02Z acciones 27
+EXPIRE sesion:S0157 1800
+EXEC
+MULTI
+HSET sesion:S0158 usuario_id U0158 rol periodista estado activa creada_en 2030-06-14T14:27:16Z ultimo_acceso 2030-06-14T15:18:27Z acciones 23
+EXPIRE sesion:S0158 1800
+EXEC
+MULTI
+HSET sesion:S0159 usuario_id U0159 rol fan estado activa creada_en 2030-06-14T13:19:54Z ultimo_acceso 2030-06-14T15:11:25Z acciones 36
+EXPIRE sesion:S0159 1800
+EXEC
+MULTI
+HSET sesion:S0160 usuario_id U0160 rol fan estado activa creada_en 2030-06-14T15:39:38Z ultimo_acceso 2030-06-14T17:37:52Z acciones 53
+EXPIRE sesion:S0160 1800
+EXEC
+MULTI
+HSET sesion:S0161 usuario_id U0161 rol fan estado activa creada_en 2030-06-14T13:49:51Z ultimo_acceso 2030-06-14T15:00:23Z acciones 32
+EXPIRE sesion:S0161 1800
+EXEC
+MULTI
+HSET sesion:S0162 usuario_id U0162 rol fan estado activa creada_en 2030-06-14T17:08:15Z ultimo_acceso 2030-06-14T17:38:02Z acciones 22
+EXPIRE sesion:S0162 1800
+EXEC
+MULTI
+HSET sesion:S0163 usuario_id U0163 rol fan estado activa creada_en 2030-06-14T17:00:23Z ultimo_acceso 2030-06-14T17:24:01Z acciones 41
+EXPIRE sesion:S0163 1800
+EXEC
+MULTI
+HSET sesion:S0164 usuario_id U0164 rol fan estado activa creada_en 2030-06-14T17:10:03Z ultimo_acceso 2030-06-14T18:52:13Z acciones 46
+EXPIRE sesion:S0164 1800
+EXEC
+MULTI
+HSET sesion:S0165 usuario_id U0165 rol fan estado activa creada_en 2030-06-14T15:05:33Z ultimo_acceso 2030-06-14T15:34:41Z acciones 45
+EXPIRE sesion:S0165 1800
+EXEC
+MULTI
+HSET sesion:S0166 usuario_id U0166 rol fan estado activa creada_en 2030-06-14T17:30:03Z ultimo_acceso 2030-06-14T19:26:40Z acciones 13
+EXPIRE sesion:S0166 1800
+EXEC
+MULTI
+HSET sesion:S0167 usuario_id U0167 rol fan estado activa creada_en 2030-06-14T12:53:15Z ultimo_acceso 2030-06-14T12:55:48Z acciones 5
+EXPIRE sesion:S0167 1800
+EXEC
+MULTI
+HSET sesion:S0168 usuario_id U0168 rol fan estado activa creada_en 2030-06-14T13:08:20Z ultimo_acceso 2030-06-14T14:35:43Z acciones 28
+EXPIRE sesion:S0168 1800
+EXEC
+MULTI
+HSET sesion:S0169 usuario_id U0169 rol fan estado activa creada_en 2030-06-14T12:12:59Z ultimo_acceso 2030-06-14T13:58:55Z acciones 6
+EXPIRE sesion:S0169 1800
+EXEC
+MULTI
+HSET sesion:S0170 usuario_id U0170 rol fan estado activa creada_en 2030-06-14T13:30:24Z ultimo_acceso 2030-06-14T15:06:59Z acciones 5
+EXPIRE sesion:S0170 1800
+EXEC
+MULTI
+HSET sesion:S0171 usuario_id U0171 rol fan estado activa creada_en 2030-06-14T15:41:40Z ultimo_acceso 2030-06-14T17:24:31Z acciones 30
+EXPIRE sesion:S0171 1800
+EXEC
+MULTI
+HSET sesion:S0172 usuario_id U0172 rol fan estado activa creada_en 2030-06-14T13:43:21Z ultimo_acceso 2030-06-14T13:45:10Z acciones 45
+EXPIRE sesion:S0172 1800
+EXEC
+MULTI
+HSET sesion:S0173 usuario_id U0173 rol fan estado activa creada_en 2030-06-14T13:24:07Z ultimo_acceso 2030-06-14T13:58:52Z acciones 34
+EXPIRE sesion:S0173 1800
+EXEC
+MULTI
+HSET sesion:S0174 usuario_id U0174 rol fan estado activa creada_en 2030-06-14T16:29:09Z ultimo_acceso 2030-06-14T18:21:47Z acciones 26
+EXPIRE sesion:S0174 1800
+EXEC
+MULTI
+HSET sesion:S0175 usuario_id U0175 rol fan estado activa creada_en 2030-06-14T14:58:29Z ultimo_acceso 2030-06-14T16:33:54Z acciones 1
+EXPIRE sesion:S0175 1800
+EXEC
+MULTI
+HSET sesion:S0176 usuario_id U0176 rol fan estado activa creada_en 2030-06-14T16:33:16Z ultimo_acceso 2030-06-14T17:40:17Z acciones 47
+EXPIRE sesion:S0176 1800
+EXEC
+MULTI
+HSET sesion:S0177 usuario_id U0177 rol fan estado activa creada_en 2030-06-14T16:22:26Z ultimo_acceso 2030-06-14T17:25:46Z acciones 13
+EXPIRE sesion:S0177 1800
+EXEC
+MULTI
+HSET sesion:S0178 usuario_id U0178 rol fan estado activa creada_en 2030-06-14T13:46:50Z ultimo_acceso 2030-06-14T15:28:30Z acciones 23
+EXPIRE sesion:S0178 1800
+EXEC
+MULTI
+HSET sesion:S0179 usuario_id U0179 rol fan estado activa creada_en 2030-06-14T15:54:31Z ultimo_acceso 2030-06-14T16:44:24Z acciones 35
+EXPIRE sesion:S0179 1800
+EXEC
+MULTI
+HSET sesion:S0180 usuario_id U0180 rol fan estado activa creada_en 2030-06-14T12:46:11Z ultimo_acceso 2030-06-14T13:50:08Z acciones 48
+EXPIRE sesion:S0180 1800
+EXEC
+MULTI
+HSET sesion:S0181 usuario_id U0181 rol periodista estado activa creada_en 2030-06-14T15:27:45Z ultimo_acceso 2030-06-14T17:05:20Z acciones 50
+EXPIRE sesion:S0181 1800
+EXEC
+MULTI
+HSET sesion:S0182 usuario_id U0182 rol fan estado activa creada_en 2030-06-14T14:57:04Z ultimo_acceso 2030-06-14T16:34:34Z acciones 26
+EXPIRE sesion:S0182 1800
+EXEC
+MULTI
+HSET sesion:S0183 usuario_id U0183 rol periodista estado activa creada_en 2030-06-14T17:46:38Z ultimo_acceso 2030-06-14T18:27:52Z acciones 3
+EXPIRE sesion:S0183 1800
+EXEC
+MULTI
+HSET sesion:S0184 usuario_id U0184 rol fan estado activa creada_en 2030-06-14T16:50:49Z ultimo_acceso 2030-06-14T18:41:28Z acciones 18
+EXPIRE sesion:S0184 1800
+EXEC
+MULTI
+HSET sesion:S0185 usuario_id U0185 rol fan estado activa creada_en 2030-06-14T15:49:22Z ultimo_acceso 2030-06-14T16:10:53Z acciones 44
+EXPIRE sesion:S0185 1800
+EXEC
+MULTI
+HSET sesion:S0186 usuario_id U0186 rol fan estado activa creada_en 2030-06-14T12:16:19Z ultimo_acceso 2030-06-14T12:30:05Z acciones 53
+EXPIRE sesion:S0186 1800
+EXEC
+MULTI
+HSET sesion:S0187 usuario_id U0187 rol fan estado activa creada_en 2030-06-14T17:11:24Z ultimo_acceso 2030-06-14T17:52:52Z acciones 17
+EXPIRE sesion:S0187 1800
+EXEC
+MULTI
+HSET sesion:S0188 usuario_id U0188 rol fan estado activa creada_en 2030-06-14T17:21:01Z ultimo_acceso 2030-06-14T19:20:24Z acciones 41
+EXPIRE sesion:S0188 1800
+EXEC
+MULTI
+HSET sesion:S0189 usuario_id U0189 rol fan estado activa creada_en 2030-06-14T16:50:26Z ultimo_acceso 2030-06-14T17:33:34Z acciones 10
+EXPIRE sesion:S0189 1800
+EXEC
+MULTI
+HSET sesion:S0190 usuario_id U0190 rol fan estado activa creada_en 2030-06-14T14:49:05Z ultimo_acceso 2030-06-14T16:16:05Z acciones 37
+EXPIRE sesion:S0190 1800
+EXEC
+MULTI
+HSET sesion:S0191 usuario_id U0191 rol fan estado activa creada_en 2030-06-14T15:21:14Z ultimo_acceso 2030-06-14T16:21:42Z acciones 50
+EXPIRE sesion:S0191 1800
+EXEC
+MULTI
+HSET sesion:S0192 usuario_id U0192 rol fan estado activa creada_en 2030-06-14T16:28:51Z ultimo_acceso 2030-06-14T18:26:35Z acciones 57
+EXPIRE sesion:S0192 1800
+EXEC
+MULTI
+HSET sesion:S0193 usuario_id U0193 rol fan estado activa creada_en 2030-06-14T16:55:35Z ultimo_acceso 2030-06-14T18:24:58Z acciones 4
+EXPIRE sesion:S0193 1800
+EXEC
+MULTI
+HSET sesion:S0194 usuario_id U0194 rol fan estado activa creada_en 2030-06-14T14:21:34Z ultimo_acceso 2030-06-14T15:06:05Z acciones 42
+EXPIRE sesion:S0194 1800
+EXEC
+MULTI
+HSET sesion:S0195 usuario_id U0195 rol fan estado activa creada_en 2030-06-14T12:45:51Z ultimo_acceso 2030-06-14T14:41:38Z acciones 12
+EXPIRE sesion:S0195 1800
+EXEC
+MULTI
+HSET sesion:S0196 usuario_id U0196 rol fan estado activa creada_en 2030-06-14T17:48:59Z ultimo_acceso 2030-06-14T18:04:26Z acciones 35
+EXPIRE sesion:S0196 1800
+EXEC
+MULTI
+HSET sesion:S0197 usuario_id U0197 rol fan estado activa creada_en 2030-06-14T14:29:03Z ultimo_acceso 2030-06-14T15:41:11Z acciones 47
+EXPIRE sesion:S0197 1800
+EXEC
+MULTI
+HSET sesion:S0198 usuario_id U0198 rol fan estado activa creada_en 2030-06-14T15:09:58Z ultimo_acceso 2030-06-14T16:54:02Z acciones 10
+EXPIRE sesion:S0198 1800
+EXEC
+MULTI
+HSET sesion:S0199 usuario_id U0199 rol fan estado activa creada_en 2030-06-14T13:02:12Z ultimo_acceso 2030-06-14T14:51:25Z acciones 44
+EXPIRE sesion:S0199 1800
+EXEC
+MULTI
+HSET sesion:S0200 usuario_id U0200 rol fan estado activa creada_en 2030-06-14T17:38:07Z ultimo_acceso 2030-06-14T18:15:55Z acciones 34
+EXPIRE sesion:S0200 1800
+EXEC
+
+# --- 2. Cache de la ficha de partido (String JSON + TTL de 300 s) ---
+# Fuente de verdad: grafo de Neo4j (Hito 5, nodo Partido). Se precargan los primeros 20;
+# el resto queda sin copia en cache para poder demostrar cache miss.
+SET cache:partido:F2030-001 '{"codigo":"F2030-001","fecha":"2030-06-14","fase":"Grupos","grupo":"A","golesLocal":1,"golesVisitante":1,"sedeCodigo":"CHAC"}' EX 300
+SET cache:partido:F2030-002 '{"codigo":"F2030-002","fecha":"2030-06-15","fase":"Grupos","grupo":"A","golesLocal":1,"golesVisitante":1,"sedeCodigo":"CHAC"}' EX 300
+SET cache:partido:F2030-003 '{"codigo":"F2030-003","fecha":"2030-06-16","fase":"Grupos","grupo":"A","golesLocal":0,"golesVisitante":4,"sedeCodigo":"TANG"}' EX 300
+SET cache:partido:F2030-004 '{"codigo":"F2030-004","fecha":"2030-06-17","fase":"Grupos","grupo":"A","golesLocal":4,"golesVisitante":0,"sedeCodigo":"MONU"}' EX 300
+SET cache:partido:F2030-005 '{"codigo":"F2030-005","fecha":"2030-06-18","fase":"Grupos","grupo":"A","golesLocal":1,"golesVisitante":0,"sedeCodigo":"KEMP"}' EX 300
+SET cache:partido:F2030-006 '{"codigo":"F2030-006","fecha":"2030-06-19","fase":"Grupos","grupo":"A","golesLocal":0,"golesVisitante":0,"sedeCodigo":"DRAG"}' EX 300
+SET cache:partido:F2030-007 '{"codigo":"F2030-007","fecha":"2030-06-20","fase":"Grupos","grupo":"B","golesLocal":3,"golesVisitante":3,"sedeCodigo":"MOH5"}' EX 300
+SET cache:partido:F2030-008 '{"codigo":"F2030-008","fecha":"2030-06-21","fase":"Grupos","grupo":"B","golesLocal":3,"golesVisitante":3,"sedeCodigo":"MONU"}' EX 300
+SET cache:partido:F2030-009 '{"codigo":"F2030-009","fecha":"2030-06-22","fase":"Grupos","grupo":"B","golesLocal":0,"golesVisitante":4,"sedeCodigo":"LUZ"}' EX 300
+SET cache:partido:F2030-010 '{"codigo":"F2030-010","fecha":"2030-06-23","fase":"Grupos","grupo":"B","golesLocal":2,"golesVisitante":2,"sedeCodigo":"CHAC"}' EX 300
+SET cache:partido:F2030-011 '{"codigo":"F2030-011","fecha":"2030-06-24","fase":"Grupos","grupo":"B","golesLocal":3,"golesVisitante":3,"sedeCodigo":"CART"}' EX 300
+SET cache:partido:F2030-012 '{"codigo":"F2030-012","fecha":"2030-06-25","fase":"Grupos","grupo":"B","golesLocal":0,"golesVisitante":3,"sedeCodigo":"CAMP"}' EX 300
+SET cache:partido:F2030-013 '{"codigo":"F2030-013","fecha":"2030-06-26","fase":"Grupos","grupo":"C","golesLocal":1,"golesVisitante":2,"sedeCodigo":"TANG"}' EX 300
+SET cache:partido:F2030-014 '{"codigo":"F2030-014","fecha":"2030-06-27","fase":"Grupos","grupo":"C","golesLocal":2,"golesVisitante":3,"sedeCodigo":"BERN"}' EX 300
+SET cache:partido:F2030-015 '{"codigo":"F2030-015","fecha":"2030-06-28","fase":"Grupos","grupo":"C","golesLocal":2,"golesVisitante":4,"sedeCodigo":"CART"}' EX 300
+SET cache:partido:F2030-016 '{"codigo":"F2030-016","fecha":"2030-06-29","fase":"Grupos","grupo":"C","golesLocal":0,"golesVisitante":0,"sedeCodigo":"TANG"}' EX 300
+SET cache:partido:F2030-017 '{"codigo":"F2030-017","fecha":"2030-06-30","fase":"Grupos","grupo":"C","golesLocal":3,"golesVisitante":2,"sedeCodigo":"CART"}' EX 300
+SET cache:partido:F2030-018 '{"codigo":"F2030-018","fecha":"2030-06-13","fase":"Grupos","grupo":"C","golesLocal":3,"golesVisitante":2,"sedeCodigo":"CAMP"}' EX 300
+SET cache:partido:F2030-019 '{"codigo":"F2030-019","fecha":"2030-06-14","fase":"Grupos","grupo":"D","golesLocal":0,"golesVisitante":4,"sedeCodigo":"BERN"}' EX 300
+SET cache:partido:F2030-020 '{"codigo":"F2030-020","fecha":"2030-06-15","fase":"Grupos","grupo":"D","golesLocal":3,"golesVisitante":2,"sedeCodigo":"LUZ"}' EX 300
+
+# --- 3. Cache de la ficha de equipo (String JSON + TTL de 3600 s) ---
+# Fuente de verdad: coleccion equipos de MongoDB (Hito 4).
+SET cache:equipo:ARG '{"codigo":"ARG","nombre":"Argentina","confederacion":"CONMEBOL","rankingFIFA":1,"esAnfitrion":true,"grupo":"K"}' EX 3600
+SET cache:equipo:BRA '{"codigo":"BRA","nombre":"Brasil","confederacion":"CONMEBOL","rankingFIFA":5,"esAnfitrion":false,"grupo":"F"}' EX 3600
+SET cache:equipo:URU '{"codigo":"URU","nombre":"Uruguay","confederacion":"CONMEBOL","rankingFIFA":16,"esAnfitrion":true,"grupo":"L"}' EX 3600
+SET cache:equipo:COL '{"codigo":"COL","nombre":"Colombia","confederacion":"CONMEBOL","rankingFIFA":12,"esAnfitrion":false,"grupo":"N"}' EX 3600
+SET cache:equipo:ECU '{"codigo":"ECU","nombre":"Ecuador","confederacion":"CONMEBOL","rankingFIFA":31,"esAnfitrion":false,"grupo":"B"}' EX 3600
+SET cache:equipo:PAR '{"codigo":"PAR","nombre":"Paraguay","confederacion":"CONMEBOL","rankingFIFA":48,"esAnfitrion":true,"grupo":"A"}' EX 3600
+SET cache:equipo:CHI '{"codigo":"CHI","nombre":"Chile","confederacion":"CONMEBOL","rankingFIFA":45,"esAnfitrion":false,"grupo":"M"}' EX 3600
+SET cache:equipo:PER '{"codigo":"PER","nombre":"Peru","confederacion":"CONMEBOL","rankingFIFA":40,"esAnfitrion":false,"grupo":"I"}' EX 3600
+SET cache:equipo:VEN '{"codigo":"VEN","nombre":"Venezuela","confederacion":"CONMEBOL","rankingFIFA":50,"esAnfitrion":false,"grupo":"E"}' EX 3600
+SET cache:equipo:BOL '{"codigo":"BOL","nombre":"Bolivia","confederacion":"CONMEBOL","rankingFIFA":85,"esAnfitrion":false,"grupo":"B"}' EX 3600
+SET cache:equipo:ESP '{"codigo":"ESP","nombre":"Espana","confederacion":"UEFA","rankingFIFA":2,"esAnfitrion":true,"grupo":"E"}' EX 3600
+SET cache:equipo:FRA '{"codigo":"FRA","nombre":"Francia","confederacion":"UEFA","rankingFIFA":3,"esAnfitrion":false,"grupo":"O"}' EX 3600
+SET cache:equipo:ENG '{"codigo":"ENG","nombre":"Inglaterra","confederacion":"UEFA","rankingFIFA":4,"esAnfitrion":false,"grupo":"H"}' EX 3600
+SET cache:equipo:POR '{"codigo":"POR","nombre":"Portugal","confederacion":"UEFA","rankingFIFA":6,"esAnfitrion":true,"grupo":"L"}' EX 3600
+SET cache:equipo:NED '{"codigo":"NED","nombre":"Paises Bajos","confederacion":"UEFA","rankingFIFA":7,"esAnfitrion":false,"grupo":"G"}' EX 3600
+SET cache:equipo:BEL '{"codigo":"BEL","nombre":"Belgica","confederacion":"UEFA","rankingFIFA":8,"esAnfitrion":false,"grupo":"L"}' EX 3600
+
+# --- 4. Contador de visitas por partido (String entero, SIN TTL: conservar) ---
+# Acotado por el dominio: un contador por cada uno de los 96 partidos.
+SET partido:F2030-001:visitas 11892
+SET partido:F2030-002:visitas 24379
+SET partido:F2030-003:visitas 8683
+SET partido:F2030-004:visitas 8140
+SET partido:F2030-005:visitas 3977
+SET partido:F2030-006:visitas 58513
+SET partido:F2030-007:visitas 20939
+SET partido:F2030-008:visitas 56020
+SET partido:F2030-009:visitas 50576
+SET partido:F2030-010:visitas 30316
+SET partido:F2030-011:visitas 44251
+SET partido:F2030-012:visitas 50800
+SET partido:F2030-013:visitas 16722
+SET partido:F2030-014:visitas 21890
+SET partido:F2030-015:visitas 3430
+SET partido:F2030-016:visitas 21872
+SET partido:F2030-017:visitas 54887
+SET partido:F2030-018:visitas 14398
+SET partido:F2030-019:visitas 44338
+SET partido:F2030-020:visitas 36245
+SET partido:F2030-021:visitas 2434
+SET partido:F2030-022:visitas 43206
+SET partido:F2030-023:visitas 13920
+SET partido:F2030-024:visitas 8511
+SET partido:F2030-025:visitas 10691
+SET partido:F2030-026:visitas 6929
+SET partido:F2030-027:visitas 39248
+SET partido:F2030-028:visitas 31668
+SET partido:F2030-029:visitas 28795
+SET partido:F2030-030:visitas 4748
+SET partido:F2030-031:visitas 26261
+SET partido:F2030-032:visitas 30264
+SET partido:F2030-033:visitas 4997
+SET partido:F2030-034:visitas 23559
+SET partido:F2030-035:visitas 11639
+SET partido:F2030-036:visitas 30103
+SET partido:F2030-037:visitas 25502
+SET partido:F2030-038:visitas 40939
+SET partido:F2030-039:visitas 57330
+SET partido:F2030-040:visitas 57460
+SET partido:F2030-041:visitas 59829
+SET partido:F2030-042:visitas 48750
+SET partido:F2030-043:visitas 33747
+SET partido:F2030-044:visitas 23998
+SET partido:F2030-045:visitas 50768
+SET partido:F2030-046:visitas 50433
+SET partido:F2030-047:visitas 57964
+SET partido:F2030-048:visitas 11432
+SET partido:F2030-049:visitas 9725
+SET partido:F2030-050:visitas 19480
+SET partido:F2030-051:visitas 13999
+SET partido:F2030-052:visitas 33664
+SET partido:F2030-053:visitas 13479
+SET partido:F2030-054:visitas 23500
+SET partido:F2030-055:visitas 52688
+SET partido:F2030-056:visitas 49045
+SET partido:F2030-057:visitas 53244
+SET partido:F2030-058:visitas 23759
+SET partido:F2030-059:visitas 6368
+SET partido:F2030-060:visitas 32854
+SET partido:F2030-061:visitas 9488
+SET partido:F2030-062:visitas 45624
+SET partido:F2030-063:visitas 48166
+SET partido:F2030-064:visitas 55840
+SET partido:F2030-065:visitas 49622
+SET partido:F2030-066:visitas 7995
+SET partido:F2030-067:visitas 4677
+SET partido:F2030-068:visitas 36344
+SET partido:F2030-069:visitas 42664
+SET partido:F2030-070:visitas 38778
+SET partido:F2030-071:visitas 9122
+SET partido:F2030-072:visitas 47510
+SET partido:F2030-073:visitas 7086
+SET partido:F2030-074:visitas 3458
+SET partido:F2030-075:visitas 3047
+SET partido:F2030-076:visitas 54534
+SET partido:F2030-077:visitas 47133
+SET partido:F2030-078:visitas 41131
+SET partido:F2030-079:visitas 49590
+SET partido:F2030-080:visitas 5636
+SET partido:F2030-081:visitas 52057
+SET partido:F2030-082:visitas 23285
+SET partido:F2030-083:visitas 11253
+SET partido:F2030-084:visitas 17526
+SET partido:F2030-085:visitas 34966
+SET partido:F2030-086:visitas 23001
+SET partido:F2030-087:visitas 15045
+SET partido:F2030-088:visitas 18797
+SET partido:F2030-089:visitas 28014
+SET partido:F2030-090:visitas 55961
+SET partido:F2030-091:visitas 56411
+SET partido:F2030-092:visitas 44213
+SET partido:F2030-093:visitas 41966
+SET partido:F2030-094:visitas 19399
+SET partido:F2030-095:visitas 52940
+SET partido:F2030-096:visitas 22854
+
+# --- 5. Encuesta 'figura del partido' (Sorted Set, SIN TTL: conservar) ---
+# Candidatos: 3 jugadores de cada equipo (jugadores.csv); miembro = codigo de jugador.
+ZADD encuesta:F2030-001:figura 372 SOL-4-c3lnht 120 SOL-19-5vvn9d 98 SOL-18-gmryp1 117 MEX-13-ay0wr2 344 MEX-1-db2bt0 206 MEX-23-4pvag9
+ZADD encuesta:F2030-002:figura 386 SOL-4-c3lnht 179 SOL-19-5vvn9d 266 SOL-18-gmryp1 51 KSA-25-j3zhz8 266 KSA-27-y93mvz 140 KSA-22-dv0xq3
+ZADD encuesta:F2030-003:figura 125 SOL-4-c3lnht 90 SOL-19-5vvn9d 12 SOL-18-gmryp1 101 PAR-23-fy2n7e 246 PAR-27-tgaose 61 PAR-17-svj1h8
+ZADD encuesta:F2030-004:figura 171 MEX-13-ay0wr2 265 MEX-1-db2bt0 317 MEX-23-4pvag9 172 KSA-25-j3zhz8 19 KSA-27-y93mvz 24 KSA-22-dv0xq3
+ZADD encuesta:F2030-005:figura 128 MEX-13-ay0wr2 145 MEX-1-db2bt0 203 MEX-23-4pvag9 112 PAR-23-fy2n7e 9 PAR-27-tgaose 52 PAR-17-svj1h8
+ZADD encuesta:F2030-006:figura 288 KSA-25-j3zhz8 362 KSA-27-y93mvz 209 KSA-22-dv0xq3 101 PAR-23-fy2n7e 391 PAR-27-tgaose 161 PAR-17-svj1h8
+ZADD encuesta:F2030-007:figura 353 ECU-27-fkstw5 239 ECU-18-bua324 22 ECU-16-4lyakd 10 VIE-12-ook27v 329 VIE-6-eqqal5 342 VIE-1-aalau8
+ZADD encuesta:F2030-008:figura 244 ECU-27-fkstw5 81 ECU-18-bua324 106 ECU-16-4lyakd 364 BOL-27-70myay 160 BOL-16-at8zat 210 BOL-1-izixzs
+ZADD encuesta:F2030-009:figura 5 ECU-27-fkstw5 365 ECU-18-bua324 48 ECU-16-4lyakd 32 SUI-10-wis45y 352 SUI-15-26sz2j 252 SUI-3-n7429d
+ZADD encuesta:F2030-010:figura 340 VIE-12-ook27v 177 VIE-6-eqqal5 357 VIE-1-aalau8 24 BOL-27-70myay 298 BOL-16-at8zat 104 BOL-1-izixzs
+ZADD encuesta:F2030-011:figura 12 VIE-12-ook27v 25 VIE-6-eqqal5 13 VIE-1-aalau8 367 SUI-10-wis45y 69 SUI-15-26sz2j 27 SUI-3-n7429d
+ZADD encuesta:F2030-012:figura 318 BOL-27-70myay 21 BOL-16-at8zat 25 BOL-1-izixzs 152 SUI-10-wis45y 95 SUI-15-26sz2j 44 SUI-3-n7429d
+

@@ -1,0 +1,43 @@
+# =============================================================================
+# metricas.redis - Hito 7 (Grupo 8)
+# Metricas del servidor para juzgar la cache y la memoria (RF12, RF13, RNF10).
+# Es de SOLO LECTURA. Se ejecuta al final de la corrida y de nuevo tras la
+# prueba de presion de memoria, para comparar evicted_keys.
+# Ejecucion: sh /scripts/ejecutar_bloques.sh /scripts/metricas.redis
+#
+# Formula de la clase: tasa_de_hit = keyspace_hits / (keyspace_hits + keyspace_misses) x 100
+# Interpretacion: docs/rendimiento.md. Una tasa alta no es el unico objetivo: debe
+# leerse junto con TTL, invalidacion y politica de memoria.
+# =============================================================================
+
+# --- 1. Aciertos, fallos, vencimientos y evicciones (RF12) ---
+# keyspace_hits / keyspace_misses : busquedas de clave exitosas / fallidas
+# expired_keys                    : claves eliminadas por TTL vencido
+# evicted_keys                    : claves eliminadas por presion de memoria (maxmemory)
+> INFO stats
+  total_commands_processed:16238
+  expired_keys:1
+  evicted_keys:0
+  keyspace_hits:783
+  keyspace_misses:9
+
+# --- 2. Uso de memoria y politica (RF10) ---
+> INFO memory
+  used_memory_human:1.84M
+  used_memory_peak_human:1.90M
+  maxmemory_human:100.00M
+  maxmemory_policy:volatile-lru
+
+# --- 3. Claves totales y claves con TTL (RNF6) ---
+# expires = claves con TTL. Las claves sin TTL son SOLO las conservadas por decision
+# (contadores de visitas y encuestas); se verifica en auditoria_ttl.sh.
+> INFO keyspace
+  # Keyspace
+  db0:keys=352,expires=244,avg_ttl=1765598,subexpiry=0
+
+# --- 4. Persistencia ---
+> INFO persistence
+  rdb_changes_since_last_save:11909
+  rdb_last_bgsave_status:ok
+  aof_enabled:1
+  aof_last_write_status:ok

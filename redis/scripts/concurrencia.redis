@@ -1,0 +1,55 @@
+# =============================================================================
+# concurrencia.redis - Hito 7 (Grupo 8)
+# Operaciones concurrentes del Fixture: contador de visitas, votos de la encuesta
+# "figura del partido" con su ranking Top N, y actividad de sesion (RF8, RF9, RNF6).
+# Aqui se muestra el comportamiento de cada comando; la prueba con VARIOS clientes
+# en paralelo esta en concurrencia_paralela.sh (docs/concurrencia.md).
+#
+# Todas las claves de prueba llevan el prefijo prueba: y un TTL de 600 s.
+# Ejecucion: sh /scripts/ejecutar_bloques.sh /scripts/concurrencia.redis
+# =============================================================================
+
+# --- 1. Contador de visitas: INCR / INCRBY son atomicos (RF8) ---
+# Antipatron: GET, sumar en la aplicacion y SET. Dos clientes pueden leer el mismo
+# valor y pisar el incremento del otro (se pierde una visita).
+# Operacion nativa: el servidor lee, suma y escribe como una unidad, sin intercalarse.
+# INCR no modifica el TTL de la clave.
+SET prueba:visitas 0 EX 600
+INCR prueba:visitas
+INCRBY prueba:visitas 50
+GET prueba:visitas
+TTL prueba:visitas
+
+# --- 2. Votos de la encuesta y ranking Top N (RF8, RF9) ---
+# Sorted Set: cada voto es un ZINCRBY (atomico) sobre el candidato; el ranking se
+# recupera ya ordenado con ZREVRANGE, sin ordenar en la aplicacion.
+# ZADD inicial en 0 deja la prueba repetible.
+ZADD prueba:encuesta:figura 0 jugador-A 0 jugador-B 0 jugador-C
+EXPIRE prueba:encuesta:figura 600
+ZINCRBY prueba:encuesta:figura 1 jugador-A
+ZINCRBY prueba:encuesta:figura 1 jugador-B
+ZINCRBY prueba:encuesta:figura 1 jugador-B
+ZINCRBY prueba:encuesta:figura 3 jugador-C
+ZREVRANGE prueba:encuesta:figura 0 2 WITHSCORES
+
+# --- 3. Ranking real de la muestra: Top 3 de la encuesta del partido F2030-001 (RF9) ---
+# Solo lectura. Candidatos: jugadores de ambos equipos (jugadores.csv del Hito 5).
+ZREVRANGE encuesta:F2030-001:figura 0 2 WITHSCORES
+
+# --- 4. Actividad de sesion como unidad atomica (RF8) ---
+# Una peticion valida actualiza ultimo acceso, suma una accion y renueva el TTL.
+# MULTI/EXEC encola los tres comandos y los ejecuta consecutivamente: ningun otro
+# cliente se intercala entre ellos. Redis NO ofrece rollback general: si un comando
+# fallara en tiempo de ejecucion, los demas igual se aplican (por eso el flujo se
+# valida antes y los comandos usados no fallan sobre un Hash).
+MULTI
+HSET prueba:sesion usuario_id U9100 estado activa acciones 0
+EXPIRE prueba:sesion 600
+EXEC
+MULTI
+HSET prueba:sesion ultimo_acceso 2030-06-14T21:00:00Z
+HINCRBY prueba:sesion acciones 1
+EXPIRE prueba:sesion 1800
+EXEC
+HGET prueba:sesion acciones
+TTL prueba:sesion

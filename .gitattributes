@@ -1,0 +1,4 @@
+# Los scripts que se ejecutan dentro de contenedores Linux deben quedar siempre con fin de linea LF,
+# aunque se editen o se clonen en Windows (con CRLF fallarian al ejecutarse con sh).
+*.sh    text eol=lf
+*.redis text eol=lf

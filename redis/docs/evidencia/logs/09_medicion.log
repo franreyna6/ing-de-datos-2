@@ -1,0 +1,25 @@
+=== Ambiente de la medicion ===
+Fecha de ejecucion (UTC): 2026-10-09T22:41:22Z
+Redis (version observada): 8.10.2
+Nucleos visibles en el contenedor: 12
+Memoria total visible en el contenedor: 3846804 kB
+Kernel: Linux 6.18.33.2-microsoft-standard-WSL2
+Parametros: N=5000 comandos por operacion, SOLICITUDES=1000
+
+=== A. Tiempo de comandos por una conexion (secuencial, sin pipelining) ===
+INCR (contador de visitas)             5000 cmd     4916 ms       1017 cmd/s     983 us/cmd
+GET (cache hit, String JSON)           5000 cmd      593 ms       8431 cmd/s     118 us/cmd
+HGETALL (leer sesion completa)         5000 cmd      621 ms       8051 cmd/s     124 us/cmd
+ZINCRBY (voto en ranking)              5000 cmd     5383 ms        928 cmd/s    1076 us/cmd
+MULTI/EXEC (renovar sesion, 4 cmd)     5000 cmd     1730 ms       2890 cmd/s     346 us/cmd
+
+=== B. Tasa de hit del patron Cache-Aside (cache de partidos en frio) ===
+Copias de cache de partidos borradas antes de empezar: 21
+Solicitudes: 1000 | partidos distintos pedidos: 88 | duracion del bucle: 4726 ms
+                                 Aciertos     Fallos
+Contadores del bucle (app)            912         88
+Delta de INFO stats (servidor)        912         88
+tasa_de_hit = keyspace_hits / (keyspace_hits + keyspace_misses) x 100 = 91.2 %
+Verificacion: los contadores del servidor coinciden con los del bucle.
+Lectura: partir en frio produce un fallo por cada partido distinto (88); el resto son aciertos.
+La tasa depende de la secuencia sintetica y del TTL de 300 s (mayor que la duracion de la prueba).
