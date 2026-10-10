@@ -30,7 +30,7 @@ patrones y a operaciones concretas de lectura, escritura, actualización o venci
 | `cache:equipo:` | Copia de la ficha de un equipo | Una clave por equipo | **Temporal**, TTL 3600 s + invalidación |
 | `partido:` | Contadores de un partido (`:visitas`) | Una clave por partido | **Conservar** (acotado por el dominio) |
 | `encuesta:` | Votación de un partido (`:figura`) | Una clave por partido | **Conservar** (acotado por el dominio) |
-| `prueba:` | Claves de las pruebas de concurrencia, medición y presión | Solo pruebas | **Temporal**, TTL 600 s |
+| `prueba:` | Claves de las pruebas de concurrencia, medición y presión | Solo pruebas | **Temporal**, TTL 600 s al crearse (las sesiones de prueba renovadas pasan a 1800 s) |
 
 ## 2. Claves, estructuras y operaciones
 

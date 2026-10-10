@@ -60,9 +60,11 @@ de 6000 claves de ≈ 1 KB, todas con TTL de 600 s. Resultado de la corrida regi
 
 | Paso | Política | Escrituras aceptadas | Rechazadas (`OOM`) | `evicted_keys` | Sesiones vigentes | Claves de caché |
 | :--- | :--- | ---: | ---: | :--- | ---: | ---: |
-| Antes | `volatile-lru` | — | — | 0 | 200 | 104 |
+| Antes | `volatile-lru` | — | — | 0 | 200 | 104 (*) |
 | Lote 1 | `volatile-lru` | 6000 | 0 | 0 → 3435 | 200 → 2 | 104 → 2 |
 | Lote 2 | `noeviction` | 15 | 5985 | sin cambios (3435) | — | — |
+
+(*) 88 copias de partidos que deja `medicion.sh` (incluye los 20 precargados) más las 16 de equipos de la muestra.
 
 Respuesta de error con `noeviction`: `OOM command not allowed when used memory > 'maxmemory'`.
 

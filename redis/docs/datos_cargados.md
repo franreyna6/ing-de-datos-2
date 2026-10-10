@@ -66,6 +66,8 @@ respuestas. Los números se pueden verificar a mano (`02_carga_muestra.log`):
 | `6` | 212 | 200 `HSET` (6 campos nuevos cada uno) + 12 `ZADD` (6 candidatos cada uno) |
 | `1` | 200 | 200 `EXPIRE` aplicados dentro de `EXEC` |
 
+Cada `EXEC` devuelve un arreglo de 2 respuestas (`6` y `1`), por eso las respuestas suman más que los 944 comandos.
+
 Total: 800 comandos de sesiones + 144 de caché, contadores y encuestas = 944. "Respuestas con
 error: 0".
 

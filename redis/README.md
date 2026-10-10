@@ -30,7 +30,10 @@ El primer inicio descarga `redis:latest`. Los datos persisten en `~/docker/data/
 
 **Verificar el servidor** con las herramientas que trae el contenedor:
 ```
-docker exec -it fixture2030-redis redis-cli      # cliente interactivo
+docker exec -it fixture2030-redis redis-cli      # abre el cliente interactivo
+```
+Dentro de `redis-cli`:
+```
 PING                                             # debe responder PONG
 INFO server                                      # versión observada de redis:latest
 INFO persistence
@@ -87,6 +90,18 @@ El modo `carga` se invoca así:
 ```
 docker exec fixture2030-redis sh /scripts/ejecutar_bloques.sh /scripts/carga_muestra.redis carga
 ```
+
+### 2.2 bis Pruebas con scripts de shell
+Además de los `.redis`, hay scripts de shell que se ejecutan dentro del contenedor:
+```
+docker exec fixture2030-redis sh /scripts/concurrencia_paralela.sh   # 4 clientes simultáneos (RF8)
+docker exec fixture2030-redis sh /scripts/auditoria_ttl.sh           # TTL de todo dato temporal (RNF6)
+docker exec fixture2030-redis sh /scripts/medicion.sh                # tiempo por comando y tasa de hit (RF12)
+docker exec fixture2030-redis sh /scripts/presion_memoria.sh         # evicción contra OOM (RF10)
+docker exec fixture2030-redis sh /scripts/limpieza.sh todo           # limpieza opcional
+```
+`cache.redis` deja la copia de `F2030-001` en 2-1 para simular la corrección del acta en la fuente,
+mientras `partidos.csv` sigue con 1-1. Conviene repetir el modo `carga` antes de `medicion.sh`.
 
 ### 2.3 Regenerar la muestra (opcional)
 ```
@@ -181,6 +196,6 @@ redis/
 | Concurrencia | `docs/concurrencia.md` |
 | Memoria y escalabilidad | `docs/memoria_y_escalabilidad.md` |
 | Datos cargados | `docs/datos_cargados.md` |
-| Operaciones Redis | este README (§2.2) |
+| Operaciones Redis | este README (§2.2, §2.2 bis) y `docs/modelo_clave_valor.md` §2 |
 | Pruebas y evidencia | `docs/rendimiento.md`, `docs/evidencia/` |
 | Coherencia con el TPO | `docs/coherencia_con_el_tpo.md` |

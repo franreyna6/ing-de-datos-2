@@ -55,7 +55,7 @@ Además, tras 2000 renovaciones concurrentes con `MULTI/EXEC`, el TTL de la sesi
 - Los tres mecanismos atómicos dan **exactamente** el total esperado: no se pierde ninguna
   actualización.
 - El antipatrón pierde la mayor parte porque, entre el `GET` de un cliente y su `SET`, otros
-  clientes ya escribieron. **La cantidad perdida cambia en cada corrida** (en la corrida de validación sin Docker dio 139 y en la del grupo 141); lo que no cambia es que siempre es menor que el esperado.
+  clientes ya escribieron. **La cantidad perdida cambia en cada corrida** (en la corrida registrada dio 141); lo que no cambia es que siempre es menor que el esperado.
 - El antipatrón se corre con menos iteraciones (100 por cliente) porque cada una lanza dos
   procesos; la comparación válida es "obtenido contra esperado", no entre filas.
 

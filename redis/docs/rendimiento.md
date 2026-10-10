@@ -5,7 +5,7 @@
 Cubre los apartados *Pruebas y evidencia* (RF12, RF13) y las métricas del servidor. Regla del
 enunciado: no se declara ninguna tasa ni porcentaje de *cache hit* sin indicar método, entorno y
 resultado observado. Los números de este documento son los de la **corrida registrada** en
-`docs/evidencia/logs/`; al repetir la prueba cambian (ver §5).
+`docs/evidencia/logs/`; al repetir la prueba cambian.
 
 ## 1. Ambiente de la corrida registrada (RNF10)
 
@@ -18,8 +18,7 @@ resultado observado. Los números de este documento son los de la **corrida regi
 | Cliente | `redis-cli` 8.10.2 dentro del mismo contenedor (`docker exec`), sin red de por medio |
 
 > Al repetir la prueba, los logs de `docs/evidencia/logs/` se sobrescriben con la versión de
-> `latest` de ese día y los recursos del equipo; las cifras de este documento deben
-> actualizarse con ellos (ver §5).
+> `latest` de ese día y los recursos del equipo, y las cifras cambian.
 
 ## 2. Métodos y resultados
 
@@ -36,20 +35,19 @@ que es una **cota del tiempo por comando visto desde un cliente simple**, no la 
 | `GET` (cache hit) | P5 ficha | 5000 | 593 ms | 8431 | 118 |
 | `HGETALL` | P2 sesión | 5000 | 621 ms | 8051 | 124 |
 | `ZINCRBY` | P8 voto | 5000 | 5383 ms | 928 | 1076 |
-| `MULTI/EXEC` (4 comandos por unidad) | P3 renovación | 5000 | 1730 ms | 2890 | 346 |
+| `MULTI/EXEC` (`HINCRBY` + `EXPIRE`, 4 líneas por unidad) | P3 renovación, sin el `HSET` | 5000 | 1730 ms | 2890 | 346 |
 
 **Lectura.** En esta corrida hay una diferencia clara entre **lecturas y escrituras**:
 
 - Las lecturas (`GET`, `HGETALL`) cuestan ≈ 120 µs por comando.
 - `INCR` y `ZINCRBY` cuestan ≈ 1 ms, unas **ocho veces más**.
-- `MULTI/EXEC` queda en el medio (≈ 350 µs por comando de los 5000 enviados; la unidad de
-  renovación completa, cuatro comandos, tarda ≈ 1,4 ms).
+- `MULTI/EXEC` queda en el medio (≈ 350 µs por comando de los 5000 enviados; cada unidad `MULTI`,
+  `HINCRBY`, `EXPIRE`, `EXEC` tarda ≈ 1,4 ms; la renovación real agrega un `HSET`).
 
 No se investigó la causa. Una explicación plausible es que las escrituras pasan por la
 persistencia AOF sobre un volumen de Docker Desktop en Windows, pero **no se verificó**; podría
 comprobarse repitiendo la medición con `appendonly no`. Lo que sí se puede afirmar es que el
-costo observado depende de la operación y del ambiente: en la corrida de validación sin Docker
-las cinco operaciones dieron ≈ 70 µs, y en Docker Desktop no. Eso refuerza que **estas cifras no
+costo observado depende de la operación y del ambiente. Eso refuerza que **estas cifras no
 se extrapolan** a otro equipo ni a los 100.000 solicitudes por segundo de la especificación (ver
 `coherencia_con_el_tpo.md`).
 
@@ -146,11 +144,3 @@ docker exec -e N=20000 -e SOLICITUDES=5000 fixture2030-redis sh /scripts/medicio
 docker exec fixture2030-redis sh /scripts/concurrencia_paralela.sh
 docker exec fixture2030-redis sh /scripts/presion_memoria.sh
 ```
-
-## 5. Qué actualizar tras una corrida propia
-
-Los logs de `docs/evidencia/logs/` se regeneran solos. Después de correr en Docker, actualizar
-en este documento los valores de las tablas de §2 y el ambiente de §1 con lo que digan
-`00_ambiente.log`, `09_medicion.log`, `10_presion_memoria.log` y `08/11_metricas*.log`, y registrar
-la fecha y la versión de Redis en `docs/evidencia/README.md`. Es necesario porque `redis:latest`
-puede comportarse distinto en otra fecha.

@@ -17,6 +17,12 @@ conservación. La evidencia está en `docs/evidencia/logs/` (se cita en cada sec
 | ¿Qué se hace al renovar? | Una unidad `MULTI/EXEC`: `HSET ultimo_acceso`, `HINCRBY acciones 1` y `EXPIRE 1800`. |
 | ¿Cuánto dura? | **1800 s (30 minutos) de inactividad**, contados desde la última renovación. |
 | ¿Hay una vida máxima absoluta? | No en el laboratorio. Una sesión activa se renueva indefinidamente. Si se pidiera un tope, se compararía `creada_en` en la aplicación; es una decisión pendiente, no implementada. |
+
+**Riesgo residual de la renovación.** "Validar" y "renovar" son dos pasos. Si entre ambos ocurre un
+`DEL` (cierre) o el vencimiento, el `MULTI/EXEC` de renovación recrea un Hash **parcial** (sin
+`usuario_id` ni `estado`) con TTL de 1800 s. No se considera sesión válida, porque la regla de validez
+exige `estado = activa`: la aplicación lo trata como inexistente y vence solo. Queda documentado como
+limitación del laboratorio; no se resuelve con código adicional.
 | ¿Cómo se elimina una sesión vencida? | Por el **mecanismo nativo de expiración de Redis**. No existe ningún proceso que recorra las sesiones (el enunciado lo prohíbe). |
 
 ### 1.2 Por qué 1800 s
@@ -55,8 +61,8 @@ sesión** (bloque 4), por eso la renovación es una operación explícita y sepa
 | :--- | :--- | :--- |
 | La sesión venció o se cerró | `TTL` = -2, `HGETALL` vacío | Tratar la petición como **no autenticada** y pedir un nuevo inicio de sesión. **No se reconstruye** la sesión desde otra fuente: una sesión es estado temporal |
 | La sesión fue **evictada** por presión de memoria | Igual que una sesión vencida | Igual: reautenticar (ver `memoria_y_escalabilidad.md`) |
-| La sesión está suspendida | Existe, con `estado` ≠ `activa` | Negar el acceso, informar la causa y no renovar |
-| Redis no está disponible | Error de conexión (se muestra en `04_cache.log`, bloque 7) | No se pueden validar sesiones: las operaciones protegidas se niegan y se pide reintentar. Es la consecuencia de la postura AP del Hito 3: se prioriza continuar sobre garantizar sesiones |
+| La sesión está suspendida | Existe, con `estado` ≠ `activa` | Negar el acceso, informar la causa y no renovar. Es una marca de **corto plazo**: como no se renueva, la sesión vence en ≤ 30 min y la distinción con "vencida" desaparece. La suspensión duradera pertenece a la fuente de verdad del usuario (MongoDB, Hito 4) |
+| Redis no está disponible | Error de conexión (se muestra en `04_cache.log`, bloque 7) | No se pueden validar sesiones: las operaciones protegidas se niegan y se pide reintentar, y el contenido público (partidos, equipos) se sirve desde su fuente de verdad. Es el modo degradado: se prioriza que el contenido público siga disponible, pero **no** se aceptan sesiones sin poder validarlas |
 
 ### 1.5 Qué pasa con las sesiones si se reinicia el nodo
 
@@ -144,7 +150,7 @@ Dos consecuencias que se asumen:
 | `cache:equipo:<c>` | TTL 3600 s | No | `DEL` al cambiar la fuente | No |
 | `partido:<c>:visitas` | Sin TTL | — | — | **Sí** (acotado) |
 | `encuesta:<c>:figura` | Sin TTL | — | — | **Sí** (acotado) |
-| `prueba:*` | TTL 600 s | No | `limpieza.sh` | No |
+| `prueba:*` | TTL 600 s al crearse (las sesiones de prueba renovadas pasan a 1800 s) | No | `limpieza.sh` | No |
 
 `07_auditoria_ttl.log` verifica esta tabla con `SCAN`: 0 claves temporales sin TTL y 0 claves
 conservadas con TTL.
