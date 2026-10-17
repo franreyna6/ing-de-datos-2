@@ -6,6 +6,6 @@ Repositorio de los hitos de implementación, un módulo por tecnología.
 | :--- | :--- | :--- | :--- |
 | 6 | Comentarios masivos | Apache Cassandra | [`cassandra/`](cassandra/) |
 | 7 | Caché de usuarios y sesiones | Redis | [`redis/`](redis/) |
-| 8 | Series temporales de estadísticas | InfluxDB | _pendiente_ |
+| 8 | Series temporales de estadísticas | InfluxDB | [`influxdb/`](influxdb/) |
 
 Cada carpeta tiene su propio `README.md` con la guía de ejecución.
