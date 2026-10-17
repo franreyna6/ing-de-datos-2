@@ -1,0 +1,14 @@
+# Hito 8 - InfluxDB: nada de esto debe versionarse (RNF7, restriccion de repositorio)
+
+# Token de administracion local de InfluxDB 3 Core (se crea con inicializacion.py)
+.influxdb3-token
+*.token
+.env
+.env.*
+
+# Datos generados (se reproducen con scripts/generacion_puntos.py y la semilla)
+data/generado/
+
+# Cache de Python
+__pycache__/
+*.pyc

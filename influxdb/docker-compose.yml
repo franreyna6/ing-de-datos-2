@@ -1,0 +1,39 @@
+# Hito 8 - Series temporales del Fixture 2030 - InfluxDB 3 Core (un solo nodo)
+#
+# Imagen (RNF1): se usa la imagen OFICIAL de InfluxDB en su linea 3 Core,
+# "influxdb:3-core", con pull_policy: always para traer siempre la ultima
+# version publicada de esa linea (criterio de actualizacion de la materia).
+# El tag "influxdb:latest" se evaluo y NO se uso: segun la Clase 9 y la pagina
+# oficial de la imagen en Docker Hub, "latest" sigue apuntando a InfluxDB 2.x,
+# que no incluye el binario "influxdb3" ni usa tokens/SQL de la linea 3 Core.
+# La version efectivamente usada se registra en cada corrida (README, seccion
+# "Verificacion de la imagen").
+#
+# Persistencia (RNF2): los datos viven en ~/docker/data/influxdb del equipo.
+# El servicio solo escucha en 127.0.0.1 (acceso local; ver docs de seguridad).
+services:
+  influxdb:
+    image: influxdb:3-core
+    pull_policy: always
+    container_name: fixture2030-influxdb
+    restart: unless-stopped
+    command:
+      - influxdb3
+      - serve
+      - --node-id=fixture2030-local
+      - --object-store=file
+      - --data-dir=/var/lib/influxdb3/data
+      - --http-bind=0.0.0.0:8181
+    ports:
+      - "127.0.0.1:8181:8181"
+    environment:
+      # Maximo de archivos Parquet que puede leer UNA consulta (default de Core:
+      # 432; si se supera, el servidor devuelve error). Con bloques de 10 min
+      # por tabla, el perfil "completo" (96 partidos) lo puede superar en las
+      # consultas de todo el torneo. Para subirlo, antes de levantar el ambiente:
+      #   PowerShell: $env:INFLUXDB3_QUERY_FILE_LIMIT = "5000"
+      #   bash:       export INFLUXDB3_QUERY_FILE_LIMIT=5000
+      - INFLUXDB3_QUERY_FILE_LIMIT=${INFLUXDB3_QUERY_FILE_LIMIT:-432}
+    volumes:
+      - ${HOME}/docker/data/influxdb:/var/lib/influxdb3/data
+      - ./scripts:/scripts:ro
