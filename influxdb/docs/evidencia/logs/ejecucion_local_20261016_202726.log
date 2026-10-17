@@ -1,0 +1,453 @@
+﻿Hito 8 - ejecucion 20261016_202726 | perfil: local
+Fecha local: 2026-10-16 20:27:26 -03:00
+Equipo: 13th Gen Intel(R) Core(TM) i5-1335U | nucleos logicos: 12 | RAM: 7.7 GB
+Python: Python 3.13.13 | Docker: Docker version 29.7.2, build a7dcaa6
+
+######## 1. Inicializacion (compose, token local, bases) ########
+[1] Persistencia local: C:\Users\Francisco\docker\data\influxdb
+[2] docker compose up -d (imagen influxdb:3-core, pull always)
+NAME                   IMAGE             COMMAND                  SERVICE    CREATED         STATUS         PORTS
+fixture2030-influxdb   influxdb:3-core   "/usr/bin/entrypoint…"   influxdb   6 minutes ago   Up 6 minutes   127.0.0.1:8181->8181/tcp
+[3] Esperando al servidor en el puerto 8181 ...
+    version del servidor : influxdb3 InfluxDB 3 Core, 3.12.1, revision 692ea4a9943fc343c5fdf830d7dff82eef1f7fca
+    imagen               : influxdb:3-core id=sha256:47d815e88248b61498182b9ecc618342a80cda3d8c181a672208347cb3d29e38
+    recursos de Docker   : CPUs=12 memoria_bytes=3939123200 SO=Docker Desktop
+[4] Token de administracion local (autorizacion_local.py)
+    se reutiliza .influxdb3-token (excluido de Git)
+[5] Bases de datos (la retencion se fija al crearlas y no se modifica)
+    fixture2030_vivo   retencion=30d  ya existia
+    fixture2030_hist   retencion=sin limite ya existia
+    fixture2030_lab    retencion=sin limite ya existia
+[6] influxdb3 show databases
+    +------------------+
+    | iox::database    |
+    +------------------+
+    | _internal        |
+    | fixture2030_hist |
+    | fixture2030_lab  |
+    | fixture2030_vivo |
+    +------------------+
+Ambiente listo.
+
+######## 2. Generacion de puntos (local) ########
+  generado 4/12 partidos (1 s)
+  generado 8/12 partidos (1 s)
+  generado 12/12 partidos (2 s)
+Perfil: local | partidos: 12 | captura: 6000 s | semilla: 2030
+tabla                        puntos   series
+estadisticas_equipo          144000       24
+actividad_usuarios           432000       72
+metricas_plataforma          432000       72
+estadisticas_jugador         316800      264
+TOTAL                       1324800
+Generacion: 1.9 s (690096 puntos/s generados)
+Salida: C:\Users\Francisco\Downloads\fixture2030_hito6\fixture2030\influxdb\data\generado\local
+
+######## 3. Carga por lotes ########
+Carga -> base: fixture2030_vivo | precision: second | lote: 5000 | concurrencia: 4 | desorden: no
+  ... estadisticas_equipo.lp: 120000 lineas enviadas (5 s)
+  estadisticas_equipo    enviadas=   144000  ok=   144000  lotes=   29  fallidos=0  reintentos=0  8.0 s  (18083 puntos/s)
+  ... actividad_usuarios.lp: 120000 lineas enviadas (5 s)
+  ... actividad_usuarios.lp: 220000 lineas enviadas (10 s)
+  ... actividad_usuarios.lp: 320000 lineas enviadas (15 s)
+  ... actividad_usuarios.lp: 432000 lineas enviadas (20 s)
+  actividad_usuarios     enviadas=   432000  ok=   432000  lotes=   87  fallidos=0  reintentos=0  22.0 s  (19633 puntos/s)
+  ... metricas_plataforma.lp: 120000 lineas enviadas (5 s)
+  ... metricas_plataforma.lp: 240000 lineas enviadas (11 s)
+  ... metricas_plataforma.lp: 340000 lineas enviadas (16 s)
+  metricas_plataforma    enviadas=   432000  ok=   432000  lotes=   87  fallidos=0  reintentos=0  22.0 s  (19650 puntos/s)
+  ... estadisticas_jugador.lp: 120000 lineas enviadas (5 s)
+  ... estadisticas_jugador.lp: 220000 lineas enviadas (10 s)
+  ... estadisticas_jugador.lp: 316800 lineas enviadas (15 s)
+  estadisticas_jugador   enviadas=   316800  ok=   316800  lotes=   64  fallidos=0  reintentos=0  16.0 s  (19799 puntos/s)
+TOTAL: enviadas=1324800 ok=1324800 lotes=267 fallidos=0 reintentos=0 en 68.0 s -> 19490 puntos/s (cliente Python, 4 hilos, lote 5000)
+
+######## 3b. Medicion de tamano de lote y concurrencia ########
+== Medicion de tamano de lote y concurrencia ==
+Archivo: actividad_usuarios.lp | primeras 100000 lineas | base: fixture2030_lab (descartable)
+tamano_lote  concurrencia    lineas_ok   segundos     puntos/s reintentos
+500          1                  100000     199.68          501          0
+500          4                  100000      49.99         2000          0
+5000         1                  100000      20.00         4999          0
+5000         4                  100000       5.04        19836          0
+20000        1                  100000       4.99        20043          0
+20000        4                  100000       1.99        50357          0
+
+######## 4. Consultas temporales ########
+==============================================================================
+C1 | Ventana corta de un equipo, ordenada por tiempo
+  patron: PA1 (pantalla de partido: evolucion de estadisticas de un equipo)
+  lectura: 10 puntos consecutivos (1 por segundo) con las 4 medidas del equipo.
+  SQL:
+    SELECT time, equipo_id, posesion_pct, pases_acum, tiros_acum, recuperaciones_acum
+    FROM estadisticas_equipo
+    WHERE partido_id = 'F2030-018' AND equipo_id = 'TUN'
+      AND time >= '2030-06-13T09:00:00Z' AND time < '2030-06-13T09:00:10Z'
+    ORDER BY time
+  RESULTADO (10 filas, 64 ms, 1 ejecucion, incluye red local):
+    time                | equipo_id | posesion_pct | pases_acum | tiros_acum | recuperaciones_acum
+    --------------------+-----------+--------------+------------+------------+--------------------
+    2030-06-13T09:00:00 | TUN       | 48.90        | 407        | 8          | 98                 
+    2030-06-13T09:00:01 | TUN       | 49.10        | 408        | 8          | 98                 
+    2030-06-13T09:00:02 | TUN       | 49.30        | 408        | 8          | 98                 
+    2030-06-13T09:00:03 | TUN       | 49.10        | 408        | 8          | 98                 
+    2030-06-13T09:00:04 | TUN       | 48.90        | 408        | 8          | 98                 
+    2030-06-13T09:00:05 | TUN       | 48.80        | 408        | 8          | 98                 
+    2030-06-13T09:00:06 | TUN       | 48.80        | 408        | 8          | 98                 
+    2030-06-13T09:00:07 | TUN       | 48.70        | 408        | 8          | 98                 
+    2030-06-13T09:00:08 | TUN       | 48.60        | 408        | 8          | 98                 
+    2030-06-13T09:00:09 | TUN       | 48.30        | 408        | 8          | 98                 
+==============================================================================
+C2 | Cantidad de puntos de la ventana de los minutos 60 a 75
+  patron: PA1 (verifica densidad: 15 min x 60 s = 900 puntos por equipo)
+  lectura: debe haber 900 puntos por equipo si no hubo huecos de captura.
+  SQL:
+    SELECT equipo_id, COUNT(*) AS puntos_en_ventana
+    FROM estadisticas_equipo
+    WHERE partido_id = 'F2030-018'
+      AND time >= '2030-06-13T09:00:00Z' AND time < '2030-06-13T09:15:00Z'
+    GROUP BY equipo_id
+    ORDER BY equipo_id
+  RESULTADO (2 filas, 17 ms, 1 ejecucion, incluye red local):
+    equipo_id | puntos_en_ventana
+    ----------+------------------
+    ALG       | 900              
+    TUN       | 900              
+==============================================================================
+C3 | Filtro por sede y grupo (dimensiones de contexto)
+  patron: PA3 (comparacion de partidos de una sede o grupo durante una jornada)
+  lectura: valores finales de los contadores por equipo, solo partidos de la sede CAMP y el grupo C de esa jornada.
+  SQL:
+    SELECT partido_id, equipo_id,
+           MAX(tiros_acum) AS tiros_finales,
+           MAX(pases_acum) AS pases_finales,
+           MAX(recuperaciones_acum) AS recuperaciones_finales
+    FROM estadisticas_equipo
+    WHERE sede = 'CAMP' AND grupo = 'C'
+      AND time >= '2030-06-13T00:00:00Z' AND time < '2030-06-14T00:00:00Z'
+    GROUP BY partido_id, equipo_id
+    ORDER BY partido_id, equipo_id
+  RESULTADO (2 filas, 29 ms, 1 ejecucion, incluye red local):
+    partido_id | equipo_id | tiros_finales | pases_finales | recuperaciones_finales
+    -----------+-----------+---------------+---------------+-----------------------
+    F2030-018  | ALG       | 14            | 597           | 138                   
+    F2030-018  | TUN       | 11            | 682           | 164                   
+==============================================================================
+C4 | Comparacion entre dos equipos del mismo partido, minuto a minuto
+  patron: PA1 / PA3 (comparar dimensiones: equipo_id local vs visitante)
+  lectura: la posesion promedio por minuto de ambos equipos suma ~100.
+  SQL:
+    SELECT date_trunc('minute', time) AS minuto, equipo_id,
+           AVG(posesion_pct) AS posesion_promedio
+    FROM estadisticas_equipo
+    WHERE partido_id = 'F2030-018'
+      AND time >= '2030-06-13T09:00:00Z' AND time < '2030-06-13T09:05:00Z'
+    GROUP BY date_trunc('minute', time), equipo_id
+    ORDER BY minuto, equipo_id
+  RESULTADO (10 filas, 11 ms, 1 ejecucion, incluye red local):
+    minuto              | equipo_id | posesion_promedio
+    --------------------+-----------+------------------
+    2030-06-13T09:00:00 | ALG       | 51.52            
+    2030-06-13T09:00:00 | TUN       | 48.48            
+    2030-06-13T09:01:00 | ALG       | 50.43            
+    2030-06-13T09:01:00 | TUN       | 49.57            
+    2030-06-13T09:02:00 | ALG       | 48.84            
+    2030-06-13T09:02:00 | TUN       | 51.16            
+    2030-06-13T09:03:00 | ALG       | 48.69            
+    2030-06-13T09:03:00 | TUN       | 51.31            
+    2030-06-13T09:04:00 | ALG       | 48.00            
+    2030-06-13T09:04:00 | TUN       | 52.00            
+==============================================================================
+C5 | Comparacion entre regiones: pico, promedio e interacciones
+  patron: PA2 (actividad de usuarios por region durante un partido)
+  lectura: pico = capacidad maxima observada; promedio = carga sostenida; interacciones = suma de eventos por segundo (medida de conteo).
+  SQL:
+    SELECT region,
+           MAX(usuarios_conectados) AS pico_usuarios,
+           AVG(usuarios_conectados) AS promedio_usuarios,
+           SUM(interacciones) AS interacciones_totales
+    FROM actividad_usuarios
+    WHERE partido_id = 'F2030-018'
+      AND time >= '2030-06-13T08:00:00Z' AND time < '2030-06-13T09:40:00Z'
+    GROUP BY region
+    ORDER BY pico_usuarios DESC
+  RESULTADO (6 filas, 27 ms, 1 ejecucion, incluye red local):
+    region       | pico_usuarios | promedio_usuarios | interacciones_totales
+    -------------+---------------+-------------------+----------------------
+    LATAM        | 14556         | 9442.58           | 283315               
+    EUROPA       | 13766         | 8815.12           | 265375               
+    NORTEAMERICA | 6833          | 4406.97           | 130244               
+    ASIA         | 5817          | 3777.59           | 111495               
+    AFRICA       | 5816          | 3777.04           | 112111               
+    OCEANIA      | 1953          | 1258.67           | 35080                
+==============================================================================
+C6 | Comparacion entre servicios de la plataforma durante el partido
+  patron: PA4 (salud operativa de la plataforma en la ventana del partido)
+  lectura: latencia promedio y maxima, volumen de solicitudes y errores.
+  SQL:
+    SELECT servicio,
+           AVG(latencia_ms) AS latencia_promedio_ms,
+           MAX(latencia_ms) AS latencia_maxima_ms,
+           SUM(solicitudes) AS solicitudes_totales,
+           SUM(errores) AS errores_totales
+    FROM metricas_plataforma
+    WHERE partido_id = 'F2030-018'
+      AND time >= '2030-06-13T08:00:00Z' AND time < '2030-06-13T09:40:00Z'
+    GROUP BY servicio
+    ORDER BY latencia_promedio_ms DESC
+  RESULTADO (6 filas, 28 ms, 1 ejecucion, incluye red local):
+    servicio       | latencia_promedio_ms | latencia_maxima_ms | solicitudes_totales | errores_totales
+    ---------------+----------------------+--------------------+---------------------+----------------
+    streaming      | 222.69               | 293.06             | 2837817             | 19             
+    notificaciones | 148.34               | 195.79             | 1897828             | 19             
+    comentarios    | 111.24               | 148.87             | 4745489             | 19             
+    api_fixture    | 83.43                | 109.68             | 7613612             | 11             
+    estadisticas   | 64.90                | 85.49              | 6630636             | 8              
+    cache          | 5.56                 | 7.36               | 23700191            | 15             
+==============================================================================
+C7 | Los 5 jugadores que mas distancia recorrieron en el partido
+  patron: PA5 (rendimiento fisico de titulares durante un partido)
+  lectura: distancia_final = maximo del contador acumulado; velocidad maxima es el maximo de las muestras (cada 5 s).
+  SQL:
+    SELECT jugador_id, equipo_id,
+           MAX(velocidad_kmh) AS velocidad_maxima_kmh,
+           MAX(distancia_acum_m) AS distancia_final_m
+    FROM estadisticas_jugador
+    WHERE partido_id = 'F2030-018'
+      AND time >= '2030-06-13T08:00:00Z' AND time < '2030-06-13T09:40:00Z'
+    GROUP BY jugador_id, equipo_id
+    ORDER BY distancia_final_m DESC
+    LIMIT 5
+  RESULTADO (5 filas, 32 ms, 1 ejecucion, incluye red local):
+    jugador_id    | equipo_id | velocidad_maxima_kmh | distancia_final_m
+    --------------+-----------+----------------------+------------------
+    TUN-10-a9wa6h | TUN       | 16.30                | 11503.70         
+    ALG-17-ega6um | ALG       | 16.70                | 11416.70         
+    TUN-4-fcs5vh  | TUN       | 16.00                | 11374.90         
+    ALG-4-2nx55p  | ALG       | 18.20                | 11326.20         
+    ALG-11-v26q65 | ALG       | 17.30                | 11286.40         
+
+######## 5. Agregaciones y resumen de 1 minuto ########
+==============================================================================
+A1 | Posesion promedio por equipo en ventanas de 5 minutos
+  patron: PA1 (tendencia de un partido para el dashboard)
+  semantica: posesion_pct es una muestra instantanea -> AVG por ventana. (date_bin agrupa en ventanas de ancho fijo; ver nota en README)
+  SQL:
+    SELECT date_bin(INTERVAL '5 minutes', time) AS ventana, equipo_id,
+           AVG(posesion_pct) AS posesion_promedio
+    FROM estadisticas_equipo
+    WHERE partido_id = 'F2030-018'
+      AND time >= '2030-06-13T08:00:00Z' AND time < '2030-06-13T09:40:00Z'
+    GROUP BY date_bin(INTERVAL '5 minutes', time), equipo_id
+    ORDER BY ventana, equipo_id
+  RESULTADO (40 filas, 63 ms, 1 ejecucion, incluye red local):
+    ventana             | equipo_id | posesion_promedio
+    --------------------+-----------+------------------
+    2030-06-13T08:00:00 | ALG       | 50.10            
+    2030-06-13T08:00:00 | TUN       | 49.90            
+    2030-06-13T08:05:00 | ALG       | 48.12            
+    2030-06-13T08:05:00 | TUN       | 51.88            
+    2030-06-13T08:10:00 | ALG       | 51.05            
+    2030-06-13T08:10:00 | TUN       | 48.95            
+    2030-06-13T08:15:00 | ALG       | 51.52            
+    2030-06-13T08:15:00 | TUN       | 48.48            
+    2030-06-13T08:20:00 | ALG       | 49.63            
+    2030-06-13T08:20:00 | TUN       | 50.37            
+    2030-06-13T08:25:00 | ALG       | 52.34            
+    2030-06-13T08:25:00 | TUN       | 47.66            
+    2030-06-13T08:30:00 | ALG       | 53.56            
+    2030-06-13T08:30:00 | TUN       | 46.44            
+    2030-06-13T08:35:00 | ALG       | 50.58            
+    ... (40 filas en total, se muestran 15)
+==============================================================================
+A2 | Contador acumulado: forma correcta (MAX) frente a la incorrecta (SUM)
+  patron: PA1 (totales de tiros del partido)
+  semantica: tiros_acum ya es un total acumulado; sumar cada lectura repite el mismo tiro cientos de veces. El valor final es el MAX.
+  SQL:
+    SELECT equipo_id,
+           MAX(tiros_acum) AS tiros_finales_correcto,
+           SUM(tiros_acum) AS suma_de_acumulados_INCORRECTA
+    FROM estadisticas_equipo
+    WHERE partido_id = 'F2030-018'
+      AND time >= '2030-06-13T08:00:00Z' AND time < '2030-06-13T09:40:00Z'
+    GROUP BY equipo_id
+    ORDER BY equipo_id
+  RESULTADO (2 filas, 31 ms, 1 ejecucion, incluye red local):
+    equipo_id | tiros_finales_correcto | suma_de_acumulados_incorrecta
+    ----------+------------------------+------------------------------
+    ALG       | 14                     | 48795                        
+    TUN       | 11                     | 37391                        
+==============================================================================
+A3 | Tiros acumulados al cierre de cada tramo de 15 minutos
+  patron: PA1 (evolucion por tramos del partido)
+  semantica: contador -> MAX dentro de la ventana = valor al cierre del tramo. Los tiros del tramo se obtienen restando el tramo anterior.
+  SQL:
+    SELECT date_bin(INTERVAL '15 minutes', time) AS tramo, equipo_id,
+           MAX(tiros_acum) AS tiros_acumulados_al_cierre
+    FROM estadisticas_equipo
+    WHERE partido_id = 'F2030-018'
+      AND time >= '2030-06-13T08:00:00Z' AND time < '2030-06-13T09:40:00Z'
+    GROUP BY date_bin(INTERVAL '15 minutes', time), equipo_id
+    ORDER BY tramo, equipo_id
+  RESULTADO (14 filas, 33 ms, 1 ejecucion, incluye red local):
+    tramo               | equipo_id | tiros_acumulados_al_cierre
+    --------------------+-----------+---------------------------
+    2030-06-13T08:00:00 | ALG       | 3                         
+    2030-06-13T08:00:00 | TUN       | 3                         
+    2030-06-13T08:15:00 | ALG       | 5                         
+    2030-06-13T08:15:00 | TUN       | 3                         
+    2030-06-13T08:30:00 | ALG       | 8                         
+    2030-06-13T08:30:00 | TUN       | 6                         
+    2030-06-13T08:45:00 | ALG       | 10                        
+    2030-06-13T08:45:00 | TUN       | 8                         
+    2030-06-13T09:00:00 | ALG       | 13                        
+    2030-06-13T09:00:00 | TUN       | 9                         
+    2030-06-13T09:15:00 | ALG       | 13                        
+    2030-06-13T09:15:00 | TUN       | 11                        
+    2030-06-13T09:30:00 | ALG       | 14                        
+    2030-06-13T09:30:00 | TUN       | 11                        
+==============================================================================
+A4 | Pico de usuarios simultaneos totales (suma de regiones por segundo)
+  patron: PA2 (capacidad maxima requerida durante un partido)
+  semantica: se suma entre regiones en el MISMO instante (GROUP BY time) y se toma el maximo: el pico es un extremo, no un promedio.
+  SQL:
+    SELECT time, SUM(usuarios_conectados) AS usuarios_totales
+    FROM actividad_usuarios
+    WHERE partido_id = 'F2030-018'
+      AND time >= '2030-06-13T08:00:00Z' AND time < '2030-06-13T09:40:00Z'
+    GROUP BY time
+    ORDER BY usuarios_totales DESC
+    LIMIT 3
+  RESULTADO (3 filas, 18 ms, 1 ejecucion, incluye red local):
+    time                | usuarios_totales
+    --------------------+-----------------
+    2030-06-13T08:44:45 | 48422           
+    2030-06-13T09:09:28 | 48317           
+    2030-06-13T08:36:55 | 48259           
+==============================================================================
+A5 | Minutos con mayor actividad de interaccion del partido
+  patron: PA2 (momentos de interes; comparar con los minutos de gol del grafo)
+  semantica: interacciones es un conteo por segundo -> SUM por minuto.
+  SQL:
+    SELECT date_trunc('minute', time) AS minuto, SUM(interacciones) AS interacciones
+    FROM actividad_usuarios
+    WHERE partido_id = 'F2030-018'
+      AND time >= '2030-06-13T08:00:00Z' AND time < '2030-06-13T09:40:00Z'
+    GROUP BY date_trunc('minute', time)
+    ORDER BY interacciones DESC
+    LIMIT 5
+  RESULTADO (5 filas, 20 ms, 1 ejecucion, incluye red local):
+    minuto              | interacciones
+    --------------------+--------------
+    2030-06-13T08:21:00 | 38512        
+    2030-06-13T08:37:00 | 36600        
+    2030-06-13T09:29:00 | 33824        
+    2030-06-13T09:09:00 | 30739        
+    2030-06-13T08:45:00 | 29017        
+==============================================================================
+A6 | Errores por millon de solicitudes, por servicio
+  patron: PA4 (salud operativa)
+  semantica: errores y solicitudes son conteos por segundo -> se suman por separado y luego se dividen; promediar tasas por segundo distorsionaria el total. Se expresa por millon porque la tasa es muy baja.
+  SQL:
+    SELECT servicio,
+           SUM(errores) AS errores_totales,
+           SUM(solicitudes) AS solicitudes_totales,
+           1000000.0 * CAST(SUM(errores) AS DOUBLE) / SUM(solicitudes) AS errores_por_millon
+    FROM metricas_plataforma
+    WHERE partido_id = 'F2030-018'
+      AND time >= '2030-06-13T08:00:00Z' AND time < '2030-06-13T09:40:00Z'
+    GROUP BY servicio
+    ORDER BY errores_por_millon DESC
+  RESULTADO (6 filas, 26 ms, 1 ejecucion, incluye red local):
+    servicio       | errores_totales | solicitudes_totales | errores_por_millon
+    ---------------+-----------------+---------------------+-------------------
+    notificaciones | 19              | 1897828             | 10.01             
+    streaming      | 19              | 2837817             | 6.70              
+    comentarios    | 19              | 4745489             | 4.00              
+    api_fixture    | 11              | 7613612             | 1.44              
+    estadisticas   | 8               | 6630636             | 1.21              
+    cache          | 15              | 23700191            | 0.63              
+==============================================================================
+A7 | Partidos del torneo cargados con mas tiros totales (torneo)
+  patron: PA3 (comparacion entre partidos del torneo)
+  semantica: MAX por (partido, equipo) = tiros finales; luego SUM de los dos equipos. Rango acotado al periodo del torneo (13 al 30/06/2030).
+  SQL:
+    SELECT partido_id, SUM(tiros_finales) AS tiros_totales
+    FROM (
+      SELECT partido_id, equipo_id, MAX(tiros_acum) AS tiros_finales
+      FROM estadisticas_equipo
+      WHERE time >= '2030-06-01T00:00:00Z' AND time < '2030-07-15T00:00:00Z'
+      GROUP BY partido_id, equipo_id
+    ) AS por_equipo
+    GROUP BY partido_id
+    ORDER BY tiros_totales DESC
+    LIMIT 5
+  RESULTADO (5 filas, 82 ms, 1 ejecucion, incluye red local):
+    partido_id | tiros_totales
+    -----------+--------------
+    F2030-092  | 30           
+    F2030-065  | 30           
+    F2030-022  | 28           
+    F2030-044  | 27           
+    F2030-010  | 25           
+==============================================================================
+R1 | Resumen de 1 minuto: estadisticas_equipo -> estadisticas_equipo_1m
+  origen: fixture2030_vivo | destino: fixture2030_hist
+  ventanas de 1 minuto calculadas: 2400
+  puntos escritos en fixture2030_hist: 2400 (precision: segundos)
+  comprobacion: ventanas en hist=2400 | puntos originales resumidos=144000 | puntos originales en vivo=144000
+  RESULTADO: OK, el resumen cubre todos los puntos originales
+  ejemplo (partido de referencia, minutos 60 a 63):
+    time                | equipo_id | posesion_pct_prom | tiros_acum_max | muestras
+    --------------------+-----------+-------------------+----------------+---------
+    2030-06-13T09:00:00 | ALG       | 51.52             | 10             | 60      
+    2030-06-13T09:00:00 | TUN       | 48.48             | 8              | 60      
+    2030-06-13T09:01:00 | ALG       | 50.43             | 11             | 60      
+    2030-06-13T09:01:00 | TUN       | 49.57             | 8              | 60      
+    2030-06-13T09:02:00 | ALG       | 48.84             | 12             | 60      
+    2030-06-13T09:02:00 | TUN       | 51.16             | 8              | 60      
+
+######## 6. Validacion ########
+Validacion del perfil 'local': 12 partidos, captura 6000 s, semilla 2030
+Rango temporal declarado: 2030-06-13T08:00:00Z a +6000 s
+------------------------------------------------------------------------------
+[PASS] V1 servidor -- GET /health -> HTTP 200
+[PASS] V2 puntos en estadisticas_equipo -- observado=144000 esperado=144000
+[PASS] V3 distribucion por partido en estadisticas_equipo -- 12 partidos, todos coinciden
+[PASS] V4 series en estadisticas_equipo -- observado=24 esperado=24 (tags: partido_id, equipo_id)
+[PASS] V5 rango temporal de estadisticas_equipo -- observado=1907568000..1908977999 esperado=1907568000..1908977999
+[PASS] V2 puntos en actividad_usuarios -- observado=432000 esperado=432000
+[PASS] V3 distribucion por partido en actividad_usuarios -- 12 partidos, todos coinciden
+[PASS] V4 series en actividad_usuarios -- observado=72 esperado=72 (tags: partido_id, region)
+[PASS] V5 rango temporal de actividad_usuarios -- observado=1907568000..1908977999 esperado=1907568000..1908977999
+[PASS] V2 puntos en metricas_plataforma -- observado=432000 esperado=432000
+[PASS] V3 distribucion por partido en metricas_plataforma -- 12 partidos, todos coinciden
+[PASS] V4 series en metricas_plataforma -- observado=72 esperado=72 (tags: partido_id, servicio)
+[PASS] V5 rango temporal de metricas_plataforma -- observado=1907568000..1908977999 esperado=1907568000..1908977999
+[PASS] V2 puntos en estadisticas_jugador -- observado=316800 esperado=316800
+[PASS] V3 distribucion por partido en estadisticas_jugador -- 12 partidos, todos coinciden
+[PASS] V4 series en estadisticas_jugador -- observado=264 esperado=264 (tags: partido_id, equipo_id, jugador_id)
+[PASS] V5 rango temporal de estadisticas_jugador -- observado=1907568000..1908977995 esperado=1907568000..1908977995
+[PASS] V6a contadores finales -- 24 equipos-partido comparados con el manifest, 0 difieren
+[PASS] V6b coherencia con el Hito 5 -- tiros finales >= goles de partidos.csv en 24 de 24 equipos-partido
+[PASS] V7 posesion local+visitante = 100 -- segundos que no suman 100 en F2030-018: 0
+[PASS] V8 idempotencia -- se reenviaron 2000 puntos ya cargados (HTTP 204): antes=144000 despues=144000
+[PASS] V9 dato tardio -- orden de llegada 300,100,200 -> consulta devuelve [100, 200, 300]
+[INFO] V10 conflicto de tipos -- posesion_pct float reescrito como entero -> HTTP 400 (rechazado); respuesta: {"error":"partial write of line protocol occurred","data":[{"error_message":"invalid column type for column 'posesion_pc
+[PASS] V11 interaccion vs goles (Hito 5) -- minutos de gol=[20, 36, 44, 69, 89] | 3 minutos de mayor interaccion=[21, 37, 89]
+------------------------------------------------------------------------------
+Resumen: 23 PASS, 0 FAIL, 1 INFO
+
+######## 7. Persistencia: conteo, reinicio del contenedor y nuevo conteo ########
+Antes del reinicio:  vivo.estadisticas_equipo=144000, vivo.actividad_usuarios=432000, vivo.metricas_plataforma=432000, vivo.estadisticas_jugador=316800, hist.estadisticas_equipo_1m=2400
+Tamano en disco de C:\Users\Francisco\docker\data\influxdb: 90.1 MB
+docker compose restart ...
+tabla                                 antes      despues  resultado
+vivo.estadisticas_equipo             144000       144000  PASS
+vivo.actividad_usuarios              432000       432000  PASS
+vivo.metricas_plataforma             432000       432000  PASS
+vivo.estadisticas_jugador            316800       316800  PASS
+hist.estadisticas_equipo_1m            2400         2400  PASS
+Persistencia: PASS, los datos sobrevivieron al reinicio
+
+Resumen: 0 paso(s) con error. Log: docs\evidencia\logs\ejecucion_local_20261016_202726.log
