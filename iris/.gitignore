@@ -1,0 +1,14 @@
+# Hito 9 - IRIS: no se versionan binarios ni datos de la instancia (restriccion de repositorio).
+# La instancia vive fuera del repo, en ~/docker/data/iris; esto cubre el caso de
+# que alguien la monte por error dentro de la carpeta.
+durable/
+.iris-data/
+*.DAT
+*.dat
+iris.cpf
+iris.cpf_*
+mgr/
+
+# Credenciales locales
+.env
+.env.*

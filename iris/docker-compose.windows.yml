@@ -1,0 +1,37 @@
+# Hito 9 - Ajuste SOLO para Windows con Docker Desktop (se suma a docker-compose.yml).
+#
+# Problema: al iniciar, IRIS ejecuta "chown irisowner /durable". Si /durable es
+# una carpeta del disco de Windows (C:\Users\...\docker\data\iris, NTFS), ese
+# chown falla con "ERROR #5001: Error executing chown" y la instancia no arranca.
+#
+# Ajuste: /durable se monta en un volumen con nombre de Docker, que vive en el
+# disco Linux de Docker Desktop. Persiste igual que la carpeta: sobrevive a
+# "docker compose down" y a recrear el contenedor; solo se borra con
+# "docker volume rm fixture2030-iris-durable".
+#
+# Un volumen nuevo nace con dueno root, y IRIS corre como irisowner
+# ("Target exists but is not writeable: /durable/"). Por eso el servicio
+# iris-permisos, con la misma imagen de IRIS y como root, le asigna el volumen a
+# irisowner y termina; recien entonces arranca iris.
+#
+# Uso (lo hace scripts/ejecutar_todo.ps1 -VolumenDocker):
+#   docker compose -f docker-compose.yml -f docker-compose.windows.yml up -d
+services:
+  iris-permisos:
+    image: intersystems/iris-community:latest-cd
+    container_name: fixture2030-iris-permisos
+    user: root
+    entrypoint: ["chown", "irisowner:irisowner", "/durable"]
+    volumes:
+      - iris-durable:/durable
+
+  iris:
+    depends_on:
+      iris-permisos:
+        condition: service_completed_successfully
+    volumes:
+      - iris-durable:/durable
+
+volumes:
+  iris-durable:
+    name: fixture2030-iris-durable
