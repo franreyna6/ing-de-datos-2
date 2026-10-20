@@ -1,0 +1,50 @@
+// Hito 9 - Bloque de comandos para escribir (o pegar) a mano en el Terminal de IRIS.
+// Abrir el Terminal:   docker exec -it fixture2030-iris iris session IRIS -U USER
+// Requisito: clases compiladas y datos cargados (scripts/ejecutar_todo o README, pasos 1 a 3).
+// En el Terminal no existen las macros $$$ de las clases: se usa $System.Status.
+
+// ---- 1. Compilar las clases montadas por docker-compose.yml
+Set sc = $system.OBJ.LoadDir("/iris/src","ck",.err,1)
+Write $System.Status.IsOK(sc)
+
+// ---- 2. Cargar los CSV del Hito 5 (si ya estan cargados, no duplica)
+Do ##class(Fixture.Carga).Todo()
+
+// ---- 3. Padre e hijos en memoria, un solo %Save() del padre
+Set p = ##class(Fixture.Partido).%New()
+Set p.Codigo = "TERM-001", p.Fecha = $ZDateH("2030-07-30",3), p.Fase = "Final"
+Set p.EquipoLocal = ##class(Fixture.Equipo).CodigoIdxOpen("NED"), p.EquipoVisitante = ##class(Fixture.Equipo).CodigoIdxOpen("BEL")
+Set p.Sede = ##class(Fixture.Sede).CodigoIdxOpen("DRAG")
+Set sc = p.DesignarArbitro(##class(Fixture.Arbitro).ArbLicenciaIdxOpen("ARB-022"), "Principal")  Write $System.Status.IsOK(sc)
+Set sc = p.Iniciar()  Write $System.Status.IsOK(sc)
+Set j = p.EquipoLocal.Jugadores.GetNext("")
+Set sc = p.RegistrarEvento("TERM-EV-1", "Gol", 25, j)  Write $System.Status.IsOK(sc)
+Set sc = p.Finalizar()  Write $System.Status.IsOK(sc)
+Write "ID antes de guardar: '", p.%Id(), "'  eventos en memoria: ", p.Eventos.Count()
+Set sc = p.%Save()  If $System.Status.IsError(sc) { Do $System.Status.DisplayError(sc) } Else { Write "ID asignado: ", p.%Id() }
+Write "ID del evento hijo: ", p.Eventos.GetNext("").%Id()
+
+// ---- 4. Transicion ilegal: evento en el minuto 0 sobre un partido Finalizado (RF9)
+Set sc = p.RegistrarEvento("TERM-EV-2", "Gol", 0, j)  Do $System.Status.DisplayError(sc)
+
+// ---- 5. Fallo controlado: falta una propiedad requerida (Fecha)
+Set q = ##class(Fixture.Partido).%New()
+Set q.Codigo = "TERM-002", q.Fase = "Final", q.EquipoLocal = ##class(Fixture.Equipo).CodigoIdxOpen("SUI"), q.EquipoVisitante = ##class(Fixture.Equipo).CodigoIdxOpen("DEN"), q.Sede = ##class(Fixture.Sede).CodigoIdxOpen("CART")
+Set sc = q.%Save()  Do $System.Status.DisplayError(sc)
+Write ##class(Fixture.Partido).CodigoIdxExists("TERM-002")
+
+// ---- 6. Navegar por referencias (sin SQL)
+Set e = ##class(Fixture.Evento).CodigoIdxOpen("TERM-EV-1")
+Write e.Partido.Codigo, " | ", e.Partido.Sede.Ubicacion.Ciudad, " | ", e.Jugador.Nombre, " | ", e.Jugador.Equipo.Nombre
+
+// ---- 7. Los mismos datos por SQL (tambien desde Portal > System Explorer > SQL)
+Do $system.SQL.Shell()
+//   SELECT ID, Codigo, Estado, GolesLocal, GolesVisitante FROM Fixture.Partido WHERE Codigo = 'TERM-001'
+//   SELECT ID, Codigo, Tipo, Minuto, Partido, Jugador FROM Fixture.Evento WHERE Codigo = 'TERM-EV-1'
+//   quit
+
+// ---- 8. Borrar el partido de prueba: sus hijos se borran en cascada
+Set sc = ##class(Fixture.Partido).%DeleteId(p.%Id())  Write $System.Status.IsOK(sc)
+Kill p, q, e, j
+Write ##class(Fixture.Evento).CodigoIdxExists("TERM-EV-1")
+Halt
