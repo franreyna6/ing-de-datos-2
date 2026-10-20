@@ -1,0 +1,467 @@
+﻿Hito 9 - ejecucion 20261020_165531
+Fecha local: 2026-10-20 16:55:31 -03:00
+Equipo: 13th Gen Intel(R) Core(TM) i5-1335U | nucleos logicos: 12 | RAM: 7.7 GB | Docker: Docker version 29.7.2, build a7dcaa6
+
+######## 0. Durable %SYS en el volumen de Docker fixture2030-iris-durable ########
+Modo -VolumenDocker: /durable se monta en un volumen de Docker (docker-compose.windows.yml).
+fixture2030-iris-durable existe desde 2026-10-19T19:40:37Z
+
+######## 1. docker compose up -d ########
+ Container fixture2030-iris Running 
+ Container fixture2030-iris-permisos Starting 
+ Container fixture2030-iris-permisos Started 
+ Container fixture2030-iris-permisos Waiting 
+ Container fixture2030-iris-permisos Exited 
+
+######## 1b. Espera del servicio ########
+Esperando a que IRIS arranque (el primer inicio copia Durable %SYS y tarda)...
+IRIS listo (contenedor: running healthy).
+
+######## 1c. Version de IRIS y contenedor ########
+NAME               IMAGE                                   COMMAND                 SERVICE   CREATED          STATUS                    PORTS
+fixture2030-iris   intersystems/iris-community:latest-cd   "/tini -- /iris-main"   iris      11 minutes ago   Up 10 minutes (healthy)   127.0.0.1:1972->1972/tcp, 127.0.0.1:52773->52773/tcp
+
+Node: 560dd4a7eb58, Instance: IRIS
+
+USER>
+IRIS for UNIX (Ubuntu Server LTS for x86-64 Containers) 2026.2 (Build 221U) Fri Jun 26 2026 09:58:52 EDT
+
+USER>
+
+######## 2. Carga y compilacion de las clases .cls ########
+
+Node: 560dd4a7eb58, Instance: IRIS
+
+USER>
+
+Load of directory started on 10/20/2026 19:55:35
+Loading file /iris/src/Fixture/Demo.cls as cls
+Imported class: Fixture.Demo
+Loading file /iris/src/Fixture/Carga.cls as cls
+Imported class: Fixture.Carga
+Loading file /iris/src/Fixture/Direccion.cls as cls
+Imported class: Fixture.Direccion
+Loading file /iris/src/Fixture/Designacion.cls as cls
+Imported class: Fixture.Designacion
+Loading file /iris/src/Fixture/Arbitro.cls as cls
+Imported class: Fixture.Arbitro
+Loading file /iris/src/Fixture/Equipo.cls as cls
+Imported class: Fixture.Equipo
+Loading file /iris/src/Fixture/Jugador.cls as cls
+Imported class: Fixture.Jugador
+Loading file /iris/src/Fixture/Evento.cls as cls
+Imported class: Fixture.Evento
+Loading file /iris/src/Fixture/Tecnico.cls as cls
+Imported class: Fixture.Tecnico
+Loading file /iris/src/Fixture/Sede.cls as cls
+Imported class: Fixture.Sede
+Loading file /iris/src/Fixture/Persona.cls as cls
+Imported class: Fixture.Persona
+Loading file /iris/src/Fixture/Partido.cls as cls
+Imported class: Fixture.Partido
+Compiling 12 classes
+Compiling class Fixture.Demo
+Compiling class Fixture.Carga
+Compiling class Fixture.Direccion
+Compiling class Fixture.Persona
+Compiling class Fixture.Equipo
+Compiling class Fixture.Partido
+Compiling class Fixture.Sede
+Compiling class Fixture.Tecnico
+Compiling class Fixture.Evento
+Compiling class Fixture.Arbitro
+Compiling class Fixture.Designacion
+Compiling class Fixture.Jugador
+Compiling table Fixture.Arbitro
+Compiling table Fixture.Partido
+Compiling table Fixture.Jugador
+Compiling table Fixture.Equipo
+Compiling table Fixture.Evento
+Compiling table Fixture.Designacion
+Compiling table Fixture.Persona
+Compiling table Fixture.Sede
+Compiling table Fixture.Tecnico
+Compiling routine Fixture.Direccion.1
+Compiling routine Fixture.Carga.1
+Compiling routine Fixture.Demo.1
+Compiling routine Fixture.Persona.1
+Compiling routine Fixture.Equipo.1
+Compiling routine Fixture.Partido.1
+Compiling routine Fixture.Sede.1
+Compiling routine Fixture.Arbitro.1
+Compiling routine Fixture.Tecnico.1
+Compiling routine Fixture.Designacion.1
+Compiling routine Fixture.Jugador.1
+Compiling routine Fixture.Evento.1
+Load finished successfully.
+
+COMPILACION: OK
+
+USER>
+
+######## 3. Bloque 1 - Carga inicial (RF6) ########
+
+Node: 560dd4a7eb58, Instance: IRIS
+
+USER>
+
+==========================================================================
+BLOQUE 1 - Carga inicial desde los CSV del Hito 5 (RF6)
+==========================================================================
+
+=== Carga inicial desde /iris/data ===
+Los datos ya estan cargados: no se duplica nada (carga idempotente).
+Para empezar de cero: Do ##class(Fixture.Carga).Reiniciar()
+  [ACEPTADO]  Fixture.Carga.Todo()
+
+SQL> SELECT (SELECT COUNT(*) FROM Fixture.Sede) AS Sedes, (SELECT COUNT(*) FROM Fixture.Equipo) AS Equipos, (SELECT COUNT(*) FROM Fixture.Persona) AS Personas, (SELECT COUNT(*) FROM Fixture.Jugador) AS Jugadores, (SELECT COUNT(*) FROM Fixture.Arbitro) AS Arbitros, (SELECT COUNT(*) FROM Fixture.Tecnico) AS Tecnicos, (SELECT COUNT(*) FROM Fixture.Partido) AS Partidos, (SELECT COUNT(*) FROM Fixture.Evento) AS Eventos, (SELECT COUNT(*) FROM Fixture.Designacion) AS Designaciones
+Sedes	Equipos	Personas	Jugadores	Arbitros	Tecnicos	Partidos	Eventos	Designaciones
+12	64	1110	1024	22	64	97	440	291
+
+1 Rows(s) Affected
+
+USER>
+
+######## 4. Bloque 2 - Arbol con un solo %Save (RF6) ########
+
+Node: 560dd4a7eb58, Instance: IRIS
+
+USER>
+
+==========================================================================
+BLOQUE 2 - Arbol de objetos guardado con un solo %Save() (RF6)
+==========================================================================
+  [ACEPTADO]  Designar terna arbitral neutral
+  [ACEPTADO]  p.Iniciar()
+  [ACEPTADO]  p.RegistrarEvento(Gol, 12, ARG-10-emtxem)
+  [ACEPTADO]  p.RegistrarEvento(Tarjeta, 40, URU-7-k3p0kk)
+  [ACEPTADO]  p.RegistrarEvento(Gol, 77, URU-7-k3p0kk)
+  [ACEPTADO]  p.Finalizar()
+
+Antes de guardar (todo esta solo en memoria):
+  partido ID = ''   estado = Finalizado   marcador = 1-1
+    designacion ID = ''  Principal -> Wilmar Roldan
+    designacion ID = ''  Asistente1 -> Antonio Mateu
+    designacion ID = ''  Asistente2 -> Clement Turpin
+    evento      ID = ''  DEMO-EV-01  min 12  Gol (ARG)
+    evento      ID = ''  DEMO-EV-02  min 40  Tarjeta (URU)
+    evento      ID = ''  DEMO-EV-03  min 77  Gol (URU)
+
+>>> Unica invocacion de guardado: p.%Save()
+  [ACEPTADO]  p.%Save()
+
+Despues de guardar (IRIS asigno identidad al padre y a cada hijo):
+  partido ID = 106
+    designacion ID = '106||316'  Principal -> Wilmar Roldan
+    designacion ID = '106||317'  Asistente1 -> Antonio Mateu
+    designacion ID = '106||318'  Asistente2 -> Clement Turpin
+    evento      ID = '106||456'  DEMO-EV-01  min 12  Gol (ARG)
+    evento      ID = '106||457'  DEMO-EV-02  min 40  Tarjeta (URU)
+    evento      ID = '106||458'  DEMO-EV-03  min 77  Gol (URU)
+
+Verificacion: se reabre DEMO-001 desde la base -> existe
+  eventos guardados: 3   designaciones guardadas: 3   estado: Finalizado
+
+USER>
+
+######## 5. Bloque 3 - Fallo controlado (RF5) ########
+
+Node: 560dd4a7eb58, Instance: IRIS
+
+USER>
+
+==========================================================================
+BLOQUE 3 - Fallo controlado por propiedad requerida omitida (RF5 + atomicidad)
+==========================================================================
+
+Caso A: al PADRE le falta Fecha (Required). Tiene una designacion y un evento validos.
+  [RECHAZADO] p.%Save() sin Fecha
+              motivo: ERROR #5659: Property 'Fixture.Partido::Fecha(2@Fixture.Partido,ID=)' required
+ERROR #7207: Datatype value '' is not a valid number
+  > ERROR #5802: Datatype validation failed on property 'Fixture.Partido:Fecha', with value equal to ""
+  Verificacion: existe DEMO-002?    0   (0 = no se guardo)
+  Verificacion: existe DEMO-EV-21?  0   (0 = el hijo tampoco)
+
+Caso B: el padre es valido, pero a un HIJO le falta Minuto (Required).
+        El evento invalido se crea con %New(), salteando RegistrarEvento().
+  [ACEPTADO]  p.RegistrarEvento(Tarjeta, 15) valido
+  [RECHAZADO] p.%Save() con un hijo sin Minuto
+              motivo: ERROR #5659: Property 'Fixture.Evento::Minuto(24@Fixture.Evento,ID=)' required
+ERROR #7207: Datatype value '' is not a valid number
+  > ERROR #5802: Datatype validation failed on property 'Fixture.Evento:Minuto', with value equal to ""
+  Verificacion: existe DEMO-003?    0   (0 = el padre valido no se guardo)
+  Verificacion: existe DEMO-EV-30?  0   (0 = el hijo valido no se guardo)
+  => El arbol se guarda completo o no se guarda.
+
+USER>
+
+######## 6. Bloque 4 - Navegacion por objetos (RF7) ########
+
+Node: 560dd4a7eb58, Instance: IRIS
+
+USER>
+
+==========================================================================
+BLOQUE 4 - Navegacion por referencias de objetos, sin SQL (RF7)
+==========================================================================
+partido      F2030-001  (2030-06-14, fase Grupos A, Finalizado)
+  .Sede                  Estadio Defensores del Chaco
+  .Sede.Ubicacion        Asuncion, Paraguay   (componente embebido)
+  .EquipoLocal           Islas Salomon  1
+  .EquipoVisitante       Mexico  1
+  tecnico local          Jorge Silva (7 anios)
+  .Designaciones (3)
+      Principal  Wilton Sampaio (BRA, ARB-002)
+     Asistente1  Andres Matonte (URU, ARB-003)
+     Asistente2  Wilmar Roldan (COL, ARB-004)
+  .Eventos (2)
+     min  80      Gol  Ryan Kalounivale #7 (SOL)
+     min  55      Gol  Kyle Powell #28 (MEX)
+
+Navegacion inversa (bidireccional) desde el jugador Ryan Kalounivale:
+  .Equipo                Islas Salomon  (el equipo tiene 16 jugadores)
+  .Eventos (2) en los partidos:
+     F2030-001  min 80  Gol
+     F2030-002  min 38  Gol
+  la sede CHAC tiene 9 partidos (Sede.Partidos)
+
+Polimorfismo: Fixture.Persona.%OpenId(1048) devuelve un objeto de clase Fixture.Jugador
+
+USER>
+
+######## 7. Bloque 5 - Proyeccion SQL (RF8) ########
+
+Node: 560dd4a7eb58, Instance: IRIS
+
+USER>
+
+==========================================================================
+BLOQUE 5 - Proyeccion multimodelo: los mismos datos por SQL (RF8)
+==========================================================================
+Objeto: DEMO-001 tiene %Id() = 106 -> debe coincidir con la columna ID de la consulta
+
+SQL> SELECT p.ID, p.Codigo, p.Fecha, p.Estado, el.Nombre AS NombreLocal, p.GolesLocal, p.GolesVisitante, ev.Nombre AS NombreVisitante, s.Nombre AS Sede, s.Ubicacion_Ciudad AS Ciudad FROM Fixture.Partido p JOIN Fixture.Equipo el ON p.EquipoLocal = el.ID JOIN Fixture.Equipo ev ON p.EquipoVisitante = ev.ID JOIN Fixture.Sede s ON p.Sede = s.ID WHERE p.Codigo = 'DEMO-001'
+ID	Codigo	Fecha	Estado	NombreLocal	GolesLocal	GolesVisitante	NombreVisitante	Sede	Ciudad
+106	DEMO-001	2030-07-21	Finalizado	Argentina	1	1	Uruguay	Estadio Centenario	Montevideo
+
+1 Rows(s) Affected
+
+SQL> SELECT e.ID, e.Codigo, e.Tipo, e.Minuto, j.Nombre AS Jugador, q.Codigo AS Equipo FROM Fixture.Evento e JOIN Fixture.Partido p ON e.Partido = p.ID JOIN Fixture.Jugador j ON e.Jugador = j.ID JOIN Fixture.Equipo q ON j.Equipo = q.ID WHERE p.Codigo = 'DEMO-001' ORDER BY e.Minuto
+ID	Codigo	Tipo	Minuto	Jugador	Equipo
+106||456	DEMO-EV-01	Gol	12	Rodrigo Herrera	ARG
+106||457	DEMO-EV-02	Tarjeta	40	Alejandro Martinez	URU
+106||458	DEMO-EV-03	Gol	77	Alejandro Martinez	URU
+
+3 Rows(s) Affected
+
+SQL> SELECT d.ID, d.Rol, a.Nombre AS Arbitro, a.Nacionalidad FROM Fixture.Designacion d JOIN Fixture.Partido p ON d.Partido = p.ID JOIN Fixture.Arbitro a ON d.Arbitro = a.ID WHERE p.Codigo = 'DEMO-001'
+ID	Rol	Arbitro	Nacionalidad
+106||316	Principal	Wilmar Roldan	COL
+106||317	Asistente1	Antonio Mateu	ESP
+106||318	Asistente2	Clement Turpin	FRA
+
+3 Rows(s) Affected
+
+Herencia en SQL: Fixture.Persona contiene a las tres subclases.
+
+SQL> SELECT x__classname AS Subclase, COUNT(*) AS Personas FROM Fixture.Persona GROUP BY x__classname
+Subclase	Personas
+~Fixture.Arbitro~	22
+~Fixture.Jugador~	1024
+~Fixture.Tecnico~	64
+
+3 Rows(s) Affected
+
+Consulta de reporte sobre los datos cargados como objetos: goleadores.
+
+SQL> SELECT TOP 5 %EXACT(j.Nombre) AS Nombre, q.Codigo AS Equipo, COUNT(*) AS Goles FROM Fixture.Evento e JOIN Fixture.Jugador j ON e.Jugador = j.ID JOIN Fixture.Equipo q ON j.Equipo = q.ID WHERE e.Tipo = 'Gol' GROUP BY j.ID, j.Nombre, q.Codigo ORDER BY Goles DESC, j.Nombre
+Nombre	Equipo	Goles
+Aziz Suzuki	CHN	3
+Gonzalo Perez	CHI	3
+Jae-sung Liu	QAT	3
+Achraf Mahrez	ALG	2
+Alejandro Cabrera	PER	2
+
+5 Rows(s) Affected
+
+Operar por SQL y leer por objetos (mismo estado, no son dos copias):
+
+SQL> UPDATE Fixture.Sede SET Nombre = 'Estadio Centenario (renovado)' WHERE Codigo = 'CENT'
+  filas afectadas: 1
+  Objeto: Sede CENT -> Nombre = Estadio Centenario (renovado)   (cambio hecho por SQL, leido por objetos)
+  [ACEPTADO]  Restaurar el nombre por objetos: s.%Save()
+
+SQL> SELECT ID, Codigo, Nombre FROM Fixture.Sede WHERE Codigo = 'CENT'
+ID	Codigo	Nombre
+3	CENT	Estadio Centenario
+
+1 Rows(s) Affected
+
+USER>
+
+######## 8. Bloque 6 - Validaciones (RF9) ########
+
+Node: 560dd4a7eb58, Instance: IRIS
+
+USER>
+
+==========================================================================
+BLOQUE 6 - Validaciones encapsuladas: transiciones ilegales (RF9)
+==========================================================================
+
+Partido F2030-001 en estado Finalizado con 2 eventos.
+  [RECHAZADO] Gol en el minuto 0 sobre un partido Finalizado
+              motivo: ERROR #5001: Transicion ilegal: el partido F2030-001 esta Finalizado y no admite eventos (se intento Gol en el minuto 0)
+  [RECHAZADO] Gol en el minuto 30 sobre un partido Finalizado
+              motivo: ERROR #5001: Transicion ilegal: el partido F2030-001 esta Finalizado y no admite eventos (se intento Gol en el minuto 30)
+  [RECHAZADO] Iniciar() un partido Finalizado
+              motivo: ERROR #5001: Transicion ilegal: Finalizado -> EnJuego (solo se inicia un partido Programado)
+  Verificacion: eventos en memoria = 2 (antes 2), marcador = 1-1
+
+Partido nuevo DEMO-004 (Programado, no se guarda):
+  [RECHAZADO] Finalizar() un partido Programado
+              motivo: ERROR #5001: Transicion ilegal: Programado -> Finalizado (solo se finaliza un partido EnJuego)
+  [RECHAZADO] RegistrarEvento() en un partido Programado
+              motivo: ERROR #5001: Transicion ilegal: el partido DEMO-004 esta Programado y no admite eventos (se intento Gol en el minuto 10)
+  [RECHAZADO] Iniciar() sin arbitro Principal
+              motivo: ERROR #5001: No se puede iniciar el partido DEMO-004 sin arbitro Principal designado
+  [RECHAZADO] Designar a Antonio Mateu (ESP) en ESP vs ARG
+              motivo: ERROR #5001: Arbitro no neutral: Antonio Mateu (ESP) no puede dirigir ESP vs ARG
+  [RECHAZADO] Designar a Nestor Pitana (ARG) en ESP vs ARG
+              motivo: ERROR #5001: Arbitro no neutral: Nestor Pitana (ARG) no puede dirigir ESP vs ARG
+  [ACEPTADO]  Designar terna neutral (Principal, Asistente1, Asistente2)
+  [RECHAZADO] Designar un segundo Principal (Kim Jong-hyeok)
+              motivo: ERROR #5001: El rol Principal ya esta cubierto en el partido DEMO-004
+  [ACEPTADO]  Iniciar() con Principal designado
+  [RECHAZADO] Gol en el minuto 0 con el partido EnJuego
+              motivo: ERROR #5001: Minuto invalido: 0 (debe estar entre 1 y 120)
+  [RECHAZADO] Gol de un jugador de BRA en ESP vs ARG
+              motivo: ERROR #5001: El jugador BRA-15-l4cfy3 no pertenece a ESP ni a ARG
+  [RECHAZADO] DesignarArbitro() con el partido EnJuego
+              motivo: ERROR #5001: Transicion ilegal: solo se designan arbitros con el partido Programado (estado actual: EnJuego)
+
+Invariantes que %OnBeforeSave() controla aunque se asignen propiedades sin los metodos:
+  [RECHAZADO] %Save() de FRA vs FRA
+              motivo: ERROR #5001: Un equipo no puede jugar contra si mismo (FRA)
+  [RECHAZADO] %Save() con Estado = Finalizado asignado a mano y sin arbitros
+              motivo: ERROR #5001: El partido DEMO-006 esta Finalizado sin arbitro Principal designado
+  [RECHAZADO] %Save() con GolesLocal = 5 asignado a mano y sin goles registrados
+              motivo: ERROR #5001: Marcador inconsistente en DEMO-007: 5-0 pero los goles registrados suman 0-0
+  Verificacion: existen DEMO-004..007? 0000  (0000 = ninguno se guardo)
+
+Evento inalterable: se intenta corregir el minuto de EV-0001.
+  minuto original = 80
+  [RECHAZADO] ev.%Save() con el minuto cambiado
+              motivo: ERROR #5001: Evento inalterable: EV-0001 ya fue registrado y no se puede modificar
+
+SQL> SELECT Codigo, Tipo, Minuto FROM Fixture.Evento WHERE Codigo = 'EV-0001'
+Codigo	Tipo	Minuto
+EV-0001	Gol	80
+
+1 Rows(s) Affected
+
+USER>
+
+######## 9. Bloque 7 - Integridad ante borrados (RF3) ########
+
+Node: 560dd4a7eb58, Instance: IRIS
+
+USER>
+
+==========================================================================
+BLOQUE 7 - Integridad referencial ante borrados (RF3, matriz de integridad)
+==========================================================================
+
+1) Padre-hijo: borrar un partido borra sus eventos y designaciones.
+  [ACEPTADO]  Guardar DEMO-008 con 2 eventos y 3 designaciones
+
+SQL> SELECT (SELECT COUNT(*) FROM Fixture.Evento WHERE Partido = 108) AS Eventos, (SELECT COUNT(*) FROM Fixture.Designacion WHERE Partido = 108) AS Designaciones
+Eventos	Designaciones
+2	3
+
+1 Rows(s) Affected
+  [ACEPTADO]  Fixture.Partido.%DeleteId(108)
+
+SQL> SELECT (SELECT COUNT(*) FROM Fixture.Evento WHERE Partido = 108) AS Eventos, (SELECT COUNT(*) FROM Fixture.Designacion WHERE Partido = 108) AS Designaciones
+Eventos	Designaciones
+0	0
+
+1 Rows(s) Affected
+
+2) Uno-a-muchos: no se borra el extremo 'uno' mientras tenga objetos asociados.
+  [RECHAZADO] Borrar el Jugador 1048 (tiene eventos)
+              motivo: ERROR #5823: Cannot delete object, referenced by 'Fixture.Evento.Jugador'
+  Verificacion: el jugador sigue existiendo? 1
+  [RECHAZADO] Borrar la Sede 4 (tiene partidos)
+              motivo: ERROR #5823: Cannot delete object, referenced by 'Fixture.Partido.Sede'
+  Verificacion: la sede sigue existiendo? 1
+  [RECHAZADO] Borrar el Arbitro 1090 (tiene designaciones)
+              motivo: ERROR #5823: Cannot delete object, referenced by 'Fixture.Designacion.Arbitro'
+  Verificacion: el arbitro sigue existiendo? 1
+  [RECHAZADO] Borrar el Equipo 62 (tiene jugadores)
+              motivo: ERROR #5823: Cannot delete object, referenced by 'Fixture.Jugador.Equipo'
+  Verificacion: el equipo sigue existiendo? 1
+  (1 = sigue existiendo; ver docs/matriz_de_integridad.md)
+
+USER>
+
+######## 10. Persistencia: conteo antes de recrear el contenedor ########
+
+Node: 560dd4a7eb58, Instance: IRIS
+
+USER>
+
+SQL> SELECT (SELECT COUNT(*) FROM Fixture.Sede) AS Sedes, (SELECT COUNT(*) FROM Fixture.Equipo) AS Equipos, (SELECT COUNT(*) FROM Fixture.Persona) AS Personas, (SELECT COUNT(*) FROM Fixture.Jugador) AS Jugadores, (SELECT COUNT(*) FROM Fixture.Arbitro) AS Arbitros, (SELECT COUNT(*) FROM Fixture.Tecnico) AS Tecnicos, (SELECT COUNT(*) FROM Fixture.Partido) AS Partidos, (SELECT COUNT(*) FROM Fixture.Evento) AS Eventos, (SELECT COUNT(*) FROM Fixture.Designacion) AS Designaciones
+Sedes	Equipos	Personas	Jugadores	Arbitros	Tecnicos	Partidos	Eventos	Designaciones
+12	64	1110	1024	22	64	97	440	291
+
+1 Rows(s) Affected
+
+USER>
+
+######## 10b. docker compose down + up -d ########
+ Container fixture2030-iris Stopping 
+ Container fixture2030-iris Stopped 
+ Container fixture2030-iris Removing 
+ Container fixture2030-iris Removed 
+ Container fixture2030-iris-permisos Stopping 
+ Container fixture2030-iris-permisos Stopped 
+ Container fixture2030-iris-permisos Removing 
+ Container fixture2030-iris-permisos Removed 
+ Network iris_default Removing 
+ Network iris_default Removed 
+ Network iris_default Creating 
+ Network iris_default Creating 
+ Network iris_default Created 
+ Network iris_default Created 
+ Container fixture2030-iris-permisos Creating 
+ Container fixture2030-iris-permisos Created 
+ Container fixture2030-iris Creating 
+ Container fixture2030-iris Created 
+ Container fixture2030-iris-permisos Starting 
+ Container fixture2030-iris-permisos Started 
+ Container fixture2030-iris-permisos Waiting 
+ Container fixture2030-iris-permisos Exited 
+ Container fixture2030-iris Starting 
+ Container fixture2030-iris Started 
+
+######## 10c. Espera del servicio ########
+Esperando a que IRIS arranque (el primer inicio copia Durable %SYS y tarda)...
+  ... 0 min | contenedor: running starting
+IRIS listo (contenedor: running healthy).
+
+######## 10d. Persistencia: conteo despues de recrear el contenedor ########
+
+Node: 85b5f31436d5, Instance: IRIS
+
+USER>
+
+SQL> SELECT (SELECT COUNT(*) FROM Fixture.Sede) AS Sedes, (SELECT COUNT(*) FROM Fixture.Equipo) AS Equipos, (SELECT COUNT(*) FROM Fixture.Persona) AS Personas, (SELECT COUNT(*) FROM Fixture.Jugador) AS Jugadores, (SELECT COUNT(*) FROM Fixture.Arbitro) AS Arbitros, (SELECT COUNT(*) FROM Fixture.Tecnico) AS Tecnicos, (SELECT COUNT(*) FROM Fixture.Partido) AS Partidos, (SELECT COUNT(*) FROM Fixture.Evento) AS Eventos, (SELECT COUNT(*) FROM Fixture.Designacion) AS Designaciones
+Sedes	Equipos	Personas	Jugadores	Arbitros	Tecnicos	Partidos	Eventos	Designaciones
+12	64	1110	1024	22	64	97	440	291
+
+1 Rows(s) Affected
+
+USER>
+
+Fin. Log: docs\evidencia\logs\ejecucion_20261020_165531.log
