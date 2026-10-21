@@ -1,0 +1,160 @@
+{
+  "info": {
+    "name": "Fixture 2030 - API integrada (Hito 10)",
+    "description": "Coleccion de pruebas de la API REST integrada del Fixture 2030 (Grupo 8). Cubre un caso valido por fuente y escenarios de error: parametro invalido, recurso inexistente y dependencia caida. Usa variables de entorno (baseUrl, partidoCodigo, equipoCodigo, sesionId); no contiene secretos (RNF7).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost:8000"},
+    {"key": "equipoCodigo", "value": "ARG"},
+    {"key": "partidoCodigo", "value": "F2030-001"},
+    {"key": "partidoComentarios", "value": "F2030-063"},
+    {"key": "sesionId", "value": "s-demo-001"},
+    {"key": "statsDesde", "value": "2030-06-13T09:00:00Z"},
+    {"key": "statsHasta", "value": "2030-06-13T09:15:00Z"}
+  ],
+  "item": [
+    {
+      "name": "Sistema",
+      "item": [
+        {
+          "name": "GET /salud - estado de la API y fuentes",
+          "request": {"method": "GET", "url": "{{baseUrl}}/salud"},
+          "event": [{"listen": "test", "script": {"exec": [
+            "pm.test('200 y lista de dependencias', () => {",
+            "  pm.response.to.have.status(200);",
+            "  pm.expect(pm.response.json().dependencias).to.be.an('array');",
+            "});"
+          ]}}]
+        }
+      ]
+    },
+    {
+      "name": "MongoDB (equipos y jugadores)",
+      "item": [
+        {
+          "name": "GET /equipos/{codigo} - equipo existente",
+          "request": {"method": "GET", "url": "{{baseUrl}}/equipos/{{equipoCodigo}}"},
+          "event": [{"listen": "test", "script": {"exec": [
+            "pm.test('200 con codigo y nombre', () => {",
+            "  pm.response.to.have.status(200);",
+            "  pm.expect(pm.response.json()).to.have.property('codigo');",
+            "});"
+          ]}}]
+        },
+        {
+          "name": "GET /equipos/{codigo} - inexistente (404)",
+          "request": {"method": "GET", "url": "{{baseUrl}}/equipos/ZZZ"},
+          "event": [{"listen": "test", "script": {"exec": [
+            "pm.test('404 con error de dominio', () => {",
+            "  pm.response.to.have.status(404);",
+            "  pm.expect(pm.response.json().error.code).to.eql('TEAM_NOT_FOUND');",
+            "});"
+          ]}}]
+        },
+        {
+          "name": "GET /equipos/{codigo}/jugadores - paginado",
+          "request": {"method": "GET", "url": {
+            "raw": "{{baseUrl}}/equipos/{{equipoCodigo}}/jugadores?limit=5&offset=0",
+            "host": ["{{baseUrl}}"], "path": ["equipos", "{{equipoCodigo}}", "jugadores"],
+            "query": [{"key": "limit", "value": "5"}, {"key": "offset", "value": "0"}]
+          }}
+        },
+        {
+          "name": "GET /equipos/.../jugadores - limit invalido (400)",
+          "request": {"method": "GET", "url": {
+            "raw": "{{baseUrl}}/equipos/{{equipoCodigo}}/jugadores?limit=0",
+            "host": ["{{baseUrl}}"], "path": ["equipos", "{{equipoCodigo}}", "jugadores"],
+            "query": [{"key": "limit", "value": "0"}]
+          }},
+          "event": [{"listen": "test", "script": {"exec": [
+            "pm.test('400 de validacion', () => pm.response.to.have.status(400));"
+          ]}}]
+        }
+      ]
+    },
+    {
+      "name": "Neo4j (eventos del partido)",
+      "item": [
+        {
+          "name": "GET /partidos/{codigo}/eventos",
+          "request": {"method": "GET", "url": "{{baseUrl}}/partidos/{{partidoCodigo}}/eventos"}
+        }
+      ]
+    },
+    {
+      "name": "Cassandra (comentarios)",
+      "item": [
+        {
+          "name": "GET /partidos/{codigo}/comentarios?instante=...",
+          "request": {"method": "GET", "url": {
+            "raw": "{{baseUrl}}/partidos/{{partidoComentarios}}/comentarios?instante=2030-06-22T20:23:00Z&limit=20",
+            "host": ["{{baseUrl}}"], "path": ["partidos", "{{partidoComentarios}}", "comentarios"],
+            "query": [{"key": "instante", "value": "2030-06-22T20:23:00Z"}, {"key": "limit", "value": "20"}]
+          }}
+        },
+        {
+          "name": "POST /partidos/{codigo}/comentarios - publicar",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {"mode": "raw", "raw": "{\n  \"usuarioId\": \"u-00042\",\n  \"contenido\": \"Gran jugada en el minuto 15\"\n}"},
+            "url": "{{baseUrl}}/partidos/{{partidoComentarios}}/comentarios"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Redis (sesiones)",
+      "item": [
+        {
+          "name": "GET /sesiones/{id} - activa o 404 si expiro",
+          "request": {"method": "GET", "url": "{{baseUrl}}/sesiones/{{sesionId}}"}
+        },
+        {
+          "name": "GET /sesiones/{id} - inexistente (404)",
+          "request": {"method": "GET", "url": "{{baseUrl}}/sesiones/no-existe"},
+          "event": [{"listen": "test", "script": {"exec": [
+            "pm.test('404 sesion ausente/expirada', () => {",
+            "  pm.response.to.have.status(404);",
+            "  pm.expect(pm.response.json().error.code).to.eql('SESSION_EXPIRED_OR_NOT_FOUND');",
+            "});"
+          ]}}]
+        }
+      ]
+    },
+    {
+      "name": "InfluxDB (estadisticas)",
+      "item": [
+        {
+          "name": "GET /partidos/{codigo}/estadisticas - ventana",
+          "request": {"method": "GET", "url": {
+            "raw": "{{baseUrl}}/partidos/F2030-018/estadisticas?desde={{statsDesde}}&hasta={{statsHasta}}",
+            "host": ["{{baseUrl}}"], "path": ["partidos", "F2030-018", "estadisticas"],
+            "query": [{"key": "desde", "value": "{{statsDesde}}"}, {"key": "hasta", "value": "{{statsHasta}}"}]
+          }}
+        },
+        {
+          "name": "GET estadisticas - fechas invertidas (400)",
+          "request": {"method": "GET", "url": {
+            "raw": "{{baseUrl}}/partidos/F2030-018/estadisticas?desde={{statsHasta}}&hasta={{statsDesde}}",
+            "host": ["{{baseUrl}}"], "path": ["partidos", "F2030-018", "estadisticas"],
+            "query": [{"key": "desde", "value": "{{statsHasta}}"}, {"key": "hasta", "value": "{{statsDesde}}"}]
+          }},
+          "event": [{"listen": "test", "script": {"exec": [
+            "pm.test('400 de validacion', () => pm.response.to.have.status(400));"
+          ]}}]
+        }
+      ]
+    },
+    {
+      "name": "IRIS (detalle del partido)",
+      "item": [
+        {
+          "name": "GET /partidos/{codigo}/detalle",
+          "request": {"method": "GET", "url": "{{baseUrl}}/partidos/{{partidoCodigo}}/detalle"}
+        }
+      ]
+    }
+  ]
+}

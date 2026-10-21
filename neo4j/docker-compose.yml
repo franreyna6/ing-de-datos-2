@@ -1,0 +1,35 @@
+# Modulo de grafos del Fixture 2030 - Hito 5 (Grupo 8)
+# Basado en el ambiente de la Clase 5. Una instancia local de Neo4j (imagen
+# actual) accesible desde Neo4j Browser (RF1, RNF1).
+services:
+  neo4j:
+    image: neo4j:latest          # RNF1: imagen actual (documentar fecha de prueba en README)
+    container_name: fixture2030-neo4j
+    restart: always
+    ports:
+      - "7474:7474"              # Neo4j Browser (http://localhost:7474)
+      - "7687:7687"              # Bolt (neo4j://localhost:7687)
+    volumes:
+      - neo4j_data:/data                    # RNF2: datos persistentes (volumen nombrado)
+      - neo4j_logs:/logs                    # RNF2: logs persistentes (volumen nombrado)
+      - ./import:/var/lib/neo4j/import   # CSVs del repo visibles para LOAD CSV
+      - neo4j_plugins:/plugins              # persistencia de plugins
+    environment:
+      # RNF8: credenciales por variable de entorno (ver .env.example). El valor por
+      # defecto es una credencial de laboratorio, no un secreto real.
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-fixture2030}
+      # Plugins habilitados en el entorno de la materia (Clase 5). Las consultas
+      # requeridas NO dependen de ellos: si 'latest' fuera incompatible, se pueden
+      # quitar sin afectar la entrega (ver nota en README).
+      NEO4J_PLUGINS: '["apoc","graph-data-science"]'
+    networks:
+      - neo4j-network
+
+volumes:
+  neo4j_data:
+  neo4j_logs:
+  neo4j_plugins:
+
+networks:
+  neo4j-network:
+    driver: bridge

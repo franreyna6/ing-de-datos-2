@@ -1,0 +1,23 @@
+# API Hito 10 - Fixture 2030 (FastAPI). Probado con Python 3.11-3.13.
+# Instalar con:  pip install -r requirements.txt
+
+# --- Framework HTTP y validacion (genera OpenAPI/Swagger) ---
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+
+# --- Pruebas ---
+pytest==8.3.4
+httpx==0.28.1
+
+# --- Drivers de cada fuente (RNF5) ---
+pymongo==4.10.1            # MongoDB (Hito 4)
+neo4j==5.27.0             # Neo4j (Hito 5)
+cassandra-driver==3.29.2  # Cassandra (Hito 6). En Windows puede requerir build tools;
+                          #   alternativa: instalar con  pip install cassandra-driver --no-cython
+redis==5.2.1              # Redis (Hito 7)
+# InfluxDB (Hito 8): el adaptador usa http.client de la stdlib, no requiere paquete.
+
+# IRIS (Hito 9): el driver NO esta en PyPI publico. Instalar aparte segun el README:
+#   pip install intersystems-irispython
+# Si no se instala, el endpoint de IRIS respondera 503 y el resto de la API funciona.

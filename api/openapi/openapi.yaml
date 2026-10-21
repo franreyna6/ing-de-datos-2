@@ -1,0 +1,937 @@
+openapi: 3.1.0
+info:
+  title: Fixture 2030 API integrada
+  description: API REST que expone casos de uso del Fixture Mundial 2030 sobre seis
+    fuentes NoSQL (MongoDB, Neo4j, Cassandra, Redis, InfluxDB e IRIS) mediante adaptadores
+    separados. Hito 10 - Grupo 8.
+  version: 1.0.0
+paths:
+  /equipos/{codigo}:
+    get:
+      tags:
+      - equipos
+      summary: Recupera un equipo desde el modulo documental (MongoDB)
+      operationId: get_equipo_equipos__codigo__get
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - ARG
+          title: Codigo
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Equipo'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /equipos/{codigo}/jugadores:
+    get:
+      tags:
+      - equipos
+      summary: Lista paginada de jugadores de un equipo (MongoDB)
+      operationId: get_jugadores_equipos__codigo__jugadores_get
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - ARG
+          title: Codigo
+      - name: posicion
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          examples:
+          - Delantero
+          title: Posicion
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 20
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListaJugadores'
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /partidos/{codigo}/eventos:
+    get:
+      tags:
+      - partidos
+      summary: Eventos conectados a un partido (Neo4j)
+      operationId: get_eventos_partidos__codigo__eventos_get
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - F2030-001
+          title: Codigo
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 50
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventosDePartido'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /partidos/{codigo}/comentarios:
+    get:
+      tags:
+      - partidos
+      summary: Comentarios de un partido en una ventana de 5 min (Cassandra)
+      operationId: get_comentarios_partidos__codigo__comentarios_get
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - F2030-063
+          title: Codigo
+      - name: instante
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Instante ISO-8601 dentro de la ventana a leer. Si se omite,
+            se usa la hora actual.
+          examples:
+          - '2030-06-22T20:23:00Z'
+          title: Instante
+        description: Instante ISO-8601 dentro de la ventana a leer. Si se omite, se
+          usa la hora actual.
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          minimum: 1
+          default: 20
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginaComentarios'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - partidos
+      summary: Publica un comentario en un partido (Cassandra)
+      operationId: post_comentario_partidos__codigo__comentarios_post
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - F2030-063
+          title: Codigo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevoComentario'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComentarioCreado'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /partidos/{codigo}/estadisticas:
+    get:
+      tags:
+      - partidos
+      summary: Estadisticas temporales de un partido en un intervalo (InfluxDB)
+      operationId: get_estadisticas_partidos__codigo__estadisticas_get
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - F2030-018
+          title: Codigo
+      - name: desde
+        in: query
+        required: true
+        schema:
+          type: string
+          examples:
+          - '2030-06-13T09:00:00Z'
+          title: Desde
+      - name: hasta
+        in: query
+        required: true
+        schema:
+          type: string
+          examples:
+          - '2030-06-13T09:15:00Z'
+          title: Hasta
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Estadisticas'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /partidos/{codigo}/detalle:
+    get:
+      tags:
+      - partidos
+      summary: Detalle del partido como entidad compleja (IRIS)
+      operationId: get_detalle_partidos__codigo__detalle_get
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - F2030-001
+          title: Codigo
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetallePartido'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /sesiones/{sesion_id}:
+    get:
+      tags:
+      - sesiones
+      summary: Estado de una sesion de usuario (Redis)
+      operationId: get_sesion_sesiones__sesion_id__get
+      parameters:
+      - name: sesion_id
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - s-demo-001
+          title: Sesion Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sesion'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /salud:
+    get:
+      tags:
+      - sistema
+      summary: Estado de la API y disponibilidad de cada fuente
+      operationId: salud_salud_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Salud'
+components:
+  schemas:
+    Comentario:
+      properties:
+        comentarioId:
+          type: string
+          title: Comentarioid
+        creadoEn:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Creadoen
+        usuarioId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Usuarioid
+        contenido:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Contenido
+        estado:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Estado
+        likes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Likes
+      type: object
+      required:
+      - comentarioId
+      title: Comentario
+    ComentarioCreado:
+      properties:
+        partido:
+          type: string
+          title: Partido
+        ventana:
+          type: string
+          title: Ventana
+        comentarioId:
+          type: string
+          title: Comentarioid
+        creadoEn:
+          type: string
+          title: Creadoen
+      type: object
+      required:
+      - partido
+      - ventana
+      - comentarioId
+      - creadoEn
+      title: ComentarioCreado
+    DetallePartido:
+      properties:
+        codigo:
+          type: string
+          title: Codigo
+        fecha:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Fecha
+        fase:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Fase
+        estado:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Estado
+          examples:
+          - Finalizado
+        golesLocal:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Goleslocal
+        golesVisitante:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Golesvisitante
+        equipoLocal:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Equipolocal
+        equipoVisitante:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Equipovisitante
+        sede:
+          anyOf:
+          - $ref: '#/components/schemas/SedeRef'
+          - type: 'null'
+        cantidadEventos:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Cantidadeventos
+      type: object
+      required:
+      - codigo
+      title: DetallePartido
+    Equipo:
+      properties:
+        codigo:
+          type: string
+          title: Codigo
+          examples:
+          - ARG
+        nombre:
+          type: string
+          title: Nombre
+          examples:
+          - Argentina
+        confederacion:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Confederacion
+          examples:
+          - CONMEBOL
+        rankingFIFA:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rankingfifa
+          examples:
+          - 1
+        grupo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Grupo
+          examples:
+          - A
+        ciudadSede:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Ciudadsede
+          examples:
+          - Buenos Aires
+      type: object
+      required:
+      - codigo
+      - nombre
+      title: Equipo
+    ErrorDetalle:
+      properties:
+        code:
+          type: string
+          title: Code
+          examples:
+          - NOT_FOUND
+        message:
+          type: string
+          title: Message
+          examples:
+          - El recurso solicitado no existe
+        request_id:
+          type: string
+          title: Request Id
+          examples:
+          - a1b2c3d4
+        detalles:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Detalles
+      type: object
+      required:
+      - code
+      - message
+      - request_id
+      title: ErrorDetalle
+    ErrorResponse:
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorDetalle'
+      type: object
+      required:
+      - error
+      title: ErrorResponse
+    Estadisticas:
+      properties:
+        partido:
+          type: string
+          title: Partido
+        desde:
+          type: string
+          title: Desde
+        hasta:
+          type: string
+          title: Hasta
+        puntos:
+          items:
+            $ref: '#/components/schemas/PuntoEstadistica'
+          type: array
+          title: Puntos
+      type: object
+      required:
+      - partido
+      - desde
+      - hasta
+      - puntos
+      title: Estadisticas
+    EstadoDependencia:
+      properties:
+        fuente:
+          type: string
+          title: Fuente
+        disponible:
+          type: boolean
+          title: Disponible
+      type: object
+      required:
+      - fuente
+      - disponible
+      title: EstadoDependencia
+    EventoPartido:
+      properties:
+        evento:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Evento
+        tipo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Tipo
+          examples:
+          - Gol
+        minuto:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Minuto
+          examples:
+          - 23
+        jugadorCodigo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Jugadorcodigo
+        jugadorNombre:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Jugadornombre
+      type: object
+      title: EventoPartido
+    EventosDePartido:
+      properties:
+        partido:
+          type: string
+          title: Partido
+          examples:
+          - F2030-001
+        fecha:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Fecha
+        eventos:
+          items:
+            $ref: '#/components/schemas/EventoPartido'
+          type: array
+          title: Eventos
+      type: object
+      required:
+      - partido
+      - eventos
+      title: EventosDePartido
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Jugador:
+      properties:
+        codigo:
+          type: string
+          title: Codigo
+          examples:
+          - ARG-10
+        nombre:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Nombre
+        apellido:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Apellido
+        posicion:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Posicion
+          examples:
+          - Delantero
+        dorsal:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Dorsal
+          examples:
+          - 10
+        equipoCodigo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Equipocodigo
+          examples:
+          - ARG
+      type: object
+      required:
+      - codigo
+      title: Jugador
+    ListaJugadores:
+      properties:
+        equipoCodigo:
+          type: string
+          title: Equipocodigo
+        total:
+          type: integer
+          title: Total
+        jugadores:
+          items:
+            $ref: '#/components/schemas/Jugador'
+          type: array
+          title: Jugadores
+      type: object
+      required:
+      - equipoCodigo
+      - total
+      - jugadores
+      title: ListaJugadores
+    NuevoComentario:
+      properties:
+        usuarioId:
+          type: string
+          maxLength: 64
+          minLength: 1
+          title: Usuarioid
+          examples:
+          - u-00042
+        contenido:
+          type: string
+          maxLength: 500
+          minLength: 1
+          title: Contenido
+          examples:
+          - Gran jugada en el minuto 15
+        comentarioId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Comentarioid
+          description: Clave de idempotencia opcional (UUID). Reusarla reescribe la
+            misma fila.
+      type: object
+      required:
+      - usuarioId
+      - contenido
+      title: NuevoComentario
+    PaginaComentarios:
+      properties:
+        partido:
+          type: string
+          title: Partido
+        ventana:
+          type: string
+          title: Ventana
+          description: Inicio UTC de la ventana de 5 minutos leida
+        comentarios:
+          items:
+            $ref: '#/components/schemas/Comentario'
+          type: array
+          title: Comentarios
+      type: object
+      required:
+      - partido
+      - ventana
+      - comentarios
+      title: PaginaComentarios
+    PuntoEstadistica:
+      properties:
+        time:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Time
+        equipoId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Equipoid
+        posesionPct:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Posesionpct
+        pasesAcum:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Pasesacum
+        tirosAcum:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Tirosacum
+        recuperacionesAcum:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Recuperacionesacum
+      type: object
+      title: PuntoEstadistica
+    Salud:
+      properties:
+        api:
+          type: string
+          title: Api
+          default: ok
+        dependencias:
+          items:
+            $ref: '#/components/schemas/EstadoDependencia'
+          type: array
+          title: Dependencias
+      type: object
+      required:
+      - dependencias
+      title: Salud
+    SedeRef:
+      properties:
+        codigo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Codigo
+        nombre:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Nombre
+      type: object
+      title: SedeRef
+    Sesion:
+      properties:
+        sesionId:
+          type: string
+          title: Sesionid
+        usuarioId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Usuarioid
+        estado:
+          type: string
+          title: Estado
+          examples:
+          - activa
+        ttlSegundos:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Ttlsegundos
+          examples:
+          - 1800
+      type: object
+      required:
+      - sesionId
+      - estado
+      title: Sesion
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+servers:
+- url: http://localhost:8000
+  description: API local (notebook)

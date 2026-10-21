@@ -1,0 +1,13 @@
+# Entorno virtual y dependencias
+.venv/
+__pycache__/
+*.pyc
+
+# Secretos y configuracion local (RNF7): nunca versionar
+.env
+*.env
+.influxdb3-token
+
+# Evidencia local generada en cada corrida
+docs/evidencia/logs/*.log
+.pytest_cache/
