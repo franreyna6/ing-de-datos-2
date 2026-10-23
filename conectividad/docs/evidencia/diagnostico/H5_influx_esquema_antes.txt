@@ -1,0 +1,11 @@
+# H5 - Esquema de InfluxDB en la notebook distinto del que consulta la API (evidencia ANTES de corregir)
+# Extraido de resultados_clientes.txt de la corrida exploratoria fecha UTC: 2026-10-23T06:09:36Z 
+[OK   ] influxdb  protocolo      2053.2 ms  GET /health SIN token -> HTTP 401: el servicio responde HTTP; exige autorizacion incluso para /health (InfluxDB 3 Core por defecto)
+[OK   ] influxdb  autenticacion  2048.2 ms  GET /health CON el token configurado -> HTTP 200 OK
+[OK   ] influxdb  autenticacion  2048.8 ms  [negativo] Token invalido -> HTTP 401 (rechazado)
+[OK   ] influxdb  autorizacion   2049.0 ms  El token puede listar las databases (permiso de administracion) -> HTTP 200: _internal, fixture2030_historico, fixture2030_resumen, fixture2030_vivo
+[OK   ] influxdb  contexto           -      Database 'fixture2030_vivo' configurada existe -> presente en el catalogo
+[FALLA] influxdb  lectura        2081.7 ms  Consulta temporal acotada F2030-018 [2030-06-13T12:00:00Z, 2030-06-13T12:05:00Z): COUNT, AVG(posesion), MAX(pases_acum) -> HTTP 500 b'Schema error: No field named pases_acum. Valid fields are estadisticas_equipo.equipo_id, estadisticas_equipo.fase, estadisticas_equipo.goles, estadisticas_equip'
+[FALLA] influxdb  lectura        2077.2 ms  [negativo] Ventana sin puntos [2030-06-13T09:00:00Z, 2030-06-13T09:15:00Z) -> HTTP 500
+[OK   ] influxdb  contexto       2056.8 ms  [negativo] Database inexistente -> HTTP 404: {"error":"query error: database not found: fixture2030_vivo_inexistente_h11"}
+[OK   ] influxdb  lectura         332.9 ms  influxdb3 query: conteo en la ventana (dentro del contenedor) -> puntos=600 | influxdb3 InfluxDB 3 Core, 3.12.1, revision 692ea4a9943fc343c5fdf830d7dff82eef1f7fca

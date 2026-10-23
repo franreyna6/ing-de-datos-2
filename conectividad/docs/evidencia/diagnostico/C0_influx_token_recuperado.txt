@@ -1,0 +1,41 @@
+# C0 - Token de InfluxDB ausente en la notebook y recuperacion sin borrar datos
+# Transcripcion redactada de la sesion de preparacion (2026-10-23, ~05:55 UTC, notebook del equipo).
+# El token nunca se imprimio: se escribio directo a influxdb/.influxdb3-token (excluido de Git).
+
+## Condicion observada
+$ ls influxdb/.influxdb3-token
+ls: cannot access 'influxdb/.influxdb3-token': No such file or directory
+  (el repositorio se clono de nuevo; el token del Hito 8 solo existia en la copia anterior)
+
+$ curl -i http://127.0.0.1:8181/health          # sin token
+HTTP/1.1 401 Unauthorized
+  -> el servicio responde (no esta caido) pero exige autorizacion incluso para /health
+
+$ docker exec fixture2030-influxdb influxdb3 --version
+influxdb3 InfluxDB 3 Core, 3.12.1, revision 692ea4a9943fc343c5fdf830d7dff82eef1f7fca
+
+## Hipotesis
+El servidor ya tiene un token de administracion (creado en el Hito 8) y el archivo local se perdio.
+'influxdb3 create token --admin' sin token previo falla; la salida del README del Hito 8
+(limpieza --datos) borraria los datos, lo que el Hito 11 prohibe.
+
+## Prueba / correccion (reversible, sin borrar datos)
+InfluxDB 3 Core ofrece un endpoint de recuperacion del token de administracion
+(--admin-token-recovery-http-bind / INFLUXDB3_ADMIN_TOKEN_RECOVERY_HTTP_BIND_ADDR).
+1. Se recreo el contenedor UNA vez con un override temporal FUERA del repositorio que solo
+   agrega INFLUXDB3_ADMIN_TOKEN_RECOVERY_HTTP_BIND_ADDR=127.0.0.1:8182 (escucha DENTRO del
+   contenedor; ese puerto no se publica). Montaje de datos verificado igual antes y despues:
+   C:\Users\<usuario>/docker/data/influxdb -> /var/lib/influxdb3/data
+2. echo yes | docker exec -i fixture2030-influxdb influxdb3 create token --admin --regenerate \
+       --host http://127.0.0.1:8182   > (salida filtrada: solo el token, a .influxdb3-token)
+   token guardado (92 caracteres)
+3. Se recreo el contenedor con el docker-compose.yml ORIGINAL (sin el endpoint de recuperacion).
+
+## Resultado
+$ influxdb3 show databases     (con el token nuevo)
+| _internal | fixture2030_historico | fixture2030_resumen | fixture2030_vivo |
+  -> autorizacion OK, datos previos intactos (las 3 bases del equipo siguen presentes)
+
+## Siguiente paso
+Documentado en README (preparacion, paso 2). El token anterior quedo invalidado por --regenerate,
+que es lo esperado: era irrecuperable.

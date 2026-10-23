@@ -1,0 +1,19 @@
+2026-10-23T03:26:36 INFO [req=0004af3d] GET /openapi.json -> 200 (14.7 ms)
+2026-10-23T03:26:36 INFO [req=h11-timeout-normal-neo4j-6d8] neo4j partido=F2030-001 eventos=2
+2026-10-23T03:26:36 INFO [req=h11-timeout-normal-neo4j-6d8] GET /partidos/F2030-001/eventos -> 200 (167.2 ms)
+2026-10-23T03:26:36 INFO [req=h11-timeout-normal-mongodb-bfe] mongo equipo codigo=ZZZ encontrado=False
+2026-10-23T03:26:36 INFO [req=h11-timeout-normal-mongodb-bfe] GET /equipos/ZZZ -> 404 (151.6 ms)
+2026-10-23T03:26:36 INFO [req=h11-timeout-normal-redis-c12] redis sesion=no-existe-h11 ausente_o_expirada
+2026-10-23T03:26:36 INFO [req=h11-timeout-normal-redis-c12] GET /sesiones/no-existe-h11 -> 404 (53.6 ms)
+2026-10-23T03:26:38 INFO [req=h11-timeout-normal-cassandra-bff] cassandra leer partido=F2030-063 ventana=2030-06-22 20:00:00+00:00 filas=2 modo=driver
+2026-10-23T03:26:38 INFO [req=h11-timeout-normal-cassandra-bff] GET /partidos/F2030-063/comentarios -> 200 (1742.8 ms)
+2026-10-23T03:26:38 WARNING [req=h11-timeout-normal-influxdb-b9f] influx status=400
+2026-10-23T03:26:38 WARNING [req=h11-timeout-normal-influxdb-b9f] dependencia fuente=influxdb causa=HTTP 400
+2026-10-23T03:26:38 INFO [req=h11-timeout-normal-influxdb-b9f] GET /partidos/F2030-018/estadisticas -> 503 (18.9 ms)
+2026-10-23T03:26:38 WARNING [req=h11-timeout-normal-iris-1dc] iris error partido=F2030-999
+2026-10-23T03:26:38 WARNING [req=h11-timeout-normal-iris-1dc] dependencia fuente=iris causa=<SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]
+
+[Location: <Prepare>]
+
+[%msg: < USING expected, LOCAL found ^SELECT p . Codigo , p . Fecha , p . Fase , p . Estado , p . GolesLocal , p . GolesVisitante , LOCAL . Codigo AS LocalCodigo , visita . Codigo AS VisitaCodigo , s . Codigo AS SedeCodigo , s . Nombre AS SedeNombre FROM Fixture . Partido p LEFT JOIN Fixture . Equipo LOCAL>]
+2026-10-23T03:26:38 INFO [req=h11-timeout-normal-iris-1dc] GET /partidos/F2030-999/detalle -> 503 (53.2 ms)

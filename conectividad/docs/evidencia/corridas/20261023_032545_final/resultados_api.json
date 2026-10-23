@@ -1,0 +1,581 @@
+{
+  "generado": "2026-10-23T06:26:25Z",
+  "commit": "b6d4e88",
+  "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+  "resultados": [
+    {
+      "producto": "api",
+      "capa": "api",
+      "prueba": "GET /salud contra un puerto sin API",
+      "resultado": "OK",
+      "detalle": "sin respuesta HTTP (connection refused): API no alcanzable",
+      "objetivo": "http://127.0.0.1:8099/salud",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib)",
+      "duracion_ms": 2046.32359999232,
+      "responde": "Como se ve 'API caida' frente a 'API arriba con una dependencia caida'?",
+      "no_permite": "",
+      "esperado": "api_no_alcanzable",
+      "fecha": "2026-10-23T06:26:21Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "categoria": "api_no_alcanzable",
+        "caso": "negativo"
+      }
+    },
+    {
+      "producto": "api",
+      "capa": "api",
+      "prueba": "GET /salud (chequeo de las 6 fuentes)",
+      "resultado": "INFO",
+      "detalle": "HTTP 200 en 2188 ms | mongodb=si, neo4j=si, cassandra=si, redis=si, influxdb=no, iris=si",
+      "objetivo": "http://127.0.0.1:8000/salud",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib)",
+      "duracion_ms": 2188.0901999538764,
+      "responde": "Que informa hoy el endpoint de salud del Hito 10?",
+      "no_permite": "Distinguir caida, timeout, credencial o contexto: solo devuelve un booleano por fuente y siempre HTTP 200",
+      "esperado": "",
+      "fecha": "2026-10-23T06:26:24Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 200,
+        "request_id": "h11-final-salud-73c1",
+        "categoria": "exito",
+        "dependencias": [
+          {
+            "fuente": "mongodb",
+            "disponible": true
+          },
+          {
+            "fuente": "neo4j",
+            "disponible": true
+          },
+          {
+            "fuente": "cassandra",
+            "disponible": true
+          },
+          {
+            "fuente": "redis",
+            "disponible": true
+          },
+          {
+            "fuente": "influxdb",
+            "disponible": false
+          },
+          {
+            "fuente": "iris",
+            "disponible": true
+          }
+        ],
+        "log": [
+          "2026-10-23T03:26:24 WARNING [req=h11-final-salud-73c1] influx status=400",
+          "2026-10-23T03:26:24 INFO [req=h11-final-salud-73c1] GET /salud -> 200 (2172.1 ms)"
+        ]
+      }
+    },
+    {
+      "producto": "mongodb",
+      "capa": "api",
+      "prueba": "GET /equipos/ARG",
+      "resultado": "FALLA",
+      "detalle": "HTTP 404 recurso_inexistente | NOT_FOUND: No existe el equipo 'ARG'.",
+      "objetivo": "http://127.0.0.1:8000/equipos/ARG",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 3.050900064408779,
+      "responde": "Equipo existente del Hito 4",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "exito",
+      "fecha": "2026-10-23T06:26:24Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 404,
+        "request_id": "h11-final-01-8fa9",
+        "request_id_enviado": "h11-final-01-8fa9",
+        "categoria": "recurso_inexistente",
+        "parametros": {},
+        "log": [
+          "2026-10-23T03:26:24 INFO [req=h11-final-01-8fa9] mongo equipo codigo=ARG encontrado=False",
+          "2026-10-23T03:26:24 INFO [req=h11-final-01-8fa9] GET /equipos/ARG -> 404 (1.9 ms)"
+        ],
+        "coincide_con_contrato": false
+      }
+    },
+    {
+      "producto": "mongodb",
+      "capa": "api",
+      "prueba": "GET /equipos/ZZZ",
+      "resultado": "OK",
+      "detalle": "HTTP 404 recurso_inexistente | NOT_FOUND: No existe el equipo 'ZZZ'.",
+      "objetivo": "http://127.0.0.1:8000/equipos/ZZZ",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 16.83269999921322,
+      "responde": "Codigo FIFA inexistente",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "recurso_inexistente",
+      "fecha": "2026-10-23T06:26:24Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 404,
+        "request_id": "h11-final-02-e856",
+        "request_id_enviado": "h11-final-02-e856",
+        "categoria": "recurso_inexistente",
+        "parametros": {},
+        "log": [
+          "2026-10-23T03:26:24 INFO [req=h11-final-02-e856] mongo equipo codigo=ZZZ encontrado=False",
+          "2026-10-23T03:26:24 INFO [req=h11-final-02-e856] GET /equipos/ZZZ -> 404 (1.9 ms)"
+        ],
+        "coincide_con_contrato": true
+      }
+    },
+    {
+      "producto": "mongodb",
+      "capa": "api",
+      "prueba": "GET /equipos/ARG/jugadores?limit=5",
+      "resultado": "FALLA",
+      "detalle": "HTTP 500 error_interno | INTERNAL_ERROR: Ocurrio un error interno al procesar la solicitud.",
+      "objetivo": "http://127.0.0.1:8000/equipos/ARG/jugadores?limit=5",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 29.110900009982288,
+      "responde": "Plantel paginado",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "exito",
+      "fecha": "2026-10-23T06:26:24Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 500,
+        "request_id": "",
+        "request_id_enviado": "h11-final-03-06aa",
+        "categoria": "error_interno",
+        "parametros": {
+          "limit": 5
+        },
+        "log": [
+          "2026-10-23T03:26:24 INFO [req=h11-final-03-06aa] mongo jugadores equipo=ARG filas=5",
+          "2026-10-23T03:26:24 ERROR [req=h11-final-03-06aa] error inesperado en /equipos/ARG/jugadores: ResponseValidationError()"
+        ],
+        "coincide_con_contrato": false
+      }
+    },
+    {
+      "producto": "mongodb",
+      "capa": "api",
+      "prueba": "GET /equipos/ARG/jugadores?limit=0",
+      "resultado": "OK",
+      "detalle": "HTTP 400 error_validacion | VALIDATION_ERROR: Parametros o cuerpo invalidos.",
+      "objetivo": "http://127.0.0.1:8000/equipos/ARG/jugadores?limit=0",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 2.827299991622567,
+      "responde": "limit fuera de rango: se rechaza sin consultar la base",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "error_validacion",
+      "fecha": "2026-10-23T06:26:24Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 400,
+        "request_id": "h11-final-04-e6fa",
+        "request_id_enviado": "h11-final-04-e6fa",
+        "categoria": "error_validacion",
+        "parametros": {
+          "limit": 0
+        },
+        "log": [
+          "2026-10-23T03:26:24 INFO [req=h11-final-04-e6fa] GET /equipos/ARG/jugadores -> 400 (1.5 ms)"
+        ],
+        "coincide_con_contrato": true
+      }
+    },
+    {
+      "producto": "neo4j",
+      "capa": "api",
+      "prueba": "GET /partidos/F2030-001/eventos?limit=5",
+      "resultado": "OK",
+      "detalle": "HTTP 200 exito | 2 eventos",
+      "objetivo": "http://127.0.0.1:8000/partidos/F2030-001/eventos?limit=5",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 9.619200020097196,
+      "responde": "Eventos de un partido con goles",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "exito",
+      "fecha": "2026-10-23T06:26:24Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 200,
+        "request_id": "h11-final-05-d217",
+        "request_id_enviado": "h11-final-05-d217",
+        "categoria": "exito",
+        "parametros": {
+          "limit": 5
+        },
+        "log": [
+          "2026-10-23T03:26:24 INFO [req=h11-final-05-d217] neo4j partido=F2030-001 eventos=2",
+          "2026-10-23T03:26:24 INFO [req=h11-final-05-d217] GET /partidos/F2030-001/eventos -> 200 (8.2 ms)"
+        ],
+        "coincide_con_contrato": true
+      }
+    },
+    {
+      "producto": "neo4j",
+      "capa": "api",
+      "prueba": "GET /partidos/F2030-006/eventos?limit=5",
+      "resultado": "OK",
+      "detalle": "HTTP 200 vacio_valido | 0 eventos",
+      "objetivo": "http://127.0.0.1:8000/partidos/F2030-006/eventos?limit=5",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 8.15899996086955,
+      "responde": "Partido existente sin eventos: 200 con lista vacia",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "vacio_valido",
+      "fecha": "2026-10-23T06:26:24Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 200,
+        "request_id": "h11-final-06-0457",
+        "request_id_enviado": "h11-final-06-0457",
+        "categoria": "vacio_valido",
+        "parametros": {
+          "limit": 5
+        },
+        "log": [
+          "2026-10-23T03:26:24 INFO [req=h11-final-06-0457] neo4j partido=F2030-006 eventos=0",
+          "2026-10-23T03:26:24 INFO [req=h11-final-06-0457] GET /partidos/F2030-006/eventos -> 200 (6.8 ms)"
+        ],
+        "coincide_con_contrato": true
+      }
+    },
+    {
+      "producto": "neo4j",
+      "capa": "api",
+      "prueba": "GET /partidos/F2030-999/eventos",
+      "resultado": "OK",
+      "detalle": "HTTP 404 recurso_inexistente | NOT_FOUND: No existe el partido 'F2030-999'.",
+      "objetivo": "http://127.0.0.1:8000/partidos/F2030-999/eventos",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 34.7302999580279,
+      "responde": "Partido inexistente",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "recurso_inexistente",
+      "fecha": "2026-10-23T06:26:24Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 404,
+        "request_id": "h11-final-07-87c7",
+        "request_id_enviado": "h11-final-07-87c7",
+        "categoria": "recurso_inexistente",
+        "parametros": {},
+        "log": [
+          "2026-10-23T03:26:24 INFO [req=h11-final-07-87c7] neo4j partido=F2030-999 inexistente",
+          "2026-10-23T03:26:24 INFO [req=h11-final-07-87c7] GET /partidos/F2030-999/eventos -> 404 (20.9 ms)"
+        ],
+        "coincide_con_contrato": true
+      }
+    },
+    {
+      "producto": "cassandra",
+      "capa": "api",
+      "prueba": "GET /partidos/F2030-063/comentarios?instante=2030-06-22T20%3A03%3A00Z&limit=5",
+      "resultado": "OK",
+      "detalle": "HTTP 200 exito | 2 comentarios",
+      "objetivo": "http://127.0.0.1:8000/partidos/F2030-063/comentarios?instante=2030-06-22T20%3A03%3A00Z&limit=5",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 13.55530007276684,
+      "responde": "Particion con comentarios de la muestra del Hito 6",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "exito",
+      "fecha": "2026-10-23T06:26:24Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 200,
+        "request_id": "h11-final-08-cc60",
+        "request_id_enviado": "h11-final-08-cc60",
+        "categoria": "exito",
+        "parametros": {
+          "instante": "2030-06-22T20:03:00Z",
+          "limit": 5
+        },
+        "log": [
+          "2026-10-23T03:26:24 INFO [req=h11-final-08-cc60] cassandra leer partido=F2030-063 ventana=2030-06-22 20:00:00+00:00 filas=2 modo=driver",
+          "2026-10-23T03:26:24 INFO [req=h11-final-08-cc60] GET /partidos/F2030-063/comentarios -> 200 (12.2 ms)"
+        ],
+        "coincide_con_contrato": true
+      }
+    },
+    {
+      "producto": "cassandra",
+      "capa": "api",
+      "prueba": "GET /partidos/F2030-063/comentarios?instante=2029-06-22T20%3A03%3A00Z&limit=5",
+      "resultado": "OK",
+      "detalle": "HTTP 200 vacio_valido | 0 comentarios",
+      "objetivo": "http://127.0.0.1:8000/partidos/F2030-063/comentarios?instante=2029-06-22T20%3A03%3A00Z&limit=5",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 14.950599987059832,
+      "responde": "Ventana sin comentarios",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "vacio_valido",
+      "fecha": "2026-10-23T06:26:24Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 200,
+        "request_id": "h11-final-09-442e",
+        "request_id_enviado": "h11-final-09-442e",
+        "categoria": "vacio_valido",
+        "parametros": {
+          "instante": "2029-06-22T20:03:00Z",
+          "limit": 5
+        },
+        "log": [
+          "2026-10-23T03:26:24 INFO [req=h11-final-09-442e] cassandra leer partido=F2030-063 ventana=2029-06-22 20:00:00+00:00 filas=0 modo=driver",
+          "2026-10-23T03:26:24 INFO [req=h11-final-09-442e] GET /partidos/F2030-063/comentarios -> 200 (13.7 ms)"
+        ],
+        "coincide_con_contrato": true
+      }
+    },
+    {
+      "producto": "cassandra",
+      "capa": "api",
+      "prueba": "GET /partidos/F2030-063/comentarios?instante=no-es-fecha",
+      "resultado": "OK",
+      "detalle": "HTTP 400 error_validacion | VALIDATION_ERROR: El parametro 'instante' no es una fecha-hora ISO-8601 valida.",
+      "objetivo": "http://127.0.0.1:8000/partidos/F2030-063/comentarios?instante=no-es-fecha",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 1.7612999072298408,
+      "responde": "Instante con formato invalido",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "error_validacion",
+      "fecha": "2026-10-23T06:26:24Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 400,
+        "request_id": "h11-final-10-adf8",
+        "request_id_enviado": "h11-final-10-adf8",
+        "categoria": "error_validacion",
+        "parametros": {
+          "instante": "no-es-fecha"
+        },
+        "log": [
+          "2026-10-23T03:26:24 INFO [req=h11-final-10-adf8] GET /partidos/F2030-063/comentarios -> 400 (0.6 ms)"
+        ],
+        "coincide_con_contrato": true
+      }
+    },
+    {
+      "producto": "redis",
+      "capa": "api",
+      "prueba": "GET /sesiones/S0001",
+      "resultado": "FALLA",
+      "detalle": "HTTP 503 dependencia_no_disponible | DEPENDENCY_UNAVAILABLE: La fuente 'redis' no esta disponible en este momento.",
+      "objetivo": "http://127.0.0.1:8000/sesiones/S0001",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 2.6005000108852983,
+      "responde": "Sesion vigente cargada por el Hito 7 (hash con TTL)",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "exito",
+      "fecha": "2026-10-23T06:26:24Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 503,
+        "request_id": "h11-final-11-41b3",
+        "request_id_enviado": "h11-final-11-41b3",
+        "categoria": "dependencia_no_disponible",
+        "parametros": {},
+        "log": [
+          "2026-10-23T03:26:24 WARNING [req=h11-final-11-41b3] redis error sesion=S0001",
+          "2026-10-23T03:26:24 WARNING [req=h11-final-11-41b3] dependencia fuente=redis causa=WRONGTYPE Operation against a key holding the wrong kind of value",
+          "2026-10-23T03:26:24 INFO [req=h11-final-11-41b3] GET /sesiones/S0001 -> 503 (1.4 ms)"
+        ],
+        "coincide_con_contrato": false
+      }
+    },
+    {
+      "producto": "redis",
+      "capa": "api",
+      "prueba": "GET /sesiones/no-existe-h11",
+      "resultado": "OK",
+      "detalle": "HTTP 404 recurso_inexistente | NOT_FOUND: No existe una sesion vigente con ese identificador.",
+      "objetivo": "http://127.0.0.1:8000/sesiones/no-existe-h11",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 2.4076999397948384,
+      "responde": "Sesion ausente o expirada",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "recurso_inexistente",
+      "fecha": "2026-10-23T06:26:25Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 404,
+        "request_id": "h11-final-12-21a5",
+        "request_id_enviado": "h11-final-12-21a5",
+        "categoria": "recurso_inexistente",
+        "parametros": {},
+        "log": [
+          "2026-10-23T03:26:24 INFO [req=h11-final-12-21a5] redis sesion=no-existe-h11 ausente_o_expirada",
+          "2026-10-23T03:26:24 INFO [req=h11-final-12-21a5] GET /sesiones/no-existe-h11 -> 404 (1.2 ms)"
+        ],
+        "coincide_con_contrato": true
+      }
+    },
+    {
+      "producto": "influxdb",
+      "capa": "api",
+      "prueba": "GET /partidos/F2030-018/estadisticas?desde=2030-06-13T08%3A00%3A00Z&hasta=2030-06-13T08%3A05%3A00Z",
+      "resultado": "FALLA",
+      "detalle": "HTTP 503 dependencia_no_disponible | DEPENDENCY_UNAVAILABLE: La fuente 'influxdb' no esta disponible en este momento.",
+      "objetivo": "http://127.0.0.1:8000/partidos/F2030-018/estadisticas?desde=2030-06-13T08%3A00%3A00Z&hasta=2030-06-13T08%3A05%3A00Z",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 4.122199956327677,
+      "responde": "Ventana acotada con puntos",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "exito",
+      "fecha": "2026-10-23T06:26:25Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 503,
+        "request_id": "h11-final-13-8088",
+        "request_id_enviado": "h11-final-13-8088",
+        "categoria": "dependencia_no_disponible",
+        "parametros": {
+          "desde": "2030-06-13T08:00:00Z",
+          "hasta": "2030-06-13T08:05:00Z"
+        },
+        "log": [
+          "2026-10-23T03:26:25 WARNING [req=h11-final-13-8088] influx status=400",
+          "2026-10-23T03:26:25 WARNING [req=h11-final-13-8088] dependencia fuente=influxdb causa=HTTP 400",
+          "2026-10-23T03:26:25 INFO [req=h11-final-13-8088] GET /partidos/F2030-018/estadisticas -> 503 (2.7 ms)"
+        ],
+        "coincide_con_contrato": false
+      }
+    },
+    {
+      "producto": "influxdb",
+      "capa": "api",
+      "prueba": "GET /partidos/F2030-018/estadisticas?desde=2030-06-13T09%3A00%3A00Z&hasta=2030-06-13T09%3A15%3A00Z",
+      "resultado": "FALLA",
+      "detalle": "HTTP 503 dependencia_no_disponible | DEPENDENCY_UNAVAILABLE: La fuente 'influxdb' no esta disponible en este momento.",
+      "objetivo": "http://127.0.0.1:8000/partidos/F2030-018/estadisticas?desde=2030-06-13T09%3A00%3A00Z&hasta=2030-06-13T09%3A15%3A00Z",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 3.743099980056286,
+      "responde": "Ventana sin puntos (antes del partido)",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "vacio_valido",
+      "fecha": "2026-10-23T06:26:25Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 503,
+        "request_id": "h11-final-14-ebcf",
+        "request_id_enviado": "h11-final-14-ebcf",
+        "categoria": "dependencia_no_disponible",
+        "parametros": {
+          "desde": "2030-06-13T09:00:00Z",
+          "hasta": "2030-06-13T09:15:00Z"
+        },
+        "log": [
+          "2026-10-23T03:26:25 WARNING [req=h11-final-14-ebcf] influx status=400",
+          "2026-10-23T03:26:25 WARNING [req=h11-final-14-ebcf] dependencia fuente=influxdb causa=HTTP 400",
+          "2026-10-23T03:26:25 INFO [req=h11-final-14-ebcf] GET /partidos/F2030-018/estadisticas -> 503 (2.5 ms)"
+        ],
+        "coincide_con_contrato": false
+      }
+    },
+    {
+      "producto": "influxdb",
+      "capa": "api",
+      "prueba": "GET /partidos/F2030-018/estadisticas?desde=2030-06-13T08%3A05%3A00Z&hasta=2030-06-13T08%3A00%3A00Z",
+      "resultado": "OK",
+      "detalle": "HTTP 400 error_validacion | VALIDATION_ERROR: El parametro 'desde' debe ser anterior a 'hasta'.",
+      "objetivo": "http://127.0.0.1:8000/partidos/F2030-018/estadisticas?desde=2030-06-13T08%3A05%3A00Z&hasta=2030-06-13T08%3A00%3A00Z",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 1.7460000235587358,
+      "responde": "desde > hasta",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "error_validacion",
+      "fecha": "2026-10-23T06:26:25Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 400,
+        "request_id": "h11-final-15-7523",
+        "request_id_enviado": "h11-final-15-7523",
+        "categoria": "error_validacion",
+        "parametros": {
+          "desde": "2030-06-13T08:05:00Z",
+          "hasta": "2030-06-13T08:00:00Z"
+        },
+        "log": [
+          "2026-10-23T03:26:25 INFO [req=h11-final-15-7523] GET /partidos/F2030-018/estadisticas -> 400 (0.5 ms)"
+        ],
+        "coincide_con_contrato": true
+      }
+    },
+    {
+      "producto": "iris",
+      "capa": "api",
+      "prueba": "GET /partidos/F2030-001/detalle",
+      "resultado": "FALLA",
+      "detalle": "HTTP 503 dependencia_no_disponible | DEPENDENCY_UNAVAILABLE: La fuente 'iris' no esta disponible en este momento.",
+      "objetivo": "http://127.0.0.1:8000/partidos/F2030-001/detalle",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 8.605599985457957,
+      "responde": "Entidad compleja Partido del Hito 9",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "exito",
+      "fecha": "2026-10-23T06:26:25Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 503,
+        "request_id": "h11-final-16-8d2d",
+        "request_id_enviado": "h11-final-16-8d2d",
+        "categoria": "dependencia_no_disponible",
+        "parametros": {},
+        "log": [
+          "2026-10-23T03:26:25 WARNING [req=h11-final-16-8d2d] iris error partido=F2030-001",
+          "2026-10-23T03:26:25 WARNING [req=h11-final-16-8d2d] dependencia fuente=iris causa=<SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]",
+          "2026-10-23T03:26:25 INFO [req=h11-final-16-8d2d] GET /partidos/F2030-001/detalle -> 503 (7.3 ms)"
+        ],
+        "coincide_con_contrato": false
+      }
+    },
+    {
+      "producto": "iris",
+      "capa": "api",
+      "prueba": "GET /partidos/F2030-999/detalle",
+      "resultado": "FALLA",
+      "detalle": "HTTP 503 dependencia_no_disponible | DEPENDENCY_UNAVAILABLE: La fuente 'iris' no esta disponible en este momento.",
+      "objetivo": "http://127.0.0.1:8000/partidos/F2030-999/detalle",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "HTTP (urllib) -> API Hito 10",
+      "duracion_ms": 4.500599927268922,
+      "responde": "Objeto inexistente",
+      "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
+      "esperado": "recurso_inexistente",
+      "fecha": "2026-10-23T06:26:25Z",
+      "commit": "b6d4e88",
+      "extra": {
+        "status": 503,
+        "request_id": "h11-final-17-189f",
+        "request_id_enviado": "h11-final-17-189f",
+        "categoria": "dependencia_no_disponible",
+        "parametros": {},
+        "log": [
+          "2026-10-23T03:26:25 WARNING [req=h11-final-17-189f] iris error partido=F2030-999",
+          "2026-10-23T03:26:25 WARNING [req=h11-final-17-189f] dependencia fuente=iris causa=<SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]",
+          "2026-10-23T03:26:25 INFO [req=h11-final-17-189f] GET /partidos/F2030-999/detalle -> 503 (3.3 ms)"
+        ],
+        "coincide_con_contrato": false
+      }
+    }
+  ]
+}

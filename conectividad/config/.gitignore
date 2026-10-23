@@ -1,0 +1,5 @@
+# Configuracion real de cada maquina: contiene credenciales (RNF7). Solo se
+# versiona configuracion-ejemplo.env.
+*
+!.gitignore
+!configuracion-ejemplo.env

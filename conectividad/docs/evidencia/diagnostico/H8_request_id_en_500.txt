@@ -1,0 +1,9 @@
+# H8 - Correlacion request_id en errores 500 (verificacion 2026-10-23T06:27:21Z, commit b6d4e88)
+# API del Hito 10 sin modificar, iniciada en 127.0.0.1 con api_local.iniciar(); request con X-Request-ID: h11-verif-500
+GET /equipos/ARG/jugadores?limit=1 -> HTTP 500
+headers X-Request-ID en la respuesta: (ausente)
+cuerpo: {"error":{"code":"INTERNAL_ERROR","message":"Ocurrio un error interno al procesar la solicitud.","request_id":"h11-verif-500"}}
+lineas del log con [req=h11-verif-500]:
+2026-10-23T03:27:09 INFO [req=h11-verif-500] mongo jugadores equipo=ARG filas=1
+2026-10-23T03:27:09 ERROR [req=h11-verif-500] error inesperado en /equipos/ARG/jugadores: ResponseValidationError()
+(no hay linea de acceso 'GET ... -> 500 (x ms)': el middleware no llega a registrarla)

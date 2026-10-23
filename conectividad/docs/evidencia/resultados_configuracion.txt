@@ -1,0 +1,25 @@
+# Evaluacion de conectividad - modo completo - final
+# fecha UTC: 2026-10-23T06:25:45Z | commit: b6d4e88
+# origen de las pruebas: notebook Windows 10 | Python 3.11.9 (.venv)
+# docker: Docker Engine 29.8.2
+# configuracion: configuracion.env presente
+# timeout por operacion: 3.0 s
+[INFO ] herramientas configuracion      -      Docker disponible para clientes nativos -> Docker Engine 29.8.2
+[OK   ] mongodb   configuracion      -      Variables de conexion completas y validas -> MONGODB_URI=mongodb://admin:****@localhost:27017/?authSource=admin [con credencial (oculta)] [configuracion.env]; MONGODB_DATABASE=fixture2030 [configuracion.env]
+[OK   ] mongodb   configuracion      -      Driver de la API importable en este Python -> pymongo 4.10.1
+[INFO ] mongodb   configuracion      -      Estado del contenedor (informativo) -> fixture2030-mongodb: running
+[OK   ] neo4j     configuracion      -      Variables de conexion completas y validas -> NEO4J_URI=bolt://localhost:7687 [configuracion.env]; NEO4J_USER=neo4j [configuracion.env]; NEO4J_PASSWORD=definido (11 caracteres, oculto) [configuracion.env]; NEO4J_DATABASE=neo4j [configuracion.env]
+[OK   ] neo4j     configuracion      -      Driver de la API importable en este Python -> neo4j 5.27.0
+[INFO ] neo4j     configuracion      -      Estado del contenedor (informativo) -> fixture2030-neo4j: running
+[OK   ] cassandra configuracion      -      Variables de conexion completas y validas -> CASSANDRA_HOST=localhost [configuracion.env]; CASSANDRA_PORT=9042 [configuracion.env]; CASSANDRA_KEYSPACE=fixture2030_comentarios [configuracion.env]; CASSANDRA_CONTAINER=fixture2030-cassandra [configuracion.env]
+[OK   ] cassandra configuracion      -      Driver de la API importable en este Python -> cassandra-driver 3.29.2
+[INFO ] cassandra configuracion      -      Estado del contenedor (informativo) -> fixture2030-cassandra: running
+[OK   ] redis     configuracion      -      Variables de conexion completas y validas -> REDIS_URL=redis://localhost:6379/0 [sin credencial] [configuracion.env]
+[OK   ] redis     configuracion      -      Driver de la API importable en este Python -> redis 5.2.1
+[INFO ] redis     configuracion      -      Estado del contenedor (informativo) -> fixture2030-redis: running
+[OK   ] influxdb  configuracion      -      Variables de conexion completas y validas -> INFLUX_URL=http://127.0.0.1:8181 [configuracion.env]; INFLUX_DATABASE=fixture2030_vivo [configuracion.env]; INFLUXDB3_TOKEN=definido (92 caracteres, oculto) [archivo INFLUXDB3_TOKEN_FILE]; INFLUXDB3_TOKEN_FILE=../influxdb/.influxdb3-token [configuracion.env]
+[OK   ] influxdb  configuracion      -      Driver de la API importable en este Python -> biblioteca estandar
+[INFO ] influxdb  configuracion      -      Estado del contenedor (informativo) -> fixture2030-influxdb: running
+[OK   ] iris      configuracion      -      Variables de conexion completas y validas -> IRIS_HOST=127.0.0.1 [configuracion.env]; IRIS_PORT=1972 [configuracion.env]; IRIS_NAMESPACE=USER [configuracion.env]; IRIS_USER=_SYSTEM [configuracion.env]; IRIS_PASSWORD=definido (16 caracteres, oculto) [configuracion.env]
+[OK   ] iris      configuracion      -      Driver de la API importable en este Python -> intersystems-irispython
+[INFO ] iris      configuracion      -      Estado del contenedor (informativo) -> fixture2030-iris: running

@@ -1,0 +1,189 @@
+2026-10-23T03:26:19 INFO [req=2c1a07c0] GET /openapi.json -> 200 (15.1 ms)
+2026-10-23T03:26:24 WARNING [req=h11-final-salud-73c1] influx status=400
+2026-10-23T03:26:24 INFO [req=h11-final-salud-73c1] GET /salud -> 200 (2172.1 ms)
+2026-10-23T03:26:24 INFO [req=h11-final-01-8fa9] mongo equipo codigo=ARG encontrado=False
+2026-10-23T03:26:24 INFO [req=h11-final-01-8fa9] GET /equipos/ARG -> 404 (1.9 ms)
+2026-10-23T03:26:24 INFO [req=h11-final-02-e856] mongo equipo codigo=ZZZ encontrado=False
+2026-10-23T03:26:24 INFO [req=h11-final-02-e856] GET /equipos/ZZZ -> 404 (1.9 ms)
+2026-10-23T03:26:24 INFO [req=h11-final-03-06aa] mongo jugadores equipo=ARG filas=5
+2026-10-23T03:26:24 ERROR [req=h11-final-03-06aa] error inesperado en /equipos/ARG/jugadores: ResponseValidationError()
+ERROR:    Exception in ASGI application
+  + Exception Group Traceback (most recent call last):
+  |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\base.py", line 186, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 847, in __aexit__
+  |     raise BaseExceptionGroup(
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 409, in run_asgi
+    |     result = await app(  # type: ignore[func-returns-value]
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    |     return await self.app(scope, receive, send)
+    |            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\fastapi\applications.py", line 1054, in __call__
+    |     await super().__call__(scope, receive, send)
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\applications.py", line 113, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\errors.py", line 187, in __call__
+    |     raise exc
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\base.py", line 185, in __call__
+    |     with collapse_excgroups():
+    |   File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 158, in __exit__
+    |     self.gen.throw(typ, value, traceback)
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\base.py", line 187, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\app\main.py", line 46, in middleware_request_id
+    |     respuesta = await call_next(request)
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\base.py", line 163, in call_next
+    |     raise app_exc
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\base.py", line 149, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\routing.py", line 715, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\routing.py", line 735, in app
+    |     await route.handle(scope, receive, send)
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\routing.py", line 73, in app
+    |     response = await f(request)
+    |                ^^^^^^^^^^^^^^^^
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\fastapi\routing.py", line 327, in app
+    |     content = await serialize_response(
+    |               ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\fastapi\routing.py", line 176, in serialize_response
+    |     raise ResponseValidationError(
+    | fastapi.exceptions.ResponseValidationError: 5 validation errors:
+    |   {'type': 'string_type', 'loc': ('response', 'jugadores', 0, 'codigo'), 'msg': 'Input should be a valid string', 'input': ObjectId('6adaf8a574df3cebca5fbc78')}
+    |   {'type': 'string_type', 'loc': ('response', 'jugadores', 1, 'codigo'), 'msg': 'Input should be a valid string', 'input': ObjectId('6adaf8a574df3cebca5fbc76')}
+    |   {'type': 'string_type', 'loc': ('response', 'jugadores', 2, 'codigo'), 'msg': 'Input should be a valid string', 'input': ObjectId('6adaf8a574df3cebca5fbc80')}
+    |   {'type': 'string_type', 'loc': ('response', 'jugadores', 3, 'codigo'), 'msg': 'Input should be a valid string', 'input': ObjectId('6adaf8a574df3cebca5fbc82')}
+    |   {'type': 'string_type', 'loc': ('response', 'jugadores', 4, 'codigo'), 'msg': 'Input should be a valid string', 'input': ObjectId('6adaf8a574df3cebca5fbc79')}
+    | 
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\fastapi\applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\errors.py", line 187, in __call__
+    raise exc
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\base.py", line 185, in __call__
+    with collapse_excgroups():
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\base.py", line 187, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\app\main.py", line 46, in middleware_request_id
+    respuesta = await call_next(request)
+                ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\base.py", line 163, in call_next
+    raise app_exc
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\base.py", line 149, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\routing.py", line 715, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\routing.py", line 735, in app
+    await route.handle(scope, receive, send)
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\fastapi\routing.py", line 327, in app
+    content = await serialize_response(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\api\.venv\Lib\site-packages\fastapi\routing.py", line 176, in serialize_response
+    raise ResponseValidationError(
+fastapi.exceptions.ResponseValidationError: 5 validation errors:
+  {'type': 'string_type', 'loc': ('response', 'jugadores', 0, 'codigo'), 'msg': 'Input should be a valid string', 'input': ObjectId('6adaf8a574df3cebca5fbc78')}
+  {'type': 'string_type', 'loc': ('response', 'jugadores', 1, 'codigo'), 'msg': 'Input should be a valid string', 'input': ObjectId('6adaf8a574df3cebca5fbc76')}
+  {'type': 'string_type', 'loc': ('response', 'jugadores', 2, 'codigo'), 'msg': 'Input should be a valid string', 'input': ObjectId('6adaf8a574df3cebca5fbc80')}
+  {'type': 'string_type', 'loc': ('response', 'jugadores', 3, 'codigo'), 'msg': 'Input should be a valid string', 'input': ObjectId('6adaf8a574df3cebca5fbc82')}
+  {'type': 'string_type', 'loc': ('response', 'jugadores', 4, 'codigo'), 'msg': 'Input should be a valid string', 'input': ObjectId('6adaf8a574df3cebca5fbc79')}
+
+2026-10-23T03:26:24 INFO [req=h11-final-04-e6fa] GET /equipos/ARG/jugadores -> 400 (1.5 ms)
+2026-10-23T03:26:24 INFO [req=h11-final-05-d217] neo4j partido=F2030-001 eventos=2
+2026-10-23T03:26:24 INFO [req=h11-final-05-d217] GET /partidos/F2030-001/eventos -> 200 (8.2 ms)
+2026-10-23T03:26:24 INFO [req=h11-final-06-0457] neo4j partido=F2030-006 eventos=0
+2026-10-23T03:26:24 INFO [req=h11-final-06-0457] GET /partidos/F2030-006/eventos -> 200 (6.8 ms)
+2026-10-23T03:26:24 INFO [req=h11-final-07-87c7] neo4j partido=F2030-999 inexistente
+2026-10-23T03:26:24 INFO [req=h11-final-07-87c7] GET /partidos/F2030-999/eventos -> 404 (20.9 ms)
+2026-10-23T03:26:24 INFO [req=h11-final-08-cc60] cassandra leer partido=F2030-063 ventana=2030-06-22 20:00:00+00:00 filas=2 modo=driver
+2026-10-23T03:26:24 INFO [req=h11-final-08-cc60] GET /partidos/F2030-063/comentarios -> 200 (12.2 ms)
+2026-10-23T03:26:24 INFO [req=h11-final-09-442e] cassandra leer partido=F2030-063 ventana=2029-06-22 20:00:00+00:00 filas=0 modo=driver
+2026-10-23T03:26:24 INFO [req=h11-final-09-442e] GET /partidos/F2030-063/comentarios -> 200 (13.7 ms)
+2026-10-23T03:26:24 INFO [req=h11-final-10-adf8] GET /partidos/F2030-063/comentarios -> 400 (0.6 ms)
+2026-10-23T03:26:24 WARNING [req=h11-final-11-41b3] redis error sesion=S0001
+2026-10-23T03:26:24 WARNING [req=h11-final-11-41b3] dependencia fuente=redis causa=WRONGTYPE Operation against a key holding the wrong kind of value
+2026-10-23T03:26:24 INFO [req=h11-final-11-41b3] GET /sesiones/S0001 -> 503 (1.4 ms)
+2026-10-23T03:26:24 INFO [req=h11-final-12-21a5] redis sesion=no-existe-h11 ausente_o_expirada
+2026-10-23T03:26:24 INFO [req=h11-final-12-21a5] GET /sesiones/no-existe-h11 -> 404 (1.2 ms)
+2026-10-23T03:26:25 WARNING [req=h11-final-13-8088] influx status=400
+2026-10-23T03:26:25 WARNING [req=h11-final-13-8088] dependencia fuente=influxdb causa=HTTP 400
+2026-10-23T03:26:25 INFO [req=h11-final-13-8088] GET /partidos/F2030-018/estadisticas -> 503 (2.7 ms)
+2026-10-23T03:26:25 WARNING [req=h11-final-14-ebcf] influx status=400
+2026-10-23T03:26:25 WARNING [req=h11-final-14-ebcf] dependencia fuente=influxdb causa=HTTP 400
+2026-10-23T03:26:25 INFO [req=h11-final-14-ebcf] GET /partidos/F2030-018/estadisticas -> 503 (2.5 ms)
+2026-10-23T03:26:25 INFO [req=h11-final-15-7523] GET /partidos/F2030-018/estadisticas -> 400 (0.5 ms)
+2026-10-23T03:26:25 WARNING [req=h11-final-16-8d2d] iris error partido=F2030-001
+2026-10-23T03:26:25 WARNING [req=h11-final-16-8d2d] dependencia fuente=iris causa=<SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]
+
+[Location: <Prepare>]
+
+[%msg: < USING expected, LOCAL found ^SELECT p . Codigo , p . Fecha , p . Fase , p . Estado , p . GolesLocal , p . GolesVisitante , LOCAL . Codigo AS LocalCodigo , visita . Codigo AS VisitaCodigo , s . Codigo AS SedeCodigo , s . Nombre AS SedeNombre FROM Fixture . Partido p LEFT JOIN Fixture . Equipo LOCAL>]
+2026-10-23T03:26:25 INFO [req=h11-final-16-8d2d] GET /partidos/F2030-001/detalle -> 503 (7.3 ms)
+2026-10-23T03:26:25 WARNING [req=h11-final-17-189f] iris error partido=F2030-999
+2026-10-23T03:26:25 WARNING [req=h11-final-17-189f] dependencia fuente=iris causa=<SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]
+
+[Location: <Prepare>]
+
+[%msg: < USING expected, LOCAL found ^SELECT p . Codigo , p . Fecha , p . Fase , p . Estado , p . GolesLocal , p . GolesVisitante , LOCAL . Codigo AS LocalCodigo , visita . Codigo AS VisitaCodigo , s . Codigo AS SedeCodigo , s . Nombre AS SedeNombre FROM Fixture . Partido p LEFT JOIN Fixture . Equipo LOCAL>]
+2026-10-23T03:26:25 INFO [req=h11-final-17-189f] GET /partidos/F2030-999/detalle -> 503 (3.3 ms)

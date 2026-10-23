@@ -1,0 +1,39 @@
+# Evaluacion de conectividad - modo completo - inicial
+# fecha UTC: 2026-10-23T06:16:59Z | commit: c2502d1+cambios_locales
+# origen de las pruebas: notebook Windows 10 | Python 3.11.9 (.venv)
+# docker: Docker Engine 29.8.2
+# configuracion: configuracion.env presente
+# timeout por operacion: 3.0 s
+[OK   ] mongodb   resolucion         -      Resolver host (driver de la API) -> localhost -> 127.0.0.1, ::1
+[OK   ] mongodb   tcp               0.7 ms  Conexion TCP (driver de la API) -> exito: conexion establecida ::1 -> ::1:27017
+[INFO ] mongodb   tcp                -      TCP por familia de direcciones (driver de la API) -> 127.0.0.1 -> exito (0 ms); ::1 -> exito (0 ms)
+[OK   ] neo4j     resolucion         -      Resolver host (driver de la API) -> localhost -> 127.0.0.1, ::1
+[OK   ] neo4j     tcp               0.6 ms  Conexion TCP (driver de la API) -> exito: conexion establecida ::1 -> ::1:7687
+[INFO ] neo4j     tcp                -      TCP por familia de direcciones (driver de la API) -> 127.0.0.1 -> exito (15 ms); ::1 -> exito (0 ms)
+[OK   ] neo4j     resolucion         -      Resolver host (Neo4j Browser / HTTP) -> localhost -> 127.0.0.1, ::1
+[OK   ] neo4j     tcp               0.7 ms  Conexion TCP (Neo4j Browser / HTTP) -> exito: conexion establecida ::1 -> ::1:7474
+[INFO ] neo4j     tcp                -      TCP por familia de direcciones (Neo4j Browser / HTTP) -> 127.0.0.1 -> exito (0 ms); ::1 -> exito (13 ms)
+[OK   ] cassandra resolucion         -      Resolver host (driver de la API) -> localhost -> 127.0.0.1, ::1
+[OK   ] cassandra tcp               0.7 ms  Conexion TCP (driver de la API) -> exito: conexion establecida ::1 -> ::1:9042
+[INFO ] cassandra tcp                -      TCP por familia de direcciones (driver de la API) -> 127.0.0.1 -> exito (0 ms); ::1 -> exito (0 ms)
+[OK   ] redis     resolucion         -      Resolver host (driver de la API) -> localhost -> 127.0.0.1, ::1
+[OK   ] redis     tcp               0.9 ms  Conexion TCP (driver de la API) -> exito: conexion establecida ::1 -> ::1:6379
+[INFO ] redis     tcp                -      TCP por familia de direcciones (driver de la API) -> 127.0.0.1 -> exito (0 ms); ::1 -> exito (0 ms)
+[OK   ] influxdb  resolucion         -      Resolver host (driver de la API) -> localhost -> 127.0.0.1, ::1
+[OK   ] influxdb  tcp            2038.7 ms  Conexion TCP (driver de la API) -> exito: conexion establecida 127.0.0.1 -> 127.0.0.1:8181
+[INFO ] influxdb  tcp                -      TCP por familia de direcciones (driver de la API) -> 127.0.0.1 -> exito (0 ms); ::1 -> refused (2040 ms) | la conexion por nombre tardo 2039 ms: el primer intento va a una direccion sin listener
+[OK   ] iris      resolucion         -      Resolver host (driver de la API (Superserver)) -> localhost -> 127.0.0.1, ::1
+[OK   ] iris      tcp            2041.2 ms  Conexion TCP (driver de la API (Superserver)) -> exito: conexion establecida 127.0.0.1 -> 127.0.0.1:1972
+[INFO ] iris      tcp                -      TCP por familia de direcciones (driver de la API (Superserver)) -> 127.0.0.1 -> exito (0 ms); ::1 -> refused (2043 ms) | la conexion por nombre tardo 2041 ms: el primer intento va a una direccion sin listener
+[OK   ] iris      resolucion         -      Resolver host (Management Portal) -> localhost -> 127.0.0.1, ::1
+[OK   ] iris      tcp            2042.0 ms  Conexion TCP (Management Portal) -> exito: conexion establecida 127.0.0.1 -> 127.0.0.1:52773
+[INFO ] iris      tcp                -      TCP por familia de direcciones (Management Portal) -> 127.0.0.1 -> exito (15 ms); ::1 -> refused (2043 ms) | la conexion por nombre tardo 2042 ms: el primer intento va a una direccion sin listener
+[OK   ] demostracion tcp              15.8 ms  Tipo de falla 'exito': Puerto publicado por el contenedor de Redis -> exito: conexion establecida ::1 -> ::1:6379
+[OK   ] demostracion tcp            4086.3 ms  Tipo de falla 'refused': Puerto donde no escucha ningun proceso -> refused: connection refused: el host respondio pero no hay listener
+[OK   ] demostracion tcp            3008.1 ms  Tipo de falla 'timeout': Direccion no enrutable: nadie contesta -> timeout: sin respuesta en 3.0 s
+[OK   ] demostracion tcp            2695.4 ms  Tipo de falla 'no_resuelto': Nombre de servicio de Docker usado desde la notebook (solo existe dentro de la red de Compose) -> no_resuelto: host no resuelto (getaddrinfo failed)
+[OK   ] demostracion protocolo          -      Tipo de falla 'puerto incorrecto': handshake Bolt contra el puerto HTTP 7474 de Neo4j -> TCP exito, pero la respuesta al handshake Bolt fue b'HTTP/1.1 400 Bad Request': el listener habla HTTP, no Bolt
+[INFO ] topologia tcp                -      localhost dentro del contenedor = el propio contenedor de Redis -> exito (EXITO)
+[INFO ] topologia tcp                -      Mongo NO corre en este contenedor: localhost:27017 no es la notebook -> refused_o_timeout (FALLA_TCP)
+[INFO ] topologia tcp                -      Puerto publicado de Mongo visto desde un contenedor (Docker Desktop) -> exito (EXITO)
+[INFO ] topologia tcp                -      Nombre de otro contenedor: esta en otra red de Compose -> no_resuelto (NO_RESUELVE)

@@ -1,0 +1,55 @@
+# C3 - Recarga de InfluxDB con los scripts actuales del Hito 8 (perfil muestra, semilla 2030)
+# Comandos: python scripts/generacion_puntos.py --perfil muestra ; python scripts/carga_lotes.py --perfil muestra (desde influxdb/)
+# Resultado registrado por carga_lotes.py (data/generado/muestra/resumen_carga.json, fuera de Git):
+{
+ "base": "fixture2030_vivo",
+ "tamano_lote": 5000,
+ "concurrencia": 4,
+ "desorden": false,
+ "segundos": 3.09,
+ "total": {
+  "lineas": 22080,
+  "ok": 22080,
+  "lotes": 7,
+  "lotes_fallidos": 0,
+  "reintentos": 0
+ },
+ "por_tabla": {
+  "estadisticas_equipo": {
+   "lineas": 2400,
+   "ok": 2400,
+   "lotes": 1,
+   "lotes_fallidos": 0,
+   "reintentos": 0,
+   "seg_lotes": 0.08,
+   "segundos": 0.09
+  },
+  "actividad_usuarios": {
+   "lineas": 7200,
+   "ok": 7200,
+   "lotes": 2,
+   "lotes_fallidos": 0,
+   "reintentos": 0,
+   "seg_lotes": 1.99,
+   "segundos": 1.0
+  },
+  "metricas_plataforma": {
+   "lineas": 7200,
+   "ok": 7200,
+   "lotes": 2,
+   "lotes_fallidos": 0,
+   "reintentos": 0,
+   "seg_lotes": 1.98,
+   "segundos": 1.0
+  },
+  "estadisticas_jugador": {
+   "lineas": 5280,
+   "ok": 5280,
+   "lotes": 2,
+   "lotes_fallidos": 0,
+   "reintentos": 0,
+   "seg_lotes": 1.98,
+   "segundos": 1.0
+  }
+ }
+}

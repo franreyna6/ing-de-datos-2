@@ -1,0 +1,16 @@
+2026-10-23T03:26:39 INFO [req=7b615696] GET /openapi.json -> 200 (14.9 ms)
+2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-neo4j-e88] neo4j partido=F2030-001 eventos=2
+2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-neo4j-e88] GET /partidos/F2030-001/eventos -> 200 (168.8 ms)
+2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-mongodb-25b] mongo equipo codigo=ZZZ encontrado=False
+2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-mongodb-25b] GET /equipos/ZZZ -> 404 (133.3 ms)
+2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-redis-2c8] redis sesion=no-existe-h11 ausente_o_expirada
+2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-redis-2c8] GET /sesiones/no-existe-h11 -> 404 (65.4 ms)
+2026-10-23T03:26:40 WARNING [req=h11-timeout-alterada-cassandra-12f] cassandra leer error partido=F2030-063
+2026-10-23T03:26:40 WARNING [req=h11-timeout-alterada-cassandra-12f] dependencia fuente=cassandra causa=('Unable to connect to any servers', {'::1:9042': OperationTimedOut('errors=Timed out creating connection (0.001 seconds), last_host=None'), '127.0.0.1:9042': OperationTimedOut('errors=Timed out creating connection (0.001 seconds), last_host=None')})
+2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-cassandra-12f] GET /partidos/F2030-063/comentarios -> 503 (123.2 ms)
+2026-10-23T03:26:40 WARNING [req=h11-timeout-alterada-influxdb-bf1] influx status=400
+2026-10-23T03:26:40 WARNING [req=h11-timeout-alterada-influxdb-bf1] dependencia fuente=influxdb causa=HTTP 400
+2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-influxdb-bf1] GET /partidos/F2030-018/estadisticas -> 503 (2.7 ms)
+2026-10-23T03:26:40 WARNING [req=h11-timeout-alterada-iris-a6c] iris error partido=F2030-999
+2026-10-23T03:26:40 WARNING [req=h11-timeout-alterada-iris-a6c] dependencia fuente=iris causa=<COMMUNICATION LINK ERROR> Failed to connect to server; Details: <COMMUNICATION LINK ERROR> Failed to receive message; Details: Error code: 10060 Error message: Communication timed out
+2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-iris-a6c] GET /partidos/F2030-999/detalle -> 503 (34.6 ms)

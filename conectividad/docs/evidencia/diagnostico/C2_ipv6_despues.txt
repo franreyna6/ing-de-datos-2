@@ -1,0 +1,6 @@
+[OK   ] influxdb  resolucion         -      Resolver host (driver de la API) -> 127.0.0.1 -> 127.0.0.1
+[OK   ] influxdb  tcp               1.2 ms  Conexion TCP (driver de la API) -> exito: conexion establecida 127.0.0.1 -> 127.0.0.1:8181
+[OK   ] iris      resolucion         -      Resolver host (driver de la API (Superserver)) -> 127.0.0.1 -> 127.0.0.1
+[OK   ] iris      tcp              15.0 ms  Conexion TCP (driver de la API (Superserver)) -> exito: conexion establecida 127.0.0.1 -> 127.0.0.1:1972
+[OK   ] iris      resolucion         -      Resolver host (Management Portal) -> 127.0.0.1 -> 127.0.0.1
+[OK   ] iris      tcp               0.3 ms  Conexion TCP (Management Portal) -> exito: conexion establecida 127.0.0.1 -> 127.0.0.1:52773

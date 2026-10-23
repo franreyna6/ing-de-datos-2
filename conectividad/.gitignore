@@ -1,0 +1,15 @@
+# Hito 11 - nada de esto debe versionarse (RNF7, seccion 9 del enunciado)
+
+# Configuracion con credenciales y tokens
+config/configuracion.env
+*.env
+!config/configuracion-ejemplo.env
+*.token
+.influxdb3-token
+
+# Logs crudos de la API (sin redactar). Solo se versionan las copias redactadas.
+docs/evidencia/logs/crudos/
+
+# Cache de Python
+__pycache__/
+*.pyc

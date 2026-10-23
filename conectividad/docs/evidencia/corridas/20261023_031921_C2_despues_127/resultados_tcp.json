@@ -1,0 +1,121 @@
+{
+  "generado": "2026-10-23T06:19:21Z",
+  "commit": "fc5d50a+cambios_locales",
+  "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+  "resultados": [
+    {
+      "producto": "influxdb",
+      "capa": "resolucion",
+      "prueba": "Resolver host (driver de la API)",
+      "resultado": "OK",
+      "detalle": "127.0.0.1 -> 127.0.0.1",
+      "objetivo": "127.0.0.1",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "socket.getaddrinfo",
+      "duracion_ms": null,
+      "responde": "El nombre configurado se convierte en una direccion desde la notebook?",
+      "no_permite": "Que haya un proceso escuchando en el puerto.",
+      "esperado": "",
+      "fecha": "2026-10-23T06:19:21Z",
+      "commit": "fc5d50a+cambios_locales",
+      "extra": {}
+    },
+    {
+      "producto": "influxdb",
+      "capa": "tcp",
+      "prueba": "Conexion TCP (driver de la API)",
+      "resultado": "OK",
+      "detalle": "exito: conexion establecida 127.0.0.1 -> 127.0.0.1:8181",
+      "objetivo": "127.0.0.1:8181 [HTTP (API v3)]",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "socket.create_connection",
+      "duracion_ms": 1.1567999608814716,
+      "responde": "Hay un listener aceptando conexiones en host:puerto?",
+      "no_permite": "Que sea el producto correcto, que el protocolo responda, que la credencial o el contexto sean validos.",
+      "esperado": "exito",
+      "fecha": "2026-10-23T06:19:21Z",
+      "commit": "fc5d50a+cambios_locales",
+      "extra": {
+        "clase_tcp": "exito",
+        "interpretacion": "Existe un listener accesible en el host y puerto probados.",
+        "usado_por_api": true
+      }
+    },
+    {
+      "producto": "iris",
+      "capa": "resolucion",
+      "prueba": "Resolver host (driver de la API (Superserver))",
+      "resultado": "OK",
+      "detalle": "127.0.0.1 -> 127.0.0.1",
+      "objetivo": "127.0.0.1",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "socket.getaddrinfo",
+      "duracion_ms": null,
+      "responde": "El nombre configurado se convierte en una direccion desde la notebook?",
+      "no_permite": "Que haya un proceso escuchando en el puerto.",
+      "esperado": "",
+      "fecha": "2026-10-23T06:19:21Z",
+      "commit": "fc5d50a+cambios_locales",
+      "extra": {}
+    },
+    {
+      "producto": "iris",
+      "capa": "tcp",
+      "prueba": "Conexion TCP (driver de la API (Superserver))",
+      "resultado": "OK",
+      "detalle": "exito: conexion establecida 127.0.0.1 -> 127.0.0.1:1972",
+      "objetivo": "127.0.0.1:1972 [IRIS Superserver (protocolo propio)]",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "socket.create_connection",
+      "duracion_ms": 15.015600016340613,
+      "responde": "Hay un listener aceptando conexiones en host:puerto?",
+      "no_permite": "Que sea el producto correcto, que el protocolo responda, que la credencial o el contexto sean validos.",
+      "esperado": "exito",
+      "fecha": "2026-10-23T06:19:21Z",
+      "commit": "fc5d50a+cambios_locales",
+      "extra": {
+        "clase_tcp": "exito",
+        "interpretacion": "Existe un listener accesible en el host y puerto probados.",
+        "usado_por_api": true
+      }
+    },
+    {
+      "producto": "iris",
+      "capa": "resolucion",
+      "prueba": "Resolver host (Management Portal)",
+      "resultado": "OK",
+      "detalle": "127.0.0.1 -> 127.0.0.1",
+      "objetivo": "127.0.0.1",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "socket.getaddrinfo",
+      "duracion_ms": null,
+      "responde": "El nombre configurado se convierte en una direccion desde la notebook?",
+      "no_permite": "Que haya un proceso escuchando en el puerto.",
+      "esperado": "",
+      "fecha": "2026-10-23T06:19:21Z",
+      "commit": "fc5d50a+cambios_locales",
+      "extra": {}
+    },
+    {
+      "producto": "iris",
+      "capa": "tcp",
+      "prueba": "Conexion TCP (Management Portal)",
+      "resultado": "OK",
+      "detalle": "exito: conexion establecida 127.0.0.1 -> 127.0.0.1:52773",
+      "objetivo": "127.0.0.1:52773 [HTTP]",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "socket.create_connection",
+      "duracion_ms": 0.3149999538436532,
+      "responde": "Hay un listener aceptando conexiones en host:puerto?",
+      "no_permite": "Que sea el producto correcto, que el protocolo responda, que la credencial o el contexto sean validos.",
+      "esperado": "exito",
+      "fecha": "2026-10-23T06:19:21Z",
+      "commit": "fc5d50a+cambios_locales",
+      "extra": {
+        "clase_tcp": "exito",
+        "interpretacion": "Existe un listener accesible en el host y puerto probados.",
+        "usado_por_api": false
+      }
+    }
+  ]
+}
