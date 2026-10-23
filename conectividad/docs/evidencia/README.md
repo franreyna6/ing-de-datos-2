@@ -11,9 +11,9 @@ toda esta carpeta (sin coincidencias).
 | `resultados_configuracion.*`, `resultados_tcp.*`, `resultados_clientes.*`, `resultados_api.*` | Última corrida completa (copia de `corridas/…_final/`), con los nombres que pide el enunciado. `.txt` para leer y `.json` con todos los campos (fecha, commit, origen, cliente, capa, resultado, ms, request_id, log, …) |
 | `matriz_ultima_corrida.md` | Matriz generada de la última corrida |
 | `corridas/20261023_031659_inicial/` | Corrida completa **antes** de las correcciones C1 y C2 |
-| `corridas/20261023_031855_C1_iris_password/` | IRIS en modo nativo después de C1 |
-| `corridas/20261023_031908_C2_antes_localhost/`, `…_C2_despues_127/` | TCP de InfluxDB e IRIS antes y después de C2 |
-| `corridas/20261023_032545_final/` | Corrida completa final (commit `b6d4e88`) con `api_redactado.log` |
+| `corridas/20261023_164136_C1_iris_password/` | IRIS en modo nativo después de C1 |
+| `corridas/20261023_164140_C2_antes_localhost/`, `…_C2_despues_127/` | TCP de InfluxDB e IRIS antes y después de C2 |
+| `corridas/20261023_164055_final/` | Corrida completa final (commit `82e1233`) con `api_redactado.log` |
 | `falla_controlada/` | Redis detenido, timeout bajo y token ausente, con los logs redactados de cada instancia de la API |
 | `diagnostico/` | C0 (token de InfluxDB), H5 (esquema antes), C1, C2, C3 (recarga del Hito 8) y H8 (correlación en 500) |
 | `capturas_redactadas/` | Nota: no hay capturas de pantalla; la evidencia es texto |
@@ -23,7 +23,7 @@ Cada archivo `resultados_*.txt` empieza con un encabezado de trazabilidad (RNF18
 
 ```
 # Evaluacion de conectividad - modo completo - final
-# fecha UTC: 2026-10-23T06:25:45Z | commit: b6d4e88
+# fecha UTC: 2026-10-23T19:40:55Z | commit: 82e1233
 # origen de las pruebas: notebook Windows 10 | Python 3.11.9 (.venv)
 # docker: Docker Engine 29.8.2
 # configuracion: configuracion.env presente
@@ -34,5 +34,6 @@ Cada archivo `resultados_*.txt` empieza con un encabezado de trazabilidad (RNF18
 > versión 10.0, build 26200). La notebook usa Windows 11 Pro.
 
 Las corridas `inicial` y anteriores registran el commit `c2502d1+cambios_locales`, porque se
-ejecutaron con los scripts todavía sin commitear. La corrida `final` y las fallas controladas
-corresponden al commit `b6d4e88`.
+ejecutaron con los scripts todavía sin commitear. La corrida `final`, C1, C2, las fallas
+controladas y la verificación de H8 se re-ejecutaron sobre el commit `82e1233`, que contiene
+los scripts y la documentación del hito; la evidencia generada se versiona en el commit siguiente.

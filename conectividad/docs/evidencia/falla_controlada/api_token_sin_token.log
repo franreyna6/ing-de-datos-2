@@ -1,3 +1,3 @@
-2026-10-23T03:26:43 INFO [req=349d58ea] GET /openapi.json -> 200 (14.8 ms)
-2026-10-23T03:26:43 WARNING [req=h11-token-sin_token-18e] dependencia fuente=influxdb causa=falta INFLUXDB3_TOKEN en el entorno
-2026-10-23T03:26:43 INFO [req=h11-token-sin_token-18e] GET /partidos/F2030-018/estadisticas -> 503 (1.5 ms)
+2026-10-23T16:42:12 INFO [req=68e5af25] GET /openapi.json -> 200 (17.1 ms)
+2026-10-23T16:42:12 WARNING [req=h11-token-sin_token-13b] dependencia fuente=influxdb causa=falta INFLUXDB3_TOKEN en el entorno
+2026-10-23T16:42:12 INFO [req=h11-token-sin_token-13b] GET /partidos/F2030-018/estadisticas -> 503 (1.5 ms)

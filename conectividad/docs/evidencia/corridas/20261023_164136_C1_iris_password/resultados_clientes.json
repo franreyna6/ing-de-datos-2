@@ -1,6 +1,6 @@
 {
-  "generado": "2026-10-23T06:18:59Z",
-  "commit": "fc5d50a+cambios_locales",
+  "generado": "2026-10-23T19:41:39Z",
+  "commit": "82e1233",
   "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
   "resultados": [
     {
@@ -9,15 +9,15 @@
       "prueba": "Management Portal HTTP",
       "resultado": "OK",
       "detalle": "HTTP 200 (pagina de login)",
-      "objetivo": "http://localhost:52773/csp/sys/UtilHome.csp",
+      "objetivo": "http://127.0.0.1:52773/csp/sys/UtilHome.csp",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP GET",
-      "duracion_ms": 2063.956100028008,
+      "duracion_ms": 12.041399953886867,
       "responde": "El servidor web de IRIS responde?",
       "no_permite": "Nada sobre el Superserver (1972), que es el que usa el driver de la API.",
       "esperado": "",
-      "fecha": "2026-10-23T06:18:57Z",
-      "commit": "fc5d50a+cambios_locales",
+      "fecha": "2026-10-23T19:41:37Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -26,15 +26,15 @@
       "prueba": "Conexion al Superserver como '_SYSTEM' en 'USER'",
       "resultado": "OK",
       "detalle": "sesion abierta (autenticacion y seleccion de namespace en el mismo paso)",
-      "objetivo": "localhost:1972 / USER",
+      "objetivo": "127.0.0.1:1972 / USER",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "intersystems-irispython",
-      "duracion_ms": 21.775700035504997,
+      "duracion_ms": 24.13829998113215,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:18:57Z",
-      "commit": "fc5d50a+cambios_locales",
+      "fecha": "2026-10-23T19:41:37Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -46,12 +46,12 @@
       "objetivo": "USER / Fixture",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "intersystems-irispython",
-      "duracion_ms": 24.876900017261505,
+      "duracion_ms": 2.4690000573173165,
       "responde": "El namespace tiene las clases del Hito 9 compiladas?",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:18:57Z",
-      "commit": "fc5d50a+cambios_locales",
+      "fecha": "2026-10-23T19:41:37Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -63,12 +63,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "intersystems-irispython",
-      "duracion_ms": 17.237799940630794,
+      "duracion_ms": 1.3469000114127994,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:18:57Z",
-      "commit": "fc5d50a+cambios_locales",
+      "fecha": "2026-10-23T19:41:37Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -80,13 +80,33 @@
       "objetivo": "Fixture.Partido",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "intersystems-irispython",
-      "duracion_ms": 14.713799930177629,
+      "duracion_ms": 1.3055999297648668,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:18:57Z",
-      "commit": "fc5d50a+cambios_locales",
+      "fecha": "2026-10-23T19:41:37Z",
+      "commit": "82e1233",
       "extra": {}
+    },
+    {
+      "producto": "iris",
+      "capa": "lectura",
+      "prueba": "SQL identico al adaptador de la API (JOIN con alias 'local')",
+      "resultado": "FALLA",
+      "detalle": "ProgrammingError: <SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>] -> 'LOCAL' es palabra reservada de IRIS SQL: la consulta no compila, la API responde 503 aunque /salud informe iris disponible",
+      "objetivo": "Fixture.Partido + Equipo + Sede",
+      "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
+      "cliente": "intersystems-irispython",
+      "duracion_ms": 5.958399968221784,
+      "responde": "",
+      "no_permite": "",
+      "esperado": "una fila con el detalle del partido",
+      "fecha": "2026-10-23T19:41:37Z",
+      "commit": "82e1233",
+      "extra": {
+        "hallazgo": "H7",
+        "compatibilidad_api": true
+      }
     },
     {
       "producto": "iris",
@@ -97,12 +117,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "intersystems-irispython",
-      "duracion_ms": 12.557500042021275,
+      "duracion_ms": 1.6134000616148114,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:18:57Z",
-      "commit": "fc5d50a+cambios_locales",
+      "fecha": "2026-10-23T19:41:37Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -116,12 +136,12 @@
       "objetivo": "NOEXISTE_H11",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "intersystems-irispython",
-      "duracion_ms": 2018.9535000827163,
+      "duracion_ms": 2019.1363000776619,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:18:59Z",
-      "commit": "fc5d50a+cambios_locales",
+      "fecha": "2026-10-23T19:41:39Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -135,12 +155,12 @@
       "objetivo": "namespace USER",
       "origen": "contenedor fixture2030-iris (autenticacion del sistema operativo)",
       "cliente": "iris session",
-      "duracion_ms": 106.272800010629,
+      "duracion_ms": 204.84440005384386,
       "responde": "",
       "no_permite": "La sesion del Terminal entra con la identidad del SO del contenedor: NO prueba la password que usa la API por el Superserver.",
       "esperado": "",
-      "fecha": "2026-10-23T06:18:59Z",
-      "commit": "fc5d50a+cambios_locales",
+      "fecha": "2026-10-23T19:41:39Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -152,12 +172,12 @@
       "objetivo": "",
       "origen": "contenedor fixture2030-iris",
       "cliente": "iris session",
-      "duracion_ms": 107.84509999211878,
+      "duracion_ms": 231.7922000074759,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:18:59Z",
-      "commit": "fc5d50a+cambios_locales",
+      "fecha": "2026-10-23T19:41:39Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }

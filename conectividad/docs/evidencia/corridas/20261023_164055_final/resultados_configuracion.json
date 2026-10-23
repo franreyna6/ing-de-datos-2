@@ -1,6 +1,6 @@
 {
-  "generado": "2026-10-23T06:25:46Z",
-  "commit": "b6d4e88",
+  "generado": "2026-10-23T19:40:56Z",
+  "commit": "82e1233",
   "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
   "resultados": [
     {
@@ -16,8 +16,8 @@
       "responde": "Se pueden ejecutar los clientes nativos dentro de los contenedores?",
       "no_permite": "Que los productos esten disponibles.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:45Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:55Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -33,8 +33,8 @@
       "responde": "Existe la configuracion que necesita la API para este producto?",
       "no_permite": "Que el host resuelva, que el puerto escuche o que la credencial sea valida.",
       "esperado": "todas las variables obligatorias definidas",
-      "fecha": "2026-10-23T06:25:45Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:55Z",
+      "commit": "82e1233",
       "extra": {
         "faltantes": [],
         "errores_formato": []
@@ -53,8 +53,8 @@
       "responde": "Puede este entorno usar el mismo cliente que la API?",
       "no_permite": "Que el servidor responda.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:45Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -70,8 +70,8 @@
       "responde": "El proceso del producto esta iniciado en Docker?",
       "no_permite": "Que acepte conexiones, autentique o tenga los datos: un contenedor activo NO equivale a una dependencia disponible.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:45Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "estado_contenedor": "running"
       }
@@ -89,8 +89,8 @@
       "responde": "Existe la configuracion que necesita la API para este producto?",
       "no_permite": "Que el host resuelva, que el puerto escuche o que la credencial sea valida.",
       "esperado": "todas las variables obligatorias definidas",
-      "fecha": "2026-10-23T06:25:45Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "faltantes": [],
         "errores_formato": []
@@ -109,8 +109,8 @@
       "responde": "Puede este entorno usar el mismo cliente que la API?",
       "no_permite": "Que el servidor responda.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:45Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -126,8 +126,8 @@
       "responde": "El proceso del producto esta iniciado en Docker?",
       "no_permite": "Que acepte conexiones, autentique o tenga los datos: un contenedor activo NO equivale a una dependencia disponible.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "estado_contenedor": "running"
       }
@@ -145,8 +145,8 @@
       "responde": "Existe la configuracion que necesita la API para este producto?",
       "no_permite": "Que el host resuelva, que el puerto escuche o que la credencial sea valida.",
       "esperado": "todas las variables obligatorias definidas",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "faltantes": [],
         "errores_formato": []
@@ -165,8 +165,8 @@
       "responde": "Puede este entorno usar el mismo cliente que la API?",
       "no_permite": "Que el servidor responda.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -182,8 +182,8 @@
       "responde": "El proceso del producto esta iniciado en Docker?",
       "no_permite": "Que acepte conexiones, autentique o tenga los datos: un contenedor activo NO equivale a una dependencia disponible.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "estado_contenedor": "running"
       }
@@ -201,8 +201,8 @@
       "responde": "Existe la configuracion que necesita la API para este producto?",
       "no_permite": "Que el host resuelva, que el puerto escuche o que la credencial sea valida.",
       "esperado": "todas las variables obligatorias definidas",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "faltantes": [],
         "errores_formato": []
@@ -221,8 +221,8 @@
       "responde": "Puede este entorno usar el mismo cliente que la API?",
       "no_permite": "Que el servidor responda.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -238,8 +238,8 @@
       "responde": "El proceso del producto esta iniciado en Docker?",
       "no_permite": "Que acepte conexiones, autentique o tenga los datos: un contenedor activo NO equivale a una dependencia disponible.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "estado_contenedor": "running"
       }
@@ -257,8 +257,8 @@
       "responde": "Existe la configuracion que necesita la API para este producto?",
       "no_permite": "Que el host resuelva, que el puerto escuche o que la credencial sea valida.",
       "esperado": "todas las variables obligatorias definidas",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "faltantes": [],
         "errores_formato": []
@@ -277,8 +277,8 @@
       "responde": "Puede este entorno usar el mismo cliente que la API?",
       "no_permite": "Que el servidor responda.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -294,8 +294,8 @@
       "responde": "El proceso del producto esta iniciado en Docker?",
       "no_permite": "Que acepte conexiones, autentique o tenga los datos: un contenedor activo NO equivale a una dependencia disponible.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "estado_contenedor": "running"
       }
@@ -313,8 +313,8 @@
       "responde": "Existe la configuracion que necesita la API para este producto?",
       "no_permite": "Que el host resuelva, que el puerto escuche o que la credencial sea valida.",
       "esperado": "todas las variables obligatorias definidas",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "faltantes": [],
         "errores_formato": []
@@ -333,8 +333,8 @@
       "responde": "Puede este entorno usar el mismo cliente que la API?",
       "no_permite": "Que el servidor responda.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -350,8 +350,8 @@
       "responde": "El proceso del producto esta iniciado en Docker?",
       "no_permite": "Que acepte conexiones, autentique o tenga los datos: un contenedor activo NO equivale a una dependencia disponible.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "estado_contenedor": "running"
       }

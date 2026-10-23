@@ -1,73 +1,73 @@
 # Evaluacion de conectividad - modo completo - final
-# fecha UTC: 2026-10-23T06:25:45Z | commit: b6d4e88
+# fecha UTC: 2026-10-23T19:40:55Z | commit: 82e1233
 # origen de las pruebas: notebook Windows 10 | Python 3.11.9 (.venv)
 # docker: Docker Engine 29.8.2
 # configuracion: configuracion.env presente
 # timeout por operacion: 3.0 s
-[OK   ] mongodb   protocolo        29.9 ms  Handshake del Wire Protocol (comando hello, sin credencial) -> maxWireVersion=21 primario=True
-[OK   ] mongodb   autenticacion    18.5 ms  Identidad configurada autentica (connectionStatus) -> autenticado como admin@admin
-[OK   ] mongodb   autenticacion    25.1 ms  [negativo] Password invalida -> rechazada: OperationFailure: Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'} (code 18)
-[OK   ] mongodb   autorizacion      0.9 ms  Permiso de lectura de catalogo en 'fixture2030' -> colecciones: equipos, jugadores
+[OK   ] mongodb   protocolo         8.1 ms  Handshake del Wire Protocol (comando hello, sin credencial) -> maxWireVersion=21 primario=True
+[OK   ] mongodb   autenticacion    30.2 ms  Identidad configurada autentica (connectionStatus) -> autenticado como admin@admin
+[OK   ] mongodb   autenticacion    48.1 ms  [negativo] Password invalida -> rechazada: OperationFailure: Authentication failed., full error: {'ok': 0.0, 'errmsg': 'Authentication failed.', 'code': 18, 'codeName': 'AuthenticationFailed'} (code 18)
+[OK   ] mongodb   autorizacion      1.0 ms  Permiso de lectura de catalogo en 'fixture2030' -> colecciones: equipos, jugadores
 [OK   ] mongodb   contexto          0.7 ms  Database 'fixture2030' existe con las colecciones del modulo -> database y colecciones equipos/jugadores presentes
-[OK   ] mongodb   contexto          0.7 ms  [negativo] Database inexistente -> MongoDB NO devuelve error: la lectura vuelve vacia (None). Solo el catalogo (listDatabases) revela que la database no existe
-[OK   ] mongodb   lectura           0.8 ms  Lectura de equipo por codigo de negocio {codigo: 'ARG'} -> {"codigo": "ARG", "confederacion": "CONMEBOL", "nombre": "Argentina"}
-[OK   ] mongodb   lectura           0.7 ms  Conteo acotado de jugadores {equipoCodigo: 'ARG'} (limit 100) -> 16 jugadores
-[FALLA] mongodb   lectura           0.6 ms  Consulta identica al adaptador de la API {_id: 'ARG'} -> sin resultados: en los datos del Hito 4 el _id es un ObjectId y el codigo FIFA esta en el campo 'codigo'. El cliente nativo funciona, pero la API respondera 404 para un equipo que existe
+[OK   ] mongodb   contexto          0.9 ms  [negativo] Database inexistente -> MongoDB NO devuelve error: la lectura vuelve vacia (None). Solo el catalogo (listDatabases) revela que la database no existe
+[OK   ] mongodb   lectura           1.0 ms  Lectura de equipo por codigo de negocio {codigo: 'ARG'} -> {"codigo": "ARG", "confederacion": "CONMEBOL", "nombre": "Argentina"}
+[OK   ] mongodb   lectura           0.8 ms  Conteo acotado de jugadores {equipoCodigo: 'ARG'} (limit 100) -> 16 jugadores
+[FALLA] mongodb   lectura           0.7 ms  Consulta identica al adaptador de la API {_id: 'ARG'} -> sin resultados: en los datos del Hito 4 el _id es un ObjectId y el codigo FIFA esta en el campo 'codigo'. El cliente nativo funciona, pero la API respondera 404 para un equipo que existe
 [OK   ] mongodb   lectura           0.7 ms  [negativo] Documento inexistente {codigo: 'ZZZ'} -> None (ausencia valida: la base respondio)
-[OK   ] mongodb   lectura         542.6 ms  mongosh: ping + database + lectura de un equipo (dentro del contenedor) -> {"ping":1,"version":"7.0.45","db":"fixture2030","equipos":64,"equipo":{"codigo":"ARG","nombre":"Argentina"}}
-[OK   ] neo4j     protocolo         6.3 ms  Portal HTTP (Neo4j Browser / discovery) -> HTTP 200: neo4j_version=2026.10.0 edition=community bolt_direct=bolt://localhost:7687
-[OK   ] neo4j     protocolo         2.6 ms  Handshake Bolt (bytes del protocolo, sin driver) -> servidor acepto Bolt 5.8
-[OK   ] neo4j     autenticacion     9.0 ms  Identidad 'neo4j' autentica por Bolt -> autenticacion aceptada
+[OK   ] mongodb   lectura         645.8 ms  mongosh: ping + database + lectura de un equipo (dentro del contenedor) -> {"ping":1,"version":"7.0.45","db":"fixture2030","equipos":64,"equipo":{"codigo":"ARG","nombre":"Argentina"}}
+[OK   ] neo4j     protocolo         8.2 ms  Portal HTTP (Neo4j Browser / discovery) -> HTTP 200: neo4j_version=2026.10.0 edition=community bolt_direct=bolt://localhost:7687
+[OK   ] neo4j     protocolo        13.3 ms  Handshake Bolt (bytes del protocolo, sin driver) -> servidor acepto Bolt 5.8
+[OK   ] neo4j     autenticacion    12.1 ms  Identidad 'neo4j' autentica por Bolt -> autenticacion aceptada
 [INFO ] neo4j     autorizacion       -      Permisos del usuario autenticado -> Neo4j Community no tiene control de acceso por roles: un usuario autenticado puede leer todas las databases. La autorizacion no se puede separar de la autenticacion en esta edicion
-[OK   ] neo4j     contexto          6.4 ms  Database 'neo4j' existe y esta online -> currentStatus=online
-[OK   ] neo4j     contexto          2.7 ms  [negativo] Database inexistente -> error esperado: Neo.ClientError.Database.DatabaseNotFound
-[OK   ] neo4j     lectura           8.3 ms  Lectura Cypher parametrizada y acotada (partido F2030-001) -> {"partido": "F2030-001", "fecha": "2030-06-14", "eventos": 2}
-[OK   ] neo4j     lectura           2.7 ms  [negativo] Partido inexistente (F2030-999) -> 0 filas y sin error: la base respondio; la API lo traduce a 404
-[OK   ] neo4j     lectura           2.8 ms  [negativo] Partido existente sin eventos (resultado vacio valido) -> F2030-006 existe y tiene 0 eventos: la API debe responder 200 con lista vacia, no 404
-[OK   ] neo4j     autenticacion    27.0 ms  [negativo] Password invalida -> rechazada: Neo.ClientError.Security.Unauthorized
-[OK   ] neo4j     tcp            4077.9 ms  [negativo] Error de conexion (puerto Bolt sin listener) -> ServiceUnavailable: Couldn't connect to localhost:7688 (resolved to ()):
-[OK   ] neo4j     lectura        1771.9 ms  cypher-shell: lectura parametrizada (dentro del contenedor) -> partido, eventos | "F2030-001", 2
-[OK   ] cassandra protocolo         2.7 ms  Handshake CQL: frame OPTIONS -> SUPPORTED (sin driver) -> SUPPORTED: CQL_VERSION=['3.4.7'] PROTOCOL_VERSIONS=['3/v3', '4/v4', '5/v5', '6/v6-beta']
-[OK   ] cassandra autenticacion    12.1 ms  Frame STARTUP: el servidor exige autenticacion? -> READY: el servidor NO exige autenticacion (AllowAllAuthenticator del laboratorio); no hay identidad que validar
-[OK   ] cassandra autenticacion  1625.2 ms  Sesion abierta con el driver de la API -> Cassandra 5.0.9, cluster 'fixture2030-lab'
+[OK   ] neo4j     contexto         14.3 ms  Database 'neo4j' existe y esta online -> currentStatus=online
+[OK   ] neo4j     contexto          6.1 ms  [negativo] Database inexistente -> error esperado: Neo.ClientError.Database.DatabaseNotFound
+[OK   ] neo4j     lectura           5.0 ms  Lectura Cypher parametrizada y acotada (partido F2030-001) -> {"partido": "F2030-001", "fecha": "2030-06-14", "eventos": 2}
+[OK   ] neo4j     lectura           4.2 ms  [negativo] Partido inexistente (F2030-999) -> 0 filas y sin error: la base respondio; la API lo traduce a 404
+[OK   ] neo4j     lectura           6.1 ms  [negativo] Partido existente sin eventos (resultado vacio valido) -> F2030-006 existe y tiene 0 eventos: la API debe responder 200 con lista vacia, no 404
+[OK   ] neo4j     autenticacion     8.5 ms  [negativo] Password invalida -> rechazada: Neo.ClientError.Security.Unauthorized
+[OK   ] neo4j     tcp            4075.5 ms  [negativo] Error de conexion (puerto Bolt sin listener) -> ServiceUnavailable: Couldn't connect to localhost:7688 (resolved to ()):
+[OK   ] neo4j     lectura        2037.6 ms  cypher-shell: lectura parametrizada (dentro del contenedor) -> partido, eventos | "F2030-001", 2
+[OK   ] cassandra protocolo         3.4 ms  Handshake CQL: frame OPTIONS -> SUPPORTED (sin driver) -> SUPPORTED: CQL_VERSION=['3.4.7'] PROTOCOL_VERSIONS=['3/v3', '4/v4', '5/v5', '6/v6-beta']
+[OK   ] cassandra autenticacion     2.9 ms  Frame STARTUP: el servidor exige autenticacion? -> READY: el servidor NO exige autenticacion (AllowAllAuthenticator del laboratorio); no hay identidad que validar
+[OK   ] cassandra autenticacion  1615.2 ms  Sesion abierta con el driver de la API -> Cassandra 5.0.9, cluster 'fixture2030-lab'
 [INFO ] cassandra autorizacion       -      Permisos sobre el keyspace -> sin autenticacion no hay autorizacion por rol (AllowAllAuthorizer): cualquier cliente que llegue al puerto puede leer y escribir
-[OK   ] cassandra contexto         14.6 ms  Keyspace 'fixture2030_comentarios' existe -> replicacion={'class': 'org.apache.cassandra.locator.SimpleStrategy', 'replication_factor': '1'}
-[OK   ] cassandra contexto         15.9 ms  Tabla comentarios_por_partido y patron de particion -> PRIMARY KEY ((partido_id, ventana), creado_en, comentario_id)
-[OK   ] cassandra lectura          15.5 ms  Lectura limitada de UNA particion (F2030-063, 2030-06-22 20:00Z) LIMIT 5 -> 2 filas
-[OK   ] cassandra lectura          15.0 ms  [negativo] Particion sin datos (ventana de 2029) -> 0 filas sin error: respuesta vacia valida
-[OK   ] cassandra contexto         15.3 ms  [negativo] Sesion sin keyspace seleccionado (tabla sin calificar) -> InvalidRequest: Error from server: code=2200 [Invalid query] message="No keyspace has been specified. USE a keyspace, or explicitly specify keyspace.tablename"
-[OK   ] cassandra contexto         15.1 ms  [negativo] Keyspace inexistente -> InvalidRequest: Error from server: code=2200 [Invalid query] message="Keyspace 'fixture2030_comentarios_inexistente_h11' does not exist"
-[OK   ] cassandra contexto         15.6 ms  [negativo] Tabla inexistente -> InvalidRequest: Error from server: code=2200 [Invalid query] message="table tabla_inexistente_h11 does not exist"
-[OK   ] cassandra lectura          15.8 ms  [negativo] Consulta invalida (filtro fuera de la clave, sin ALLOW FILTERING) -> InvalidRequest: Error from server: code=2200 [Invalid query] message="Cannot execute this query as it might involve data filtering and thus may have unpredictable performance. If you want to execute this query despite the performance unpredictability, use ALLOW FILTERING"
-[OK   ] cassandra tcp            3002.1 ms  [negativo] Timeout de conexion (direccion sin respuesta) -> NoHostAvailable: ('Unable to connect to any servers', {'10.255.255.1:9042': OSError(None, "Tried connecting to [('10.255.255.1', 9042)]. Last error: timed out")})
-[OK   ] cassandra lectura         514.8 ms  cqlsh: lectura limitada de una particion (dentro del contenedor) -> (2 rows)
-[OK   ] redis     protocolo        18.4 ms  Handshake RESP: PING crudo (sin driver) -> +PONG (respuesta RESP basica, sin autenticar)
-[OK   ] redis     autenticacion    16.5 ms  PING con el cliente de la API (aplica AUTH si la URL tiene password) -> PONG
-[OK   ] redis     autenticacion     0.7 ms  [negativo] AUTH con password invalida -> el servidor NO tiene password configurada (requirepass vacio): no hay identidad que validar
+[OK   ] cassandra contexto         15.1 ms  Keyspace 'fixture2030_comentarios' existe -> replicacion={'class': 'org.apache.cassandra.locator.SimpleStrategy', 'replication_factor': '1'}
+[OK   ] cassandra contexto         15.1 ms  Tabla comentarios_por_partido y patron de particion -> PRIMARY KEY ((partido_id, ventana), creado_en, comentario_id)
+[OK   ] cassandra lectura          16.4 ms  Lectura limitada de UNA particion (F2030-063, 2030-06-22 20:00Z) LIMIT 5 -> 2 filas
+[OK   ] cassandra lectura          15.1 ms  [negativo] Particion sin datos (ventana de 2029) -> 0 filas sin error: respuesta vacia valida
+[OK   ] cassandra contexto         15.1 ms  [negativo] Sesion sin keyspace seleccionado (tabla sin calificar) -> InvalidRequest: Error from server: code=2200 [Invalid query] message="No keyspace has been specified. USE a keyspace, or explicitly specify keyspace.tablename"
+[OK   ] cassandra contexto         15.4 ms  [negativo] Keyspace inexistente -> InvalidRequest: Error from server: code=2200 [Invalid query] message="Keyspace 'fixture2030_comentarios_inexistente_h11' does not exist"
+[OK   ] cassandra contexto         16.0 ms  [negativo] Tabla inexistente -> InvalidRequest: Error from server: code=2200 [Invalid query] message="table tabla_inexistente_h11 does not exist"
+[OK   ] cassandra lectura          17.2 ms  [negativo] Consulta invalida (filtro fuera de la clave, sin ALLOW FILTERING) -> InvalidRequest: Error from server: code=2200 [Invalid query] message="Cannot execute this query as it might involve data filtering and thus may have unpredictable performance. If you want to execute this query despite the performance unpredictability, use ALLOW FILTERING"
+[OK   ] cassandra tcp            3004.5 ms  [negativo] Timeout de conexion (direccion sin respuesta) -> NoHostAvailable: ('Unable to connect to any servers', {'10.255.255.1:9042': OSError(None, "Tried connecting to [('10.255.255.1', 9042)]. Last error: timed out")})
+[OK   ] cassandra lectura         542.5 ms  cqlsh: lectura limitada de una particion (dentro del contenedor) -> (2 rows)
+[OK   ] redis     protocolo         3.1 ms  Handshake RESP: PING crudo (sin driver) -> +PONG (respuesta RESP basica, sin autenticar)
+[OK   ] redis     autenticacion    27.4 ms  PING con el cliente de la API (aplica AUTH si la URL tiene password) -> PONG
+[OK   ] redis     autenticacion     0.6 ms  [negativo] AUTH con password invalida -> el servidor NO tiene password configurada (requirepass vacio): no hay identidad que validar
 [INFO ] redis     autorizacion       -      Permisos del usuario 'default' -> sin ACL configuradas: el usuario default tiene acceso a todas las claves y comandos
-[OK   ] redis     contexto          2.8 ms  Base logica 0: DBSIZE -> 324 claves
-[OK   ] redis     lectura           0.4 ms  Clave de demostracion 'sesion:S0001': tipo, TTL y campos -> existe, tipo=hash, TTL=424 s, usuario_id=U0001, estado=activa
-[FALLA] redis     lectura           0.4 ms  Operacion identica al adaptador de la API: GET sesion:S0001 -> ResponseError: WRONGTYPE Operation against a key holding the wrong kind of value: el Hito 7 guarda la sesion como HASH y la API usa GET (string). La API traduce este error a 503 'dependencia no disponible' aunque Redis responde
-[OK   ] redis     lectura           0.9 ms  [negativo] Clave ausente 'sesion:no-existe-h11' -> EXISTS=0, TTL=-2: Redis respondio; ausencia valida (404 en la API, no 503)
-[INFO ] redis     lectura           0.5 ms  Clave expirada vs ausente: contadores del servidor -> expired_keys=0 evicted_keys=0 | una clave expirada se ve igual que una ausente (TTL=-2); solo los contadores del servidor o la aplicacion pueden distinguirlas
-[OK   ] redis     lectura         181.0 ms  redis-cli: PING, TYPE y TTL de sesion:S0001 (dentro del contenedor) -> PONG | hash | 423 | redis_version:8.10.2
-[OK   ] influxdb  protocolo         2.1 ms  GET /health SIN token -> HTTP 401: el servicio responde HTTP; exige autorizacion incluso para /health (InfluxDB 3 Core por defecto)
-[OK   ] influxdb  autenticacion     1.6 ms  GET /health CON el token configurado -> HTTP 200 OK
-[OK   ] influxdb  autenticacion    12.9 ms  [negativo] Token invalido -> HTTP 401 (rechazado)
-[OK   ] influxdb  autorizacion      1.4 ms  El token puede listar las databases (permiso de administracion) -> HTTP 200: _internal, fixture2030_historico, fixture2030_resumen, fixture2030_vivo
+[OK   ] redis     contexto          4.1 ms  Base logica 0: DBSIZE -> 344 claves
+[OK   ] redis     lectura           0.5 ms  Clave de demostracion 'sesion:S0001': tipo, TTL y campos -> existe, tipo=hash, TTL=1762 s, usuario_id=U0001, estado=activa
+[FALLA] redis     lectura           0.6 ms  Operacion identica al adaptador de la API: GET sesion:S0001 -> ResponseError: WRONGTYPE Operation against a key holding the wrong kind of value: el Hito 7 guarda la sesion como HASH y la API usa GET (string). La API traduce este error a 503 'dependencia no disponible' aunque Redis responde
+[OK   ] redis     lectura           1.0 ms  [negativo] Clave ausente 'sesion:no-existe-h11' -> EXISTS=0, TTL=-2: Redis respondio; ausencia valida (404 en la API, no 503)
+[INFO ] redis     lectura           0.6 ms  Clave expirada vs ausente: contadores del servidor -> expired_keys=0 evicted_keys=0 | una clave expirada se ve igual que una ausente (TTL=-2); solo los contadores del servidor o la aplicacion pueden distinguirlas
+[OK   ] redis     lectura         153.6 ms  redis-cli: PING, TYPE y TTL de sesion:S0001 (dentro del contenedor) -> PONG | hash | 1761 | redis_version:8.10.2
+[OK   ] influxdb  protocolo         7.3 ms  GET /health SIN token -> HTTP 401: el servicio responde HTTP; exige autorizacion incluso para /health (InfluxDB 3 Core por defecto)
+[OK   ] influxdb  autenticacion     3.4 ms  GET /health CON el token configurado -> HTTP 200 OK
+[OK   ] influxdb  autenticacion     2.7 ms  [negativo] Token invalido -> HTTP 401 (rechazado)
+[OK   ] influxdb  autorizacion      3.4 ms  El token puede listar las databases (permiso de administracion) -> HTTP 200: _internal, fixture2030_historico, fixture2030_resumen, fixture2030_vivo
 [OK   ] influxdb  contexto           -      Database 'fixture2030_vivo' configurada existe -> presente en el catalogo
-[OK   ] influxdb  lectura           7.8 ms  Consulta temporal acotada F2030-018 [2030-06-13T08:00:00Z, 2030-06-13T08:05:00Z): COUNT, AVG(posesion), MAX(pases_acum) -> [{"equipo_id": "ALG", "puntos": 300, "posesion_prom": 50.0, "pases_al_cierre": 20}, {"equipo_id": "TUN", "puntos": 300, "posesion_prom": 50.0, "pases_al_cierre": 38}]
-[FALLA] influxdb  lectura           1.6 ms  Peticion identica al adaptador de la API (cuerpo JSON con campo 'query') -> HTTP 400: serde json error: missing field `q` at line 1 column 356 -> la API v3 espera el campo 'q'; el adaptador envia 'query'. Toda consulta de la API (y su /salud) recibe 400 y se informa como 503
-[OK   ] influxdb  lectura           4.3 ms  [negativo] Ventana sin puntos [2030-06-13T09:00:00Z, 2030-06-13T09:15:00Z) -> HTTP 200 con [] : ausencia de puntos, no error
-[OK   ] influxdb  contexto          1.6 ms  [negativo] Database inexistente -> HTTP 404: {"error":"query error: database not found: fixture2030_vivo_inexistente_h11"}
-[OK   ] influxdb  lectura         196.1 ms  influxdb3 query: conteo en la ventana (dentro del contenedor) -> puntos=600 | influxdb3 InfluxDB 3 Core, 3.12.1, revision 692ea4a9943fc343c5fdf830d7dff82eef1f7fca
-[OK   ] iris      protocolo         3.2 ms  Management Portal HTTP -> HTTP 200 (pagina de login)
-[OK   ] iris      autenticacion    20.1 ms  Conexion al Superserver como '_SYSTEM' en 'USER' -> sesion abierta (autenticacion y seleccion de namespace en el mismo paso)
-[OK   ] iris      contexto          1.9 ms  Metadato: tablas del esquema Fixture (proyeccion SQL de las clases) -> 9 tablas en el esquema Fixture
-[OK   ] iris      autorizacion      1.4 ms  Permiso SELECT sobre Fixture.Partido -> 96 partidos visibles
-[OK   ] iris      lectura           1.3 ms  Lectura de la entidad Partido F2030-001 -> ('F2030-001', 'Finalizado', 1, 1)
-[FALLA] iris      lectura           5.4 ms  SQL identico al adaptador de la API (JOIN con alias 'local') -> ProgrammingError: <SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>] -> 'LOCAL' es palabra reservada de IRIS SQL: la consulta no compila, la API responde 503 aunque /salud informe iris disponible
+[OK   ] influxdb  lectura          11.2 ms  Consulta temporal acotada F2030-018 [2030-06-13T08:00:00Z, 2030-06-13T08:05:00Z): COUNT, AVG(posesion), MAX(pases_acum) -> [{"equipo_id": "ALG", "puntos": 300, "posesion_prom": 50.0, "pases_al_cierre": 20}, {"equipo_id": "TUN", "puntos": 300, "posesion_prom": 50.0, "pases_al_cierre": 38}]
+[FALLA] influxdb  lectura          25.8 ms  Peticion identica al adaptador de la API (cuerpo JSON con campo 'query') -> HTTP 400: serde json error: missing field `q` at line 1 column 356 -> la API v3 espera el campo 'q'; el adaptador envia 'query'. Toda consulta de la API (y su /salud) recibe 400 y se informa como 503
+[OK   ] influxdb  lectura          19.3 ms  [negativo] Ventana sin puntos [2030-06-13T09:00:00Z, 2030-06-13T09:15:00Z) -> HTTP 200 con [] : ausencia de puntos, no error
+[OK   ] influxdb  contexto         27.3 ms  [negativo] Database inexistente -> HTTP 404: {"error":"query error: database not found: fixture2030_vivo_inexistente_h11"}
+[OK   ] influxdb  lectura         137.5 ms  influxdb3 query: conteo en la ventana (dentro del contenedor) -> puntos=600 | influxdb3 InfluxDB 3 Core, 3.12.1, revision 692ea4a9943fc343c5fdf830d7dff82eef1f7fca
+[OK   ] iris      protocolo         4.4 ms  Management Portal HTTP -> HTTP 200 (pagina de login)
+[OK   ] iris      autenticacion    21.0 ms  Conexion al Superserver como '_SYSTEM' en 'USER' -> sesion abierta (autenticacion y seleccion de namespace en el mismo paso)
+[OK   ] iris      contexto          2.7 ms  Metadato: tablas del esquema Fixture (proyeccion SQL de las clases) -> 9 tablas en el esquema Fixture
+[OK   ] iris      autorizacion      1.5 ms  Permiso SELECT sobre Fixture.Partido -> 96 partidos visibles
+[OK   ] iris      lectura           1.5 ms  Lectura de la entidad Partido F2030-001 -> ('F2030-001', 'Finalizado', 1, 1)
+[FALLA] iris      lectura           7.1 ms  SQL identico al adaptador de la API (JOIN con alias 'local') -> ProgrammingError: <SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>] -> 'LOCAL' es palabra reservada de IRIS SQL: la consulta no compila, la API responde 503 aunque /salud informe iris disponible
 [OK   ] iris      lectura           1.3 ms  [negativo] Objeto inexistente (F2030-999) -> sin filas y sin error (404 en la API)
-[OK   ] iris      contexto       2017.9 ms  [negativo] Namespace incorrecto -> RuntimeError: <COMMUNICATION LINK ERROR> Failed to connect to server; Details: <COMMUNICATION ERROR> Invalid Message received; Details: Access Denied
-[OK   ] iris      lectura         102.4 ms  Terminal (iris session): existe F2030-001 por indice CodigoIdx -> NS=USER EXISTE=1 | VERSION=IRIS for UNIX (Ubuntu Server LTS for x86-64 Containers) 2026.2 (Build 221U) Fri Jun 26 2026 09:58:52 EDT
-[OK   ] iris      contexto        106.1 ms  [negativo] Terminal con namespace incorrecto -> Node: ac4fc74fb0a5, Instance: IRIS Access Denied
+[OK   ] iris      contexto       2020.6 ms  [negativo] Namespace incorrecto -> RuntimeError: <COMMUNICATION LINK ERROR> Failed to connect to server; Details: <COMMUNICATION ERROR> Invalid Message received; Details: Access Denied
+[OK   ] iris      lectura         222.8 ms  Terminal (iris session): existe F2030-001 por indice CodigoIdx -> NS=USER EXISTE=1 | VERSION=IRIS for UNIX (Ubuntu Server LTS for x86-64 Containers) 2026.2 (Build 221U) Fri Jun 26 2026 09:58:52 EDT
+[OK   ] iris      contexto        220.9 ms  [negativo] Terminal con namespace incorrecto -> Node: ac4fc74fb0a5, Instance: IRIS Access Denied

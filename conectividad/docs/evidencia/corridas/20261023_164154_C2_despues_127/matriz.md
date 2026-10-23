@@ -1,7 +1,7 @@
 # Matriz de conectividad — corrida `C2_despues_127`
 
-- **Fecha (UTC):** 2026-10-23T06:19:22Z
-- **Commit:** `fc5d50a+cambios_locales`
+- **Fecha (UTC):** 2026-10-23T19:41:54Z
+- **Commit:** `82e1233`
 - **Entorno de ejecución:** notebook Windows 10 | Python 3.11.9 (.venv) — mismo origen que la API del Hito 10
 - **Docker:** Docker Engine 29.8.2
 - **Modo:** `tcp` · **timeout por operación:** 3.0 s
@@ -27,7 +27,7 @@
 | :--- | :--- | :--- | :--- | :---: | ---: | :--- |
 | resolucion | Resolver host (driver de la API (Superserver)) | notebook | socket.getaddrinfo | OK | - | 127.0.0.1 -> 127.0.0.1 |
 | resolucion | Resolver host (Management Portal) | notebook | socket.getaddrinfo | OK | - | 127.0.0.1 -> 127.0.0.1 |
-| tcp | Conexion TCP (driver de la API (Superserver)) | notebook | socket.create_connection | OK | 15 | exito: conexion establecida 127.0.0.1 -> 127.0.0.1:1972 |
+| tcp | Conexion TCP (driver de la API (Superserver)) | notebook | socket.create_connection | OK | 0 | exito: conexion establecida 127.0.0.1 -> 127.0.0.1:1972 |
 | tcp | Conexion TCP (Management Portal) | notebook | socket.create_connection | OK | 0 | exito: conexion establecida 127.0.0.1 -> 127.0.0.1:52773 |
 
 ## Herramientas o pruebas no ejecutadas (SKIP)

@@ -38,28 +38,35 @@ por falta de herramienta o configuración”, nunca “producto caído”.
 | 06:09 | Corrida exploratoria (scripts en desarrollo): detecta H1–H5 | `c2502d1+cambios_locales` | [`diagnostico/H5_influx_esquema_antes.txt`](evidencia/diagnostico/H5_influx_esquema_antes.txt) |
 | 06:13 | C3: recarga de InfluxDB con los scripts actuales del Hito 8 (corrige H5) | — | [`diagnostico/C3_influx_recarga_esquema.txt`](evidencia/diagnostico/C3_influx_recarga_esquema.txt) |
 | 06:18 | **Corrida `inicial`** (modo completo + API) | `c2502d1+cambios_locales` | [`corridas/20261023_031659_inicial/`](evidencia/corridas/20261023_031659_inicial/) |
-| 06:19 | C1: password local de `_SYSTEM` en IRIS (corrige H3) → IRIS nativo `disponible` | — | [`corridas/20261023_031855_C1_iris_password/`](evidencia/corridas/20261023_031855_C1_iris_password/) |
+| 06:19 | C1: password local de `_SYSTEM` en IRIS (corrige H3) → IRIS nativo `disponible` | — | [`diagnostico/C1_iris_password_despues.txt`](evidencia/diagnostico/C1_iris_password_despues.txt) |
 | 06:19 | C2: `127.0.0.1` para InfluxDB e IRIS (corrige H4) | — | [`diagnostico/C2_ipv6_antes.txt`](evidencia/diagnostico/C2_ipv6_antes.txt), [`C2_ipv6_despues.txt`](evidencia/diagnostico/C2_ipv6_despues.txt) |
 | 06:20 | Primera corrida final: aparece H7 (la capa siguiente a la credencial) | — | log en el texto de H7 |
-| 06:26 | **Corrida `final`** (modo completo + API) | `b6d4e88` | [`corridas/20261023_032545_final/`](evidencia/corridas/20261023_032545_final/) |
-| 06:27 | Fallas controladas (Redis detenido, timeout bajo, sin token) | `b6d4e88` | [`falla_controlada/`](evidencia/falla_controlada/) |
+| 06:26 | Corrida `final` original y fallas controladas (sus commits se unificaron después; reemplazadas por la re-ejecución de 19:40) | — | — |
+| 19:40 | **Corrida `final`** (modo completo + API), re-ejecutada sobre el commit unificado | `82e1233` | [`corridas/20261023_164055_final/`](evidencia/corridas/20261023_164055_final/) |
+| 19:41 | Re-ejecución de C1 (IRIS nativo) y C2 (TCP con `localhost` y con `127.0.0.1`) | `82e1233` | [`corridas/…_C1_iris_password/`](evidencia/corridas/20261023_164136_C1_iris_password/), [`…_C2_antes_localhost/`](evidencia/corridas/20261023_164140_C2_antes_localhost/), [`…_C2_despues_127/`](evidencia/corridas/20261023_164154_C2_despues_127/) |
+| 19:41 | Fallas controladas (Redis detenido, timeout bajo, sin token) | `82e1233` | [`falla_controlada/`](evidencia/falla_controlada/) |
 
 > La corrida `inicial` se ejecutó **después** de C3, porque la recarga del esquema de InfluxDB se
 > hizo apenas se detectó H5 en la corrida exploratoria. La evidencia de H5 “antes” se conservó
 > aparte. Fue un error de orden del procedimiento y queda declarado.
+>
+> La re-ejecución de 19:40 repite las mismas pruebas sobre el commit unificado `82e1233`. Los
+> resultados y estados son idénticos a los de 06:26; solo cambian los tiempos y el `DBSIZE` de
+> Redis (344 claves), porque antes de correrla se recargó la muestra del Hito 7: la sesión de
+> prueba `sesion:S0001` tiene TTL de 1.800 s y había vencido.
 
 ## Matriz por dependencia
 
 Latencia = duración de la **lectura mínima nativa desde la notebook** (driver de la API).
 
-| Dependencia | Corrida `inicial` (06:18) | Corrida `final` (06:26) | Prueba decisiva | Latencia lectura (final) | Rutas API según contrato (final) | Diagnóstico | Evidencia |
+| Dependencia | Corrida `inicial` (06:18) | Corrida `final` (19:40) | Prueba decisiva | Latencia lectura (final) | Rutas API según contrato (final) | Diagnóstico | Evidencia |
 | :--- | :--- | :--- | :--- | ---: | :---: | :--- | :--- |
 | **MongoDB** | degradado | **degradado** | `find_one({_id:'ARG'})` (la del adaptador) sin resultados; `{codigo:'ARG'}` sí | 1 ms | 2/4 | H1: la API busca por `_id`; en el Hito 4 el código FIFA está en `codigo`. `/equipos/ARG` da 404 y `/jugadores` da 500 | `corridas/…_final/resultados_clientes.txt`, `…/resultados_api.txt` |
-| **Neo4j** | disponible | **disponible** | handshake Bolt 5.8 + `MATCH` parametrizado | 8 ms | 3/3 | — | ídem |
-| **Cassandra** | disponible | **disponible** | `OPTIONS`/`STARTUP` + lectura de una partición `LIMIT 5` | 15 ms | 3/3 | — | ídem |
+| **Neo4j** | disponible | **disponible** | handshake Bolt 5.8 + `MATCH` parametrizado | 5 ms | 3/3 | — | ídem |
+| **Cassandra** | disponible | **disponible** | `OPTIONS`/`STARTUP` + lectura de una partición `LIMIT 5` | 16 ms | 3/3 | — | ídem |
 | **Redis** | degradado | **degradado** | `TYPE sesion:S0001 = hash` vs. `GET` del adaptador → `WRONGTYPE` | 0 ms | 1/2 | H2: la API trata un error de tipo como “Redis no disponible” (503) | ídem |
-| **InfluxDB** | degradado (TCP ~2 s por IPv6) | **degradado** | cuerpo idéntico al adaptador → `400 missing field q` | 8 ms | 1/3 | H6: el adaptador envía `query`; la API v3 exige `q`. H4 corregido (C2) | ídem + `diagnostico/C2_*` |
-| **IRIS** | **no_disponible** (capa autenticación) | **degradado** | `iris.connect` OK tras C1; SQL del adaptador → `SQLCODE -1` | 1 ms | 0/2 | H3 corregido (C1). H7: alias `local` reservado en IRIS SQL | ídem + `corridas/…_C1_iris_password/` |
+| **InfluxDB** | degradado (TCP ~2 s por IPv6) | **degradado** | cuerpo idéntico al adaptador → `400 missing field q` | 11 ms | 1/3 | H6: el adaptador envía `query`; la API v3 exige `q`. H4 corregido (C2) | ídem + `diagnostico/C2_*` |
+| **IRIS** | **no_disponible** (capa autenticación) | **degradado** | `iris.connect` OK tras C1; SQL del adaptador → `SQLCODE -1` | 2 ms | 0/2 | H3 corregido (C1). H7: alias `local` reservado en IRIS SQL | ídem + `corridas/…_C1_iris_password/` |
 
 **Cambios de estado documentados (RF20):**
 
@@ -71,14 +78,14 @@ Latencia = duración de la **lectura mínima nativa desde la notebook** (driver 
 - **InfluxDB (lectura nativa):** `500 Schema error: No field named pases_acum` (exploratoria) →
   C3 → `200` con 300 puntos por equipo.
 - **Redis (falla controlada):** `404` (Redis arriba) → `docker stop` → `503` → `docker start` →
-  `404`, sin reiniciar la API y con `DBSIZE` 324 → 324.
+  `404`, sin reiniciar la API y con `DBSIZE` 344 → 344.
 
 ## `/salud` de la API frente a esta matriz
 
 | Corrida | `/salud` (HTTP 200 siempre) | Tiempo | Lo que la matriz agrega |
 | :--- | :--- | ---: | :--- |
 | inicial | mongodb, neo4j, cassandra, redis = sí · influxdb, iris = no | 6.185 ms | Mongo y Redis figuran “sí”, pero sus rutas fallan (H1, H2); IRIS “no” sin decir por qué (H3) |
-| final | mongodb, neo4j, cassandra, redis, **iris = sí** · influxdb = no | 2.188 ms | **IRIS figura “sí”, pero sus 2 rutas dan 503** (H7). InfluxDB “no” aunque el servicio, el token y la database están bien (H6) |
+| final | mongodb, neo4j, cassandra, redis, **iris = sí** · influxdb = no | 2.252 ms | **IRIS figura “sí”, pero sus 2 rutas dan 503** (H7). InfluxDB “no” aunque el servicio, el token y la database están bien (H6) |
 
 El `/salud` del Hito 10 mide si el `verificar()` de cada adaptador terminó sin excepción, no si
 la operación real del caso de uso funciona. Por eso no alcanza como diagnóstico; ver

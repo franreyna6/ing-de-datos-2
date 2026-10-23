@@ -1,6 +1,6 @@
 {
-  "generado": "2026-10-23T06:26:02Z",
-  "commit": "b6d4e88",
+  "generado": "2026-10-23T19:41:12Z",
+  "commit": "82e1233",
   "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
   "resultados": [
     {
@@ -16,8 +16,8 @@
       "responde": "El nombre configurado se convierte en una direccion desde la notebook?",
       "no_permite": "Que haya un proceso escuchando en el puerto.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -29,12 +29,12 @@
       "objetivo": "localhost:27017 [MongoDB Wire Protocol (OP_MSG)]",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
-      "duracion_ms": 0.8338999468833208,
+      "duracion_ms": 1.080899965018034,
       "responde": "Hay un listener aceptando conexiones en host:puerto?",
       "no_permite": "Que sea el producto correcto, que el protocolo responda, que la credencial o el contexto sean validos.",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "exito",
         "interpretacion": "Existe un listener accesible en el host y puerto probados.",
@@ -46,7 +46,7 @@
       "capa": "tcp",
       "prueba": "TCP por familia de direcciones (driver de la API)",
       "resultado": "INFO",
-      "detalle": "127.0.0.1 -> exito (10 ms); ::1 -> exito (16 ms)",
+      "detalle": "127.0.0.1 -> exito (0 ms); ::1 -> exito (24 ms)",
       "objetivo": "localhost:27017",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
@@ -54,8 +54,8 @@
       "responde": "El nombre configurado lleva directo al listener o pasa por un intento fallido?",
       "no_permite": "-",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "demora_por_resolucion": false,
         "hallazgo": ""
@@ -74,8 +74,8 @@
       "responde": "El nombre configurado se convierte en una direccion desde la notebook?",
       "no_permite": "Que haya un proceso escuchando en el puerto.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -87,12 +87,12 @@
       "objetivo": "localhost:7687 [Bolt]",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
-      "duracion_ms": 0.5606000777333975,
+      "duracion_ms": 0.6071999669075012,
       "responde": "Hay un listener aceptando conexiones en host:puerto?",
       "no_permite": "Que sea el producto correcto, que el protocolo responda, que la credencial o el contexto sean validos.",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "exito",
         "interpretacion": "Existe un listener accesible en el host y puerto probados.",
@@ -112,8 +112,8 @@
       "responde": "El nombre configurado lleva directo al listener o pasa por un intento fallido?",
       "no_permite": "-",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "demora_por_resolucion": false,
         "hallazgo": ""
@@ -132,8 +132,8 @@
       "responde": "El nombre configurado se convierte en una direccion desde la notebook?",
       "no_permite": "Que haya un proceso escuchando en el puerto.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -145,12 +145,12 @@
       "objetivo": "localhost:7474 [HTTP]",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
-      "duracion_ms": 0.6235999753698707,
+      "duracion_ms": 0.5483999848365784,
       "responde": "Hay un listener aceptando conexiones en host:puerto?",
       "no_permite": "Que sea el producto correcto, que el protocolo responda, que la credencial o el contexto sean validos.",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "exito",
         "interpretacion": "Existe un listener accesible en el host y puerto probados.",
@@ -170,8 +170,8 @@
       "responde": "El nombre configurado lleva directo al listener o pasa por un intento fallido?",
       "no_permite": "-",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "demora_por_resolucion": false,
         "hallazgo": ""
@@ -190,8 +190,8 @@
       "responde": "El nombre configurado se convierte en una direccion desde la notebook?",
       "no_permite": "Que haya un proceso escuchando en el puerto.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -203,12 +203,12 @@
       "objetivo": "localhost:9042 [CQL binary protocol (v4/v5)]",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
-      "duracion_ms": 0.49359991680830717,
+      "duracion_ms": 0.5096000386402011,
       "responde": "Hay un listener aceptando conexiones en host:puerto?",
       "no_permite": "Que sea el producto correcto, que el protocolo responda, que la credencial o el contexto sean validos.",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "exito",
         "interpretacion": "Existe un listener accesible en el host y puerto probados.",
@@ -220,7 +220,7 @@
       "capa": "tcp",
       "prueba": "TCP por familia de direcciones (driver de la API)",
       "resultado": "INFO",
-      "detalle": "127.0.0.1 -> exito (10 ms); ::1 -> exito (0 ms)",
+      "detalle": "127.0.0.1 -> exito (0 ms); ::1 -> exito (0 ms)",
       "objetivo": "localhost:9042",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
@@ -228,8 +228,8 @@
       "responde": "El nombre configurado lleva directo al listener o pasa por un intento fallido?",
       "no_permite": "-",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "demora_por_resolucion": false,
         "hallazgo": ""
@@ -248,8 +248,8 @@
       "responde": "El nombre configurado se convierte en una direccion desde la notebook?",
       "no_permite": "Que haya un proceso escuchando en el puerto.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -261,12 +261,12 @@
       "objetivo": "localhost:6379 [RESP]",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
-      "duracion_ms": 0.9598000906407833,
+      "duracion_ms": 0.6562999915331602,
       "responde": "Hay un listener aceptando conexiones en host:puerto?",
       "no_permite": "Que sea el producto correcto, que el protocolo responda, que la credencial o el contexto sean validos.",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "exito",
         "interpretacion": "Existe un listener accesible en el host y puerto probados.",
@@ -278,7 +278,7 @@
       "capa": "tcp",
       "prueba": "TCP por familia de direcciones (driver de la API)",
       "resultado": "INFO",
-      "detalle": "127.0.0.1 -> exito (0 ms); ::1 -> exito (13 ms)",
+      "detalle": "127.0.0.1 -> exito (0 ms); ::1 -> exito (0 ms)",
       "objetivo": "localhost:6379",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
@@ -286,8 +286,8 @@
       "responde": "El nombre configurado lleva directo al listener o pasa por un intento fallido?",
       "no_permite": "-",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "demora_por_resolucion": false,
         "hallazgo": ""
@@ -306,8 +306,8 @@
       "responde": "El nombre configurado se convierte en una direccion desde la notebook?",
       "no_permite": "Que haya un proceso escuchando en el puerto.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -319,12 +319,12 @@
       "objetivo": "127.0.0.1:8181 [HTTP (API v3)]",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
-      "duracion_ms": 0.45320007484406233,
+      "duracion_ms": 0.317899975925684,
       "responde": "Hay un listener aceptando conexiones en host:puerto?",
       "no_permite": "Que sea el producto correcto, que el protocolo responda, que la credencial o el contexto sean validos.",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "exito",
         "interpretacion": "Existe un listener accesible en el host y puerto probados.",
@@ -344,8 +344,8 @@
       "responde": "El nombre configurado se convierte en una direccion desde la notebook?",
       "no_permite": "Que haya un proceso escuchando en el puerto.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -357,12 +357,12 @@
       "objetivo": "127.0.0.1:1972 [IRIS Superserver (protocolo propio)]",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
-      "duracion_ms": 0.30750001315027475,
+      "duracion_ms": 0.29609992634505033,
       "responde": "Hay un listener aceptando conexiones en host:puerto?",
       "no_permite": "Que sea el producto correcto, que el protocolo responda, que la credencial o el contexto sean validos.",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "exito",
         "interpretacion": "Existe un listener accesible en el host y puerto probados.",
@@ -382,8 +382,8 @@
       "responde": "El nombre configurado se convierte en una direccion desde la notebook?",
       "no_permite": "Que haya un proceso escuchando en el puerto.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -395,12 +395,12 @@
       "objetivo": "127.0.0.1:52773 [HTTP]",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
-      "duracion_ms": 13.75819998793304,
+      "duracion_ms": 0.33389998134225607,
       "responde": "Hay un listener aceptando conexiones en host:puerto?",
       "no_permite": "Que sea el producto correcto, que el protocolo responda, que la credencial o el contexto sean validos.",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "exito",
         "interpretacion": "Existe un listener accesible en el host y puerto probados.",
@@ -416,12 +416,12 @@
       "objetivo": "localhost:6379",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
-      "duracion_ms": 14.56859998870641,
+      "duracion_ms": 22.599400021135807,
       "responde": "",
       "no_permite": "",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:25:46Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:40:56Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "exito",
         "interpretacion": "Existe un listener accesible en el host y puerto probados."
@@ -436,12 +436,12 @@
       "objetivo": "localhost:27018",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
-      "duracion_ms": 4094.1762999864295,
+      "duracion_ms": 4104.427399928682,
       "responde": "",
       "no_permite": "",
       "esperado": "refused",
-      "fecha": "2026-10-23T06:25:50Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:00Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "refused",
         "interpretacion": "El host respondio, pero no hay listener en ese puerto (servicio detenido, puerto no publicado o puerto equivocado)."
@@ -456,12 +456,12 @@
       "objetivo": "10.255.255.1:27017",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
-      "duracion_ms": 3012.8115999978036,
+      "duracion_ms": 3011.537100072019,
       "responde": "",
       "no_permite": "",
       "esperado": "timeout",
-      "fecha": "2026-10-23T06:25:53Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:03Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "timeout",
         "interpretacion": "No hubo respuesta en el tiempo limite: red, firewall, ruta o saturacion."
@@ -476,12 +476,12 @@
       "objetivo": "mongodb:27017",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket.create_connection",
-      "duracion_ms": 2687.2827999759465,
+      "duracion_ms": 2701.1554999044165,
       "responde": "",
       "no_permite": "",
       "esperado": "no_resuelto",
-      "fecha": "2026-10-23T06:25:56Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:06Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "no_resuelto",
         "interpretacion": "El nombre no se pudo convertir en direccion desde este entorno."
@@ -500,8 +500,8 @@
       "responde": "Por que un puerto abierto no prueba que el protocolo sea el correcto?",
       "no_permite": "-",
       "esperado": "TCP exitoso pero protocolo no coincide",
-      "fecha": "2026-10-23T06:25:56Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:06Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -517,8 +517,8 @@
       "responde": "Que ve un proceso que corre dentro de Docker al usar el mismo host?",
       "no_permite": "Nada sobre la API actual, que corre en la notebook.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:57Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:06Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "exito"
       }
@@ -536,8 +536,8 @@
       "responde": "Que ve un proceso que corre dentro de Docker al usar el mismo host?",
       "no_permite": "Nada sobre la API actual, que corre en la notebook.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:57Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:07Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "refused_o_timeout"
       }
@@ -555,8 +555,8 @@
       "responde": "Que ve un proceso que corre dentro de Docker al usar el mismo host?",
       "no_permite": "Nada sobre la API actual, que corre en la notebook.",
       "esperado": "",
-      "fecha": "2026-10-23T06:25:57Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:07Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "exito"
       }
@@ -574,8 +574,8 @@
       "responde": "Que ve un proceso que corre dentro de Docker al usar el mismo host?",
       "no_permite": "Nada sobre la API actual, que corre en la notebook.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:02Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:12Z",
+      "commit": "82e1233",
       "extra": {
         "clase_tcp": "no_resuelto"
       }

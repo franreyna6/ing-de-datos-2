@@ -45,7 +45,7 @@ exactamente la configuración de la aplicación. Los valores de ejemplo, sin sec
 ## Estado esperado y estado observado
 
 “Esperado” es lo que el contrato del Hito 10 promete; “observado” es el resultado de la
-**corrida final** (`evidencia/corridas/20261023_032545_final/`, commit `b6d4e88`). El detalle,
+**corrida final** (`evidencia/corridas/20261023_164055_final/`, commit `82e1233`). El detalle,
 la latencia y el diagnóstico están en [`matriz_de_conectividad.md`](matriz_de_conectividad.md).
 
 | Producto | Estado esperado | Estado observado (corrida final) | Motivo |

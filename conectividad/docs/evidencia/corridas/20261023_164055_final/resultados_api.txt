@@ -1,0 +1,25 @@
+# Evaluacion de conectividad - modo completo - final
+# fecha UTC: 2026-10-23T19:40:55Z | commit: 82e1233
+# origen de las pruebas: notebook Windows 10 | Python 3.11.9 (.venv)
+# docker: Docker Engine 29.8.2
+# configuracion: configuracion.env presente
+# timeout por operacion: 3.0 s
+[OK   ] api       api            2050.0 ms  GET /salud contra un puerto sin API -> sin respuesta HTTP (connection refused): API no alcanzable
+[INFO ] api       api            2251.8 ms  GET /salud (chequeo de las 6 fuentes) -> HTTP 200 en 2252 ms | mongodb=si, neo4j=si, cassandra=si, redis=si, influxdb=no, iris=si
+[FALLA] mongodb   api               3.9 ms  GET /equipos/ARG -> HTTP 404 recurso_inexistente | NOT_FOUND: No existe el equipo 'ARG'.
+[OK   ] mongodb   api               3.9 ms  GET /equipos/ZZZ -> HTTP 404 recurso_inexistente | NOT_FOUND: No existe el equipo 'ZZZ'.
+[FALLA] mongodb   api              13.8 ms  GET /equipos/ARG/jugadores?limit=5 -> HTTP 500 error_interno | INTERNAL_ERROR: Ocurrio un error interno al procesar la solicitud.
+[OK   ] mongodb   api               3.2 ms  GET /equipos/ARG/jugadores?limit=0 -> HTTP 400 error_validacion | VALIDATION_ERROR: Parametros o cuerpo invalidos.
+[OK   ] neo4j     api              15.2 ms  GET /partidos/F2030-001/eventos?limit=5 -> HTTP 200 exito | 2 eventos
+[OK   ] neo4j     api              37.2 ms  GET /partidos/F2030-006/eventos?limit=5 -> HTTP 200 vacio_valido | 0 eventos
+[OK   ] neo4j     api              32.2 ms  GET /partidos/F2030-999/eventos -> HTTP 404 recurso_inexistente | NOT_FOUND: No existe el partido 'F2030-999'.
+[OK   ] cassandra api              14.1 ms  GET /partidos/F2030-063/comentarios?instante=2030-06-22T20%3A03%3A00Z&limit=5 -> HTTP 200 exito | 2 comentarios
+[OK   ] cassandra api              14.2 ms  GET /partidos/F2030-063/comentarios?instante=2029-06-22T20%3A03%3A00Z&limit=5 -> HTTP 200 vacio_valido | 0 comentarios
+[OK   ] cassandra api               1.9 ms  GET /partidos/F2030-063/comentarios?instante=no-es-fecha -> HTTP 400 error_validacion | VALIDATION_ERROR: El parametro 'instante' no es una fecha-hora ISO-8601 valida.
+[FALLA] redis     api               3.1 ms  GET /sesiones/S0001 -> HTTP 503 dependencia_no_disponible | DEPENDENCY_UNAVAILABLE: La fuente 'redis' no esta disponible en este momento.
+[OK   ] redis     api               3.2 ms  GET /sesiones/no-existe-h11 -> HTTP 404 recurso_inexistente | NOT_FOUND: No existe una sesion vigente con ese identificador.
+[FALLA] influxdb  api              28.5 ms  GET /partidos/F2030-018/estadisticas?desde=2030-06-13T08%3A00%3A00Z&hasta=2030-06-13T08%3A05%3A00Z -> HTTP 503 dependencia_no_disponible | DEPENDENCY_UNAVAILABLE: La fuente 'influxdb' no esta disponible en este momento.
+[FALLA] influxdb  api               4.2 ms  GET /partidos/F2030-018/estadisticas?desde=2030-06-13T09%3A00%3A00Z&hasta=2030-06-13T09%3A15%3A00Z -> HTTP 503 dependencia_no_disponible | DEPENDENCY_UNAVAILABLE: La fuente 'influxdb' no esta disponible en este momento.
+[OK   ] influxdb  api               2.2 ms  GET /partidos/F2030-018/estadisticas?desde=2030-06-13T08%3A05%3A00Z&hasta=2030-06-13T08%3A00%3A00Z -> HTTP 400 error_validacion | VALIDATION_ERROR: El parametro 'desde' debe ser anterior a 'hasta'.
+[FALLA] iris      api              10.2 ms  GET /partidos/F2030-001/detalle -> HTTP 503 dependencia_no_disponible | DEPENDENCY_UNAVAILABLE: La fuente 'iris' no esta disponible en este momento.
+[FALLA] iris      api               5.1 ms  GET /partidos/F2030-999/detalle -> HTTP 503 dependencia_no_disponible | DEPENDENCY_UNAVAILABLE: La fuente 'iris' no esta disponible en este momento.

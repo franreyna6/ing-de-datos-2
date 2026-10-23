@@ -48,8 +48,8 @@ fue no modificar la API del Hito 10. Quedan como siguiente paso, con el cambio p
   `_id = 'ARG'` y campos (`grupo`, `ciudadSede`) que el Hito 4 no tiene.
 - **Siguiente paso (código, no aplicado):** en `mongo_adapter.py`, filtrar por `{"codigo": codigo}`
   y proyectar `codigo` (no `$_id`). Alternativa de datos: recargar el Hito 4 con `_id = codigo`.
-- **Evidencia:** `corridas/20261023_032545_final/resultados_clientes.txt` y `resultados_api.txt`
-  (request `h11-final-01-8fa9`).
+- **Evidencia:** `corridas/20261023_164055_final/resultados_clientes.txt` y `resultados_api.txt`
+  (request `h11-final-01-aebd`).
 
 ### H2 — Redis: sesión como hash, lectura con `GET`
 
@@ -62,7 +62,7 @@ fue no modificar la API del Hito 10. Quedan como siguiente paso, con el cambio p
   variante “un tipo incorrecto no equivale a Redis caído”.
 - **Siguiente paso (código):** leer con `HGETALL` (o `HMGET usuario_id estado`) y traducir
   `ResponseError` a un 500 de contrato, no a 503.
-- **Evidencia:** request `h11-final-11-41b3`.
+- **Evidencia:** request `h11-final-11-0eb3`.
 
 ### H3 — IRIS: password expirada en la imagen Community
 
@@ -74,7 +74,7 @@ fue no modificar la API del Hito 10. Quedan como siguiente paso, con el cambio p
   La API respondía 503 tras ~2 s.
 - **Corrección (C1, entorno):** password local nueva para `_SYSTEM` con
   `Security.Users.Modify` (`ChangePassword=0`), guardada solo en `config/configuracion.env`.
-  Después: autenticación OK en 22 ms, 9 tablas en `Fixture`, 96 partidos visibles.
+  Después: autenticación OK en 24 ms, 9 tablas en `Fixture`, 96 partidos visibles.
 - **Evidencia:** `corridas/20261023_031659_inicial/` (antes) y
   [`diagnostico/C1_iris_password_despues.txt`](evidencia/diagnostico/C1_iris_password_despues.txt).
 
@@ -87,7 +87,7 @@ fue no modificar la API del Hito 10. Quedan como siguiente paso, con el cambio p
   abre una conexión por request y el timeout es de 3 s: con un poco de carga, el margen se agota.
 - **Corrección (C2, configuración):** `INFLUX_URL=http://127.0.0.1:8181`, `IRIS_HOST=127.0.0.1`,
   `IRIS_PORTAL_URL=http://127.0.0.1:52773`. TCP: 2.043 → 1 ms (InfluxDB), 2.058 → 15 ms (IRIS).
-  `/salud`: 6.185 ms → 2.188 ms (el resto es la conexión inicial del driver de Cassandra, ~1,6 s).
+  `/salud`: 6.185 ms → 2.252 ms (el resto es la conexión inicial del driver de Cassandra, ~1,6 s).
 - **Siguiente paso:** aplicar el mismo cambio en `api/.env.example` (no se tocó la API).
 - **Evidencia:** [`diagnostico/C2_ipv6_antes.txt`](evidencia/diagnostico/C2_ipv6_antes.txt) y
   [`C2_ipv6_despues.txt`](evidencia/diagnostico/C2_ipv6_despues.txt).
@@ -120,7 +120,7 @@ fue no modificar la API del Hito 10. Quedan como siguiente paso, con el cambio p
   `200 []`, también da 503.
 - **Siguiente paso (código):** en `influx_adapter.py`, `"q": sql` en lugar de `"query": sql`, y
   traducir un `4xx` de InfluxDB a un error de contrato, no a 503.
-- **Evidencia:** requests `h11-final-13-8088` y `h11-final-14-ebcf`; prueba nativa
+- **Evidencia:** requests `h11-final-13-9d4a` y `h11-final-14-b548`; prueba nativa
   “Petición idéntica al adaptador”.
 
 ### H7 — IRIS: alias `local` reservado en IRIS SQL
@@ -133,7 +133,7 @@ fue no modificar la API del Hito 10. Quedan como siguiente paso, con el cambio p
   la falla de la capa siguiente (operación). `/salud` en verde **no** garantiza el caso de uso.
 - **Siguiente paso (código):** renombrar el alias en `iris_adapter.py` y traducir los errores SQL
   a 500 de contrato, no a 503.
-- **Evidencia:** requests `h11-final-16-8d2d`, `h11-final-17-189f`; prueba nativa “SQL idéntico
+- **Evidencia:** requests `h11-final-16-8665`, `h11-final-17-8c92`; prueba nativa “SQL idéntico
   al adaptador”.
 
 ### H8 — Correlación incompleta en errores 500
@@ -153,16 +153,16 @@ Ejecutada con `scripts/falla_controlada.py --escenario redis_detenido`
 
 | Elemento (5.7) | Observado |
 | :--- | :--- |
-| **Condición inicial** | `fixture2030-redis` running · `DBSIZE=324` · `sesion:S0001` tipo hash, TTL 411 s · montaje `~/docker/data/redis → /data`. API: `GET /sesiones/no-existe-h11` → `404` en 64 ms (la base respondió) |
+| **Condición inicial** | `fixture2030-redis` running · `DBSIZE=344` · `sesion:S0001` tipo hash, TTL 1.731 s · montaje `~/docker/data/redis → /data`. API: `GET /sesiones/no-existe-h11` → `404` en 88 ms (la base respondió) |
 | **Cambio aplicado** | `docker stop fixture2030-redis` (0,5 s). Sin `down`, sin `-v`, sin tocar la carpeta de datos |
 | **Prueba ejecutada** | TCP + `PING` crudo a `localhost`, `127.0.0.1` y `::1` · `PING` con redis-py · tres rutas de la API · `/salud` |
 | **TCP** | **éxito** en las tres direcciones (proxy de puertos de Docker Desktop), pero el `PING` no tuvo respuesta: TCP exitoso ≠ disponible |
-| **Respuesta de la API** | `/sesiones/no-existe-h11` → `503 DEPENDENCY_UNAVAILABLE` en 27 ms · `/sesiones/S0001` → `503` en 5 ms · **`/partidos/F2030-001/eventos` (Neo4j) → `200`** en 163 ms: la falla queda aislada en su ruta |
-| **Mensaje de log** | `WARNING [req=h11-falla-redis-404] dependencia fuente=redis causa=Error while reading from localhost:6379 : (10053, …)` y `WARNING [req=h11-falla-redis-s01] dependencia fuente=redis causa=Connection closed by server.` → `GET /sesiones/S0001 -> 503 (3.2 ms)` ([`api_redis_detenido.log`](evidencia/falla_controlada/api_redis_detenido.log)) |
-| **Tiempo de espera** | 503 en 5–27 ms: falla rápida, sin colgarse ni reintentar. `/salud` tardó 6.013 ms y respondió **200** con `redis=false` |
-| **Recuperación** | `docker start fixture2030-redis` → `PONG` a los 0,5 s (1 intento, límite 60 s) |
-| **Resultado después** | `/sesiones/no-existe-h11` → `404` en 15 ms: la API se reconectó sola, sin reiniciarla |
-| **Datos conservados** | `DBSIZE` 324 → 324 · `sesion:S0001` sigue siendo hash, con TTL 404 s (AOF + RDB del Hito 7) |
+| **Respuesta de la API** | `/sesiones/no-existe-h11` → `503 DEPENDENCY_UNAVAILABLE` en 24 ms · `/sesiones/S0001` → `503` en 23 ms · **`/partidos/F2030-001/eventos` (Neo4j) → `200`** en 188 ms: la falla queda aislada en su ruta |
+| **Mensaje de log** | `WARNING [req=h11-falla-redis-404] dependencia fuente=redis causa=Error while reading from localhost:6379 : (10053, …)` y `WARNING [req=h11-falla-redis-s01] dependencia fuente=redis causa=Error while reading from localhost:6379 : (10053, …)` → `GET /sesiones/S0001 -> 503 (21.6 ms)` ([`api_redis_detenido.log`](evidencia/falla_controlada/api_redis_detenido.log)) |
+| **Tiempo de espera** | 503 en 23–24 ms: falla rápida, sin colgarse ni reintentar. `/salud` tardó 6.050 ms y respondió **200** con `redis=false` |
+| **Recuperación** | `docker start fixture2030-redis` → `PONG` a los 0,9 s (2 intentos, límite 60 s) |
+| **Resultado después** | `/sesiones/no-existe-h11` → `404` en 40 ms: la API se reconectó sola, sin reiniciarla |
+| **Datos conservados** | `DBSIZE` 344 → 344 · `sesion:S0001` sigue siendo hash, con TTL 1.723 s (AOF + RDB del Hito 7) |
 
 ## 3. Otras condiciones provocadas
 
@@ -172,12 +172,12 @@ Una **segunda instancia** de la API con esa variable (la configuración normal n
 
 | Ruta (producto) | Normal (3,0 s) | Alterada (0,001 s) | Causa en el log (alterada) |
 | :--- | :--- | :--- | :--- |
-| `/partidos/F2030-001/eventos` (Neo4j) | 200 · 169 ms | **200** · 170 ms | — |
-| `/equipos/ZZZ` (MongoDB) | 404 · 153 ms | **404** · 135 ms | — |
-| `/sesiones/no-existe-h11` (Redis) | 404 · 55 ms | **404** · 87 ms | — |
-| `/partidos/F2030-063/comentarios` (Cassandra) | 200 · 1.744 ms | **503** · 143 ms | `Unable to connect to any servers … OperationTimedOut` |
-| `/partidos/F2030-018/estadisticas` (InfluxDB) | 503 (H6) · 20 ms | 503 · 4 ms | `HTTP 400` (H6 enmascara el timeout) |
-| `/partidos/F2030-999/detalle` (IRIS) | 503 (H7) · 55 ms | **503** · 56 ms | `<COMMUNICATION LINK ERROR> Failed to connect to server` |
+| `/partidos/F2030-001/eventos` (Neo4j) | 200 · 219 ms | **200** · 199 ms | — |
+| `/equipos/ZZZ` (MongoDB) | 404 · 145 ms | **404** · 146 ms | — |
+| `/sesiones/no-existe-h11` (Redis) | 404 · 81 ms | **503** · 59 ms | `Timeout reading from socket` |
+| `/partidos/F2030-063/comentarios` (Cassandra) | 200 · 1.772 ms | **503** · 119 ms | `Unable to connect to any servers … OperationTimedOut` |
+| `/partidos/F2030-018/estadisticas` (InfluxDB) | 503 (H6) · 5 ms | 503 · 15 ms | `HTTP 400` (H6 enmascara el timeout) |
+| `/partidos/F2030-999/detalle` (IRIS) | 503 (H7) · 66 ms | **503** · 41 ms | `<COMMUNICATION LINK ERROR> Failed to connect to server` |
 
 Lectura:
 
@@ -185,16 +185,16 @@ Lectura:
   Solo el log separa la causa.
 - **En loopback, 1 ms puede alcanzar.** Neo4j y Mongo respondieron igual: sus timeouts limitan la
   conexión y el socket, no la operación completa, y en `localhost` conectar tarda menos de 1 ms.
-  Redis respondió 404 en esta corrida, pero en una corrida anterior del mismo escenario dio 503
-  (`Timeout reading from socket`): con 1 ms el resultado no es determinístico y no se debe usar
+  Redis dio 503 (`Timeout reading from socket`) en esta corrida, pero en una corrida anterior del
+  mismo escenario respondió 404: con 1 ms el resultado no es determinístico y no se debe usar
   como medida de rendimiento.
 
 ### Credencial ausente (InfluxDB sin `INFLUXDB3_TOKEN`)
 
 | Instancia | Respuesta | Causa en el log |
 | :--- | :--- | :--- |
-| con token | `503` en 32 ms | `HTTP 400` (H6) |
-| sin token | `503` en 17 ms | `falta INFLUXDB3_TOKEN en el entorno` |
+| con token | `503` en 11 ms | `HTTP 400` (H6) |
+| sin token | `503` en 3 ms | `falta INFLUXDB3_TOKEN en el entorno` |
 
 Mismo status, mismo cuerpo y causas distintas. El token del Hito 8 no se regeneró ni se modificó.
 

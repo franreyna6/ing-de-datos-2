@@ -1,6 +1,6 @@
 {
-  "generado": "2026-10-23T06:26:18Z",
-  "commit": "b6d4e88",
+  "generado": "2026-10-23T19:41:29Z",
+  "commit": "82e1233",
   "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
   "resultados": [
     {
@@ -12,12 +12,12 @@
       "objetivo": "mongodb://localhost:27017",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "pymongo",
-      "duracion_ms": 29.86780006904155,
+      "duracion_ms": 8.058700012043118,
       "responde": "El listener habla el protocolo de MongoDB?",
       "no_permite": "Que la credencial sea valida ni que exista la database.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:02Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:12Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -29,12 +29,12 @@
       "objetivo": "mongodb://localhost:27017 authSource=authSource=admin",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "pymongo",
-      "duracion_ms": 18.518100026994944,
+      "duracion_ms": 30.23629996459931,
       "responde": "La identidad de MONGODB_URI es aceptada?",
       "no_permite": "Que tenga permiso sobre la database del Fixture.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:02Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:12Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -46,12 +46,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "pymongo",
-      "duracion_ms": 25.06290003657341,
+      "duracion_ms": 48.118499922566116,
       "responde": "Se distingue credencial invalida de servidor caido?",
       "no_permite": "",
       "esperado": "OperationFailure code 18 AuthenticationFailed",
-      "fecha": "2026-10-23T06:26:02Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:12Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -65,12 +65,12 @@
       "objetivo": "fixture2030",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "pymongo",
-      "duracion_ms": 0.923900050111115,
+      "duracion_ms": 0.9985000360757113,
       "responde": "La identidad autenticada puede operar en la database?",
       "no_permite": "Que los documentos de prueba existan.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:02Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:12Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -82,12 +82,12 @@
       "objetivo": "fixture2030",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "pymongo",
-      "duracion_ms": 0.6599000189453363,
+      "duracion_ms": 0.6695999763906002,
       "responde": "El contexto configurado es el que tiene los datos del Hito 4?",
       "no_permite": "-",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:02Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:12Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -99,12 +99,12 @@
       "objetivo": "fixture2030_inexistente_h11",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "pymongo",
-      "duracion_ms": 0.6958999438211322,
+      "duracion_ms": 0.8764000376686454,
       "responde": "Un contexto mal escrito produce error o un silencioso 'no encontrado'?",
       "no_permite": "",
       "esperado": "lectura vacia sin error (MongoDB crea las databases en forma perezosa)",
-      "fecha": "2026-10-23T06:26:02Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:12Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -118,12 +118,12 @@
       "objetivo": "fixture2030.equipos",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "pymongo",
-      "duracion_ms": 0.8210999658331275,
+      "duracion_ms": 0.9873000672087073,
       "responde": "El cliente puede leer el documento del modulo?",
       "no_permite": "-",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:02Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:12Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -135,12 +135,12 @@
       "objetivo": "fixture2030.jugadores",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "pymongo",
-      "duracion_ms": 0.7485999958589673,
+      "duracion_ms": 0.8122000144794583,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:02Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:12Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -152,12 +152,12 @@
       "objetivo": "fixture2030.equipos",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "pymongo",
-      "duracion_ms": 0.6461000302806497,
+      "duracion_ms": 0.6907000206410885,
       "responde": "La operacion que ejecuta la API coincide con el modelo cargado?",
       "no_permite": "",
       "esperado": "encontrar el equipo",
-      "fecha": "2026-10-23T06:26:02Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:12Z",
+      "commit": "82e1233",
       "extra": {
         "hallazgo": "H1",
         "compatibilidad_api": true
@@ -172,12 +172,12 @@
       "objetivo": "fixture2030.equipos",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "pymongo",
-      "duracion_ms": 0.6559999892488122,
+      "duracion_ms": 0.6997999735176563,
       "responde": "",
       "no_permite": "",
       "esperado": "None sin error",
-      "fecha": "2026-10-23T06:26:02Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:12Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -191,12 +191,12 @@
       "objetivo": "localhost:27017 (interno) / fixture2030",
       "origen": "contenedor fixture2030-mongodb",
       "cliente": "mongosh",
-      "duracion_ms": 542.6370999775827,
+      "duracion_ms": 645.7771999994293,
       "responde": "El producto funciona visto desde su propio contenedor?",
       "no_permite": "Que la notebook (donde corre la API) llegue al puerto publicado.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:03Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:13Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -208,12 +208,12 @@
       "objetivo": "http://localhost:7474/",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP GET",
-      "duracion_ms": 6.319800042547286,
+      "duracion_ms": 8.18900007288903,
       "responde": "El servidor web de Neo4j responde?",
       "no_permite": "Nada sobre Bolt, que es lo que usa la API: el portal puede estar arriba y Bolt no (o al reves).",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:03Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:13Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -225,12 +225,12 @@
       "objetivo": "localhost:7687",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket (magic 0x6060B017)",
-      "duracion_ms": 2.5510000996291637,
+      "duracion_ms": 13.339599943719804,
       "responde": "El puerto que usa la API habla Bolt y acepta una version compatible?",
       "no_permite": "Que la credencial ni la database sean validas.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:03Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:13Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -242,12 +242,12 @@
       "objetivo": "bolt://localhost:7687",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "neo4j (driver Bolt)",
-      "duracion_ms": 9.046700084581971,
+      "duracion_ms": 12.075599981471896,
       "responde": "El usuario y la password configurados son aceptados?",
       "no_permite": "Que la database configurada exista.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:03Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:13Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -263,8 +263,8 @@
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:03Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:13Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -276,12 +276,12 @@
       "objetivo": "neo4j",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "neo4j (driver Bolt)",
-      "duracion_ms": 6.403899984434247,
+      "duracion_ms": 14.300800045020878,
       "responde": "",
       "no_permite": "Que contenga los datos del Hito 5.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:03Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:13Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -293,12 +293,12 @@
       "objetivo": "neo4j_inexistente_h11",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "neo4j (driver Bolt)",
-      "duracion_ms": 2.7098999125882983,
+      "duracion_ms": 6.073800032027066,
       "responde": "",
       "no_permite": "",
       "esperado": "Neo.ClientError.Database.DatabaseNotFound",
-      "fecha": "2026-10-23T06:26:03Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:13Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -312,12 +312,12 @@
       "objetivo": "neo4j / (:Partido)<-[:OCURRE_EN]-(:Evento)",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "neo4j (driver Bolt)",
-      "duracion_ms": 8.33400001283735,
+      "duracion_ms": 4.953800002112985,
       "responde": "El cliente puede recorrer el grafo del Hito 5?",
       "no_permite": "-",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:03Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:13Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -329,12 +329,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "neo4j (driver Bolt)",
-      "duracion_ms": 2.713700057938695,
+      "duracion_ms": 4.240000038407743,
       "responde": "",
       "no_permite": "",
       "esperado": "lista vacia sin error",
-      "fecha": "2026-10-23T06:26:03Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:13Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -348,12 +348,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "neo4j (driver Bolt)",
-      "duracion_ms": 2.779299975372851,
+      "duracion_ms": 6.0764000518247485,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:03Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:13Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -367,12 +367,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "neo4j (driver Bolt)",
-      "duracion_ms": 27.01409999281168,
+      "duracion_ms": 8.454100112430751,
       "responde": "",
       "no_permite": "",
       "esperado": "Neo.ClientError.Security.Unauthorized",
-      "fecha": "2026-10-23T06:26:03Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:13Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -386,12 +386,12 @@
       "objetivo": "localhost:7688",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "neo4j (driver Bolt)",
-      "duracion_ms": 4077.858400065452,
+      "duracion_ms": 4075.5021000513807,
       "responde": "",
       "no_permite": "",
       "esperado": "ServiceUnavailable",
-      "fecha": "2026-10-23T06:26:07Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:17Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -405,12 +405,12 @@
       "objetivo": "bolt://localhost:7687 (interno)",
       "origen": "contenedor fixture2030-neo4j",
       "cliente": "cypher-shell",
-      "duracion_ms": 1771.878800005652,
+      "duracion_ms": 2037.5967000145465,
       "responde": "",
       "no_permite": "Que la notebook llegue al puerto Bolt publicado.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:09Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:19Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -422,12 +422,12 @@
       "objetivo": "localhost:9042",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket (frame CQL v4)",
-      "duracion_ms": 2.7116999262943864,
+      "duracion_ms": 3.389699966646731,
       "responde": "El puerto 9042 habla el protocolo binario de CQL?",
       "no_permite": "Que el keyspace exista.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:09Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:20Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -439,12 +439,12 @@
       "objetivo": "localhost:9042",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket (frame CQL v4)",
-      "duracion_ms": 12.069000047631562,
+      "duracion_ms": 2.872199984267354,
       "responde": "Hace falta una identidad para abrir sesion?",
       "no_permite": "En produccion, la ausencia de autenticacion seria un riesgo, no un OK.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:09Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:20Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -456,12 +456,12 @@
       "objetivo": "localhost:9042",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "cassandra-driver",
-      "duracion_ms": 1625.2450000029057,
+      "duracion_ms": 1615.1776000624523,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:11Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:21Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -477,8 +477,8 @@
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:11Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:21Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -490,12 +490,12 @@
       "objetivo": "fixture2030_comentarios",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "cassandra-driver",
-      "duracion_ms": 14.600599999539554,
+      "duracion_ms": 15.140099916607141,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:11Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:21Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -507,12 +507,12 @@
       "objetivo": "fixture2030_comentarios.comentarios_por_partido",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "cassandra-driver",
-      "duracion_ms": 15.918399905785918,
+      "duracion_ms": 15.129899955354631,
       "responde": "La tabla que lee la API existe con la clave (partido_id, ventana)?",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:11Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:21Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -524,12 +524,12 @@
       "objetivo": "fixture2030_comentarios.comentarios_por_partido",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "cassandra-driver",
-      "duracion_ms": 15.463800053112209,
+      "duracion_ms": 16.419599996879697,
       "responde": "El cliente puede leer la particion que pide la API?",
       "no_permite": "-",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:11Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:21Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -541,12 +541,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "cassandra-driver",
-      "duracion_ms": 15.047800028696656,
+      "duracion_ms": 15.062800026498735,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:11Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:21Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -560,12 +560,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "cassandra-driver",
-      "duracion_ms": 15.266000060364604,
+      "duracion_ms": 15.095299924723804,
       "responde": "",
       "no_permite": "",
       "esperado": "InvalidRequest: No keyspace has been specified",
-      "fecha": "2026-10-23T06:26:11Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:21Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -579,12 +579,12 @@
       "objetivo": "fixture2030_comentarios_inexistente_h11",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "cassandra-driver",
-      "duracion_ms": 15.106700011529028,
+      "duracion_ms": 15.390300075523555,
       "responde": "",
       "no_permite": "",
       "esperado": "InvalidRequest: keyspace does not exist",
-      "fecha": "2026-10-23T06:26:11Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:21Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -598,12 +598,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "cassandra-driver",
-      "duracion_ms": 15.55700006429106,
+      "duracion_ms": 16.027500038035214,
       "responde": "",
       "no_permite": "",
       "esperado": "InvalidRequest: unconfigured table",
-      "fecha": "2026-10-23T06:26:11Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:21Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -617,12 +617,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "cassandra-driver",
-      "duracion_ms": 15.788299962878227,
+      "duracion_ms": 17.21600000746548,
       "responde": "",
       "no_permite": "",
       "esperado": "InvalidRequest inmediato (la red funciona; el error es de la consulta)",
-      "fecha": "2026-10-23T06:26:11Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:21Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -636,12 +636,12 @@
       "objetivo": "10.255.255.1:9042",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "cassandra-driver",
-      "duracion_ms": 3002.0505000138655,
+      "duracion_ms": 3004.5359999639913,
       "responde": "",
       "no_permite": "",
       "esperado": "NoHostAvailable tras ~timeout (distinto del InvalidRequest inmediato)",
-      "fecha": "2026-10-23T06:26:14Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:24Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -655,12 +655,12 @@
       "objetivo": "localhost:9042 (interno) / fixture2030_comentarios",
       "origen": "contenedor fixture2030-cassandra",
       "cliente": "cqlsh",
-      "duracion_ms": 514.7760000545532,
+      "duracion_ms": 542.4584000138566,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -672,12 +672,12 @@
       "objetivo": "localhost:6379",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket (RESP)",
-      "duracion_ms": 18.380199908278883,
+      "duracion_ms": 3.1162999803200364,
       "responde": "El listener habla RESP?",
       "no_permite": "Que existan las claves del modulo.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -689,12 +689,12 @@
       "objetivo": "redis://localhost:6379/0",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "redis-py",
-      "duracion_ms": 16.493699979037046,
+      "duracion_ms": 27.373200049623847,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -706,12 +706,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "redis-py",
-      "duracion_ms": 0.6579000037163496,
+      "duracion_ms": 0.6165000377222896,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -729,8 +729,8 @@
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -738,16 +738,16 @@
       "capa": "contexto",
       "prueba": "Base logica 0: DBSIZE",
       "resultado": "OK",
-      "detalle": "324 claves",
+      "detalle": "344 claves",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "redis-py",
-      "duracion_ms": 2.8342000441625714,
+      "duracion_ms": 4.053000011481345,
       "responde": "",
       "no_permite": "DBSIZE=0 no es una falla de conexion: puede ser una base vacia o la base logica equivocada.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -755,16 +755,16 @@
       "capa": "lectura",
       "prueba": "Clave de demostracion 'sesion:S0001': tipo, TTL y campos",
       "resultado": "OK",
-      "detalle": "existe, tipo=hash, TTL=424 s, usuario_id=U0001, estado=activa",
+      "detalle": "existe, tipo=hash, TTL=1762 s, usuario_id=U0001, estado=activa",
       "objetivo": "sesion:S0001",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "redis-py",
-      "duracion_ms": 0.43890008237212896,
+      "duracion_ms": 0.4920000210404396,
       "responde": "Existe la sesion de prueba y cuanto le queda de vida?",
       "no_permite": "-",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -776,12 +776,12 @@
       "objetivo": "sesion:S0001",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "redis-py",
-      "duracion_ms": 0.4029999254271388,
+      "duracion_ms": 0.5763999652117491,
       "responde": "",
       "no_permite": "",
       "esperado": "lectura de la sesion",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {
         "hallazgo": "H2",
         "compatibilidad_api": true
@@ -796,12 +796,12 @@
       "objetivo": "sesion:no-existe-h11",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "redis-py",
-      "duracion_ms": 0.8530999766662717,
+      "duracion_ms": 0.9826000314205885,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -815,12 +815,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "redis-py",
-      "duracion_ms": 0.5319999763742089,
+      "duracion_ms": 0.5779999773949385,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -830,16 +830,16 @@
       "capa": "lectura",
       "prueba": "redis-cli: PING, TYPE y TTL de sesion:S0001 (dentro del contenedor)",
       "resultado": "OK",
-      "detalle": "PONG | hash | 423 | redis_version:8.10.2",
+      "detalle": "PONG | hash | 1761 | redis_version:8.10.2",
       "objetivo": "localhost:6379 (interno)",
       "origen": "contenedor fixture2030-redis",
       "cliente": "redis-cli",
-      "duracion_ms": 180.9701999882236,
+      "duracion_ms": 153.58309994917363,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -851,12 +851,12 @@
       "objetivo": "http://127.0.0.1:8181/health",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP API v3",
-      "duracion_ms": 2.0707000512629747,
+      "duracion_ms": 7.33689998742193,
       "responde": "Hay un servidor InfluxDB respondiendo HTTP?",
       "no_permite": "Un 401 NO es caida: el servicio esta accesible y pide credencial.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -868,12 +868,12 @@
       "objetivo": "http://127.0.0.1:8181/health",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP API v3",
-      "duracion_ms": 1.5663000522181392,
+      "duracion_ms": 3.3728000707924366,
       "responde": "",
       "no_permite": "Que el token tenga permiso sobre la database.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -885,12 +885,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP API v3",
-      "duracion_ms": 12.920800014398992,
+      "duracion_ms": 2.6944000273942947,
       "responde": "",
       "no_permite": "",
       "esperado": "401 Unauthorized",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -904,12 +904,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP API v3",
-      "duracion_ms": 1.4464999549090862,
+      "duracion_ms": 3.3654000144451857,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -925,8 +925,8 @@
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -938,12 +938,12 @@
       "objetivo": "fixture2030_vivo.estadisticas_equipo",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP API v3",
-      "duracion_ms": 7.788800052367151,
+      "duracion_ms": 11.232299963012338,
       "responde": "El cliente puede leer una ventana temporal con la agregacion correcta (AVG para muestras, MAX para contadores acumulados)?",
       "no_permite": "-",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:25Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -955,12 +955,12 @@
       "objetivo": "fixture2030_vivo.estadisticas_equipo",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP API v3",
-      "duracion_ms": 1.6335000982508063,
+      "duracion_ms": 25.773300090804696,
       "responde": "",
       "no_permite": "",
       "esperado": "HTTP 200 con los puntos de la ventana",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:26Z",
+      "commit": "82e1233",
       "extra": {
         "hallazgo": "H6",
         "compatibilidad_api": true
@@ -975,12 +975,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP API v3",
-      "duracion_ms": 4.313599900342524,
+      "duracion_ms": 19.26659990567714,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:26Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -994,12 +994,12 @@
       "objetivo": "fixture2030_vivo_inexistente_h11",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP API v3",
-      "duracion_ms": 1.586100086569786,
+      "duracion_ms": 27.317099971696734,
       "responde": "",
       "no_permite": "",
       "esperado": "4xx database not found (distinto de 401 y de 200 vacio)",
-      "fecha": "2026-10-23T06:26:15Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:26Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -1013,12 +1013,12 @@
       "objetivo": "localhost:8181 (interno) / fixture2030_vivo",
       "origen": "contenedor fixture2030-influxdb",
       "cliente": "influxdb3 CLI",
-      "duracion_ms": 196.0881999693811,
+      "duracion_ms": 137.5187000958249,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:16Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:26Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -1030,12 +1030,12 @@
       "objetivo": "http://127.0.0.1:52773/csp/sys/UtilHome.csp",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP GET",
-      "duracion_ms": 3.2179999398067594,
+      "duracion_ms": 4.3750000186264515,
       "responde": "El servidor web de IRIS responde?",
       "no_permite": "Nada sobre el Superserver (1972), que es el que usa el driver de la API.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:16Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:26Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -1047,12 +1047,12 @@
       "objetivo": "127.0.0.1:1972 / USER",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "intersystems-irispython",
-      "duracion_ms": 20.06209990940988,
+      "duracion_ms": 21.00339997559786,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:16Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:26Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -1064,12 +1064,12 @@
       "objetivo": "USER / Fixture",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "intersystems-irispython",
-      "duracion_ms": 1.8530000234022737,
+      "duracion_ms": 2.666700049303472,
       "responde": "El namespace tiene las clases del Hito 9 compiladas?",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:16Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:26Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -1081,12 +1081,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "intersystems-irispython",
-      "duracion_ms": 1.353900064714253,
+      "duracion_ms": 1.4759000623598695,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:16Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:26Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -1098,12 +1098,12 @@
       "objetivo": "Fixture.Partido",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "intersystems-irispython",
-      "duracion_ms": 1.307999948039651,
+      "duracion_ms": 1.5225999522954226,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:16Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:26Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -1115,12 +1115,12 @@
       "objetivo": "Fixture.Partido + Equipo + Sede",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "intersystems-irispython",
-      "duracion_ms": 5.44500001706183,
+      "duracion_ms": 7.059300085529685,
       "responde": "",
       "no_permite": "",
       "esperado": "una fila con el detalle del partido",
-      "fecha": "2026-10-23T06:26:16Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:26Z",
+      "commit": "82e1233",
       "extra": {
         "hallazgo": "H7",
         "compatibilidad_api": true
@@ -1135,12 +1135,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "intersystems-irispython",
-      "duracion_ms": 1.2616000603884459,
+      "duracion_ms": 1.3053000438958406,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:16Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:26Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -1154,12 +1154,12 @@
       "objetivo": "NOEXISTE_H11",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "intersystems-irispython",
-      "duracion_ms": 2017.9154999786988,
+      "duracion_ms": 2020.5700000515208,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:18Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:28Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }
@@ -1173,12 +1173,12 @@
       "objetivo": "namespace USER",
       "origen": "contenedor fixture2030-iris (autenticacion del sistema operativo)",
       "cliente": "iris session",
-      "duracion_ms": 102.37350000534207,
+      "duracion_ms": 222.84810000564903,
       "responde": "",
       "no_permite": "La sesion del Terminal entra con la identidad del SO del contenedor: NO prueba la password que usa la API por el Superserver.",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:18Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:29Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -1190,12 +1190,12 @@
       "objetivo": "",
       "origen": "contenedor fixture2030-iris",
       "cliente": "iris session",
-      "duracion_ms": 106.08029994182289,
+      "duracion_ms": 220.94209992792457,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:18Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:29Z",
+      "commit": "82e1233",
       "extra": {
         "caso": "negativo"
       }

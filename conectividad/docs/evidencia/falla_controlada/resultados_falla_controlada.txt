@@ -1,38 +1,38 @@
 # Fallas controladas
-# fecha UTC: 2026-10-23T06:26:26Z | commit: b6d4e88
+# fecha UTC: 2026-10-23T19:41:55Z | commit: 82e1233
 # origen de las pruebas: notebook Windows 10 | Python 3.11.9 (.venv)
 # docker: Docker Engine 29.8.2
 # configuracion: configuracion.env presente
 # timeout por operacion: 3.0 s
-[INFO ] redis_detenido inicial            -      Estado del contenedor y de los datos -> fixture2030-redis running | DBSIZE=324 | sesion:S0001: tipo=hash TTL=411 s | montajes: C:\Users\Garci\docker\data\redis->/data C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\redis\data->/datos C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\redis\scripts->/scripts
-[OK   ] redis_detenido inicial          63.5 ms  API GET /sesiones/no-existe-h11 con Redis arriba -> HTTP 404 NOT_FOUND en 64 ms (la base respondio)
+[INFO ] redis_detenido inicial            -      Estado del contenedor y de los datos -> fixture2030-redis running | DBSIZE=344 | sesion:S0001: tipo=hash TTL=1731 s | montajes: C:\Users\Garci\docker\data\redis->/data C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\redis\data->/datos C:\UADE\2026\2do\Ing. datos II\ing-de-datos-2\redis\scripts->/scripts
+[OK   ] redis_detenido inicial          88.4 ms  API GET /sesiones/no-existe-h11 con Redis arriba -> HTTP 404 NOT_FOUND en 88 ms (la base respondio)
 [OK   ] redis_detenido cambio             -      docker stop fixture2030-redis -> detenido en 0.5 s (el volumen y la carpeta de datos no se tocan)
-[INFO ] redis_detenido prueba            0.7 ms  TCP + PING crudo a localhost:6379 desde la notebook -> exito: conexion establecida ::1 -> ::1:6379 | PING RESP crudo -> sin respuesta (conexion cerrada) => el puerto publicado sigue aceptando TCP (proxy de puertos de Docker Desktop) aunque Redis este detenido: TCP exitoso NO prueba disponibilidad
-[INFO ] redis_detenido prueba            0.3 ms  TCP + PING crudo a 127.0.0.1:6379 desde la notebook -> exito: conexion establecida 127.0.0.1 -> 127.0.0.1:6379 | PING RESP crudo -> sin respuesta (ConnectionAbortedError: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host) => el puerto publicado sigue aceptando TCP (proxy de puertos de Docker Desktop) aunque Redis este detenido: TCP exitoso NO prueba disponibilidad
-[INFO ] redis_detenido prueba           14.6 ms  TCP + PING crudo a ::1:6379 desde la notebook -> exito: conexion establecida ::1 -> ::1:6379 | PING RESP crudo -> sin respuesta (conexion cerrada) => el puerto publicado sigue aceptando TCP (proxy de puertos de Docker Desktop) aunque Redis este detenido: TCP exitoso NO prueba disponibilidad
-[INFO ] redis_detenido prueba            2.1 ms  PING con redis-py -> ConnectionError: Connection closed by server.
-[OK   ] redis_detenido prueba           27.0 ms  API GET /sesiones/no-existe-h11 con Redis detenido (redis) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 27 ms
-[OK   ] redis_detenido prueba            4.5 ms  API GET /sesiones/S0001 con Redis detenido (redis) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 5 ms
-[OK   ] redis_detenido prueba          163.3 ms  API GET /partidos/F2030-001/eventos con Redis detenido (neo4j) -> HTTP 200  en 163 ms
-[INFO ] redis_detenido prueba         6012.9 ms  API GET /salud con Redis detenido -> HTTP 200 en 6013 ms | redis=False | el endpoint responde 200 aunque una fuente este caida (no hay readiness)
-[OK   ] redis_detenido recuperacion    511.0 ms  docker start fixture2030-redis + espera de PING (max 60 s) -> PONG tras 0.5 s (1 intentos)
-[OK   ] redis_detenido despues          14.7 ms  API GET /sesiones/no-existe-h11 tras recuperar -> HTTP 404 NOT_FOUND en 15 ms: la API se reconecto sola (sin reiniciarla)
-[OK   ] redis_detenido despues            -      Datos conservados -> DBSIZE antes=324 despues=324 | sesion:S0001: tipo=hash TTL=404 s (AOF + RDB del Hito 7 en ~/docker/data/redis). Una diferencia en DBSIZE solo puede venir de claves con TTL que vencieron durante la prueba
+[INFO ] redis_detenido prueba            0.9 ms  TCP + PING crudo a localhost:6379 desde la notebook -> exito: conexion establecida ::1 -> ::1:6379 | PING RESP crudo -> sin respuesta (ConnectionAbortedError: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host) => el puerto publicado sigue aceptando TCP (proxy de puertos de Docker Desktop) aunque Redis este detenido: TCP exitoso NO prueba disponibilidad
+[INFO ] redis_detenido prueba           14.8 ms  TCP + PING crudo a 127.0.0.1:6379 desde la notebook -> exito: conexion establecida 127.0.0.1 -> 127.0.0.1:6379 | PING RESP crudo -> sin respuesta (conexion cerrada) => el puerto publicado sigue aceptando TCP (proxy de puertos de Docker Desktop) aunque Redis este detenido: TCP exitoso NO prueba disponibilidad
+[INFO ] redis_detenido prueba            0.4 ms  TCP + PING crudo a ::1:6379 desde la notebook -> exito: conexion establecida ::1 -> ::1:6379 | PING RESP crudo -> sin respuesta (conexion cerrada) => el puerto publicado sigue aceptando TCP (proxy de puertos de Docker Desktop) aunque Redis este detenido: TCP exitoso NO prueba disponibilidad
+[INFO ] redis_detenido prueba            2.9 ms  PING con redis-py -> ConnectionError: Connection closed by server.
+[OK   ] redis_detenido prueba           24.0 ms  API GET /sesiones/no-existe-h11 con Redis detenido (redis) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 24 ms
+[OK   ] redis_detenido prueba           23.1 ms  API GET /sesiones/S0001 con Redis detenido (redis) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 23 ms
+[OK   ] redis_detenido prueba          187.9 ms  API GET /partidos/F2030-001/eventos con Redis detenido (neo4j) -> HTTP 200  en 188 ms
+[INFO ] redis_detenido prueba         6050.4 ms  API GET /salud con Redis detenido -> HTTP 200 en 6050 ms | redis=False | el endpoint responde 200 aunque una fuente este caida (no hay readiness)
+[OK   ] redis_detenido recuperacion    900.5 ms  docker start fixture2030-redis + espera de PING (max 60 s) -> PONG tras 0.9 s (2 intentos)
+[OK   ] redis_detenido despues          40.1 ms  API GET /sesiones/no-existe-h11 tras recuperar -> HTTP 404 NOT_FOUND en 40 ms: la API se reconecto sola (sin reiniciarla)
+[OK   ] redis_detenido despues            -      Datos conservados -> DBSIZE antes=344 despues=344 | sesion:S0001: tipo=hash TTL=1723 s (AOF + RDB del Hito 7 en ~/docker/data/redis). Una diferencia en DBSIZE solo puede venir de claves con TTL que vencieron durante la prueba
 [INFO ] timeout_bajo inicial            -      Instancia de la API normal (DEP_TIMEOUT_S=3.0) en 127.0.0.1:8000 -> solo cambia la variable de entorno; el codigo y las bases no se tocan
-[INFO ] timeout_bajo inicial         168.5 ms  [normal (DEP_TIMEOUT_S=3.0)] GET /partidos/F2030-001/eventos (neo4j) -> HTTP 200  en 169 ms | causa en el log: -
-[INFO ] timeout_bajo inicial         153.0 ms  [normal (DEP_TIMEOUT_S=3.0)] GET /equipos/ZZZ (mongodb) -> HTTP 404 NOT_FOUND en 153 ms | causa en el log: -
-[INFO ] timeout_bajo inicial          55.1 ms  [normal (DEP_TIMEOUT_S=3.0)] GET /sesiones/no-existe-h11 (redis) -> HTTP 404 NOT_FOUND en 55 ms | causa en el log: -
-[INFO ] timeout_bajo inicial        1744.1 ms  [normal (DEP_TIMEOUT_S=3.0)] GET /partidos/F2030-063/comentarios (cassandra) -> HTTP 200  en 1744 ms | causa en el log: -
-[INFO ] timeout_bajo inicial          20.3 ms  [normal (DEP_TIMEOUT_S=3.0)] GET /partidos/F2030-018/estadisticas (influxdb) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 20 ms | causa en el log: HTTP 400
-[INFO ] timeout_bajo inicial          54.6 ms  [normal (DEP_TIMEOUT_S=3.0)] GET /partidos/F2030-999/detalle (iris) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 55 ms | causa en el log: <SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]
+[INFO ] timeout_bajo inicial         218.6 ms  [normal (DEP_TIMEOUT_S=3.0)] GET /partidos/F2030-001/eventos (neo4j) -> HTTP 200  en 219 ms | causa en el log: -
+[INFO ] timeout_bajo inicial         144.9 ms  [normal (DEP_TIMEOUT_S=3.0)] GET /equipos/ZZZ (mongodb) -> HTTP 404 NOT_FOUND en 145 ms | causa en el log: -
+[INFO ] timeout_bajo inicial          80.9 ms  [normal (DEP_TIMEOUT_S=3.0)] GET /sesiones/no-existe-h11 (redis) -> HTTP 404 NOT_FOUND en 81 ms | causa en el log: -
+[INFO ] timeout_bajo inicial        1771.6 ms  [normal (DEP_TIMEOUT_S=3.0)] GET /partidos/F2030-063/comentarios (cassandra) -> HTTP 200  en 1772 ms | causa en el log: -
+[INFO ] timeout_bajo inicial           4.7 ms  [normal (DEP_TIMEOUT_S=3.0)] GET /partidos/F2030-018/estadisticas (influxdb) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 5 ms | causa en el log: HTTP 400
+[INFO ] timeout_bajo inicial          66.3 ms  [normal (DEP_TIMEOUT_S=3.0)] GET /partidos/F2030-999/detalle (iris) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 66 ms | causa en el log: <SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]
 [INFO ] timeout_bajo cambio             -      Instancia de la API alterada (DEP_TIMEOUT_S=0.001) en 127.0.0.1:8000 -> solo cambia la variable de entorno; el codigo y las bases no se tocan
-[INFO ] timeout_bajo prueba          170.2 ms  [alterada (DEP_TIMEOUT_S=0.001)] GET /partidos/F2030-001/eventos (neo4j) -> HTTP 200  en 170 ms | causa en el log: -
-[INFO ] timeout_bajo prueba          134.6 ms  [alterada (DEP_TIMEOUT_S=0.001)] GET /equipos/ZZZ (mongodb) -> HTTP 404 NOT_FOUND en 135 ms | causa en el log: -
-[INFO ] timeout_bajo prueba           86.5 ms  [alterada (DEP_TIMEOUT_S=0.001)] GET /sesiones/no-existe-h11 (redis) -> HTTP 404 NOT_FOUND en 87 ms | causa en el log: -
-[INFO ] timeout_bajo prueba          142.7 ms  [alterada (DEP_TIMEOUT_S=0.001)] GET /partidos/F2030-063/comentarios (cassandra) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 143 ms | causa en el log: ('Unable to connect to any servers', {'::1:9042': OperationTimedOut('errors=Timed out creating connection (0.001 seconds), last_host=None'),
-[INFO ] timeout_bajo prueba            4.1 ms  [alterada (DEP_TIMEOUT_S=0.001)] GET /partidos/F2030-018/estadisticas (influxdb) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 4 ms | causa en el log: HTTP 400
-[INFO ] timeout_bajo prueba           56.0 ms  [alterada (DEP_TIMEOUT_S=0.001)] GET /partidos/F2030-999/detalle (iris) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 56 ms | causa en el log: <COMMUNICATION LINK ERROR> Failed to connect to server; Details: <COMMUNICATION LINK ERROR> Failed to receive message; Details: Error code: 
+[INFO ] timeout_bajo prueba          199.2 ms  [alterada (DEP_TIMEOUT_S=0.001)] GET /partidos/F2030-001/eventos (neo4j) -> HTTP 200  en 199 ms | causa en el log: -
+[INFO ] timeout_bajo prueba          145.9 ms  [alterada (DEP_TIMEOUT_S=0.001)] GET /equipos/ZZZ (mongodb) -> HTTP 404 NOT_FOUND en 146 ms | causa en el log: -
+[INFO ] timeout_bajo prueba           58.6 ms  [alterada (DEP_TIMEOUT_S=0.001)] GET /sesiones/no-existe-h11 (redis) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 59 ms | causa en el log: Timeout reading from socket
+[INFO ] timeout_bajo prueba          118.6 ms  [alterada (DEP_TIMEOUT_S=0.001)] GET /partidos/F2030-063/comentarios (cassandra) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 119 ms | causa en el log: ('Unable to connect to any servers', {'::1:9042': OperationTimedOut('errors=Timed out creating connection (0.001 seconds), last_host=None'),
+[INFO ] timeout_bajo prueba           14.6 ms  [alterada (DEP_TIMEOUT_S=0.001)] GET /partidos/F2030-018/estadisticas (influxdb) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 15 ms | causa en el log: HTTP 400
+[INFO ] timeout_bajo prueba           41.2 ms  [alterada (DEP_TIMEOUT_S=0.001)] GET /partidos/F2030-999/detalle (iris) -> HTTP 503 DEPENDENCY_UNAVAILABLE en 41 ms | causa en el log: <COMMUNICATION LINK ERROR> Failed to connect to server; Details: <COMMUNICATION LINK ERROR> Failed to receive message; Details: Error code: 
 [OK   ] timeout_bajo recuperacion       -      Detener la instancia alterada -> la instancia con DEP_TIMEOUT_S=0.001 se detuvo; la configuracion versionada y la de la API normal no cambiaron
-[INFO ] influx_sin_token inicial          32.0 ms  [con token] GET /partidos/F2030-018/estadisticas -> HTTP 503 DEPENDENCY_UNAVAILABLE en 32 ms | causa en el log: HTTP 400
-[INFO ] influx_sin_token prueba           16.6 ms  [sin INFLUXDB3_TOKEN] GET /partidos/F2030-018/estadisticas -> HTTP 503 DEPENDENCY_UNAVAILABLE en 17 ms | causa en el log: falta INFLUXDB3_TOKEN en el entorno
+[INFO ] influx_sin_token inicial          10.7 ms  [con token] GET /partidos/F2030-018/estadisticas -> HTTP 503 DEPENDENCY_UNAVAILABLE en 11 ms | causa en el log: HTTP 400
+[INFO ] influx_sin_token prueba            2.8 ms  [sin INFLUXDB3_TOKEN] GET /partidos/F2030-018/estadisticas -> HTTP 503 DEPENDENCY_UNAVAILABLE en 3 ms | causa en el log: falta INFLUXDB3_TOKEN en el entorno
 [OK   ] influx_sin_token recuperacion       -      Detener la instancia sin token -> el token sigue en influxdb/.influxdb3-token; no se regenero ni se modifico

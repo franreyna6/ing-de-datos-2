@@ -36,14 +36,14 @@ de salud: sirven para demostrar que el diagnóstico separa causas que la API, ho
 ## Tipos de resultado TCP (tabla 5.3) — observados
 
 `prueba_tcp.py --demostrar-fallas` provoca cada tipo **sin detener ni modificar ningún producto**.
-Corrida final (`evidencia/corridas/20261023_032545_final/resultados_tcp.txt`):
+Corrida final (`evidencia/corridas/20261023_164055_final/resultados_tcp.txt`):
 
 | Resultado | Caso provocado | Tiempo | Interpretación |
 | :--- | :--- | ---: | :--- |
-| Conexión exitosa | `localhost:6379` (Redis publicado) | 15 ms | Existe un listener accesible en el host y puerto probados |
-| Connection refused | `localhost:27018` (sin proceso) | 4.094 ms | El host respondió, pero no hay listener. En Windows el rechazo llega tras reintentar en `::1` y `127.0.0.1` (~2 s cada uno) |
-| Timeout | `10.255.255.1:27017` (no enrutable) | 3.013 ms | Nadie contestó dentro del límite (3 s): red, firewall, ruta o saturación |
-| Host no resuelto | `mongodb:27017` desde la notebook | 2.687 ms | El nombre del servicio de Docker solo existe dentro de su red de Compose |
+| Conexión exitosa | `localhost:6379` (Redis publicado) | 23 ms | Existe un listener accesible en el host y puerto probados |
+| Connection refused | `localhost:27018` (sin proceso) | 4.104 ms | El host respondió, pero no hay listener. En Windows el rechazo llega tras reintentar en `::1` y `127.0.0.1` (~2 s cada uno) |
+| Timeout | `10.255.255.1:27017` (no enrutable) | 3.012 ms | Nadie contestó dentro del límite (3 s): red, firewall, ruta o saturación |
+| Host no resuelto | `mongodb:27017` desde la notebook | 2.701 ms | El nombre del servicio de Docker solo existe dentro de su red de Compose |
 | Puerto incorrecto | handshake Bolt contra `localhost:7474` | — | El TCP **conecta**, pero el listener responde `HTTP/1.1 400 Bad Request`: es HTTP, no Bolt |
 
 Y un sexto caso, observado en la falla controlada: con **Redis detenido** el TCP a `6379` **tuvo
@@ -91,7 +91,7 @@ conexión TCP exitosa nunca se presenta como prueba de autenticación, contexto 
 | Contexto | `system_schema.keyspaces` y `system_schema.columns` | existe el keyspace y la tabla con `PRIMARY KEY ((partido_id, ventana), creado_en, comentario_id)` | — |
 | Contexto (neg.) | keyspace inexistente / tabla inexistente / sin keyspace | `InvalidRequest` específico en cada caso | — |
 | Lectura | `SELECT … WHERE partido_id=? AND ventana=? LIMIT 5` (una partición) | lee la partición que pide la API (2 filas) | — |
-| Lectura (neg.) | filtro fuera de la clave sin `ALLOW FILTERING` → `InvalidRequest` en 16 ms; dirección sin respuesta → `NoHostAvailable` en 3.002 ms | **consulta inválida ≠ timeout de conexión** | — |
+| Lectura (neg.) | filtro fuera de la clave sin `ALLOW FILTERING` → `InvalidRequest` en 17 ms; dirección sin respuesta → `NoHostAvailable` en 3.005 ms | **consulta inválida ≠ timeout de conexión** | — |
 
 ### Redis (RF12)
 
@@ -99,7 +99,7 @@ conexión TCP exitosa nunca se presenta como prueba de autenticación, contexto 
 | :--- | :--- | :--- | :--- |
 | Protocolo | `PING` en RESP crudo | `+PONG`: respuesta básica del servidor | claves |
 | Autenticación | `PING` con redis-py; `AUTH` inválido | el servidor no tiene password (`requirepass` vacío) | — |
-| Contexto | `DBSIZE` de la base 0 | 324 claves | una base vacía no es una falla de conexión |
+| Contexto | `DBSIZE` de la base 0 | 344 claves | una base vacía no es una falla de conexión |
 | Lectura | `TYPE`, `TTL`, `HMGET` de `sesion:S0001` | existe, es **hash**, TTL restante, `estado=activa` | — |
 | Lectura (API) | `GET sesion:S0001`, **la operación del adaptador** | **WRONGTYPE** (H2) | — |
 | Lectura (neg.) | clave ausente: `EXISTS=0`, `TTL=-2` | ausencia válida (404), no caída (503) | — |

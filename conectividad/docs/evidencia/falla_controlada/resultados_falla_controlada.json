@@ -1,6 +1,6 @@
 {
-  "generado": "2026-10-23T06:26:43Z",
-  "commit": "b6d4e88",
+  "generado": "2026-10-23T19:42:12Z",
+  "commit": "82e1233",
   "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
   "resultados": [
     {
@@ -8,7 +8,7 @@
       "capa": "inicial",
       "prueba": "Estado del contenedor y de los datos",
       "resultado": "INFO",
-      "detalle": "fixture2030-redis running | DBSIZE=324 | sesion:S0001: tipo=hash TTL=411 s | montajes: C:\\Users\\Garci\\docker\\data\\redis->/data C:\\UADE\\2026\\2do\\Ing. datos II\\ing-de-datos-2\\redis\\data->/datos C:\\UADE\\2026\\2do\\Ing. datos II\\ing-de-datos-2\\redis\\scripts->/scripts",
+      "detalle": "fixture2030-redis running | DBSIZE=344 | sesion:S0001: tipo=hash TTL=1731 s | montajes: C:\\Users\\Garci\\docker\\data\\redis->/data C:\\UADE\\2026\\2do\\Ing. datos II\\ing-de-datos-2\\redis\\data->/datos C:\\UADE\\2026\\2do\\Ing. datos II\\ing-de-datos-2\\redis\\scripts->/scripts",
       "objetivo": "fixture2030-redis",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "docker inspect + redis-py",
@@ -16,8 +16,8 @@
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:27Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:56Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -25,21 +25,21 @@
       "capa": "inicial",
       "prueba": "API GET /sesiones/no-existe-h11 con Redis arriba",
       "resultado": "OK",
-      "detalle": "HTTP 404 NOT_FOUND en 64 ms (la base respondio)",
+      "detalle": "HTTP 404 NOT_FOUND en 88 ms (la base respondio)",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 63.50190006196499,
+      "duracion_ms": 88.40440004132688,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:27Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:56Z",
+      "commit": "82e1233",
       "extra": {
         "request_id": "h11-falla-redis-ini",
         "log": [
-          "2026-10-23T03:26:27 INFO [req=h11-falla-redis-ini] redis sesion=no-existe-h11 ausente_o_expirada",
-          "2026-10-23T03:26:27 INFO [req=h11-falla-redis-ini] GET /sesiones/no-existe-h11 -> 404 (62.2 ms)"
+          "2026-10-23T16:41:56 INFO [req=h11-falla-redis-ini] redis sesion=no-existe-h11 ausente_o_expirada",
+          "2026-10-23T16:41:56 INFO [req=h11-falla-redis-ini] GET /sesiones/no-existe-h11 -> 404 (70.2 ms)"
         ]
       }
     },
@@ -56,8 +56,8 @@
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:28Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:57Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -65,16 +65,16 @@
       "capa": "prueba",
       "prueba": "TCP + PING crudo a localhost:6379 desde la notebook",
       "resultado": "INFO",
-      "detalle": "exito: conexion establecida ::1 -> ::1:6379 | PING RESP crudo -> sin respuesta (conexion cerrada) => el puerto publicado sigue aceptando TCP (proxy de puertos de Docker Desktop) aunque Redis este detenido: TCP exitoso NO prueba disponibilidad",
+      "detalle": "exito: conexion establecida ::1 -> ::1:6379 | PING RESP crudo -> sin respuesta (ConnectionAbortedError: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host) => el puerto publicado sigue aceptando TCP (proxy de puertos de Docker Desktop) aunque Redis este detenido: TCP exitoso NO prueba disponibilidad",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket (RESP)",
-      "duracion_ms": 0.7220000261440873,
+      "duracion_ms": 0.889900024048984,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:28Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:57Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -82,16 +82,16 @@
       "capa": "prueba",
       "prueba": "TCP + PING crudo a 127.0.0.1:6379 desde la notebook",
       "resultado": "INFO",
-      "detalle": "exito: conexion establecida 127.0.0.1 -> 127.0.0.1:6379 | PING RESP crudo -> sin respuesta (ConnectionAbortedError: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host) => el puerto publicado sigue aceptando TCP (proxy de puertos de Docker Desktop) aunque Redis este detenido: TCP exitoso NO prueba disponibilidad",
+      "detalle": "exito: conexion establecida 127.0.0.1 -> 127.0.0.1:6379 | PING RESP crudo -> sin respuesta (conexion cerrada) => el puerto publicado sigue aceptando TCP (proxy de puertos de Docker Desktop) aunque Redis este detenido: TCP exitoso NO prueba disponibilidad",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket (RESP)",
-      "duracion_ms": 0.3000000724568963,
+      "duracion_ms": 14.754700008779764,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:28Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:57Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -103,12 +103,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "socket (RESP)",
-      "duracion_ms": 14.550000079907477,
+      "duracion_ms": 0.39739999920129776,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:28Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:57Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -120,12 +120,12 @@
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "redis-py",
-      "duracion_ms": 2.1184999495744705,
+      "duracion_ms": 2.894400036893785,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:28Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:57Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -133,22 +133,22 @@
       "capa": "prueba",
       "prueba": "API GET /sesiones/no-existe-h11 con Redis detenido (redis)",
       "resultado": "OK",
-      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 27 ms",
+      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 24 ms",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 27.029399992898107,
+      "duracion_ms": 24.035700014792383,
       "responde": "La API falla en forma controlada y solo en la ruta afectada?",
       "no_permite": "",
       "esperado": "503",
-      "fecha": "2026-10-23T06:26:28Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:57Z",
+      "commit": "82e1233",
       "extra": {
         "request_id": "h11-falla-redis-404",
         "log": [
-          "2026-10-23T03:26:28 WARNING [req=h11-falla-redis-404] redis error sesion=no-existe-h11",
-          "2026-10-23T03:26:28 WARNING [req=h11-falla-redis-404] dependencia fuente=redis causa=Error while reading from localhost:6379 : (10053, 'Se ha anulado una conexión establecida por el software en su equipo host', None, 10053, None)",
-          "2026-10-23T03:26:28 INFO [req=h11-falla-redis-404] GET /sesiones/no-existe-h11 -> 503 (25.8 ms)"
+          "2026-10-23T16:41:57 WARNING [req=h11-falla-redis-404] redis error sesion=no-existe-h11",
+          "2026-10-23T16:41:57 WARNING [req=h11-falla-redis-404] dependencia fuente=redis causa=Error while reading from localhost:6379 : (10053, 'Se ha anulado una conexión establecida por el software en su equipo host', None, 10053, None)",
+          "2026-10-23T16:41:57 INFO [req=h11-falla-redis-404] GET /sesiones/no-existe-h11 -> 503 (22.6 ms)"
         ]
       }
     },
@@ -157,22 +157,22 @@
       "capa": "prueba",
       "prueba": "API GET /sesiones/S0001 con Redis detenido (redis)",
       "resultado": "OK",
-      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 5 ms",
+      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 23 ms",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 4.547000047750771,
+      "duracion_ms": 23.1453999876976,
       "responde": "La API falla en forma controlada y solo en la ruta afectada?",
       "no_permite": "",
       "esperado": "503",
-      "fecha": "2026-10-23T06:26:28Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:57Z",
+      "commit": "82e1233",
       "extra": {
         "request_id": "h11-falla-redis-s01",
         "log": [
-          "2026-10-23T03:26:28 WARNING [req=h11-falla-redis-s01] redis error sesion=S0001",
-          "2026-10-23T03:26:28 WARNING [req=h11-falla-redis-s01] dependencia fuente=redis causa=Connection closed by server.",
-          "2026-10-23T03:26:28 INFO [req=h11-falla-redis-s01] GET /sesiones/S0001 -> 503 (3.2 ms)"
+          "2026-10-23T16:41:57 WARNING [req=h11-falla-redis-s01] redis error sesion=S0001",
+          "2026-10-23T16:41:57 WARNING [req=h11-falla-redis-s01] dependencia fuente=redis causa=Error while reading from localhost:6379 : (10053, 'Se ha anulado una conexión establecida por el software en su equipo host', None, 10053, None)",
+          "2026-10-23T16:41:57 INFO [req=h11-falla-redis-s01] GET /sesiones/S0001 -> 503 (21.6 ms)"
         ]
       }
     },
@@ -181,21 +181,21 @@
       "capa": "prueba",
       "prueba": "API GET /partidos/F2030-001/eventos con Redis detenido (neo4j)",
       "resultado": "OK",
-      "detalle": "HTTP 200  en 163 ms",
+      "detalle": "HTTP 200  en 188 ms",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 163.33460004534572,
+      "duracion_ms": 187.9285000031814,
       "responde": "La API falla en forma controlada y solo en la ruta afectada?",
       "no_permite": "",
       "esperado": "200",
-      "fecha": "2026-10-23T06:26:28Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:57Z",
+      "commit": "82e1233",
       "extra": {
         "request_id": "h11-falla-redis-neo",
         "log": [
-          "2026-10-23T03:26:28 INFO [req=h11-falla-redis-neo] neo4j partido=F2030-001 eventos=2",
-          "2026-10-23T03:26:28 INFO [req=h11-falla-redis-neo] GET /partidos/F2030-001/eventos -> 200 (162.1 ms)"
+          "2026-10-23T16:41:57 INFO [req=h11-falla-redis-neo] neo4j partido=F2030-001 eventos=2",
+          "2026-10-23T16:41:57 INFO [req=h11-falla-redis-neo] GET /partidos/F2030-001/eventos -> 200 (186.5 ms)"
         ]
       }
     },
@@ -204,16 +204,16 @@
       "capa": "prueba",
       "prueba": "API GET /salud con Redis detenido",
       "resultado": "INFO",
-      "detalle": "HTTP 200 en 6013 ms | redis=False | el endpoint responde 200 aunque una fuente este caida (no hay readiness)",
+      "detalle": "HTTP 200 en 6050 ms | redis=False | el endpoint responde 200 aunque una fuente este caida (no hay readiness)",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 6012.855399982072,
+      "duracion_ms": 6050.399700063281,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:34Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:03Z",
+      "commit": "82e1233",
       "extra": {
         "dependencias": {
           "mongodb": true,
@@ -230,16 +230,16 @@
       "capa": "recuperacion",
       "prueba": "docker start fixture2030-redis + espera de PING (max 60 s)",
       "resultado": "OK",
-      "detalle": "PONG tras 0.5 s (1 intentos)",
+      "detalle": "PONG tras 0.9 s (2 intentos)",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "docker CLI + redis-py",
-      "duracion_ms": 510.9844000544399,
+      "duracion_ms": 900.5280999699607,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:35Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:04Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -247,21 +247,21 @@
       "capa": "despues",
       "prueba": "API GET /sesiones/no-existe-h11 tras recuperar",
       "resultado": "OK",
-      "detalle": "HTTP 404 NOT_FOUND en 15 ms: la API se reconecto sola (sin reiniciarla)",
+      "detalle": "HTTP 404 NOT_FOUND en 40 ms: la API se reconecto sola (sin reiniciarla)",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 14.712700038217008,
+      "duracion_ms": 40.06760008633137,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:35Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:04Z",
+      "commit": "82e1233",
       "extra": {
         "request_id": "h11-falla-redis-fin",
         "log": [
-          "2026-10-23T03:26:35 INFO [req=h11-falla-redis-fin] redis sesion=no-existe-h11 ausente_o_expirada",
-          "2026-10-23T03:26:35 INFO [req=h11-falla-redis-fin] GET /sesiones/no-existe-h11 -> 404 (13.5 ms)"
+          "2026-10-23T16:42:04 INFO [req=h11-falla-redis-fin] redis sesion=no-existe-h11 ausente_o_expirada",
+          "2026-10-23T16:42:04 INFO [req=h11-falla-redis-fin] GET /sesiones/no-existe-h11 -> 404 (16.9 ms)"
         ]
       }
     },
@@ -270,7 +270,7 @@
       "capa": "despues",
       "prueba": "Datos conservados",
       "resultado": "OK",
-      "detalle": "DBSIZE antes=324 despues=324 | sesion:S0001: tipo=hash TTL=404 s (AOF + RDB del Hito 7 en ~/docker/data/redis). Una diferencia en DBSIZE solo puede venir de claves con TTL que vencieron durante la prueba",
+      "detalle": "DBSIZE antes=344 despues=344 | sesion:S0001: tipo=hash TTL=1723 s (AOF + RDB del Hito 7 en ~/docker/data/redis). Una diferencia en DBSIZE solo puede venir de claves con TTL que vencieron durante la prueba",
       "objetivo": "fixture2030-redis",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "redis-py",
@@ -278,8 +278,8 @@
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:35Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:04Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -295,8 +295,8 @@
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:36Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:05Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -304,21 +304,21 @@
       "capa": "inicial",
       "prueba": "[normal (DEP_TIMEOUT_S=3.0)] GET /partidos/F2030-001/eventos (neo4j)",
       "resultado": "INFO",
-      "detalle": "HTTP 200  en 169 ms | causa en el log: -",
+      "detalle": "HTTP 200  en 219 ms | causa en el log: -",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 168.53569995146245,
+      "duracion_ms": 218.61099998932332,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:36Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:05Z",
+      "commit": "82e1233",
       "extra": {
-        "request_id": "h11-timeout-normal-neo4j-6d8",
+        "request_id": "h11-timeout-normal-neo4j-064",
         "log": [
-          "2026-10-23T03:26:36 INFO [req=h11-timeout-normal-neo4j-6d8] neo4j partido=F2030-001 eventos=2",
-          "2026-10-23T03:26:36 INFO [req=h11-timeout-normal-neo4j-6d8] GET /partidos/F2030-001/eventos -> 200 (167.2 ms)"
+          "2026-10-23T16:42:05 INFO [req=h11-timeout-normal-neo4j-064] neo4j partido=F2030-001 eventos=2",
+          "2026-10-23T16:42:05 INFO [req=h11-timeout-normal-neo4j-064] GET /partidos/F2030-001/eventos -> 200 (217.4 ms)"
         ],
         "status": 200
       }
@@ -328,21 +328,21 @@
       "capa": "inicial",
       "prueba": "[normal (DEP_TIMEOUT_S=3.0)] GET /equipos/ZZZ (mongodb)",
       "resultado": "INFO",
-      "detalle": "HTTP 404 NOT_FOUND en 153 ms | causa en el log: -",
+      "detalle": "HTTP 404 NOT_FOUND en 145 ms | causa en el log: -",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 153.01560005173087,
+      "duracion_ms": 144.8561999714002,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:36Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:05Z",
+      "commit": "82e1233",
       "extra": {
-        "request_id": "h11-timeout-normal-mongodb-bfe",
+        "request_id": "h11-timeout-normal-mongodb-ceb",
         "log": [
-          "2026-10-23T03:26:36 INFO [req=h11-timeout-normal-mongodb-bfe] mongo equipo codigo=ZZZ encontrado=False",
-          "2026-10-23T03:26:36 INFO [req=h11-timeout-normal-mongodb-bfe] GET /equipos/ZZZ -> 404 (151.6 ms)"
+          "2026-10-23T16:42:05 INFO [req=h11-timeout-normal-mongodb-ceb] mongo equipo codigo=ZZZ encontrado=False",
+          "2026-10-23T16:42:05 INFO [req=h11-timeout-normal-mongodb-ceb] GET /equipos/ZZZ -> 404 (143.4 ms)"
         ],
         "status": 404
       }
@@ -352,21 +352,21 @@
       "capa": "inicial",
       "prueba": "[normal (DEP_TIMEOUT_S=3.0)] GET /sesiones/no-existe-h11 (redis)",
       "resultado": "INFO",
-      "detalle": "HTTP 404 NOT_FOUND en 55 ms | causa en el log: -",
+      "detalle": "HTTP 404 NOT_FOUND en 81 ms | causa en el log: -",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 55.06700009573251,
+      "duracion_ms": 80.85539995227009,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:36Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:06Z",
+      "commit": "82e1233",
       "extra": {
-        "request_id": "h11-timeout-normal-redis-c12",
+        "request_id": "h11-timeout-normal-redis-ae2",
         "log": [
-          "2026-10-23T03:26:36 INFO [req=h11-timeout-normal-redis-c12] redis sesion=no-existe-h11 ausente_o_expirada",
-          "2026-10-23T03:26:36 INFO [req=h11-timeout-normal-redis-c12] GET /sesiones/no-existe-h11 -> 404 (53.6 ms)"
+          "2026-10-23T16:42:05 INFO [req=h11-timeout-normal-redis-ae2] redis sesion=no-existe-h11 ausente_o_expirada",
+          "2026-10-23T16:42:05 INFO [req=h11-timeout-normal-redis-ae2] GET /sesiones/no-existe-h11 -> 404 (66.0 ms)"
         ],
         "status": 404
       }
@@ -376,21 +376,21 @@
       "capa": "inicial",
       "prueba": "[normal (DEP_TIMEOUT_S=3.0)] GET /partidos/F2030-063/comentarios (cassandra)",
       "resultado": "INFO",
-      "detalle": "HTTP 200  en 1744 ms | causa en el log: -",
+      "detalle": "HTTP 200  en 1772 ms | causa en el log: -",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 1744.1376999486238,
+      "duracion_ms": 1771.6414000606164,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:38Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:07Z",
+      "commit": "82e1233",
       "extra": {
-        "request_id": "h11-timeout-normal-cassandra-bff",
+        "request_id": "h11-timeout-normal-cassandra-7b9",
         "log": [
-          "2026-10-23T03:26:38 INFO [req=h11-timeout-normal-cassandra-bff] cassandra leer partido=F2030-063 ventana=2030-06-22 20:00:00+00:00 filas=2 modo=driver",
-          "2026-10-23T03:26:38 INFO [req=h11-timeout-normal-cassandra-bff] GET /partidos/F2030-063/comentarios -> 200 (1742.8 ms)"
+          "2026-10-23T16:42:07 INFO [req=h11-timeout-normal-cassandra-7b9] cassandra leer partido=F2030-063 ventana=2030-06-22 20:00:00+00:00 filas=2 modo=driver",
+          "2026-10-23T16:42:07 INFO [req=h11-timeout-normal-cassandra-7b9] GET /partidos/F2030-063/comentarios -> 200 (1769.4 ms)"
         ],
         "status": 200
       }
@@ -400,22 +400,22 @@
       "capa": "inicial",
       "prueba": "[normal (DEP_TIMEOUT_S=3.0)] GET /partidos/F2030-018/estadisticas (influxdb)",
       "resultado": "INFO",
-      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 20 ms | causa en el log: HTTP 400",
+      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 5 ms | causa en el log: HTTP 400",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 20.25970001704991,
+      "duracion_ms": 4.728999920189381,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:38Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:07Z",
+      "commit": "82e1233",
       "extra": {
-        "request_id": "h11-timeout-normal-influxdb-b9f",
+        "request_id": "h11-timeout-normal-influxdb-f4e",
         "log": [
-          "2026-10-23T03:26:38 WARNING [req=h11-timeout-normal-influxdb-b9f] influx status=400",
-          "2026-10-23T03:26:38 WARNING [req=h11-timeout-normal-influxdb-b9f] dependencia fuente=influxdb causa=HTTP 400",
-          "2026-10-23T03:26:38 INFO [req=h11-timeout-normal-influxdb-b9f] GET /partidos/F2030-018/estadisticas -> 503 (18.9 ms)"
+          "2026-10-23T16:42:07 WARNING [req=h11-timeout-normal-influxdb-f4e] influx status=400",
+          "2026-10-23T16:42:07 WARNING [req=h11-timeout-normal-influxdb-f4e] dependencia fuente=influxdb causa=HTTP 400",
+          "2026-10-23T16:42:07 INFO [req=h11-timeout-normal-influxdb-f4e] GET /partidos/F2030-018/estadisticas -> 503 (3.2 ms)"
         ],
         "status": 503
       }
@@ -425,22 +425,22 @@
       "capa": "inicial",
       "prueba": "[normal (DEP_TIMEOUT_S=3.0)] GET /partidos/F2030-999/detalle (iris)",
       "resultado": "INFO",
-      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 55 ms | causa en el log: <SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]",
+      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 66 ms | causa en el log: <SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 54.55000000074506,
+      "duracion_ms": 66.31220004055649,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:38Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:08Z",
+      "commit": "82e1233",
       "extra": {
-        "request_id": "h11-timeout-normal-iris-1dc",
+        "request_id": "h11-timeout-normal-iris-075",
         "log": [
-          "2026-10-23T03:26:38 WARNING [req=h11-timeout-normal-iris-1dc] iris error partido=F2030-999",
-          "2026-10-23T03:26:38 WARNING [req=h11-timeout-normal-iris-1dc] dependencia fuente=iris causa=<SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]",
-          "2026-10-23T03:26:38 INFO [req=h11-timeout-normal-iris-1dc] GET /partidos/F2030-999/detalle -> 503 (53.2 ms)"
+          "2026-10-23T16:42:07 WARNING [req=h11-timeout-normal-iris-075] iris error partido=F2030-999",
+          "2026-10-23T16:42:07 WARNING [req=h11-timeout-normal-iris-075] dependencia fuente=iris causa=<SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]",
+          "2026-10-23T16:42:07 INFO [req=h11-timeout-normal-iris-075] GET /partidos/F2030-999/detalle -> 503 (64.9 ms)"
         ],
         "status": 503
       }
@@ -458,8 +458,8 @@
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:39Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:09Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -467,21 +467,21 @@
       "capa": "prueba",
       "prueba": "[alterada (DEP_TIMEOUT_S=0.001)] GET /partidos/F2030-001/eventos (neo4j)",
       "resultado": "INFO",
-      "detalle": "HTTP 200  en 170 ms | causa en el log: -",
+      "detalle": "HTTP 200  en 199 ms | causa en el log: -",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 170.15300004277378,
+      "duracion_ms": 199.17130004614592,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:40Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:09Z",
+      "commit": "82e1233",
       "extra": {
-        "request_id": "h11-timeout-alterada-neo4j-e88",
+        "request_id": "h11-timeout-alterada-neo4j-13f",
         "log": [
-          "2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-neo4j-e88] neo4j partido=F2030-001 eventos=2",
-          "2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-neo4j-e88] GET /partidos/F2030-001/eventos -> 200 (168.8 ms)"
+          "2026-10-23T16:42:09 INFO [req=h11-timeout-alterada-neo4j-13f] neo4j partido=F2030-001 eventos=2",
+          "2026-10-23T16:42:09 INFO [req=h11-timeout-alterada-neo4j-13f] GET /partidos/F2030-001/eventos -> 200 (186.8 ms)"
         ],
         "status": 200
       }
@@ -491,21 +491,21 @@
       "capa": "prueba",
       "prueba": "[alterada (DEP_TIMEOUT_S=0.001)] GET /equipos/ZZZ (mongodb)",
       "resultado": "INFO",
-      "detalle": "HTTP 404 NOT_FOUND en 135 ms | causa en el log: -",
+      "detalle": "HTTP 404 NOT_FOUND en 146 ms | causa en el log: -",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 134.61240008473396,
+      "duracion_ms": 145.9410999668762,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:40Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:09Z",
+      "commit": "82e1233",
       "extra": {
-        "request_id": "h11-timeout-alterada-mongodb-25b",
+        "request_id": "h11-timeout-alterada-mongodb-a77",
         "log": [
-          "2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-mongodb-25b] mongo equipo codigo=ZZZ encontrado=False",
-          "2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-mongodb-25b] GET /equipos/ZZZ -> 404 (133.3 ms)"
+          "2026-10-23T16:42:09 INFO [req=h11-timeout-alterada-mongodb-a77] mongo equipo codigo=ZZZ encontrado=False",
+          "2026-10-23T16:42:09 INFO [req=h11-timeout-alterada-mongodb-a77] GET /equipos/ZZZ -> 404 (144.5 ms)"
         ],
         "status": 404
       }
@@ -515,23 +515,24 @@
       "capa": "prueba",
       "prueba": "[alterada (DEP_TIMEOUT_S=0.001)] GET /sesiones/no-existe-h11 (redis)",
       "resultado": "INFO",
-      "detalle": "HTTP 404 NOT_FOUND en 87 ms | causa en el log: -",
+      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 59 ms | causa en el log: Timeout reading from socket",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 86.51629998348653,
+      "duracion_ms": 58.61710000317544,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:40Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:09Z",
+      "commit": "82e1233",
       "extra": {
-        "request_id": "h11-timeout-alterada-redis-2c8",
+        "request_id": "h11-timeout-alterada-redis-753",
         "log": [
-          "2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-redis-2c8] redis sesion=no-existe-h11 ausente_o_expirada",
-          "2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-redis-2c8] GET /sesiones/no-existe-h11 -> 404 (65.4 ms)"
+          "2026-10-23T16:42:09 WARNING [req=h11-timeout-alterada-redis-753] redis error sesion=no-existe-h11",
+          "2026-10-23T16:42:09 WARNING [req=h11-timeout-alterada-redis-753] dependencia fuente=redis causa=Timeout reading from socket",
+          "2026-10-23T16:42:09 INFO [req=h11-timeout-alterada-redis-753] GET /sesiones/no-existe-h11 -> 503 (57.3 ms)"
         ],
-        "status": 404
+        "status": 503
       }
     },
     {
@@ -539,22 +540,22 @@
       "capa": "prueba",
       "prueba": "[alterada (DEP_TIMEOUT_S=0.001)] GET /partidos/F2030-063/comentarios (cassandra)",
       "resultado": "INFO",
-      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 143 ms | causa en el log: ('Unable to connect to any servers', {'::1:9042': OperationTimedOut('errors=Timed out creating connection (0.001 seconds), last_host=None'),",
+      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 119 ms | causa en el log: ('Unable to connect to any servers', {'::1:9042': OperationTimedOut('errors=Timed out creating connection (0.001 seconds), last_host=None'),",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 142.71179994102567,
+      "duracion_ms": 118.58230002690107,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:40Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:09Z",
+      "commit": "82e1233",
       "extra": {
-        "request_id": "h11-timeout-alterada-cassandra-12f",
+        "request_id": "h11-timeout-alterada-cassandra-096",
         "log": [
-          "2026-10-23T03:26:40 WARNING [req=h11-timeout-alterada-cassandra-12f] cassandra leer error partido=F2030-063",
-          "2026-10-23T03:26:40 WARNING [req=h11-timeout-alterada-cassandra-12f] dependencia fuente=cassandra causa=('Unable to connect to any servers', {'::1:9042': OperationTimedOut('errors=Timed out creating connection (0.001 seconds), last_host=None'), '127.0.0.1:9042': OperationTimedOut('errors=Timed out creating connection (0.001 seconds), last_host=None')})",
-          "2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-cassandra-12f] GET /partidos/F2030-063/comentarios -> 503 (123.2 ms)"
+          "2026-10-23T16:42:09 WARNING [req=h11-timeout-alterada-cassandra-096] cassandra leer error partido=F2030-063",
+          "2026-10-23T16:42:09 WARNING [req=h11-timeout-alterada-cassandra-096] dependencia fuente=cassandra causa=('Unable to connect to any servers', {'::1:9042': OperationTimedOut('errors=Timed out creating connection (0.001 seconds), last_host=None'), '127.0.0.1:9042': OperationTimedOut('errors=Timed out creating connection (0.001 seconds), last_host=None')})",
+          "2026-10-23T16:42:09 INFO [req=h11-timeout-alterada-cassandra-096] GET /partidos/F2030-063/comentarios -> 503 (99.7 ms)"
         ],
         "status": 503
       }
@@ -564,22 +565,22 @@
       "capa": "prueba",
       "prueba": "[alterada (DEP_TIMEOUT_S=0.001)] GET /partidos/F2030-018/estadisticas (influxdb)",
       "resultado": "INFO",
-      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 4 ms | causa en el log: HTTP 400",
+      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 15 ms | causa en el log: HTTP 400",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 4.072399926371872,
+      "duracion_ms": 14.584199991077185,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:40Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:09Z",
+      "commit": "82e1233",
       "extra": {
-        "request_id": "h11-timeout-alterada-influxdb-bf1",
+        "request_id": "h11-timeout-alterada-influxdb-51a",
         "log": [
-          "2026-10-23T03:26:40 WARNING [req=h11-timeout-alterada-influxdb-bf1] influx status=400",
-          "2026-10-23T03:26:40 WARNING [req=h11-timeout-alterada-influxdb-bf1] dependencia fuente=influxdb causa=HTTP 400",
-          "2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-influxdb-bf1] GET /partidos/F2030-018/estadisticas -> 503 (2.7 ms)"
+          "2026-10-23T16:42:09 WARNING [req=h11-timeout-alterada-influxdb-51a] influx status=400",
+          "2026-10-23T16:42:09 WARNING [req=h11-timeout-alterada-influxdb-51a] dependencia fuente=influxdb causa=HTTP 400",
+          "2026-10-23T16:42:09 INFO [req=h11-timeout-alterada-influxdb-51a] GET /partidos/F2030-018/estadisticas -> 503 (12.8 ms)"
         ],
         "status": 503
       }
@@ -589,22 +590,22 @@
       "capa": "prueba",
       "prueba": "[alterada (DEP_TIMEOUT_S=0.001)] GET /partidos/F2030-999/detalle (iris)",
       "resultado": "INFO",
-      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 56 ms | causa en el log: <COMMUNICATION LINK ERROR> Failed to connect to server; Details: <COMMUNICATION LINK ERROR> Failed to receive message; Details: Error code: ",
+      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 41 ms | causa en el log: <COMMUNICATION LINK ERROR> Failed to connect to server; Details: <COMMUNICATION LINK ERROR> Failed to receive message; Details: Error code: ",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 56.04729999322444,
+      "duracion_ms": 41.15720000118017,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:40Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:10Z",
+      "commit": "82e1233",
       "extra": {
-        "request_id": "h11-timeout-alterada-iris-a6c",
+        "request_id": "h11-timeout-alterada-iris-881",
         "log": [
-          "2026-10-23T03:26:40 WARNING [req=h11-timeout-alterada-iris-a6c] iris error partido=F2030-999",
-          "2026-10-23T03:26:40 WARNING [req=h11-timeout-alterada-iris-a6c] dependencia fuente=iris causa=<COMMUNICATION LINK ERROR> Failed to connect to server; Details: <COMMUNICATION LINK ERROR> Failed to receive message; Details: Error code: 10060 Error message: Communication timed out",
-          "2026-10-23T03:26:40 INFO [req=h11-timeout-alterada-iris-a6c] GET /partidos/F2030-999/detalle -> 503 (34.6 ms)"
+          "2026-10-23T16:42:09 WARNING [req=h11-timeout-alterada-iris-881] iris error partido=F2030-999",
+          "2026-10-23T16:42:09 WARNING [req=h11-timeout-alterada-iris-881] dependencia fuente=iris causa=<COMMUNICATION LINK ERROR> Failed to connect to server; Details: <COMMUNICATION LINK ERROR> Failed to receive message; Details: Error code: 10060 Error message: Communication timed out",
+          "2026-10-23T16:42:09 INFO [req=h11-timeout-alterada-iris-881] GET /partidos/F2030-999/detalle -> 503 (39.7 ms)"
         ],
         "status": 503
       }
@@ -622,8 +623,8 @@
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:40Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:10Z",
+      "commit": "82e1233",
       "extra": {}
     },
     {
@@ -631,22 +632,22 @@
       "capa": "inicial",
       "prueba": "[con token] GET /partidos/F2030-018/estadisticas",
       "resultado": "INFO",
-      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 32 ms | causa en el log: HTTP 400",
+      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 11 ms | causa en el log: HTTP 400",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 31.982499989680946,
+      "duracion_ms": 10.720800026319921,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:41Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:11Z",
+      "commit": "82e1233",
       "extra": {
-        "request_id": "h11-token-con_token-92a",
+        "request_id": "h11-token-con_token-fe8",
         "log": [
-          "2026-10-23T03:26:41 WARNING [req=h11-token-con_token-92a] influx status=400",
-          "2026-10-23T03:26:41 WARNING [req=h11-token-con_token-92a] dependencia fuente=influxdb causa=HTTP 400",
-          "2026-10-23T03:26:41 INFO [req=h11-token-con_token-92a] GET /partidos/F2030-018/estadisticas -> 503 (30.9 ms)"
+          "2026-10-23T16:42:11 WARNING [req=h11-token-con_token-fe8] influx status=400",
+          "2026-10-23T16:42:11 WARNING [req=h11-token-con_token-fe8] dependencia fuente=influxdb causa=HTTP 400",
+          "2026-10-23T16:42:11 INFO [req=h11-token-con_token-fe8] GET /partidos/F2030-018/estadisticas -> 503 (9.3 ms)"
         ],
         "status": 503
       }
@@ -656,21 +657,21 @@
       "capa": "prueba",
       "prueba": "[sin INFLUXDB3_TOKEN] GET /partidos/F2030-018/estadisticas",
       "resultado": "INFO",
-      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 17 ms | causa en el log: falta INFLUXDB3_TOKEN en el entorno",
+      "detalle": "HTTP 503 DEPENDENCY_UNAVAILABLE en 3 ms | causa en el log: falta INFLUXDB3_TOKEN en el entorno",
       "objetivo": "",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "",
-      "duracion_ms": 16.628999961540103,
+      "duracion_ms": 2.7692000148817897,
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:43Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:12Z",
+      "commit": "82e1233",
       "extra": {
-        "request_id": "h11-token-sin_token-18e",
+        "request_id": "h11-token-sin_token-13b",
         "log": [
-          "2026-10-23T03:26:43 WARNING [req=h11-token-sin_token-18e] dependencia fuente=influxdb causa=falta INFLUXDB3_TOKEN en el entorno",
-          "2026-10-23T03:26:43 INFO [req=h11-token-sin_token-18e] GET /partidos/F2030-018/estadisticas -> 503 (1.5 ms)"
+          "2026-10-23T16:42:12 WARNING [req=h11-token-sin_token-13b] dependencia fuente=influxdb causa=falta INFLUXDB3_TOKEN en el entorno",
+          "2026-10-23T16:42:12 INFO [req=h11-token-sin_token-13b] GET /partidos/F2030-018/estadisticas -> 503 (1.5 ms)"
         ],
         "status": 503
       }
@@ -688,8 +689,8 @@
       "responde": "",
       "no_permite": "",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:43Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:42:12Z",
+      "commit": "82e1233",
       "extra": {}
     }
   ]

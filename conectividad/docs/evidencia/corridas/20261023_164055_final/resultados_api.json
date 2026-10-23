@@ -1,6 +1,6 @@
 {
-  "generado": "2026-10-23T06:26:25Z",
-  "commit": "b6d4e88",
+  "generado": "2026-10-23T19:41:36Z",
+  "commit": "82e1233",
   "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
   "resultados": [
     {
@@ -12,12 +12,12 @@
       "objetivo": "http://127.0.0.1:8099/salud",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib)",
-      "duracion_ms": 2046.32359999232,
+      "duracion_ms": 2050.016999943182,
       "responde": "Como se ve 'API caida' frente a 'API arriba con una dependencia caida'?",
       "no_permite": "",
       "esperado": "api_no_alcanzable",
-      "fecha": "2026-10-23T06:26:21Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:32Z",
+      "commit": "82e1233",
       "extra": {
         "categoria": "api_no_alcanzable",
         "caso": "negativo"
@@ -28,19 +28,19 @@
       "capa": "api",
       "prueba": "GET /salud (chequeo de las 6 fuentes)",
       "resultado": "INFO",
-      "detalle": "HTTP 200 en 2188 ms | mongodb=si, neo4j=si, cassandra=si, redis=si, influxdb=no, iris=si",
+      "detalle": "HTTP 200 en 2252 ms | mongodb=si, neo4j=si, cassandra=si, redis=si, influxdb=no, iris=si",
       "objetivo": "http://127.0.0.1:8000/salud",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib)",
-      "duracion_ms": 2188.0901999538764,
+      "duracion_ms": 2251.8237999174744,
       "responde": "Que informa hoy el endpoint de salud del Hito 10?",
       "no_permite": "Distinguir caida, timeout, credencial o contexto: solo devuelve un booleano por fuente y siempre HTTP 200",
       "esperado": "",
-      "fecha": "2026-10-23T06:26:24Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:34Z",
+      "commit": "82e1233",
       "extra": {
         "status": 200,
-        "request_id": "h11-final-salud-73c1",
+        "request_id": "h11-final-salud-9b02",
         "categoria": "exito",
         "dependencias": [
           {
@@ -69,8 +69,8 @@
           }
         ],
         "log": [
-          "2026-10-23T03:26:24 WARNING [req=h11-final-salud-73c1] influx status=400",
-          "2026-10-23T03:26:24 INFO [req=h11-final-salud-73c1] GET /salud -> 200 (2172.1 ms)"
+          "2026-10-23T16:41:34 WARNING [req=h11-final-salud-9b02] influx status=400",
+          "2026-10-23T16:41:34 INFO [req=h11-final-salud-9b02] GET /salud -> 200 (2250.2 ms)"
         ]
       }
     },
@@ -83,21 +83,21 @@
       "objetivo": "http://127.0.0.1:8000/equipos/ARG",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 3.050900064408779,
+      "duracion_ms": 3.908699960447848,
       "responde": "Equipo existente del Hito 4",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:26:24Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:34Z",
+      "commit": "82e1233",
       "extra": {
         "status": 404,
-        "request_id": "h11-final-01-8fa9",
-        "request_id_enviado": "h11-final-01-8fa9",
+        "request_id": "h11-final-01-aebd",
+        "request_id_enviado": "h11-final-01-aebd",
         "categoria": "recurso_inexistente",
         "parametros": {},
         "log": [
-          "2026-10-23T03:26:24 INFO [req=h11-final-01-8fa9] mongo equipo codigo=ARG encontrado=False",
-          "2026-10-23T03:26:24 INFO [req=h11-final-01-8fa9] GET /equipos/ARG -> 404 (1.9 ms)"
+          "2026-10-23T16:41:34 INFO [req=h11-final-01-aebd] mongo equipo codigo=ARG encontrado=False",
+          "2026-10-23T16:41:34 INFO [req=h11-final-01-aebd] GET /equipos/ARG -> 404 (2.4 ms)"
         ],
         "coincide_con_contrato": false
       }
@@ -111,21 +111,21 @@
       "objetivo": "http://127.0.0.1:8000/equipos/ZZZ",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 16.83269999921322,
+      "duracion_ms": 3.9477000245824456,
       "responde": "Codigo FIFA inexistente",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "recurso_inexistente",
-      "fecha": "2026-10-23T06:26:24Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:34Z",
+      "commit": "82e1233",
       "extra": {
         "status": 404,
-        "request_id": "h11-final-02-e856",
-        "request_id_enviado": "h11-final-02-e856",
+        "request_id": "h11-final-02-1e42",
+        "request_id_enviado": "h11-final-02-1e42",
         "categoria": "recurso_inexistente",
         "parametros": {},
         "log": [
-          "2026-10-23T03:26:24 INFO [req=h11-final-02-e856] mongo equipo codigo=ZZZ encontrado=False",
-          "2026-10-23T03:26:24 INFO [req=h11-final-02-e856] GET /equipos/ZZZ -> 404 (1.9 ms)"
+          "2026-10-23T16:41:34 INFO [req=h11-final-02-1e42] mongo equipo codigo=ZZZ encontrado=False",
+          "2026-10-23T16:41:34 INFO [req=h11-final-02-1e42] GET /equipos/ZZZ -> 404 (2.3 ms)"
         ],
         "coincide_con_contrato": true
       }
@@ -139,23 +139,23 @@
       "objetivo": "http://127.0.0.1:8000/equipos/ARG/jugadores?limit=5",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 29.110900009982288,
+      "duracion_ms": 13.79520003683865,
       "responde": "Plantel paginado",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:26:24Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:35Z",
+      "commit": "82e1233",
       "extra": {
         "status": 500,
         "request_id": "",
-        "request_id_enviado": "h11-final-03-06aa",
+        "request_id_enviado": "h11-final-03-a076",
         "categoria": "error_interno",
         "parametros": {
           "limit": 5
         },
         "log": [
-          "2026-10-23T03:26:24 INFO [req=h11-final-03-06aa] mongo jugadores equipo=ARG filas=5",
-          "2026-10-23T03:26:24 ERROR [req=h11-final-03-06aa] error inesperado en /equipos/ARG/jugadores: ResponseValidationError()"
+          "2026-10-23T16:41:34 INFO [req=h11-final-03-a076] mongo jugadores equipo=ARG filas=5",
+          "2026-10-23T16:41:34 ERROR [req=h11-final-03-a076] error inesperado en /equipos/ARG/jugadores: ResponseValidationError()"
         ],
         "coincide_con_contrato": false
       }
@@ -169,22 +169,22 @@
       "objetivo": "http://127.0.0.1:8000/equipos/ARG/jugadores?limit=0",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 2.827299991622567,
+      "duracion_ms": 3.1633999897167087,
       "responde": "limit fuera de rango: se rechaza sin consultar la base",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "error_validacion",
-      "fecha": "2026-10-23T06:26:24Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:35Z",
+      "commit": "82e1233",
       "extra": {
         "status": 400,
-        "request_id": "h11-final-04-e6fa",
-        "request_id_enviado": "h11-final-04-e6fa",
+        "request_id": "h11-final-04-dd90",
+        "request_id_enviado": "h11-final-04-dd90",
         "categoria": "error_validacion",
         "parametros": {
           "limit": 0
         },
         "log": [
-          "2026-10-23T03:26:24 INFO [req=h11-final-04-e6fa] GET /equipos/ARG/jugadores -> 400 (1.5 ms)"
+          "2026-10-23T16:41:35 INFO [req=h11-final-04-dd90] GET /equipos/ARG/jugadores -> 400 (1.5 ms)"
         ],
         "coincide_con_contrato": true
       }
@@ -198,23 +198,23 @@
       "objetivo": "http://127.0.0.1:8000/partidos/F2030-001/eventos?limit=5",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 9.619200020097196,
+      "duracion_ms": 15.188699937425554,
       "responde": "Eventos de un partido con goles",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:26:24Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:35Z",
+      "commit": "82e1233",
       "extra": {
         "status": 200,
-        "request_id": "h11-final-05-d217",
-        "request_id_enviado": "h11-final-05-d217",
+        "request_id": "h11-final-05-84c3",
+        "request_id_enviado": "h11-final-05-84c3",
         "categoria": "exito",
         "parametros": {
           "limit": 5
         },
         "log": [
-          "2026-10-23T03:26:24 INFO [req=h11-final-05-d217] neo4j partido=F2030-001 eventos=2",
-          "2026-10-23T03:26:24 INFO [req=h11-final-05-d217] GET /partidos/F2030-001/eventos -> 200 (8.2 ms)"
+          "2026-10-23T16:41:35 INFO [req=h11-final-05-84c3] neo4j partido=F2030-001 eventos=2",
+          "2026-10-23T16:41:35 INFO [req=h11-final-05-84c3] GET /partidos/F2030-001/eventos -> 200 (12.9 ms)"
         ],
         "coincide_con_contrato": true
       }
@@ -228,23 +228,23 @@
       "objetivo": "http://127.0.0.1:8000/partidos/F2030-006/eventos?limit=5",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 8.15899996086955,
+      "duracion_ms": 37.205099943093956,
       "responde": "Partido existente sin eventos: 200 con lista vacia",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "vacio_valido",
-      "fecha": "2026-10-23T06:26:24Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:35Z",
+      "commit": "82e1233",
       "extra": {
         "status": 200,
-        "request_id": "h11-final-06-0457",
-        "request_id_enviado": "h11-final-06-0457",
+        "request_id": "h11-final-06-38e4",
+        "request_id_enviado": "h11-final-06-38e4",
         "categoria": "vacio_valido",
         "parametros": {
           "limit": 5
         },
         "log": [
-          "2026-10-23T03:26:24 INFO [req=h11-final-06-0457] neo4j partido=F2030-006 eventos=0",
-          "2026-10-23T03:26:24 INFO [req=h11-final-06-0457] GET /partidos/F2030-006/eventos -> 200 (6.8 ms)"
+          "2026-10-23T16:41:35 INFO [req=h11-final-06-38e4] neo4j partido=F2030-006 eventos=0",
+          "2026-10-23T16:41:35 INFO [req=h11-final-06-38e4] GET /partidos/F2030-006/eventos -> 200 (13.6 ms)"
         ],
         "coincide_con_contrato": true
       }
@@ -258,21 +258,21 @@
       "objetivo": "http://127.0.0.1:8000/partidos/F2030-999/eventos",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 34.7302999580279,
+      "duracion_ms": 32.22429996822029,
       "responde": "Partido inexistente",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "recurso_inexistente",
-      "fecha": "2026-10-23T06:26:24Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:35Z",
+      "commit": "82e1233",
       "extra": {
         "status": 404,
-        "request_id": "h11-final-07-87c7",
-        "request_id_enviado": "h11-final-07-87c7",
+        "request_id": "h11-final-07-35cd",
+        "request_id_enviado": "h11-final-07-35cd",
         "categoria": "recurso_inexistente",
         "parametros": {},
         "log": [
-          "2026-10-23T03:26:24 INFO [req=h11-final-07-87c7] neo4j partido=F2030-999 inexistente",
-          "2026-10-23T03:26:24 INFO [req=h11-final-07-87c7] GET /partidos/F2030-999/eventos -> 404 (20.9 ms)"
+          "2026-10-23T16:41:35 INFO [req=h11-final-07-35cd] neo4j partido=F2030-999 inexistente",
+          "2026-10-23T16:41:35 INFO [req=h11-final-07-35cd] GET /partidos/F2030-999/eventos -> 404 (30.7 ms)"
         ],
         "coincide_con_contrato": true
       }
@@ -286,24 +286,24 @@
       "objetivo": "http://127.0.0.1:8000/partidos/F2030-063/comentarios?instante=2030-06-22T20%3A03%3A00Z&limit=5",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 13.55530007276684,
+      "duracion_ms": 14.108599978499115,
       "responde": "Particion con comentarios de la muestra del Hito 6",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:26:24Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:35Z",
+      "commit": "82e1233",
       "extra": {
         "status": 200,
-        "request_id": "h11-final-08-cc60",
-        "request_id_enviado": "h11-final-08-cc60",
+        "request_id": "h11-final-08-1a81",
+        "request_id_enviado": "h11-final-08-1a81",
         "categoria": "exito",
         "parametros": {
           "instante": "2030-06-22T20:03:00Z",
           "limit": 5
         },
         "log": [
-          "2026-10-23T03:26:24 INFO [req=h11-final-08-cc60] cassandra leer partido=F2030-063 ventana=2030-06-22 20:00:00+00:00 filas=2 modo=driver",
-          "2026-10-23T03:26:24 INFO [req=h11-final-08-cc60] GET /partidos/F2030-063/comentarios -> 200 (12.2 ms)"
+          "2026-10-23T16:41:35 INFO [req=h11-final-08-1a81] cassandra leer partido=F2030-063 ventana=2030-06-22 20:00:00+00:00 filas=2 modo=driver",
+          "2026-10-23T16:41:35 INFO [req=h11-final-08-1a81] GET /partidos/F2030-063/comentarios -> 200 (12.6 ms)"
         ],
         "coincide_con_contrato": true
       }
@@ -317,24 +317,24 @@
       "objetivo": "http://127.0.0.1:8000/partidos/F2030-063/comentarios?instante=2029-06-22T20%3A03%3A00Z&limit=5",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 14.950599987059832,
+      "duracion_ms": 14.246599981561303,
       "responde": "Ventana sin comentarios",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "vacio_valido",
-      "fecha": "2026-10-23T06:26:24Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:35Z",
+      "commit": "82e1233",
       "extra": {
         "status": 200,
-        "request_id": "h11-final-09-442e",
-        "request_id_enviado": "h11-final-09-442e",
+        "request_id": "h11-final-09-5753",
+        "request_id_enviado": "h11-final-09-5753",
         "categoria": "vacio_valido",
         "parametros": {
           "instante": "2029-06-22T20:03:00Z",
           "limit": 5
         },
         "log": [
-          "2026-10-23T03:26:24 INFO [req=h11-final-09-442e] cassandra leer partido=F2030-063 ventana=2029-06-22 20:00:00+00:00 filas=0 modo=driver",
-          "2026-10-23T03:26:24 INFO [req=h11-final-09-442e] GET /partidos/F2030-063/comentarios -> 200 (13.7 ms)"
+          "2026-10-23T16:41:35 INFO [req=h11-final-09-5753] cassandra leer partido=F2030-063 ventana=2029-06-22 20:00:00+00:00 filas=0 modo=driver",
+          "2026-10-23T16:41:35 INFO [req=h11-final-09-5753] GET /partidos/F2030-063/comentarios -> 200 (12.5 ms)"
         ],
         "coincide_con_contrato": true
       }
@@ -348,22 +348,22 @@
       "objetivo": "http://127.0.0.1:8000/partidos/F2030-063/comentarios?instante=no-es-fecha",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 1.7612999072298408,
+      "duracion_ms": 1.9351999508216977,
       "responde": "Instante con formato invalido",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "error_validacion",
-      "fecha": "2026-10-23T06:26:24Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:35Z",
+      "commit": "82e1233",
       "extra": {
         "status": 400,
-        "request_id": "h11-final-10-adf8",
-        "request_id_enviado": "h11-final-10-adf8",
+        "request_id": "h11-final-10-c71d",
+        "request_id_enviado": "h11-final-10-c71d",
         "categoria": "error_validacion",
         "parametros": {
           "instante": "no-es-fecha"
         },
         "log": [
-          "2026-10-23T03:26:24 INFO [req=h11-final-10-adf8] GET /partidos/F2030-063/comentarios -> 400 (0.6 ms)"
+          "2026-10-23T16:41:35 INFO [req=h11-final-10-c71d] GET /partidos/F2030-063/comentarios -> 400 (0.6 ms)"
         ],
         "coincide_con_contrato": true
       }
@@ -377,22 +377,22 @@
       "objetivo": "http://127.0.0.1:8000/sesiones/S0001",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 2.6005000108852983,
+      "duracion_ms": 3.1435000710189342,
       "responde": "Sesion vigente cargada por el Hito 7 (hash con TTL)",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:26:24Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:35Z",
+      "commit": "82e1233",
       "extra": {
         "status": 503,
-        "request_id": "h11-final-11-41b3",
-        "request_id_enviado": "h11-final-11-41b3",
+        "request_id": "h11-final-11-0eb3",
+        "request_id_enviado": "h11-final-11-0eb3",
         "categoria": "dependencia_no_disponible",
         "parametros": {},
         "log": [
-          "2026-10-23T03:26:24 WARNING [req=h11-final-11-41b3] redis error sesion=S0001",
-          "2026-10-23T03:26:24 WARNING [req=h11-final-11-41b3] dependencia fuente=redis causa=WRONGTYPE Operation against a key holding the wrong kind of value",
-          "2026-10-23T03:26:24 INFO [req=h11-final-11-41b3] GET /sesiones/S0001 -> 503 (1.4 ms)"
+          "2026-10-23T16:41:35 WARNING [req=h11-final-11-0eb3] redis error sesion=S0001",
+          "2026-10-23T16:41:35 WARNING [req=h11-final-11-0eb3] dependencia fuente=redis causa=WRONGTYPE Operation against a key holding the wrong kind of value",
+          "2026-10-23T16:41:35 INFO [req=h11-final-11-0eb3] GET /sesiones/S0001 -> 503 (1.7 ms)"
         ],
         "coincide_con_contrato": false
       }
@@ -406,21 +406,21 @@
       "objetivo": "http://127.0.0.1:8000/sesiones/no-existe-h11",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 2.4076999397948384,
+      "duracion_ms": 3.2069000881165266,
       "responde": "Sesion ausente o expirada",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "recurso_inexistente",
-      "fecha": "2026-10-23T06:26:25Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:35Z",
+      "commit": "82e1233",
       "extra": {
         "status": 404,
-        "request_id": "h11-final-12-21a5",
-        "request_id_enviado": "h11-final-12-21a5",
+        "request_id": "h11-final-12-7bb8",
+        "request_id_enviado": "h11-final-12-7bb8",
         "categoria": "recurso_inexistente",
         "parametros": {},
         "log": [
-          "2026-10-23T03:26:24 INFO [req=h11-final-12-21a5] redis sesion=no-existe-h11 ausente_o_expirada",
-          "2026-10-23T03:26:24 INFO [req=h11-final-12-21a5] GET /sesiones/no-existe-h11 -> 404 (1.2 ms)"
+          "2026-10-23T16:41:35 INFO [req=h11-final-12-7bb8] redis sesion=no-existe-h11 ausente_o_expirada",
+          "2026-10-23T16:41:35 INFO [req=h11-final-12-7bb8] GET /sesiones/no-existe-h11 -> 404 (1.4 ms)"
         ],
         "coincide_con_contrato": true
       }
@@ -434,25 +434,25 @@
       "objetivo": "http://127.0.0.1:8000/partidos/F2030-018/estadisticas?desde=2030-06-13T08%3A00%3A00Z&hasta=2030-06-13T08%3A05%3A00Z",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 4.122199956327677,
+      "duracion_ms": 28.488100040704012,
       "responde": "Ventana acotada con puntos",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:26:25Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:35Z",
+      "commit": "82e1233",
       "extra": {
         "status": 503,
-        "request_id": "h11-final-13-8088",
-        "request_id_enviado": "h11-final-13-8088",
+        "request_id": "h11-final-13-9d4a",
+        "request_id_enviado": "h11-final-13-9d4a",
         "categoria": "dependencia_no_disponible",
         "parametros": {
           "desde": "2030-06-13T08:00:00Z",
           "hasta": "2030-06-13T08:05:00Z"
         },
         "log": [
-          "2026-10-23T03:26:25 WARNING [req=h11-final-13-8088] influx status=400",
-          "2026-10-23T03:26:25 WARNING [req=h11-final-13-8088] dependencia fuente=influxdb causa=HTTP 400",
-          "2026-10-23T03:26:25 INFO [req=h11-final-13-8088] GET /partidos/F2030-018/estadisticas -> 503 (2.7 ms)"
+          "2026-10-23T16:41:35 WARNING [req=h11-final-13-9d4a] influx status=400",
+          "2026-10-23T16:41:35 WARNING [req=h11-final-13-9d4a] dependencia fuente=influxdb causa=HTTP 400",
+          "2026-10-23T16:41:35 INFO [req=h11-final-13-9d4a] GET /partidos/F2030-018/estadisticas -> 503 (27.0 ms)"
         ],
         "coincide_con_contrato": false
       }
@@ -466,25 +466,25 @@
       "objetivo": "http://127.0.0.1:8000/partidos/F2030-018/estadisticas?desde=2030-06-13T09%3A00%3A00Z&hasta=2030-06-13T09%3A15%3A00Z",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 3.743099980056286,
+      "duracion_ms": 4.153799964115024,
       "responde": "Ventana sin puntos (antes del partido)",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "vacio_valido",
-      "fecha": "2026-10-23T06:26:25Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:35Z",
+      "commit": "82e1233",
       "extra": {
         "status": 503,
-        "request_id": "h11-final-14-ebcf",
-        "request_id_enviado": "h11-final-14-ebcf",
+        "request_id": "h11-final-14-b548",
+        "request_id_enviado": "h11-final-14-b548",
         "categoria": "dependencia_no_disponible",
         "parametros": {
           "desde": "2030-06-13T09:00:00Z",
           "hasta": "2030-06-13T09:15:00Z"
         },
         "log": [
-          "2026-10-23T03:26:25 WARNING [req=h11-final-14-ebcf] influx status=400",
-          "2026-10-23T03:26:25 WARNING [req=h11-final-14-ebcf] dependencia fuente=influxdb causa=HTTP 400",
-          "2026-10-23T03:26:25 INFO [req=h11-final-14-ebcf] GET /partidos/F2030-018/estadisticas -> 503 (2.5 ms)"
+          "2026-10-23T16:41:35 WARNING [req=h11-final-14-b548] influx status=400",
+          "2026-10-23T16:41:35 WARNING [req=h11-final-14-b548] dependencia fuente=influxdb causa=HTTP 400",
+          "2026-10-23T16:41:35 INFO [req=h11-final-14-b548] GET /partidos/F2030-018/estadisticas -> 503 (2.7 ms)"
         ],
         "coincide_con_contrato": false
       }
@@ -498,23 +498,23 @@
       "objetivo": "http://127.0.0.1:8000/partidos/F2030-018/estadisticas?desde=2030-06-13T08%3A05%3A00Z&hasta=2030-06-13T08%3A00%3A00Z",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 1.7460000235587358,
+      "duracion_ms": 2.230799989774823,
       "responde": "desde > hasta",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "error_validacion",
-      "fecha": "2026-10-23T06:26:25Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:35Z",
+      "commit": "82e1233",
       "extra": {
         "status": 400,
-        "request_id": "h11-final-15-7523",
-        "request_id_enviado": "h11-final-15-7523",
+        "request_id": "h11-final-15-d55c",
+        "request_id_enviado": "h11-final-15-d55c",
         "categoria": "error_validacion",
         "parametros": {
           "desde": "2030-06-13T08:05:00Z",
           "hasta": "2030-06-13T08:00:00Z"
         },
         "log": [
-          "2026-10-23T03:26:25 INFO [req=h11-final-15-7523] GET /partidos/F2030-018/estadisticas -> 400 (0.5 ms)"
+          "2026-10-23T16:41:35 INFO [req=h11-final-15-d55c] GET /partidos/F2030-018/estadisticas -> 400 (0.6 ms)"
         ],
         "coincide_con_contrato": true
       }
@@ -528,22 +528,22 @@
       "objetivo": "http://127.0.0.1:8000/partidos/F2030-001/detalle",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 8.605599985457957,
+      "duracion_ms": 10.183600010350347,
       "responde": "Entidad compleja Partido del Hito 9",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "exito",
-      "fecha": "2026-10-23T06:26:25Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:36Z",
+      "commit": "82e1233",
       "extra": {
         "status": 503,
-        "request_id": "h11-final-16-8d2d",
-        "request_id_enviado": "h11-final-16-8d2d",
+        "request_id": "h11-final-16-8665",
+        "request_id_enviado": "h11-final-16-8665",
         "categoria": "dependencia_no_disponible",
         "parametros": {},
         "log": [
-          "2026-10-23T03:26:25 WARNING [req=h11-final-16-8d2d] iris error partido=F2030-001",
-          "2026-10-23T03:26:25 WARNING [req=h11-final-16-8d2d] dependencia fuente=iris causa=<SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]",
-          "2026-10-23T03:26:25 INFO [req=h11-final-16-8d2d] GET /partidos/F2030-001/detalle -> 503 (7.3 ms)"
+          "2026-10-23T16:41:35 WARNING [req=h11-final-16-8665] iris error partido=F2030-001",
+          "2026-10-23T16:41:35 WARNING [req=h11-final-16-8665] dependencia fuente=iris causa=<SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]",
+          "2026-10-23T16:41:35 INFO [req=h11-final-16-8665] GET /partidos/F2030-001/detalle -> 503 (8.4 ms)"
         ],
         "coincide_con_contrato": false
       }
@@ -557,22 +557,22 @@
       "objetivo": "http://127.0.0.1:8000/partidos/F2030-999/detalle",
       "origen": "notebook Windows 10 | Python 3.11.9 (.venv)",
       "cliente": "HTTP (urllib) -> API Hito 10",
-      "duracion_ms": 4.500599927268922,
+      "duracion_ms": 5.094200023449957,
       "responde": "Objeto inexistente",
       "no_permite": "Rendimiento: una respuesta correcta no mide capacidad (Hito 12).",
       "esperado": "recurso_inexistente",
-      "fecha": "2026-10-23T06:26:25Z",
-      "commit": "b6d4e88",
+      "fecha": "2026-10-23T19:41:36Z",
+      "commit": "82e1233",
       "extra": {
         "status": 503,
-        "request_id": "h11-final-17-189f",
-        "request_id_enviado": "h11-final-17-189f",
+        "request_id": "h11-final-17-8c92",
+        "request_id_enviado": "h11-final-17-8c92",
         "categoria": "dependencia_no_disponible",
         "parametros": {},
         "log": [
-          "2026-10-23T03:26:25 WARNING [req=h11-final-17-189f] iris error partido=F2030-999",
-          "2026-10-23T03:26:25 WARNING [req=h11-final-17-189f] dependencia fuente=iris causa=<SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]",
-          "2026-10-23T03:26:25 INFO [req=h11-final-17-189f] GET /partidos/F2030-999/detalle -> 503 (3.3 ms)"
+          "2026-10-23T16:41:36 WARNING [req=h11-final-17-8c92] iris error partido=F2030-999",
+          "2026-10-23T16:41:36 WARNING [req=h11-final-17-8c92] dependencia fuente=iris causa=<SQL ERROR>; Details: [SQLCODE: <-1>:<Invalid SQL statement>]",
+          "2026-10-23T16:41:36 INFO [req=h11-final-17-8c92] GET /partidos/F2030-999/detalle -> 503 (3.6 ms)"
         ],
         "coincide_con_contrato": false
       }

@@ -1,15 +1,15 @@
-2026-10-23T03:26:27 INFO [req=fc8d5fcd] GET /openapi.json -> 200 (15.2 ms)
-2026-10-23T03:26:27 INFO [req=h11-falla-redis-ini] redis sesion=no-existe-h11 ausente_o_expirada
-2026-10-23T03:26:27 INFO [req=h11-falla-redis-ini] GET /sesiones/no-existe-h11 -> 404 (62.2 ms)
-2026-10-23T03:26:28 WARNING [req=h11-falla-redis-404] redis error sesion=no-existe-h11
-2026-10-23T03:26:28 WARNING [req=h11-falla-redis-404] dependencia fuente=redis causa=Error while reading from localhost:6379 : (10053, 'Se ha anulado una conexión establecida por el software en su equipo host', None, 10053, None)
-2026-10-23T03:26:28 INFO [req=h11-falla-redis-404] GET /sesiones/no-existe-h11 -> 503 (25.8 ms)
-2026-10-23T03:26:28 WARNING [req=h11-falla-redis-s01] redis error sesion=S0001
-2026-10-23T03:26:28 WARNING [req=h11-falla-redis-s01] dependencia fuente=redis causa=Connection closed by server.
-2026-10-23T03:26:28 INFO [req=h11-falla-redis-s01] GET /sesiones/S0001 -> 503 (3.2 ms)
-2026-10-23T03:26:28 INFO [req=h11-falla-redis-neo] neo4j partido=F2030-001 eventos=2
-2026-10-23T03:26:28 INFO [req=h11-falla-redis-neo] GET /partidos/F2030-001/eventos -> 200 (162.1 ms)
-2026-10-23T03:26:34 WARNING [req=h11-falla-redis-salud] influx status=400
-2026-10-23T03:26:34 INFO [req=h11-falla-redis-salud] GET /salud -> 200 (6011.6 ms)
-2026-10-23T03:26:35 INFO [req=h11-falla-redis-fin] redis sesion=no-existe-h11 ausente_o_expirada
-2026-10-23T03:26:35 INFO [req=h11-falla-redis-fin] GET /sesiones/no-existe-h11 -> 404 (13.5 ms)
+2026-10-23T16:41:56 INFO [req=f87cd80c] GET /openapi.json -> 200 (15.8 ms)
+2026-10-23T16:41:56 INFO [req=h11-falla-redis-ini] redis sesion=no-existe-h11 ausente_o_expirada
+2026-10-23T16:41:56 INFO [req=h11-falla-redis-ini] GET /sesiones/no-existe-h11 -> 404 (70.2 ms)
+2026-10-23T16:41:57 WARNING [req=h11-falla-redis-404] redis error sesion=no-existe-h11
+2026-10-23T16:41:57 WARNING [req=h11-falla-redis-404] dependencia fuente=redis causa=Error while reading from localhost:6379 : (10053, 'Se ha anulado una conexión establecida por el software en su equipo host', None, 10053, None)
+2026-10-23T16:41:57 INFO [req=h11-falla-redis-404] GET /sesiones/no-existe-h11 -> 503 (22.6 ms)
+2026-10-23T16:41:57 WARNING [req=h11-falla-redis-s01] redis error sesion=S0001
+2026-10-23T16:41:57 WARNING [req=h11-falla-redis-s01] dependencia fuente=redis causa=Error while reading from localhost:6379 : (10053, 'Se ha anulado una conexión establecida por el software en su equipo host', None, 10053, None)
+2026-10-23T16:41:57 INFO [req=h11-falla-redis-s01] GET /sesiones/S0001 -> 503 (21.6 ms)
+2026-10-23T16:41:57 INFO [req=h11-falla-redis-neo] neo4j partido=F2030-001 eventos=2
+2026-10-23T16:41:57 INFO [req=h11-falla-redis-neo] GET /partidos/F2030-001/eventos -> 200 (186.5 ms)
+2026-10-23T16:42:03 WARNING [req=h11-falla-redis-salud] influx status=400
+2026-10-23T16:42:03 INFO [req=h11-falla-redis-salud] GET /salud -> 200 (6048.9 ms)
+2026-10-23T16:42:04 INFO [req=h11-falla-redis-fin] redis sesion=no-existe-h11 ausente_o_expirada
+2026-10-23T16:42:04 INFO [req=h11-falla-redis-fin] GET /sesiones/no-existe-h11 -> 404 (16.9 ms)

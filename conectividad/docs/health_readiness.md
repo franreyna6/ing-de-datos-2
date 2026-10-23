@@ -14,7 +14,7 @@ otro, y responde siempre **HTTP 200** con un booleano por fuente:
 | Observación | Evidencia | Consecuencia |
 | :--- | :--- | :--- |
 | Siempre 200, aunque una fuente esté caída | Redis detenido: `200` con `redis=false` | Un balanceador no puede usarlo como readiness |
-| Secuencial: el tiempo es la suma de las seis pruebas | 6.185 ms (inicial, con IPv6 lento e IRIS sin credencial), 2.188 ms (final), 6.013 ms (Redis detenido) | Costoso para consultarlo seguido; puede superar el timeout de un probe |
+| Secuencial: el tiempo es la suma de las seis pruebas | 6.185 ms (inicial, con IPv6 lento e IRIS sin credencial), 2.252 ms (final), 6.050 ms (Redis detenido) | Costoso para consultarlo seguido; puede superar el timeout de un probe |
 | Booleano sin causa | IRIS `false` por credencial expirada; InfluxDB `false` por H6 | No distingue caída, timeout, credencial, contexto ni defecto de la API |
 | `verificar()` prueba otra cosa que el caso de uso | Final: `iris = true`, pero `/detalle` da 503 (H7). Inicial: `mongodb = true`, pero `/equipos/ARG` da 404 (H1) | “Verde” no garantiza el caso de uso |
 | Abre conexiones en frío | La primera conexión del driver de Cassandra tarda ~1,6 s | El primer `/salud` tras un reinicio es el más lento |
@@ -53,11 +53,11 @@ parámetro fijo y un límite, no un `SELECT 1`.
 | Fuente | Prueba propuesta | Costo medido de la lectura nativa equivalente (final) | Crítica para readiness |
 | :--- | :--- | ---: | :---: |
 | MongoDB | `find_one` del adaptador sobre un equipo fijo, con proyección | ~1 ms | sí |
-| Neo4j | `MATCH (p:Partido {codigo:$c}) … LIMIT 1` | ~8 ms | sí |
-| Cassandra | lectura de una partición fija con `LIMIT 1` (sesión ya abierta) | ~15 ms | no |
+| Neo4j | `MATCH (p:Partido {codigo:$c}) … LIMIT 1` | ~5 ms | sí |
+| Cassandra | lectura de una partición fija con `LIMIT 1` (sesión ya abierta) | ~16 ms | no |
 | Redis | `HMGET` de una clave de control con TTL largo (o `PING` + `TYPE`) | ~1 ms | sí (sesiones) |
-| InfluxDB | consulta del adaptador sobre una ventana fija de 1 minuto | ~8 ms | no |
-| IRIS | SQL del adaptador para un partido fijo | ~1 ms | no |
+| InfluxDB | consulta del adaptador sobre una ventana fija de 1 minuto | ~11 ms | no |
+| IRIS | SQL del adaptador para un partido fijo | ~2 ms | no |
 
 “Crítica” es una decisión de producto: sin sesiones (Redis) ni equipos o partidos (Mongo, Neo4j),
 la aplicación no puede atender su flujo principal. Comentarios, estadísticas y detalle pueden

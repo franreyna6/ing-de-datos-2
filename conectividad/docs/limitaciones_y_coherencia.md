@@ -20,7 +20,7 @@
 
 - **Datos de laboratorio del equipo**, cargados con los scripts de cada hito: Hito 4 (64 equipos,
   1.024 jugadores), Hito 5 (96 partidos, 437 eventos), Hito 6 (muestra de 13 comentarios en dos
-  tablas), Hito 7 (muestra: 200 sesiones, 324 claves), Hito 8 (perfil `muestra`: 22.080 puntos,
+  tablas), Hito 7 (muestra: 200 sesiones, 344 claves), Hito 8 (perfil `muestra`: 22.080 puntos,
   más los datos de una versión anterior que ya había en la notebook) e Hito 9 (carga completa).
 - **Las sesiones de Redis vencen a los 1.800 s.** Si pasa media hora desde la carga, la prueba de
   `sesion:S0001` da “no existe (TTL=-2)” y la ruta `/sesiones/S0001`, 404. No es una falla de
@@ -62,7 +62,7 @@
 | 4 | MongoDB (equipos/jugadores) | Credencial de laboratorio, database `fixture2030`, `codigo` como identificador de negocio | H1: la API supone `_id = codigo` |
 | 5 | Neo4j (grafo de partidos) | Bolt + Browser, Cypher parametrizado, `F2030-*` | Disponible de punta a punta; partido inexistente ≠ partido sin eventos |
 | 6 | Cassandra (comentarios) | Clave `(partido_id, ventana)`, sin `ALLOW FILTERING` | Disponible; consulta inválida ≠ timeout de conexión |
-| 7 | Redis (sesiones) | Sesión como **hash** con TTL de 1.800 s, persistencia AOF/RDB | H2: la API lee con `GET`; la falla controlada confirmó la persistencia (324 → 324 claves) |
+| 7 | Redis (sesiones) | Sesión como **hash** con TTL de 1.800 s, persistencia AOF/RDB | H2: la API lee con `GET`; la falla controlada confirmó la persistencia (344 → 344 claves) |
 | 8 | InfluxDB (series) | Token local fuera de Git, `fixture2030_vivo`, `pases_acum` | C0 (token), H5 (esquema anterior), H6 (`query` vs `q`), H4 (IPv4) |
 | 9 | IRIS (objetos) | Proyección SQL `Fixture.*`, namespace `USER` | H3 (password expirada), H7 (alias reservado `local`) |
 | 10 | API integrada | Adaptadores, error común, request-id, `/salud`, `DEP_TIMEOUT_S` | Fallas rápidas y aisladas por ruta (bien), pero 503 para todo y `/salud` sin causa (RF18) |

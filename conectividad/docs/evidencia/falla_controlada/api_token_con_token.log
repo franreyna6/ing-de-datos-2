@@ -1,4 +1,4 @@
-2026-10-23T03:26:41 INFO [req=85d0cff5] GET /openapi.json -> 200 (14.7 ms)
-2026-10-23T03:26:41 WARNING [req=h11-token-con_token-92a] influx status=400
-2026-10-23T03:26:41 WARNING [req=h11-token-con_token-92a] dependencia fuente=influxdb causa=HTTP 400
-2026-10-23T03:26:41 INFO [req=h11-token-con_token-92a] GET /partidos/F2030-018/estadisticas -> 503 (30.9 ms)
+2026-10-23T16:42:11 INFO [req=93ecba82] GET /openapi.json -> 200 (14.9 ms)
+2026-10-23T16:42:11 WARNING [req=h11-token-con_token-fe8] influx status=400
+2026-10-23T16:42:11 WARNING [req=h11-token-con_token-fe8] dependencia fuente=influxdb causa=HTTP 400
+2026-10-23T16:42:11 INFO [req=h11-token-con_token-fe8] GET /partidos/F2030-018/estadisticas -> 503 (9.3 ms)

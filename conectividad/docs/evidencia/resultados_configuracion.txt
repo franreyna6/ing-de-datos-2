@@ -1,5 +1,5 @@
 # Evaluacion de conectividad - modo completo - final
-# fecha UTC: 2026-10-23T06:25:45Z | commit: b6d4e88
+# fecha UTC: 2026-10-23T19:40:55Z | commit: 82e1233
 # origen de las pruebas: notebook Windows 10 | Python 3.11.9 (.venv)
 # docker: Docker Engine 29.8.2
 # configuracion: configuracion.env presente
