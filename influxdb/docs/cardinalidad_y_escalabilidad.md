@@ -75,15 +75,17 @@ El total de 10.598.400 puntos reparte unos 3.067 puntos por serie en promedio (1
 | 5.000 | 2.120 |
 | 20.000 | 530 |
 
-**Tiempo de carga proyectado.** No se declara un número: se calcula como `10.598.400 / puntos por segundo observados`, con la tasa medida en el laboratorio (ver `pruebas_y_evidencia.md`). Una proyección lineal desde un subconjunto es una estimación, no una medición del volumen completo.
+**Tiempo de carga del perfil completo (medido).** La corrida del perfil `completo` cargó los **10.598.400 puntos en 528,8 s** (20.044 puntos/s, cliente Python, 4 hilos, lote 5.000), con 0 lotes fallidos y 0 reintentos (ver `pruebas_y_evidencia.md` §4.1). Es una **medición** del volumen completo, no una proyección desde un subconjunto.
 
-### Prueba local efectivamente realizada frente al objetivo
+### Prueba efectivamente realizada frente al objetivo
 
-| | Objetivo de diseño | Prueba local |
+Antes el objetivo de 10M+ estaba **dimensionado** (conteo del generador); la corrida del 2026-11-06 lo **ejecutó y midió**.
+
+| | Objetivo de diseño | Prueba ejecutada (perfil `completo`) |
 | :--- | :--- | :--- |
-| Puntos | 10.598.400 (`completo`) | Los del perfil ejecutado (por defecto `local`: 1.324.800) |
-| Cómo se afirma | Conteo del generador (`--solo-contar`) y estimación | Conteo verificado en InfluxDB por `validacion.py` |
-| Qué se puede decir | Que el modelo y la estrategia están dimensionados para ese volumen | Lo medido, con método, ambiente y datos cargados |
+| Puntos | 10.598.400 (`completo`) | **10.598.400 cargados y verificados** en InfluxDB |
+| Cómo se afirma | Conteo del generador (`--solo-contar`) y estimación | Conteo verificado en InfluxDB por `validacion.py` (V2–V5, 0 FAIL) |
+| Qué se puede decir | Que el modelo y la estrategia están dimensionados para ese volumen | Lo **medido**: 10,6 M cargados, consultados y validados, con método, ambiente y datos. El perfil `local` (1.324.800) queda como iteración rápida |
 
 ## 3. Escalabilidad
 

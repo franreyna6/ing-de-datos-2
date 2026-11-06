@@ -6,7 +6,8 @@ Esta carpeta guarda lo que respalda cada afirmación de `docs/pruebas_y_evidenci
 
 | Archivo | Qué es | Cómo se genera |
 | :--- | :--- | :--- |
-| `logs/ejecucion_local_20261016_202726.log` | Log completo de la corrida del perfil `local` (1.324.800 puntos): fecha, versión de InfluxDB, imagen, recursos, generación, carga, medición de lotes, consultas C1 a C7, agregaciones A1 a A7 y R1, validación V1 a V11 y prueba de persistencia | `ejecutar_todo.ps1 -Perfil local -MedirLotes -ProbarPersistencia` |
+| `logs/ejecucion_completo_20261106_202352.log` | **Corrida del perfil `completo` (10.598.400 puntos): el objetivo de 10M+ medido.** Carga (0 fallidos), consultas C1 a C7 sobre todo el torneo, agregaciones A1 a A7 y R1, validación V1 a V11 (23 PASS, 0 FAIL) y persistencia | `ejecutar_todo.ps1 -Perfil completo -ProbarPersistencia` (con `INFLUXDB3_QUERY_FILE_LIMIT=5000`) |
+| `logs/ejecucion_local_20261016_202726.log` | Log de la corrida del perfil `local` (1.324.800 puntos), iteración rápida: incluye además la medición de tamaño de lote y concurrencia | `ejecutar_todo.ps1 -Perfil local -MedirLotes -ProbarPersistencia` |
 
 ## Cómo se lee el log
 

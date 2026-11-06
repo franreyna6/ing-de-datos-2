@@ -4,7 +4,7 @@
 
 Ingeniería de Datos II · Grupo 8 · Fixture Mundial 2030 · Clase 9 (series temporales)
 
-Módulo que registra y recupera las estadísticas que cambian durante cada partido (posesión, pases, tiros, actividad de usuarios, métricas operativas y rendimiento de jugadores) con **InfluxDB 3 Core** en Docker. El volumen objetivo es de **10M+ puntos**: el generador reproduce 10.598.400 puntos con los 96 partidos del Hito 5, y el laboratorio local carga por defecto 1.324.800.
+Módulo que registra y recupera las estadísticas que cambian durante cada partido (posesión, pases, tiros, actividad de usuarios, métricas operativas y rendimiento de jugadores) con **InfluxDB 3 Core** en Docker. El volumen objetivo es de **10M+ puntos**: el perfil `completo` carga y valida **10.598.400 puntos** con los 96 partidos del Hito 5 (corrida del 2026-11-06, ver [`docs/pruebas_y_evidencia.md`](docs/pruebas_y_evidencia.md) §4.1); el perfil `local` carga 1.324.800 para iterar más rápido.
 
 > **Alcance honesto.** Los datos son **simulados**, anclados a los CSV del Hito 5. El laboratorio es un nodo en una máquina: se demuestra la **corrección** del modelo, la carga y las consultas, no el rendimiento de producción. Qué se demuestra y qué no: [`docs/pruebas_y_evidencia.md`](docs/pruebas_y_evidencia.md).
 

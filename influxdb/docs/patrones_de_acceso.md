@@ -25,7 +25,7 @@ Durante cada partido del Mundial 2030 la plataforma recibe observaciones que cam
 | `estadisticas_jugador` | 22 titulares × 1.200 muestras (cada 5 s) | 26.400 | 2.534.400 |
 | **Total** | | **110.400** | **10.598.400** |
 
-El objetivo de 10M+ puntos se alcanza con la fase de grupos del Hito 5. El generador lo reproduce con `generacion_puntos.py --perfil completo` y el conteo se verificó sin escribir archivos (`--solo-contar`).
+El objetivo de 10M+ puntos se alcanza con la fase de grupos del Hito 5. El perfil `completo` (`generacion_puntos.py --perfil completo`) **se cargó y validó** en InfluxDB: 10.598.400 puntos, 0 lotes fallidos, validación sin FAIL (ver `pruebas_y_evidencia.md` §4.1), no solo se contó con `--solo-contar`.
 
 **Dato clave para el diseño:** en vivo, un partido genera unos **18,4 puntos por segundo** (2 + 6 + 6 + 22/5). La ingesta en tiempo real es modesta; lo que crece es la **acumulación** (10,6 M de puntos en 96 partidos) y el costo de **consultarla**. Por eso el diseño pone el esfuerzo en cardinalidad, rangos acotados y retención, y trata el 10M+ como una carga masiva (relleno) y no como una tasa de llegada.
 

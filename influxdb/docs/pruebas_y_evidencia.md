@@ -33,15 +33,41 @@ V10 es informativa a propósito: lo que se documenta es el comportamiento **obse
 | Las agregaciones respetan la semántica de la medida | **Sí** | A2 muestra el error de sumar un contador acumulado frente al `MAX` correcto |
 | Las series cargadas coinciden con la estimación de cardinalidad | **Sí** | V4 |
 | La carga no pierde ni duplica puntos y es repetible | **Sí** | V2, V3, V5 y V8 |
-| 10M+ puntos cargados en InfluxDB | **Solo si se ejecuta el perfil `completo`.** Por defecto se ejecuta `local` (1.324.800 puntos) | La estrategia y la cuenta exacta de 10.598.400 puntos están dimensionadas y verificadas por el generador |
+| 10M+ puntos cargados en InfluxDB | **Sí, ejecutado.** Se corrió el perfil `completo`: **10.598.400 puntos** cargados (0 fallidos), consultados y validados | Corrida del 2026-11-06 (§4.1), log `ejecucion_completo_20261106_202352.log`. El perfil `local` (1.324.800) queda como iteración rápida |
 | Rendimiento de producción | **No** | Un nodo, una máquina y un cliente Python no permiten afirmarlo |
 | Latencia de consulta | **No se mide**: cada consulta se ejecuta una vez | El tiempo impreso es de orientación |
 | Expiración por retención | **No** | Los datos son de 2030 y no vencen en el laboratorio; ver `retencion_y_granularidad.md` |
 | Datos reales de partidos | **No** | Los datos son simulados, anclados a los CSV del Hito 5 |
 
-## 4. Resultados de la corrida
+## 4. Resultados de las corridas
 
-Los resultados de esta sección se **copian del log** de la corrida; cada cifra tiene su archivo de respaldo en `docs/evidencia/logs/`. No se declara ninguna tasa ni volumen que no figure en un log.
+Los resultados se **copian del log** de cada corrida; cada cifra tiene su archivo de respaldo en `docs/evidencia/logs/`. No se declara ninguna tasa ni volumen que no figure en un log. Se diferencia **lo medido** (lo que una corrida cargó y verificó) de **lo proyectado** (estimaciones del generador o extrapolaciones de rendimiento).
+
+### 4.1 Corrida del perfil `completo` — objetivo 10M+ (medido)
+
+Perfil `completo` ejecutado de punta a punta (carga + consultas + agregaciones + validación + persistencia). Es la corrida que **mide** el objetivo de 10M+ puntos; antes solo estaba dimensionado por el generador.
+
+| Dato | Valor observado | Fuente en el log |
+| :--- | :--- | :--- |
+| Fecha de ejecución | 2026-11-06, 20:23 (UTC-03:00) | Encabezado |
+| Versión de InfluxDB | InfluxDB 3 Core 3.12.2 | Paso 1 |
+| Imagen | `influxdb:3-core`, id `sha256:26875ba5...998990` | Paso 1 |
+| Recursos del equipo y de Docker | AMD Ryzen 5 3600X, 12 núcleos lógicos, 8 GB de RAM; Docker con 6 CPUs y 8.275.501.056 bytes (≈ 7,7 GiB) | Encabezado y paso 1 |
+| Perfil ejecutado | `completo`: 96 partidos, 6.000 s de captura, semilla 2030, 3.456 series | Encabezado y paso 1 |
+| Puntos cargados | **10.598.400 enviados y 10.598.400 aceptados** (0 lotes fallidos, 0 reintentos, 2.122 lotes) | Paso 3, línea `TOTAL` |
+| Desglose por tabla | estadisticas_equipo 1.152.000 · actividad_usuarios 3.456.000 · metricas_plataforma 3.456.000 · estadisticas_jugador 2.534.400 | Paso 2 |
+| Generación | 10.598.400 puntos en 18,6 s | Paso 2 |
+| Tiempo de carga y puntos por segundo | 528,8 s, 20.044 puntos/s (cliente Python, 4 hilos, lote 5.000) | Paso 3, línea `TOTAL` |
+| Consultas sobre todo el torneo | C1–C7 y A1–A7 OK; A7 (todos los partidos) 1.541 ms con `INFLUXDB3_QUERY_FILE_LIMIT=5000` | Pasos 4 y 5 |
+| Resumen de 1 minuto | 19.200 ventanas en `fixture2030_hist`, que cubren los 1.152.000 puntos de `estadisticas_equipo` | Paso 5, R1 |
+| Validación | **23 PASS, 0 FAIL, 1 INFO (V10)** | Paso 6, línea `Resumen` |
+| Persistencia tras el reinicio | Los cinco conteos son iguales antes y después de `docker compose restart`; tamaño en disco: 526,3 MB | Paso 7 |
+
+> **Reproducibilidad.** El perfil `completo` supera el límite por defecto de archivos Parquet por consulta (432) en las consultas de todo el torneo, por eso se ejecutó con `INFLUXDB3_QUERY_FILE_LIMIT=5000` (ver `cardinalidad_y_escalabilidad.md`). Log: `docs/evidencia/logs/ejecucion_completo_20261106_202352.log`.
+
+### 4.2 Corrida del perfil `local` — iteración rápida (referencia)
+
+Perfil `local` (1.324.800 puntos), más liviano para iterar; incluye la medición de tamaño de lote y concurrencia.
 
 | Dato | Valor observado | Fuente en el log |
 | :--- | :--- | :--- |
