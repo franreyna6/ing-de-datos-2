@@ -95,6 +95,8 @@ Un índice se agregó solo cuando lo justifica una relación, una búsqueda o un
 
 `%OnBeforeSave()` vuelve a verificar, en cada `%Save()`, las invariantes del objeto completo: un equipo no juega contra sí mismo, un partido iniciado o finalizado tiene Principal, un partido Programado no tiene eventos y el marcador coincide con los goles registrados. Así, aunque alguien asigne `Estado` o `GolesLocal` sin pasar por los métodos, el guardado por objetos lo rechaza (Bloque 6).
 
+Del lado del hijo, `Evento.%OnBeforeSave()` exige explícitamente que el partido esté **`EnJuego`** al guardar el evento (además de que sea inalterable y del jugador correcto): un evento solo puede nacer y persistirse durante el juego, nunca sobre un partido `Programado` ni `Finalizado`, aunque se cree con `%New()` saltando `RegistrarEvento()`. Como consecuencia, el guardado del árbol (padre + hijos) se hace con el partido `EnJuego` y la finalización es un `%Save()` posterior; los Bloques 2 y 7 siguen ese orden y el Bloque 6 demuestra el rechazo de un `%New()` sobre un partido `Finalizado` (`ILEGAL-06`).
+
 ## 7. Carga (RF6)
 
 `Fixture.Carga` lee los CSV del Hito 5 con la clase de archivos de IRIS (`%Stream.FileCharacter`), que se usa únicamente para leer el texto de los archivos. Cada partido se arma en memoria con los mismos métodos de dominio que usaría cualquier aplicación (designar terna, iniciar, registrar cada evento, finalizar) y se guarda con **un solo `%Save()`**. Al terminar cada partido se compara el marcador calculado desde los eventos con el del CSV; los 96 coinciden en los datos del Hito 5.

@@ -22,7 +22,7 @@ Por qué la diferencia: en padre-hijo el hijo **depende** del padre, así que bo
 | Un partido y sus hijos se guardan juntos o no se guarda nada | `%Save()` guarda el grafo alcanzable en una transacción | Bloque 2 (se guarda todo) y Bloque 3 caso B (un hijo inválido impide guardar al padre y a su hermano válido) |
 | Propiedades obligatorias y tipos | `[ Required ]`, `VALUELIST`, `MINVAL`/`MAXVAL`, `MAXLEN` | Bloque 3 caso A (falta `Fecha`) y caso B (falta `Minuto`) |
 | El estado avanza solo `Programado → EnJuego → Finalizado` | `Iniciar()` y `Finalizar()` | Bloque 6 |
-| No se registran eventos fuera de `EnJuego`; minuto 1..120; jugador de uno de los dos equipos | `RegistrarEvento()` y, para eventos creados con `%New()`, `Evento.%OnBeforeSave()` y el tipo de `Minuto` | Bloque 6 (gol en el minuto 0 sobre un partido Finalizado, gol de un jugador ajeno) |
+| No se registran eventos fuera de `EnJuego`; minuto 1..120; jugador de uno de los dos equipos | `RegistrarEvento()` exige `EnJuego`; para eventos creados con `%New()`, `Evento.%OnBeforeSave()` exige explícitamente `Partido.Estado = "EnJuego"` al guardar (rechaza Programado **y Finalizado**), más el tipo de `Minuto` | Bloque 6 (gol en el minuto 0 sobre un Finalizado vía método; y un evento `%New()` asignado a mano a un partido Finalizado, `ILEGAL-06`, rechazado al guardar) |
 | Un evento guardado no se modifica | `Evento.%OnBeforeSave()` rechaza toda actualización | Bloque 6: se cambia el minuto de `EV-0001`, el guardado se rechaza y SQL muestra el minuto original |
 | Terna neutral, un rol por persona, cada rol una vez | `DesignarArbitro()` + índice único `PartidoRolIdx` | Bloque 6 |
 | No se inicia sin árbitro Principal | `Iniciar()` + `Partido.%OnBeforeSave()` | Bloque 6 |

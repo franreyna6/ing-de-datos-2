@@ -3,7 +3,9 @@
 /// Orden: sedes, equipos, tecnicos, jugadores, arbitros y partidos.
 /// Cada partido se construye como un arbol de objetos en memoria (partido +
 /// designaciones + eventos), recorriendo la maquina de estados con los metodos
-/// del dominio, y se guarda con UN SOLO partido.%Save().
+/// del dominio. El arbol se guarda con el partido EnJuego (un %Save() del arbol
+/// completo) y la finalizacion es un %Save() posterior, porque un evento solo se
+/// persiste con el partido EnJuego (invariante de Evento.%OnBeforeSave).
 ///
 /// Los arbitros y tecnicos no existen en los CSV del Hito 5: se generan de forma
 /// determinista (datos simulados) para poder poblar la jerarquia de Persona.
@@ -220,17 +222,21 @@ ClassMethod Partidos(dir As %String) As %Status
             If $$$ISERR(sc) Return sc
             Set nev = nev + 1
         }
-        Set sc = p.Finalizar()
-        If $$$ISERR(sc) Return sc
         // Control cruzado: el marcador calculado desde los eventos debe coincidir con el CSV.
         If (p.GolesLocal '= $Piece(f, ",", 5)) || (p.GolesVisitante '= $Piece(f, ",", 6)) {
             Return $$$ERROR($$$GeneralError, "El marcador de "_cod_" no coincide con el CSV")
         }
-        // UN SOLO guardado: partido + designaciones + eventos en una transaccion.
+        // Guardado del arbol (partido + designaciones + eventos) en una transaccion,
+        // con el partido EnJuego: un evento solo se persiste con el partido EnJuego.
+        Set sc = p.%Save()
+        If $$$ISERR(sc) Return sc
+        // La finalizacion es un guardado posterior (transicion de estado).
+        Set sc = p.Finalizar()
+        If $$$ISERR(sc) Return sc
         Set sc = p.%Save()
         If $$$ISERR(sc) Return sc
     }
-    Write "Partidos:   ", filas, " (cada uno con un solo %Save del arbol)", !
+    Write "Partidos:   ", filas, " (arbol con un %Save EnJuego + finalizacion)", !
     Write "Eventos:    ", nev, !
     Write "Designaciones: ", filas * 3, !
     Quit $$$OK

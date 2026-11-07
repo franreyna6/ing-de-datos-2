@@ -176,7 +176,7 @@ Cada relación es **bidireccional**: se declara en las dos clases con `Relations
 | Borrar un **Equipo** con jugadores | **Se rechaza** | Relación uno-a-muchos Equipo–Jugador |
 | Guardar un árbol con un hijo inválido | **No se guarda nada** (ni padre ni hermanos válidos) | `%Save()` transaccional del grafo alcanzable |
 | Modificar un Evento guardado | **Se rechaza** | `Evento.%OnBeforeSave()` |
-| Registrar un evento fuera de `EnJuego` | **Se rechaza** | `Partido.RegistrarEvento()` |
+| Registrar un evento fuera de `EnJuego` | **Se rechaza** | `Partido.RegistrarEvento()` y `Evento.%OnBeforeSave()` (exige `Estado = EnJuego` también para eventos creados con `%New()`) |
 | Cambiar el marcador o el estado sin los métodos | **Se rechaza** al guardar | `Partido.%OnBeforeSave()` |
 
 La matriz completa, con los límites (qué **no** protege el modelo, por ejemplo una escritura SQL directa), está en [`docs/matriz_de_integridad.md`](docs/matriz_de_integridad.md).

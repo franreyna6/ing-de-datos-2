@@ -52,14 +52,16 @@ ClassMethod Bloque2ArbolAtomico()
     Do ..Resultado("p.RegistrarEvento(Gol, 12, "_jArg.Codigo_")", p.RegistrarEvento("DEMO-EV-01", "Gol", 12, jArg))
     Do ..Resultado("p.RegistrarEvento(Tarjeta, 40, "_jUru.Codigo_")", p.RegistrarEvento("DEMO-EV-02", "Tarjeta", 40, jUru))
     Do ..Resultado("p.RegistrarEvento(Gol, 77, "_jUru.Codigo_")", p.RegistrarEvento("DEMO-EV-03", "Gol", 77, jUru))
-    Do ..Resultado("p.Finalizar()", p.Finalizar())
-    Write !, "Antes de guardar (todo esta solo en memoria):", !
+    Write !, "Antes de guardar (todo esta solo en memoria, partido EnJuego):", !
     Write "  partido ID = '", p.%Id(), "'   estado = ", p.Estado, "   marcador = ", p.GolesLocal, "-", p.GolesVisitante, !
     Do ..ListarHijos(p)
-    Write !, ">>> Unica invocacion de guardado: p.%Save()", !
-    Do ..Resultado("p.%Save()", p.%Save())
+    Write !, ">>> Guardado atomico del arbol (padre + hijos) con un solo %Save(), con el partido EnJuego:", !
+    Do ..Resultado("p.%Save() (arbol completo, EnJuego)", p.%Save())
+    Write !, "La finalizacion es un guardado posterior: un evento solo se registra y se persiste con el partido EnJuego.", !
+    Do ..Resultado("p.Finalizar()", p.Finalizar())
+    Do ..Resultado("p.%Save() (finaliza el partido)", p.%Save())
     Write !, "Despues de guardar (IRIS asigno identidad al padre y a cada hijo):", !
-    Write "  partido ID = ", p.%Id(), !
+    Write "  partido ID = ", p.%Id(), "   estado = ", p.Estado, !
     Do ..ListarHijos(p)
     // Verificacion independiente: se libera el objeto y se vuelve a abrir desde la base.
     Kill p, jArg, jUru
@@ -237,6 +239,19 @@ ClassMethod Bloque6Validaciones()
     Do ..Resultado("ev.%Save() con el minuto cambiado", ev.%Save())
     Kill ev
     Do ..SQL("SELECT Codigo, Tipo, Minuto FROM Fixture.Evento WHERE Codigo = 'EV-0001'")
+
+    Write !, "Invariante de estado en el guardado directo: evento con %New() sobre un partido Finalizado.", !
+    Write "        Saltea RegistrarEvento() y se asigna el partido a mano; debe rechazarse al guardar.", !
+    Set pFin = ##class(Fixture.Partido).CodigoIdxOpen("F2030-001")
+    If $IsObject(pFin) {
+        Set jFin = ..PrimerJugador(pFin.EquipoLocal)
+        Set evFin = ##class(Fixture.Evento).%New()
+        Set evFin.Codigo = "ILEGAL-06", evFin.Tipo = "Gol", evFin.Minuto = 30
+        Set evFin.Jugador = jFin, evFin.Partido = pFin
+        Do ..Resultado("evFin.%Save() con el partido "_pFin.Codigo_" en estado "_pFin.Estado, evFin.%Save())
+        Write "  Verificacion: existe ILEGAL-06? ", ##class(Fixture.Evento).CodigoIdxExists("ILEGAL-06"), "   (0 = la invariante de estado lo rechazo en %OnBeforeSave)", !
+        Kill pFin, jFin, evFin
+    }
 }
 
 // ---------------------------------------------------------------- Bloque 7
@@ -251,8 +266,9 @@ ClassMethod Bloque7Integridad()
     Do ..DesignarTerna(p, 4), p.Iniciar()
     Do p.RegistrarEvento("DEMO-EV-81", "Gol", 10, ..PrimerJugador(p.EquipoLocal))
     Do p.RegistrarEvento("DEMO-EV-82", "Tarjeta", 50, ..PrimerJugador(p.EquipoVisitante))
+    Do ..Resultado("Guardar DEMO-008 con 2 eventos y 3 designaciones (EnJuego)", p.%Save())
     Do p.Finalizar()
-    Do ..Resultado("Guardar DEMO-008 con 2 eventos y 3 designaciones", p.%Save())
+    Do ..Resultado("Finalizar DEMO-008 (guardado posterior)", p.%Save())
     Set id = p.%Id()
     Kill p
     Do ..SQL("SELECT (SELECT COUNT(*) FROM Fixture.Evento WHERE Partido = "_id_") AS Eventos, (SELECT COUNT(*) FROM Fixture.Designacion WHERE Partido = "_id_") AS Designaciones")
