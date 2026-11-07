@@ -24,13 +24,15 @@ from app.core.registro import logger
 FUENTE = "iris"
 
 # SQL sobre la proyeccion de las clases del Hito 9. Parametrizado por codigo.
+# El equipo local se aliasa 'loc' (no 'local'): LOCAL es palabra reservada en
+# IRIS SQL y como alias produce SQLCODE -1 ("USING expected, LOCAL found").
 _SQL_PARTIDO = """
 SELECT p.Codigo, p.Fecha, p.Fase, p.Estado,
        p.GolesLocal, p.GolesVisitante,
-       local.Codigo AS LocalCodigo, visita.Codigo AS VisitaCodigo,
+       loc.Codigo AS LocalCodigo, visita.Codigo AS VisitaCodigo,
        s.Codigo AS SedeCodigo, s.Nombre AS SedeNombre
 FROM Fixture.Partido p
-  LEFT JOIN Fixture.Equipo local  ON p.EquipoLocal = local.ID
+  LEFT JOIN Fixture.Equipo loc    ON p.EquipoLocal = loc.ID
   LEFT JOIN Fixture.Equipo visita ON p.EquipoVisitante = visita.ID
   LEFT JOIN Fixture.Sede s        ON p.Sede = s.ID
 WHERE p.Codigo = ?

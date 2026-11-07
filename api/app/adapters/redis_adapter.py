@@ -6,12 +6,12 @@ Redis NO DISPONIBLE. La primera es un 404 de la aplicacion; la segunda, un 503.
 Este adaptador las separa con dos caminos distintos, y nunca convierte una caida
 en un 200 vacio.
 
-Convencion de claves del Hito 7: 'sesion:<id>'. Solo se exponen los campos que
-el consumidor necesita, no el valor interno completo.
+Convencion de claves del Hito 7: 'sesion:<id>' es un HASH con los campos
+usuario_id, rol, estado, creada_en, ultimo_acceso y acciones. Se lee con HGETALL
+y solo se exponen los campos que el consumidor necesita, no el hash completo. Un
+HGETALL vacio significa clave ausente o expirada (404), no Redis caido (503).
 """
 from __future__ import annotations
-
-import json
 
 from app.core.config import obtener_config
 from app.core.errores import ErrorDependencia
@@ -49,27 +49,25 @@ class RedisAdapter:
         """
         clave = f"sesion:{sesion_id}"
         try:
-            valor = self._cli().get(clave)
-            ttl = self._cli().ttl(clave) if valor is not None else -2
+            # La sesion del Hito 7 es un HASH: HGETALL devuelve {} si no existe.
+            datos = self._cli().hgetall(clave)
+            ttl = self._cli().ttl(clave) if datos else -2
         except Exception as e:
             # Error de conexion/timeout -> dependencia caida (503), NO 404.
             logger.warning("redis error sesion=%s", sesion_id)
             raise ErrorDependencia(FUENTE, str(e))
 
-        if valor is None:
+        if not datos:
             logger.info("redis sesion=%s ausente_o_expirada", sesion_id)
             return None  # el servicio lo traduce a 404
 
-        try:
-            datos = json.loads(valor)
-        except (ValueError, TypeError):
-            datos = {"raw": valor}
-        logger.info("redis sesion=%s activa ttl=%s", sesion_id, ttl)
-        # Solo los campos utiles para el consumidor (no el valor interno entero).
+        logger.info("redis sesion=%s estado=%s ttl=%s", sesion_id,
+                    datos.get("estado"), ttl)
+        # Solo los campos utiles para el consumidor (no el hash interno entero).
         return {
             "sesionId": sesion_id,
             "usuarioId": datos.get("usuario_id") or datos.get("usuarioId"),
-            "estado": "activa",
+            "estado": datos.get("estado", "activa"),
             "ttlSegundos": ttl if ttl is not None and ttl >= 0 else None,
         }
 

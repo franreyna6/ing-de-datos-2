@@ -9,6 +9,12 @@ La consulta SQL es fija y acota SIEMPRE por partido y rango temporal [desde, has
 token se lee del entorno (RNF7): si falta, se responde dependencia no disponible,
 nunca se inventa.
 
+Formato del cuerpo: {db, q, format}, igual que el cliente del Hito 8. InfluxDB 3
+Core (/api/v3/query_sql) espera el SQL en el campo "q" (no "query"). Esta version
+no acepta el campo "params" con marcadores $nombre (responde HTTP 400), asi que
+los valores se inlinean ESCAPADOS y el partido se valida por patron antes de
+construir el SQL (defensa en profundidad; no se concatena entrada cruda).
+
 Measurement del Hito 8: estadisticas_equipo (dims: partido_id, equipo_id, sede,
 grupo; fields acumulados).
 """
@@ -16,6 +22,7 @@ from __future__ import annotations
 
 import http.client
 import json
+import re
 from urllib.parse import urlparse
 
 from app.core.config import obtener_config
@@ -24,15 +31,23 @@ from app.core.registro import logger
 
 FUENTE = "influxdb"
 
-# SQL fijo: solo cambian los parametros (partido, desde, hasta). Se pasan como
-# parametros de la API de InfluxDB 3 ($p_*), no concatenados.
-_SQL = (
+# partido_id proviene de la ruta HTTP. Se valida con un patron estricto antes de
+# inlinearlo en el SQL (ademas del escape), para no depender solo del escape.
+_PATRON_PARTIDO = re.compile(r"^[A-Za-z0-9_-]{1,40}$")
+
+# SQL fijo: solo cambian partido, desde y hasta, que se inlinean escapados.
+_SQL_TMPL = (
     "SELECT time, equipo_id, posesion_pct, pases_acum, tiros_acum, recuperaciones_acum "
     "FROM estadisticas_equipo "
-    "WHERE partido_id = $p_partido "
-    "AND time >= $p_desde AND time < $p_hasta "
+    "WHERE partido_id = '{partido}' "
+    "AND time >= '{desde}' AND time < '{hasta}' "
     "ORDER BY time"
 )
+
+
+def _esc(valor: str) -> str:
+    """Escapa un literal de texto para SQL duplicando las comillas simples."""
+    return str(valor).replace("'", "''")
 
 
 class InfluxAdapter:
@@ -44,14 +59,13 @@ class InfluxAdapter:
         return http.client.HTTPConnection(u.hostname, u.port or 8181,
                                           timeout=self._cfg.dep_timeout_s)
 
-    def _consultar(self, sql: str, params: dict) -> list[dict]:
+    def _consultar(self, sql: str) -> list[dict]:
         if not self._cfg.influx_token:
             # Sin token no se puede consultar; es una falla de dependencia/config.
             raise ErrorDependencia(FUENTE, "falta INFLUXDB3_TOKEN en el entorno")
         cuerpo = json.dumps({
             "db": self._cfg.influx_database,
-            "query": sql,
-            "params": params,
+            "q": sql,
             "format": "json",
         })
         headers = {
@@ -65,7 +79,8 @@ class InfluxAdapter:
             data = resp.read()
             if resp.status >= 400:
                 # No filtrar el cuerpo crudo al cliente; va al log.
-                logger.warning("influx status=%s", resp.status)
+                logger.warning("influx status=%s detalle=%s", resp.status,
+                               data[:200].decode("utf-8", "replace"))
                 raise ErrorDependencia(FUENTE, f"HTTP {resp.status}")
             return json.loads(data) if data else []
         except ErrorDependencia:
@@ -78,16 +93,18 @@ class InfluxAdapter:
 
     def verificar(self) -> bool:
         try:
-            self._consultar("SELECT 1 AS ok", {})
+            self._consultar("SELECT 1 AS ok")
             return True
         except Exception:
             return False
 
     def estadisticas(self, partido: str, desde_iso: str, hasta_iso: str) -> dict:
         """Puntos de estadisticas de un partido en [desde, hasta)."""
-        filas = self._consultar(_SQL, {
-            "p_partido": partido, "p_desde": desde_iso, "p_hasta": hasta_iso,
-        })
+        if not _PATRON_PARTIDO.match(partido):
+            raise ErrorDependencia(FUENTE, "partido con formato no permitido")
+        sql = _SQL_TMPL.format(partido=_esc(partido), desde=_esc(desde_iso),
+                               hasta=_esc(hasta_iso))
+        filas = self._consultar(sql)
         puntos = [{
             "time": f.get("time"),
             "equipoId": f.get("equipo_id"),
