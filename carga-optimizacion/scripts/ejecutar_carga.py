@@ -102,10 +102,14 @@ def verificar_api(cfg: dict, etiqueta: str, cache_esperada: str, timeout: float)
       cache_esperada=OFF -> la API debe responder X-Cache: OFF
       cache_esperada=ON  -> 1ra lectura MISS y 2da lectura HIT
     """
-    cli = ClienteHTTP(cfg["API_URL"], timeout)
-    st, _, js, _, err = cli.request("GET", "/salud")
+    # /salud chequea las 6 fuentes EN SERIE: las que no estan levantadas (Mongo,
+    # Neo4j, InfluxDB, IRIS no hacen falta en este hito) tardan su timeout cada
+    # una. Por eso /salud usa una espera larga y no la del escenario.
+    st, _, js, _, err = ClienteHTTP(cfg["API_URL"], 60).request("GET", "/salud")
     if st is None:
-        raise SystemExit(f"La API no responde en {cfg['API_URL']} ({err}). Ver README, paso 3.")
+        raise SystemExit(f"La API no responde en {cfg['API_URL']} ({err}). Verificar que "
+                         "uvicorn este corriendo en la terminal A (PASO_A_PASO.md, paso 4).")
+    cli = ClienteHTTP(cfg["API_URL"], timeout)
     fuentes = {d["fuente"]: d["disponible"] for d in (js or {}).get("dependencias", [])} \
         if isinstance(js, dict) else {}
     for f in ("cassandra", "redis"):
