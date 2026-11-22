@@ -5,7 +5,7 @@ modelo: sus eventos (grafo), sus comentarios (tabular por particion), sus
 estadisticas (serie temporal) y su detalle como entidad compleja (objetos). Cada
 sub-ruta deja claro que fuente la atiende; ninguna mezcla modelos.
 """
-from fastapi import APIRouter, Query, Path, Body
+from fastapi import APIRouter, Query, Path, Body, Response
 
 from app.schemas.modelos import (EventosDePartido, PaginaComentarios, NuevoComentario,
                                   ComentarioCreado, Estadisticas, DetallePartido,
@@ -29,6 +29,7 @@ def get_eventos(codigo: str = Path(..., examples=["F2030-001"]),
             summary="Comentarios de un partido en una ventana de 5 min (Cassandra)",
             responses={400: {"model": ErrorResponse}, 503: {"model": ErrorResponse}})
 def get_comentarios(
+    response: Response,
     codigo: str = Path(..., examples=["F2030-063"]),
     instante: str | None = Query(
         None, description="Instante ISO-8601 dentro de la ventana a leer. "
@@ -36,7 +37,11 @@ def get_comentarios(
         examples=["2030-06-22T20:23:00Z"]),
     limit: int = Query(20, ge=1, le=100),
 ):
-    return servicios.comentarios_de_partido(codigo, instante, limit)
+    # Hito 12: el header X-Cache (OFF | MISS | HIT) permite medir la tasa de
+    # aciertos desde el generador de carga sin cambiar el cuerpo del contrato.
+    pagina, estado_cache = servicios.comentarios_de_partido_con_cache(codigo, instante, limit)
+    response.headers["X-Cache"] = estado_cache
+    return pagina
 
 
 @router.post("/partidos/{codigo}/comentarios", response_model=ComentarioCreado,

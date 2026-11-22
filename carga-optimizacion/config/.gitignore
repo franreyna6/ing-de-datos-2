@@ -1,0 +1,6 @@
+# Configuracion real de cada maquina (RNF8). Solo se versionan el ejemplo y el
+# escenario, que no tienen secretos.
+*
+!.gitignore
+!configuracion-ejemplo.env
+!escenario.json

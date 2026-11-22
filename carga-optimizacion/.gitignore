@@ -1,0 +1,10 @@
+# Plan de operaciones: ~15 MB y se regenera identico con scripts/preparar_datos.py
+# (su hash queda en datos/resumen_plan.json).
+datos/plan.jsonl
+
+# Logs de la API durante la carga: grandes y regenerables. El dato relevante
+# (modo del cliente de Cassandra) se cita en docs/linea_base.md.
+docs/evidencia/logs_api/*
+!docs/evidencia/logs_api/.gitkeep
+
+__pycache__/

@@ -1,0 +1,20 @@
+{
+  "semilla": 2030,
+  "escenario_sha256": "7805deb79b8038fb26f7b8e725933b794d8ba89170df2d11b514e8fe5b6b2190",
+  "plan_sha256": "ac78aea139317648d5eaec11dfc37f616f419a7add6cbea5de0784ff2f9c6e34",
+  "operaciones": 120000,
+  "por_tipo": {
+    "lectura": 83913,
+    "escritura": 33634,
+    "reintento": 2453
+  },
+  "por_partido": {
+    "P1": 84059,
+    "P2": 24028,
+    "P3": 11913
+  },
+  "usuarios_distintos_usados": 4997,
+  "comentario_ids_unicos_en_escrituras": 33634,
+  "escrituras": 33634,
+  "nota": "El plan es mas largo que lo que consume una corrida: cada corrida usa las primeras N operaciones, en orden. Lo consumido queda en docs/evidencia/<corrida>/operaciones.csv.gz."
+}

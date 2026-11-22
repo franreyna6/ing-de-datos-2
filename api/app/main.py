@@ -46,6 +46,9 @@ async def middleware_request_id(request: Request, call_next):
     respuesta = await call_next(request)
     dur_ms = (time.perf_counter() - t0) * 1000
     respuesta.headers["X-Request-ID"] = rid
+    # Hito 12: tiempo medido DENTRO de la API. El generador de carga lo compara
+    # con su propia latencia para separar tiempo de API vs. red/cola/cliente.
+    respuesta.headers["X-Duracion-ms"] = f"{dur_ms:.2f}"
     logger.info("%s %s -> %s (%.1f ms)",
                 request.method, request.url.path, respuesta.status_code, dur_ms)
     return respuesta

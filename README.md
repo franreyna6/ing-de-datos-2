@@ -10,5 +10,6 @@ Repositorio de los hitos de implementación, un módulo por tecnología.
 | 9 | Entidades complejas (partido, eventos, árbitros) | InterSystems IRIS | [`iris/`](iris/) |
 | 10 | API REST integrada | FastAPI (integra las 6 fuentes) | [`api/`](api/) |
 | 11 | Evaluación de la conectividad | Diagnóstico por capas de las 6 fuentes desde la API | [`conectividad/`](conectividad/) |
+| 12 | Pruebas de carga y optimización | Carga sobre la API (Cassandra + caché Redis), Data Mart y comparación relacional | [`carga-optimizacion/`](carga-optimizacion/) |
 
 Cada carpeta tiene su propio `README.md` con la guía de ejecución.

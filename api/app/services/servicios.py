@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import datetime as dt
 
-from app.adapters.cassandra_adapter import cassandra_adapter
+from app.adapters.cassandra_adapter import cassandra_adapter, ventana_de
 from app.adapters.influx_adapter import influx_adapter
 from app.adapters.iris_adapter import iris_adapter
 from app.adapters.mongo_adapter import mongo_adapter
@@ -76,6 +76,33 @@ def comentarios_de_partido(partido: str, instante_iso: str | None, limit: int) -
     instante = (_parse_instante(instante_iso, "instante")
                 if instante_iso else dt.datetime.now(dt.timezone.utc))
     return cassandra_adapter.leer_comentarios(partido, instante, limit)
+
+
+def comentarios_de_partido_con_cache(partido: str, instante_iso: str | None,
+                                     limit: int) -> tuple[dict, str]:
+    """Hito 12: misma lectura que comentarios_de_partido, con cache opcional.
+
+    Devuelve (pagina, estado_cache) con estado_cache en OFF | MISS | HIT.
+      - OFF: CACHE_COMENTARIOS_TTL_S=0 (linea base) o se pidio un instante
+        historico explicito. Se lee Cassandra exactamente como en el Hito 10.
+      - MISS: se leyo Cassandra y se guardo la pagina en Redis con TTL.
+      - HIT: se devolvio la pagina guardada; Cassandra no se consulto.
+    Solo se cachea la ventana ACTUAL (lectura en vivo, sin 'instante'), que es
+    la que concentra la carga despues de un gol. La clave incluye partido,
+    ventana y limit, asi dos paginas distintas nunca se mezclan.
+    """
+    ttl = _cfg.cache_comentarios_ttl_s
+    if ttl <= 0 or instante_iso:
+        return comentarios_de_partido(partido, instante_iso, limit), "OFF"
+    limit = _acotar_limit(limit)
+    ahora = dt.datetime.now(dt.timezone.utc)
+    clave = f"cache:comentarios:{partido}:{ventana_de(ahora).isoformat()}:{limit}"
+    guardado = redis_adapter.cache_leer(clave)
+    if guardado is not None:
+        return guardado, "HIT"
+    pagina = cassandra_adapter.leer_comentarios(partido, ahora, limit)
+    redis_adapter.cache_guardar(clave, pagina, ttl)
+    return pagina, "MISS"
 
 
 def crear_comentario(partido: str, usuario_id: str, contenido: str,

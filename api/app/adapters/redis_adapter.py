@@ -13,6 +13,8 @@ HGETALL vacio significa clave ausente o expirada (404), no Redis caido (503).
 """
 from __future__ import annotations
 
+import json
+
 from app.core.config import obtener_config
 from app.core.errores import ErrorDependencia
 from app.core.registro import logger
@@ -70,6 +72,32 @@ class RedisAdapter:
             "estado": datos.get("estado", "activa"),
             "ttlSegundos": ttl if ttl is not None and ttl >= 0 else None,
         }
+
+    # ------------------------------------------------ Hito 12: cache de lectura
+    # A diferencia de las sesiones (donde Redis ES la fuente de verdad y una
+    # caida es 503), aca Redis es solo una cache: si no responde, se devuelve
+    # None y el servicio lee Cassandra. Una falla de la cache nunca rompe la
+    # lectura de comentarios; solo la vuelve mas lenta.
+    def cache_leer(self, clave: str) -> dict | None:
+        try:
+            valor = self._cli().get(clave)
+        except Exception:
+            logger.warning("redis cache no disponible (lectura) clave=%s", clave)
+            return None
+        if valor is None:
+            return None
+        try:
+            return json.loads(valor)
+        except (ValueError, TypeError):
+            return None
+
+    def cache_guardar(self, clave: str, valor: dict, ttl_s: int) -> None:
+        # SET con EX: la clave SIEMPRE tiene TTL, nunca queda una entrada sin
+        # vencimiento (se valida en validar_integridad.py del Hito 12).
+        try:
+            self._cli().set(clave, json.dumps(valor), ex=ttl_s)
+        except Exception:
+            logger.warning("redis cache no disponible (escritura) clave=%s", clave)
 
     def cerrar(self) -> None:
         if self._client is not None:

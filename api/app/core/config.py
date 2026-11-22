@@ -54,6 +54,13 @@ class Config:
         # --- Redis (Hito 7) ---
         self.redis_url: str = _leer("REDIS_URL", "redis://localhost:6379")
 
+        # --- Hito 12: cache de lectura de comentarios en Redis ---
+        # Segundos que una pagina de comentarios de la ventana actual queda en
+        # cache. 0 = cache APAGADA (comportamiento original del Hito 10, usado
+        # para la linea base). La version optimizada se prueba con 2.
+        # Ver carga-optimizacion/docs/hipotesis_y_optimizacion.md.
+        self.cache_comentarios_ttl_s: int = int(_leer("CACHE_COMENTARIOS_TTL_S", "0"))
+
         # --- InfluxDB 3 Core (Hito 8) ---
         self.influx_url: str = _leer("INFLUX_URL", "http://localhost:8181")
         self.influx_database: str = _leer("INFLUX_DATABASE", "fixture2030_vivo")
