@@ -1,0 +1,360 @@
+{
+  "por_fase": {
+    "calentamiento": {
+      "operaciones": 487,
+      "exitosas": 487,
+      "errores": 0,
+      "tasa_error": 0.0,
+      "errores_por_tipo": {},
+      "latencia_cliente_ms": {
+        "n": 487,
+        "min": 1.75,
+        "p50": 5.51,
+        "p90": 18.16,
+        "p95": 21.22,
+        "p99": 32.12,
+        "max": 37.74,
+        "promedio": 8.02
+      },
+      "latencia_api_ms": {
+        "n": 487,
+        "min": 1.2,
+        "p50": 4.33,
+        "p90": 16.44,
+        "p95": 18.96,
+        "p99": 29.16,
+        "max": 36.34,
+        "promedio": 6.72
+      },
+      "brecha_cliente_menos_api_ms": {
+        "n": 487,
+        "min": 0.48,
+        "p50": 0.8,
+        "p90": 2.66,
+        "p95": 3.17,
+        "p99": 4.81,
+        "max": 6.1,
+        "promedio": 1.3
+      },
+      "cache_lecturas": {
+        "MISS": 30,
+        "HIT": 322
+      },
+      "tasa_acierto_cache": 0.9148,
+      "segundos": 20.0,
+      "throughput_exitosas_por_s": 24.4
+    },
+    "rampa": {
+      "operaciones": 4369,
+      "exitosas": 4369,
+      "errores": 0,
+      "tasa_error": 0.0,
+      "errores_por_tipo": {},
+      "latencia_cliente_ms": {
+        "n": 4369,
+        "min": 1.53,
+        "p50": 2.77,
+        "p90": 14.94,
+        "p95": 17.68,
+        "p99": 25.53,
+        "max": 46.96,
+        "promedio": 5.9
+      },
+      "latencia_api_ms": {
+        "n": 4369,
+        "min": 1.04,
+        "p50": 2.04,
+        "p90": 13.65,
+        "p95": 16.36,
+        "p99": 21.87,
+        "max": 43.94,
+        "promedio": 5.0
+      },
+      "brecha_cliente_menos_api_ms": {
+        "n": 4369,
+        "min": 0.45,
+        "p50": 0.62,
+        "p90": 1.18,
+        "p95": 2.03,
+        "p99": 4.61,
+        "max": 29.59,
+        "promedio": 0.91
+      },
+      "cache_lecturas": {
+        "HIT": 2990,
+        "MISS": 74
+      },
+      "tasa_acierto_cache": 0.9758,
+      "segundos": 40.0,
+      "throughput_exitosas_por_s": 109.1
+    },
+    "sostenimiento": {
+      "operaciones": 23300,
+      "exitosas": 23300,
+      "errores": 0,
+      "tasa_error": 0.0,
+      "errores_por_tipo": {},
+      "latencia_cliente_ms": {
+        "n": 23300,
+        "min": 1.58,
+        "p50": 2.83,
+        "p90": 14.22,
+        "p95": 17.05,
+        "p99": 24.98,
+        "max": 48.16,
+        "promedio": 5.52
+      },
+      "latencia_api_ms": {
+        "n": 23300,
+        "min": 1.11,
+        "p50": 2.1,
+        "p90": 13.2,
+        "p95": 15.92,
+        "p99": 21.61,
+        "max": 46.78,
+        "promedio": 4.74
+      },
+      "brecha_cliente_menos_api_ms": {
+        "n": 23300,
+        "min": 0.43,
+        "p50": 0.62,
+        "p90": 1.04,
+        "p95": 1.3,
+        "p99": 3.74,
+        "max": 25.69,
+        "promedio": 0.79
+      },
+      "cache_lecturas": {
+        "HIT": 16045,
+        "MISS": 260
+      },
+      "tasa_acierto_cache": 0.9841,
+      "segundos": 120.1,
+      "throughput_exitosas_por_s": 193.9
+    },
+    "pico": {
+      "operaciones": 5831,
+      "exitosas": 5831,
+      "errores": 0,
+      "tasa_error": 0.0,
+      "errores_por_tipo": {},
+      "latencia_cliente_ms": {
+        "n": 5831,
+        "min": 1.61,
+        "p50": 3.23,
+        "p90": 14.94,
+        "p95": 17.52,
+        "p99": 25.95,
+        "max": 48.98,
+        "promedio": 5.89
+      },
+      "latencia_api_ms": {
+        "n": 5831,
+        "min": 1.13,
+        "p50": 2.41,
+        "p90": 13.72,
+        "p95": 16.03,
+        "p99": 21.56,
+        "max": 47.08,
+        "promedio": 4.98
+      },
+      "brecha_cliente_menos_api_ms": {
+        "n": 5831,
+        "min": 0.43,
+        "p50": 0.69,
+        "p90": 1.29,
+        "p95": 1.61,
+        "p99": 4.46,
+        "max": 27.59,
+        "promedio": 0.91
+      },
+      "cache_lecturas": {
+        "HIT": 4142,
+        "MISS": 42
+      },
+      "tasa_acierto_cache": 0.99,
+      "segundos": 20.0,
+      "throughput_exitosas_por_s": 291.2
+    },
+    "recuperacion": {
+      "operaciones": 2203,
+      "exitosas": 2203,
+      "errores": 0,
+      "tasa_error": 0.0,
+      "errores_por_tipo": {},
+      "latencia_cliente_ms": {
+        "n": 2203,
+        "min": 1.68,
+        "p50": 2.85,
+        "p90": 15.18,
+        "p95": 17.51,
+        "p99": 22.4,
+        "max": 47.41,
+        "promedio": 6.03
+      },
+      "latencia_api_ms": {
+        "n": 2203,
+        "min": 1.19,
+        "p50": 2.11,
+        "p90": 13.89,
+        "p95": 16.28,
+        "p99": 20.14,
+        "max": 46.38,
+        "promedio": 5.15
+      },
+      "brecha_cliente_menos_api_ms": {
+        "n": 2203,
+        "min": 0.46,
+        "p50": 0.64,
+        "p90": 1.47,
+        "p95": 2.4,
+        "p99": 3.52,
+        "max": 23.04,
+        "promedio": 0.87
+      },
+      "cache_lecturas": {
+        "MISS": 50,
+        "HIT": 1473
+      },
+      "tasa_acierto_cache": 0.9672,
+      "segundos": 30.0,
+      "throughput_exitosas_por_s": 73.4
+    }
+  },
+  "medido_total": {
+    "operaciones": 35703,
+    "exitosas": 35703,
+    "errores": 0,
+    "tasa_error": 0.0,
+    "errores_por_tipo": {},
+    "latencia_cliente_ms": {
+      "n": 35703,
+      "min": 1.53,
+      "p50": 2.89,
+      "p90": 14.48,
+      "p95": 17.23,
+      "p99": 24.89,
+      "max": 48.98,
+      "promedio": 5.66
+    },
+    "latencia_api_ms": {
+      "n": 35703,
+      "min": 1.04,
+      "p50": 2.15,
+      "p90": 13.38,
+      "p95": 16.02,
+      "p99": 21.49,
+      "max": 47.08,
+      "promedio": 4.83
+    },
+    "brecha_cliente_menos_api_ms": {
+      "n": 35703,
+      "min": 0.43,
+      "p50": 0.63,
+      "p90": 1.11,
+      "p95": 1.46,
+      "p99": 3.95,
+      "max": 29.59,
+      "promedio": 0.83
+    },
+    "cache_lecturas": {
+      "HIT": 24650,
+      "MISS": 426
+    },
+    "tasa_acierto_cache": 0.983,
+    "segundos": 210.2,
+    "throughput_exitosas_por_s": 169.8
+  },
+  "medido_por_tipo": {
+    "lectura": {
+      "operaciones": 25076,
+      "exitosas": 25076,
+      "errores": 0,
+      "tasa_error": 0.0,
+      "errores_por_tipo": {},
+      "latencia_cliente_ms": {
+        "n": 25076,
+        "min": 1.53,
+        "p50": 2.29,
+        "p90": 4.5,
+        "p95": 7.05,
+        "p99": 20.83,
+        "max": 46.51,
+        "promedio": 3.2
+      },
+      "latencia_api_ms": {
+        "n": 25076,
+        "min": 1.04,
+        "p50": 1.63,
+        "p90": 3.49,
+        "p95": 5.44,
+        "p99": 16.78,
+        "max": 45.46,
+        "promedio": 2.4
+      },
+      "brecha_cliente_menos_api_ms": {
+        "n": 25076,
+        "min": 0.43,
+        "p50": 0.6,
+        "p90": 1.06,
+        "p95": 1.39,
+        "p99": 3.89,
+        "max": 29.59,
+        "promedio": 0.8
+      },
+      "cache_lecturas": {
+        "HIT": 24650,
+        "MISS": 426
+      },
+      "tasa_acierto_cache": 0.983,
+      "segundos": 210.2,
+      "throughput_exitosas_por_s": 119.3
+    },
+    "escritura": {
+      "operaciones": 10627,
+      "exitosas": 10627,
+      "errores": 0,
+      "tasa_error": 0.0,
+      "errores_por_tipo": {},
+      "latencia_cliente_ms": {
+        "n": 10627,
+        "min": 2.51,
+        "p50": 11.04,
+        "p90": 17.95,
+        "p95": 19.91,
+        "p99": 31.53,
+        "max": 48.98,
+        "promedio": 11.47
+      },
+      "latencia_api_ms": {
+        "n": 10627,
+        "min": 1.95,
+        "p50": 10.25,
+        "p90": 17.0,
+        "p95": 18.68,
+        "p99": 27.15,
+        "max": 47.08,
+        "promedio": 10.58
+      },
+      "brecha_cliente_menos_api_ms": {
+        "n": 10627,
+        "min": 0.46,
+        "p50": 0.7,
+        "p90": 1.22,
+        "p95": 1.57,
+        "p99": 4.04,
+        "max": 29.32,
+        "promedio": 0.89
+      },
+      "cache_lecturas": {},
+      "tasa_acierto_cache": null,
+      "segundos": 210.2,
+      "throughput_exitosas_por_s": 50.5
+    }
+  },
+  "control_generador": {
+    "ops_por_s_observadas_sostenimiento": 194.0,
+    "ops_por_s_esperadas_lazo_cerrado": 194.6
+  },
+  "errores_por_tipo_total": {}
+}

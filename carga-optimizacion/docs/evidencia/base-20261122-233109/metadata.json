@@ -1,0 +1,260 @@
+{
+  "etiqueta": "base-20261122-233109",
+  "modo": "base",
+  "cache_esperada": "OFF",
+  "inicio_utc": "2026-11-22T23:31:17.814944+00:00",
+  "fin_utc": "2026-11-22T23:35:08.408029+00:00",
+  "duracion_s": 230.5,
+  "motivo_fin": "completa",
+  "escala": 1.0,
+  "escenario": {
+    "_comentario": "Escenario 'pico posterior a un gol' del Hito 12. NO modificar entre la linea base y la prueba optimizada: la comparacion solo es valida si este archivo es el mismo (su hash queda registrado en cada corrida).",
+    "nombre": "pico-post-gol",
+    "semilla": 2030,
+    "fases": [
+      {
+        "nombre": "calentamiento",
+        "duracion_s": 20,
+        "usuarios_inicio": 5,
+        "usuarios_fin": 5,
+        "medir": false
+      },
+      {
+        "nombre": "rampa",
+        "duracion_s": 40,
+        "usuarios_inicio": 5,
+        "usuarios_fin": 40,
+        "medir": true
+      },
+      {
+        "nombre": "sostenimiento",
+        "duracion_s": 120,
+        "usuarios_inicio": 40,
+        "usuarios_fin": 40,
+        "medir": true
+      },
+      {
+        "nombre": "pico",
+        "duracion_s": 20,
+        "usuarios_inicio": 60,
+        "usuarios_fin": 60,
+        "medir": true
+      },
+      {
+        "nombre": "recuperacion",
+        "duracion_s": 30,
+        "usuarios_inicio": 15,
+        "usuarios_fin": 15,
+        "medir": true
+      }
+    ],
+    "pausa_entre_operaciones_s": {
+      "min": 0.1,
+      "max": 0.3
+    },
+    "mezcla": {
+      "lectura": 0.7,
+      "escritura": 0.28,
+      "reintento": 0.02
+    },
+    "partidos": [
+      {
+        "clave": "P1",
+        "peso": 0.7,
+        "_rol": "partido del gol: clave caliente"
+      },
+      {
+        "clave": "P2",
+        "peso": 0.2,
+        "_rol": "partido simultaneo"
+      },
+      {
+        "clave": "P3",
+        "peso": 0.1,
+        "_rol": "partido simultaneo con poca actividad"
+      }
+    ],
+    "usuarios_distintos": 5000,
+    "limit_lectura": 20,
+    "operaciones_en_el_plan": 120000,
+    "timeout_cliente_s": 5.0,
+    "corte_seguro": {
+      "_comentario": "Si en los ultimos 'ventana_s' segundos se supera alguno de estos umbrales, la prueba se detiene sola y guarda lo medido hasta ese momento (marcada como interrumpida).",
+      "ventana_s": 10,
+      "max_tasa_error": 0.3,
+      "max_p95_ms": 5000
+    },
+    "muestreo_recursos_s": 3
+  },
+  "escenario_sha256": "7805deb79b8038fb26f7b8e725933b794d8ba89170df2d11b514e8fe5b6b2190",
+  "plan_sha256": "ac78aea139317648d5eaec11dfc37f616f419a7add6cbea5de0784ff2f9c6e34",
+  "operaciones_consumidas_del_plan": 34791,
+  "partidos_de_la_corrida": {
+    "P1": "H12-base-20261122-233109-P1",
+    "P2": "H12-base-20261122-233109-P2",
+    "P3": "H12-base-20261122-233109-P3"
+  },
+  "api_url": "http://127.0.0.1:8000",
+  "verificacion_api": {
+    "salud": {
+      "mongodb": false,
+      "neo4j": false,
+      "cassandra": true,
+      "redis": true,
+      "influxdb": false,
+      "iris": false
+    },
+    "verificacion_cache": [
+      "OFF",
+      "OFF"
+    ]
+  },
+  "cliente_cassandra": "driver (indicio)",
+  "git": {
+    "commit": "af80239",
+    "rama": "main",
+    "cambios_sin_commitear_en_codigo": false
+  },
+  "entorno": {
+    "sistema": "Windows-10-10.0.26200-SP0",
+    "procesador": "Intel64 Family 6 Model 165 Stepping 3, GenuineIntel",
+    "nucleos_logicos": 12,
+    "python_generador": "3.11.9",
+    "memoria_total_gib": 15.9
+  },
+  "versiones": {
+    "cassandra": "5.0.9",
+    "redis": "8.10.3",
+    "docker": "29.8.0"
+  },
+  "contadores_antes": {
+    "cassandra": {
+      "lecturas_locales": 94.0,
+      "latencia_lectura_local_ms": 0.17,
+      "escrituras_locales": 56895.0,
+      "latencia_escritura_local_ms": 0.181
+    },
+    "redis": {
+      "redis_version": "8.10.3",
+      "used_memory": "1476136",
+      "used_memory_human": "1.41M",
+      "maxmemory": "104857600",
+      "maxmemory_human": "100.00M",
+      "maxmemory_policy": "volatile-lru",
+      "evicted_keys": "0",
+      "expired_keys": "0",
+      "keyspace_hits": "0",
+      "keyspace_misses": "0",
+      "connected_clients": "2",
+      "total_commands_processed": "254"
+    },
+    "sesiones": 0
+  },
+  "contadores_despues": {
+    "cassandra": {
+      "lecturas_locales": 24563.0,
+      "latencia_lectura_local_ms": 0.132,
+      "escrituras_locales": 67217.0,
+      "latencia_escritura_local_ms": 0.022
+    },
+    "redis": {
+      "redis_version": "8.10.3",
+      "used_memory": "1500872",
+      "used_memory_human": "1.43M",
+      "maxmemory": "104857600",
+      "maxmemory_human": "100.00M",
+      "maxmemory_policy": "volatile-lru",
+      "evicted_keys": "0",
+      "expired_keys": "0",
+      "keyspace_hits": "0",
+      "keyspace_misses": "0",
+      "connected_clients": "2",
+      "total_commands_processed": "279"
+    },
+    "sesiones": 0
+  },
+  "cassandra_delta": {
+    "lecturas_que_llegaron_a_cassandra": 24469.0,
+    "escrituras_que_llegaron_a_cassandra": 10322.0,
+    "latencia_local_despues": {
+      "latencia_lectura_local_ms": 0.132,
+      "latencia_escritura_local_ms": 0.022
+    },
+    "percentiles_locales_us": {
+      "50%": {
+        "lectura_us": 124.0,
+        "escritura_us": 20.0
+      },
+      "95%": {
+        "lectura_us": 179.0,
+        "escritura_us": 35.0
+      },
+      "99%": {
+        "lectura_us": 215.0,
+        "escritura_us": 60.0
+      },
+      "Max": {
+        "lectura_us": 152321.0,
+        "escritura_us": 149.0
+      }
+    }
+  },
+  "redis_delta": {
+    "evicted_keys": 0.0,
+    "keyspace_hits": 0.0,
+    "keyspace_misses": 0.0,
+    "used_memory_antes": "1.41M",
+    "used_memory_despues": "1.43M",
+    "maxmemory_policy": "volatile-lru",
+    "claves_sesion_antes": 0,
+    "claves_sesion_despues": 0
+  },
+  "recursos": {
+    "api_cpu_pct": {
+      "promedio": 34.2,
+      "max": 60.8,
+      "muestras": 48
+    },
+    "api_rss_mib": {
+      "promedio": 121.0,
+      "max": 126.3,
+      "muestras": 48
+    },
+    "cassandra_cpu_pct": {
+      "promedio": 42.2,
+      "max": 107.7,
+      "muestras": 48
+    },
+    "cassandra_mem_mib": {
+      "promedio": 4775.9,
+      "max": 4798.5,
+      "muestras": 48
+    },
+    "generador_cpu_pct": {
+      "promedio": 5.8,
+      "max": 10.5,
+      "muestras": 48
+    },
+    "host_cpu_pct": {
+      "promedio": 17.2,
+      "max": 24.6,
+      "muestras": 48
+    },
+    "host_mem_pct": {
+      "promedio": 75.7,
+      "max": 76.9,
+      "muestras": 48
+    },
+    "redis_cpu_pct": {
+      "promedio": 0.5,
+      "max": 3.6,
+      "muestras": 48
+    },
+    "redis_mem_mib": {
+      "promedio": 7.2,
+      "max": 7.7,
+      "muestras": 48
+    }
+  },
+  "notas": []
+}

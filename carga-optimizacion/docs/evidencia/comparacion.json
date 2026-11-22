@@ -1,0 +1,508 @@
+{
+  "linea_base": "base-20261122-233109",
+  "optimizada": "opt-20261122-233914",
+  "diferencias_de_condiciones": [],
+  "metricas": [
+    {
+      "metrica": "[total medido] operaciones",
+      "linea_base": 34310,
+      "optimizada": 35703,
+      "variacion": "+4.1%",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "[total medido] ops exitosas/s",
+      "linea_base": 163.3,
+      "optimizada": 169.8,
+      "variacion": "+4.0%",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "[total medido] tasa de error",
+      "linea_base": 0.0,
+      "optimizada": 0.0,
+      "variacion": "",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[total medido] latencia cliente p50 (ms)",
+      "linea_base": 12.87,
+      "optimizada": 2.89,
+      "variacion": "-77.5%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[total medido] latencia cliente p95 (ms)",
+      "linea_base": 24.04,
+      "optimizada": 17.23,
+      "variacion": "-28.3%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[total medido] latencia cliente p99 (ms)",
+      "linea_base": 49.91,
+      "optimizada": 24.89,
+      "variacion": "-50.1%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[total medido] latencia cliente max (ms)",
+      "linea_base": 186.25,
+      "optimizada": 48.98,
+      "variacion": "-73.7%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[total medido] latencia API p95 (ms)",
+      "linea_base": 21.9,
+      "optimizada": 16.02,
+      "variacion": "-26.8%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[total medido] acierto de cache",
+      "linea_base": null,
+      "optimizada": 0.983,
+      "variacion": "",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "[sostenimiento] operaciones",
+      "linea_base": 22408,
+      "optimizada": 23300,
+      "variacion": "+4.0%",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "[sostenimiento] ops exitosas/s",
+      "linea_base": 186.5,
+      "optimizada": 193.9,
+      "variacion": "+4.0%",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "[sostenimiento] tasa de error",
+      "linea_base": 0.0,
+      "optimizada": 0.0,
+      "variacion": "",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[sostenimiento] latencia cliente p50 (ms)",
+      "linea_base": 12.76,
+      "optimizada": 2.83,
+      "variacion": "-77.8%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[sostenimiento] latencia cliente p95 (ms)",
+      "linea_base": 23.27,
+      "optimizada": 17.05,
+      "variacion": "-26.7%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[sostenimiento] latencia cliente p99 (ms)",
+      "linea_base": 48.91,
+      "optimizada": 24.98,
+      "variacion": "-48.9%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[sostenimiento] latencia cliente max (ms)",
+      "linea_base": 186.25,
+      "optimizada": 48.16,
+      "variacion": "-74.1%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[sostenimiento] latencia API p95 (ms)",
+      "linea_base": 21.32,
+      "optimizada": 15.92,
+      "variacion": "-25.3%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[sostenimiento] acierto de cache",
+      "linea_base": null,
+      "optimizada": 0.9841,
+      "variacion": "",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "[pico] operaciones",
+      "linea_base": 5525,
+      "optimizada": 5831,
+      "variacion": "+5.5%",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "[pico] ops exitosas/s",
+      "linea_base": 276.0,
+      "optimizada": 291.2,
+      "variacion": "+5.5%",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "[pico] tasa de error",
+      "linea_base": 0.0,
+      "optimizada": 0.0,
+      "variacion": "",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[pico] latencia cliente p50 (ms)",
+      "linea_base": 15.41,
+      "optimizada": 3.23,
+      "variacion": "-79.0%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[pico] latencia cliente p95 (ms)",
+      "linea_base": 29.2,
+      "optimizada": 17.52,
+      "variacion": "-40.0%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[pico] latencia cliente p99 (ms)",
+      "linea_base": 61.59,
+      "optimizada": 25.95,
+      "variacion": "-57.9%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[pico] latencia cliente max (ms)",
+      "linea_base": 85.93,
+      "optimizada": 48.98,
+      "variacion": "-43.0%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[pico] latencia API p95 (ms)",
+      "linea_base": 26.01,
+      "optimizada": 16.03,
+      "variacion": "-38.4%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[pico] acierto de cache",
+      "linea_base": null,
+      "optimizada": 0.99,
+      "variacion": "",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "[lecturas] operaciones",
+      "linea_base": 24122,
+      "optimizada": 25076,
+      "variacion": "+4.0%",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "[lecturas] ops exitosas/s",
+      "linea_base": 114.8,
+      "optimizada": 119.3,
+      "variacion": "+3.9%",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "[lecturas] tasa de error",
+      "linea_base": 0.0,
+      "optimizada": 0.0,
+      "variacion": "",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[lecturas] latencia cliente p50 (ms)",
+      "linea_base": 13.1,
+      "optimizada": 2.29,
+      "variacion": "-82.5%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[lecturas] latencia cliente p95 (ms)",
+      "linea_base": 24.23,
+      "optimizada": 7.05,
+      "variacion": "-70.9%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[lecturas] latencia cliente p99 (ms)",
+      "linea_base": 50.13,
+      "optimizada": 20.83,
+      "variacion": "-58.4%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[lecturas] latencia cliente max (ms)",
+      "linea_base": 186.25,
+      "optimizada": 46.51,
+      "variacion": "-75.0%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[lecturas] latencia API p95 (ms)",
+      "linea_base": 22.14,
+      "optimizada": 5.44,
+      "variacion": "-75.4%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[lecturas] acierto de cache",
+      "linea_base": null,
+      "optimizada": 0.983,
+      "variacion": "",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "[escrituras] operaciones",
+      "linea_base": 10188,
+      "optimizada": 10627,
+      "variacion": "+4.3%",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "[escrituras] ops exitosas/s",
+      "linea_base": 48.5,
+      "optimizada": 50.5,
+      "variacion": "+4.1%",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "[escrituras] tasa de error",
+      "linea_base": 0.0,
+      "optimizada": 0.0,
+      "variacion": "",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[escrituras] latencia cliente p50 (ms)",
+      "linea_base": 12.36,
+      "optimizada": 11.04,
+      "variacion": "-10.7%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[escrituras] latencia cliente p95 (ms)",
+      "linea_base": 23.56,
+      "optimizada": 19.91,
+      "variacion": "-15.5%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[escrituras] latencia cliente p99 (ms)",
+      "linea_base": 49.4,
+      "optimizada": 31.53,
+      "variacion": "-36.2%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[escrituras] latencia cliente max (ms)",
+      "linea_base": 179.63,
+      "optimizada": 48.98,
+      "variacion": "-72.7%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[escrituras] latencia API p95 (ms)",
+      "linea_base": 21.23,
+      "optimizada": 18.68,
+      "variacion": "-12.0%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "[escrituras] acierto de cache",
+      "linea_base": null,
+      "optimizada": null,
+      "variacion": "",
+      "mejor_si": "mayor"
+    },
+    {
+      "metrica": "lecturas que llegaron a Cassandra (nodetool)",
+      "linea_base": 24469.0,
+      "optimizada": 456.0,
+      "variacion": "-98.1%",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "escrituras que llegaron a Cassandra (nodetool)",
+      "linea_base": 10322.0,
+      "optimizada": 10762.0,
+      "variacion": "+4.3%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso api_cpu_pct (promedio)",
+      "linea_base": 34.2,
+      "optimizada": 28.4,
+      "variacion": "-17.0%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso api_cpu_pct (max)",
+      "linea_base": 60.8,
+      "optimizada": 49.4,
+      "variacion": "-18.7%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso api_rss_mib (promedio)",
+      "linea_base": 121.0,
+      "optimizada": 115.3,
+      "variacion": "-4.7%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso api_rss_mib (max)",
+      "linea_base": 126.3,
+      "optimizada": 118.0,
+      "variacion": "-6.6%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso cassandra_cpu_pct (promedio)",
+      "linea_base": 42.2,
+      "optimizada": 22.8,
+      "variacion": "-46.0%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso cassandra_cpu_pct (max)",
+      "linea_base": 107.7,
+      "optimizada": 181.8,
+      "variacion": "+68.8%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso cassandra_mem_mib (promedio)",
+      "linea_base": 4775.9,
+      "optimizada": 4773.7,
+      "variacion": "-0.0%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso cassandra_mem_mib (max)",
+      "linea_base": 4798.5,
+      "optimizada": 4799.5,
+      "variacion": "+0.0%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso generador_cpu_pct (promedio)",
+      "linea_base": 5.8,
+      "optimizada": 5.8,
+      "variacion": "+0.0%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso generador_cpu_pct (max)",
+      "linea_base": 10.5,
+      "optimizada": 9.6,
+      "variacion": "-8.6%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso host_cpu_pct (promedio)",
+      "linea_base": 17.2,
+      "optimizada": 11.0,
+      "variacion": "-36.0%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso host_cpu_pct (max)",
+      "linea_base": 24.6,
+      "optimizada": 18.2,
+      "variacion": "-26.0%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso host_mem_pct (promedio)",
+      "linea_base": 75.7,
+      "optimizada": 75.2,
+      "variacion": "-0.7%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso host_mem_pct (max)",
+      "linea_base": 76.9,
+      "optimizada": 76.2,
+      "variacion": "-0.9%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso redis_cpu_pct (promedio)",
+      "linea_base": 0.5,
+      "optimizada": 1.3,
+      "variacion": "+160.0%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso redis_cpu_pct (max)",
+      "linea_base": 3.6,
+      "optimizada": 4.3,
+      "variacion": "+19.4%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso redis_mem_mib (promedio)",
+      "linea_base": 7.2,
+      "optimizada": 7.8,
+      "variacion": "+8.3%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "recurso redis_mem_mib (max)",
+      "linea_base": 7.7,
+      "optimizada": 8.6,
+      "variacion": "+11.7%",
+      "mejor_si": "-"
+    },
+    {
+      "metrica": "redis evicted_keys durante la prueba",
+      "linea_base": 0.0,
+      "optimizada": 0.0,
+      "variacion": "",
+      "mejor_si": "menor"
+    },
+    {
+      "metrica": "redis memoria usada despues",
+      "linea_base": "1.43M",
+      "optimizada": "1.51M",
+      "variacion": "",
+      "mejor_si": "-"
+    }
+  ],
+  "integridad": {
+    "linea_base": {
+      "veredicto": "OK",
+      "escrituras_aceptadas_201": 10322,
+      "perdidos": 0,
+      "alterados": 0,
+      "escritos_sin_confirmacion": 0,
+      "duplicados_por_reintento": {
+        "ids": 707,
+        "filas_extra": 737
+      },
+      "duplicados_inesperados": {
+        "ids": 0,
+        "filas_extra": 0
+      }
+    },
+    "optimizada": {
+      "veredicto": "OK",
+      "escrituras_aceptadas_201": 10762,
+      "perdidos": 0,
+      "alterados": 0,
+      "escritos_sin_confirmacion": 0,
+      "duplicados_por_reintento": {
+        "ids": 735,
+        "filas_extra": 765
+      },
+      "duplicados_inesperados": {
+        "ids": 0,
+        "filas_extra": 0
+      }
+    }
+  }
+}
