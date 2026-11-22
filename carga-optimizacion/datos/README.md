@@ -39,6 +39,6 @@ En el plan, los partidos se llaman `P1`, `P2` y `P3`. Al ejecutar, cada corrida 
 
 ## Volumen probado y volumen proyectado
 
-- **Volumen inicial**: la tabla `comentarios_por_partido` ya contiene el volumen masivo cargado en el Hito 6 (más de 1.000.000 de comentarios). Las particiones de la prueba empiezan vacías y crecen durante la corrida, como la ventana de un partido real.
+- **Volumen inicial**: la prueba escribe en la tabla `comentarios_por_partido` del Hito 6. Las particiones de la prueba empiezan vacías y crecen durante la corrida, como la ventana de un partido real. Como cada lectura y cada escritura acceden a una sola partición, el volumen que ya tiene el resto de la tabla no cambia el costo de cada operación.
 - **Volumen de cada corrida**: el que efectivamente se consumió del plan (`operaciones_consumidas_del_plan` en `metadata.json`). Depende de la velocidad de la API, porque los usuarios trabajan en lazo cerrado.
 - **Volumen proyectado** (Clase 13): más de 1.000.000 de comentarios potenciales por torneo y entre 2 y 3 millones de usuarios simultáneos en el escenario. La prueba usa como máximo **60 usuarios virtuales** en una notebook. Ver *Escalabilidad* en `docs/integridad_y_limitaciones.md`: no se extrapola un resultado medido a esa escala.

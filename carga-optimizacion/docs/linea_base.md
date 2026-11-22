@@ -44,23 +44,35 @@ Toda la evidencia queda en `docs/evidencia/<etiqueta-base>/`:
 
 ## Registro de la línea base
 
-> **Completar después de correr la línea base**, copiando los valores de `docs/evidencia/<etiqueta-base>/resumen.md`. No escribir valores que no salgan de ese archivo.
+Valores copiados de `docs/evidencia/base-20261122-233109/resumen.md`, `metadata.json` e `integridad.md`. Latencias en ms, medidas en el cliente, solo operaciones exitosas.
 
 | Dato | Valor |
 | :--- | :--- |
-| Etiqueta de la corrida | *pendiente* |
-| Fecha (UTC) | *pendiente* |
-| Commit | *pendiente* |
-| Cliente de Cassandra de la API (log `modo=`) | *pendiente* |
-| Versiones observadas (Cassandra, Redis, Docker) | *pendiente* |
-| Máquina (CPU, RAM, sistema operativo) | *pendiente* |
-| Escala de usuarios | *pendiente* |
-| Motivo de fin | *pendiente* |
-| Sostenimiento: ops ok/s, p50, p95 y p99 | *pendiente* |
-| Lecturas: p95 en el cliente y en la API | *pendiente* |
-| Escrituras: p95 en el cliente y en la API | *pendiente* |
-| Tasa de error y tipos | *pendiente* |
-| Lecturas que llegaron a Cassandra | *pendiente* |
-| CPU de Cassandra y de la API (promedio y máximo) | *pendiente* |
-| Integridad (veredicto) | *pendiente* |
-| Observaciones de estabilidad | *pendiente* (por ejemplo, si el p95 crece a lo largo del sostenimiento en `serie_por_segundo.csv`) |
+| Etiqueta de la corrida | `base-20261122-233109` |
+| Fecha (UTC) | 2026-11-22 23:31:17 → 23:35:08 (230,5 s) |
+| Commit | `af80239`, sin cambios sin commitear en el código |
+| Cliente de Cassandra de la API | Driver nativo: el log de la API muestra `modo=driver` |
+| Versiones observadas | Cassandra 5.0.9, Redis 8.10.3, Docker 29.8.0, Python 3.11.9 |
+| Máquina | Windows, compilación 10.0.26200, Intel de 12 núcleos lógicos, 15,9 GiB de RAM |
+| Escala de usuarios | ×1,0 (hasta 60 usuarios virtuales) |
+| Motivo de fin | Completa |
+| Operaciones medidas | 34.310, todas exitosas (34.791 consumidas del plan, incluido el calentamiento) |
+| Sostenimiento (40 usuarios) | 186,5 ops ok/s; p50 12,76, p95 23,27, p99 48,91, máximo 186,25 |
+| Pico (60 usuarios) | 276,0 ops ok/s; p50 15,41, p95 29,20, p99 61,59 |
+| Lecturas | p95 24,23 en el cliente y 22,14 dentro de la API |
+| Escrituras | p95 23,56 en el cliente y 21,23 dentro de la API |
+| Tasa de error | 0 % (ningún error de ningún tipo) |
+| Lecturas que llegaron a Cassandra (`nodetool`) | 24.469, igual a las 24.469 lecturas HTTP (incluye calentamiento y verificación) |
+| Latencia local de lectura de Cassandra (`tablehistograms`) | p50 124 µs, p95 179 µs, p99 215 µs |
+| CPU de Cassandra | 42,2 % de promedio y 107,7 % de máximo (% de un núcleo) |
+| CPU de la API | 34,2 % de promedio y 60,8 % de máximo |
+| CPU del generador | 5,8 % de promedio; operaciones observadas 186,6/s contra 187,1/s esperadas en lazo cerrado |
+| Integridad | **OK**: 10.322 aceptadas, 10.322 filas en Cassandra, 0 perdidas, 0 alteradas, 0 duplicados inesperados |
+
+### Lectura de la línea base
+
+- **El generador no fue el límite.** Produjo la carga esperada (186,6 contra 187,1 ops/s en el sostenimiento) usando menos del 11 % de un núcleo.
+- **La red local y la cola HTTP aportan poco.** La brecha entre cliente y API es de 2,65 ms en el p95 de lecturas. Casi todo el tiempo transcurre dentro de la API.
+- **Cada lectura HTTP fue a Cassandra**, como prevé la hipótesis H1: 24.469 lecturas en la base para 24.469 lecturas HTTP.
+- **El tiempo no está en el motor de Cassandra.** Cassandra resuelve cada lectura localmente en unos 0,12 ms (p50), pero la API tarda unos 12 ms (p50). La mayor parte del tiempo está en el viaje de ida y vuelta desde la API hasta la base: el driver, la red de Docker Desktop entre Windows y el contenedor, y la espera por un hilo de la API. Esta prueba no separó esas partes entre sí.
+- **Estabilidad.** No hubo errores. El p95 promedio por segundo subió de 26,9 ms (primeros 40 s del sostenimiento) a 29,7 ms (últimos 40 s), y hubo picos aislados de hasta 150 ms en un segundo (`serie_por_segundo.csv`). El p99 crece con la carga: 32,7 en la rampa, 48,9 en el sostenimiento y 61,6 en el pico.

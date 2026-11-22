@@ -42,8 +42,8 @@ Si en cambio el p95 de la API es mucho menor que el p95 del cliente (brecha gran
 | Si Redis no responde | Se lee Cassandra. La caché es opcional, así que una falla de Redis no rompe la lectura de comentarios, solo la hace más lenta. Es distinto de las sesiones del Hito 7, donde Redis es la fuente de verdad y una caída es un `503`. |
 | Por qué TTL de 2 s y sin invalidación en cada POST | Con 28 % de escrituras concentradas en P1, invalidar la caché en cada POST la vaciaría varias veces por segundo y casi no habría aciertos. Para un feed de comentarios en vivo, mostrar los comentarios con hasta 2 s de atraso es aceptable para el usuario. Es un trade-off explícito (ver la sección 4). |
 | Prueba ejecutada después | `ejecutar_prueba_optimizada.py`: el mismo escenario, el mismo plan y la misma escala, verificados por `comparar_resultados.py`. |
-| Resultado medido | *Pendiente*: completar con `docs/evidencia/comparacion.md` después de las corridas. |
-| Decisión final del equipo | *Pendiente*: se decide con la evidencia. |
+| Resultado medido | Lecturas: p95 de 24,23 a 7,05 ms (−70,9 %). Lecturas que llegaron a Cassandra: de 24.469 a 456 (−98,1 %), con 98,3 % de aciertos. Sin errores ni pérdida de datos. Detalle en la sección 5. |
+| Decisión final del equipo | **Se adopta** la caché con TTL de 2 s para la lectura en vivo, con el atraso de hasta 2 s declarado como parte del contrato del feed. Antes de llevarla a producción se propone separar la caché de las sesiones (sección 4). |
 
 ## 4. Costos y trade-offs (RF11)
 
@@ -58,4 +58,48 @@ Si en cambio el p95 de la API es mucho menor que el p95 del cliente (brecha gran
 
 ## 5. Resultado y decisión
 
-> Completar a partir de `docs/evidencia/comparacion.md`, citando solo valores medidos: variación de p50, p95 y p99 por tipo, throughput, tasa de error, lecturas que llegaron a Cassandra, tasa de aciertos, CPU, `evicted_keys` y veredicto de integridad de las dos corridas. Indicar si hubo regresiones, por ejemplo en el p99 por la estampida o en las escrituras.
+Corridas comparadas: `base-20261122-233109` (sin caché) y `opt-20261122-233914` (con caché). Las dos usan el mismo commit (`af80239`), el mismo escenario y plan (hashes `7805deb7` y `ac78aea1`), la misma escala, la misma máquina y el driver nativo (`modo=driver` en el log de cada corrida). `comparar_resultados.py` no encontró diferencias de condiciones. La tabla completa está en `docs/evidencia/comparacion.md`.
+
+### Valores medidos
+
+Latencias en ms, en el cliente, sobre las fases medidas.
+
+| Métrica | Línea base | Optimizada | Variación |
+| :--- | ---: | ---: | ---: |
+| Lecturas: p50 / p95 / p99 | 13,10 / 24,23 / 50,13 | 2,29 / 7,05 / 20,83 | −82,5 % / −70,9 % / −58,4 % |
+| Lecturas: p95 dentro de la API | 22,14 | 5,44 | −75,4 % |
+| Escrituras: p50 / p95 / p99 | 12,36 / 23,56 / 49,40 | 11,04 / 19,91 / 31,53 | −10,7 % / −15,5 % / −36,2 % |
+| Total: p50 / p95 / p99 | 12,87 / 24,04 / 49,91 | 2,89 / 17,23 / 24,89 | −77,5 % / −28,3 % / −50,1 % |
+| Total: latencia máxima | 186,25 | 48,98 | −73,7 % |
+| Pico (60 usuarios): p95 / p99 | 29,20 / 61,59 | 17,52 / 25,95 | −40,0 % / −57,9 % |
+| Throughput medido (ops ok/s) | 163,3 | 169,8 | +4,0 % |
+| Tasa de error | 0 % | 0 % | — |
+| Aciertos de caché en lecturas | — | 98,3 % (99,0 % en el pico) | — |
+| Lecturas que llegaron a Cassandra (`nodetool`) | 24.469 | 456 | −98,1 % |
+| Escrituras que llegaron a Cassandra (`nodetool`) | 10.322 | 10.762 | +4,3 % (más operaciones en el mismo tiempo) |
+| CPU de Cassandra: promedio / máximo | 42,2 % / 107,7 % | 22,8 % / 181,8 % | −46,0 % / ver nota |
+| CPU de la API: promedio | 34,2 % | 28,4 % | −17,0 % |
+| CPU de la máquina: promedio | 17,2 % | 11,0 % | −36,0 % |
+| Memoria de Redis: después de la prueba | 1,43 MB | 1,51 MB | +0,08 MB |
+| `evicted_keys` en Redis | 0 | 0 | — |
+| Integridad | OK | OK | — |
+
+### Interpretación
+
+- **La hipótesis H1 se confirma.** Con la caché, 98 de cada 100 lecturas se resolvieron en Redis: las lecturas que llegaron a Cassandra bajaron de 24.469 a 456. En la misma proporción bajó el tiempo de las lecturas dentro de la API (p95 de 22,14 a 5,44 ms). Si cada partido tuviera un solo MISS cada 2 s, en unos 230 s y con 3 partidos habría unas 345 lecturas a Cassandra. Se midieron 456. La diferencia, de alrededor de 110, corresponde a MISS simultáneos: varias lecturas encuentran la entrada vencida al mismo tiempo y van juntas a Cassandra antes de que alguna la vuelva a guardar. Es una estampida leve (ver más abajo).
+- **También mejoraron las escrituras, aunque la caché no las toca.** El p99 de las escrituras bajó de 49,40 a 31,53 ms. Es un efecto indirecto: al ir muchas menos lecturas a Cassandra, las escrituras compiten menos por los hilos de la API, por la conexión del driver y por la CPU de Cassandra, cuyo promedio bajó a la mitad. El p50 de las escrituras casi no cambió (−10,7 %), porque cada escritura sigue yendo a Cassandra.
+- **El p95 total mejora menos que el de las lecturas** (−28,3 % contra −70,9 %). Con la caché, las escrituras, que siguen tardando unos 11 a 20 ms, pasan a ser las operaciones más lentas y son las que definen el percentil 95 total.
+- **La latencia se volvió más estable.** El máximo bajó de 186 a 49 ms. En el gráfico `comparacion_p95_en_el_tiempo.png`, la línea base muestra picos de hasta 150 ms en un segundo, mientras que la optimizada se mantiene entre 15 y 35 ms durante toda la prueba.
+- **El throughput solo sube un 4 %, y es esperable.** Los usuarios trabajan en lazo cerrado con una pausa de entre 0,1 y 0,3 s, así que la latencia (unos pocos ms) es una parte chica del ciclo de cada usuario. Bajar la latencia agrega pocas operaciones por segundo. Lo que mejora es la experiencia de cada request, no la capacidad máxima, que esta prueba no buscó (no es una prueba de estrés).
+- **La estampida al vencer el TTL existe, pero con esta carga es leve.** Se ve en los alrededor de 110 MISS extra del punto anterior. No se nota en la latencia: el p95 por segundo no muestra picos periódicos cada 2 s y el p99 de las lecturas bajó un 58 %. Con un MISS que tarda unos 12 ms, la ventana en la que varias lecturas encuentran la entrada vencida es corta. Con miles de lectores simultáneos esa ventana tendría muchas más lecturas, y no se puede afirmar que siga siendo leve. Una mitigación posible, no implementada, es que solo una lectura reconstruya la entrada mientras las demás devuelven la versión anterior.
+- **Nota sobre el máximo de CPU de Cassandra (181,8 %).** Corresponde a una única muestra, la del segundo 230 de la prueba optimizada, que coincide con el final de la carga. Es probable que lo cause el arranque de `nodetool` (una JVM que corre dentro del contenedor) para tomar los contadores posteriores, y no la carga de la prueba. No se verificó por separado. El resto de las muestras de esa corrida no supera el 70 %.
+
+### Costos observados
+
+- **Memoria de Redis:** subió unos 0,08 MB y no hubo expulsiones. Con 3 partidos el costo es despreciable.
+- **Frescura:** hasta 2 s de atraso por diseño. No se midió.
+- **Riesgo para las sesiones (corrección del Hito 7):** no se pudo observar, porque Redis no tenía sesiones durante la prueba (0 antes y 0 después). La ausencia de expulsiones no demuestra que las sesiones estén protegidas: solo muestra que, con este volumen, la caché no presionó la memoria. Por eso se mantiene la propuesta de usar una instancia de Redis separada para la caché.
+
+### Regresiones
+
+No hubo regresiones en la latencia, los errores ni la integridad. El único valor que empeoró es el máximo de CPU de Cassandra, explicado en la nota anterior.

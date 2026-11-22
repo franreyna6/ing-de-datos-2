@@ -12,6 +12,8 @@ El trabajo sigue el ciclo de la Clase 13:
 
 Además se diseña una vista analítica (Data Mart) y se compara el flujo con una alternativa relacional.
 
+> **Resultado.** Con la caché de 2 s, el p95 de las lecturas bajó de 24,23 a 7,05 ms y las lecturas que llegaron a Cassandra bajaron de 24.469 a 456. No hubo errores ni pérdida de datos. El detalle está en `docs/hipotesis_y_optimizacion.md`, sección 5.
+
 > **Estado de la evidencia.** Los scripts generan todos los resultados en `docs/evidencia/<corrida>/`. Ningún número de este repositorio fue escrito a mano: todo valor medido sale de una corrida real y queda asociado a su fecha, commit, configuración y entorno (RNF2, RNF14).
 
 ## Mapa de la carpeta
