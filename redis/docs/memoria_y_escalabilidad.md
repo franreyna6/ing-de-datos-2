@@ -34,7 +34,7 @@ En el `docker-compose.yml`:
 | `noeviction` | Rechaza las escrituras con error al llegar al límite; no borra nada | Protege sesiones y votos, pero una caché llena deja de aceptar **sesiones nuevas** (nadie podría iniciar sesión). Mal efecto para el caso dominante |
 | `allkeys-lru` | Evicta lo menos usado entre **todas** las claves | Podría descartar **votos y visitas** (sin TTL), que se decidió conservar. Sería razonable solo en una instancia dedicada exclusivamente a caché |
 | `allkeys-lfu` | Conserva lo más consultado | Mismo problema con las claves conservadas |
-| **`volatile-lru`** | Evicta lo menos usado, **solo entre claves con TTL** | **Elegida.** Las claves conservadas (visitas, votos) nunca se evictan; entre las temporales sale primero lo menos usado: sesiones inactivas y copias de caché poco consultadas |
+| **`volatile-lru`** | Evicta lo menos usado, **solo entre claves con TTL** | **Elegida para el laboratorio de una sola instancia.** Las claves conservadas (visitas, votos) nunca se evictan; entre las temporales sale primero lo menos usado. **Límite:** no distingue una copia de caché de una sesión vigente, porque las dos tienen TTL. La prueba de §3 lo muestra y §3.3 explica cómo se resuelve |
 | `volatile-ttl` | Evicta primero lo que tiene menos TTL restante | Alternativa válida: las copias de caché (TTL corto) saldrían antes que las sesiones. Se descartó porque depende de que los TTL de cada tipo estén bien escalonados; LRU refleja directamente el uso real |
 
 ### 2.2 Condición para que funcione: disciplina de TTL
@@ -88,10 +88,56 @@ Respuesta de error con `noeviction`: `OOM command not allowed when used memory >
 
 | Dato | Por TTL | Por evicción (`volatile-lru`) |
 | :--- | :--- | :--- |
-| Sesión | Vence tras 30 min inactiva: **esperado** | Desaparece antes: reautenticar (**tolerado**, Hito 2) |
+| Sesión | Vence tras 30 min inactiva: **esperado** | Desaparece antes de su TTL: el usuario debe reautenticar aunque estaba activo. **No deseado**: altera el ciclo de vida de la sesión (ver §3.3) |
 | Copia de caché | Vence a los 300 s / 3600 s: se recarga | Desaparece antes: miss y recarga |
 | Visitas y votos | No tienen TTL | **No se evictan** (sin TTL) |
 | Datos de prueba | Vencen a los 600 s | Pueden evictarse |
+
+### 3.3 Riesgo observado: la evicción alcanza sesiones vigentes (corrección del Hito 7)
+
+La prueba de §3 muestra que, con `volatile-lru`, las sesiones vigentes pasaron de 200 a 2 por
+presión de memoria. Ninguna había vencido por tiempo: fueron **expulsadas antes de su TTL de
+inactividad**. El usuario pierde la sesión aunque la esté usando, y el ciclo de vida definido en
+`ciclo_de_vida_e_invalidacion.md` (30 min sin actividad) deja de cumplirse.
+
+**Por qué pasa.** `volatile-lru` elige entre **todas** las claves con TTL. Para Redis, una copia de
+caché y una sesión son lo mismo: dos claves con vencimiento. La política no puede saber que perder
+una copia de caché cuesta un *miss*, mientras que perder una sesión le cierra la sesión a un usuario
+activo.
+
+**Separación conceptual de los datos de este módulo:**
+
+| Grupo | Claves | ¿Se puede evictar sin afectar al usuario? | Qué pasa si desaparece |
+| :--- | :--- | :--- | :--- |
+| Copias reconstruibles | `cache:partido:*`, `cache:equipo:*` | **Sí** | Un *miss*: se vuelve a leer la fuente de verdad (Neo4j, MongoDB) y se recarga la copia. El usuario solo nota más latencia |
+| Datos de prueba | `prueba:*` | **Sí** | Ninguno: no forman parte del dominio |
+| Estado del usuario | `sesion:*` | **No** | Se cierra la sesión de alguien que estaba activo. No se puede reconstruir desde otra fuente |
+| Datos conservados | `partido:*:visitas`, `encuesta:*:figura` | **No** (ya protegidos: no tienen TTL) | Se pierden votos y contadores |
+
+**Por qué esto no contradice el trade-off del Hito 2 y del Hito 3.** Allí se aceptó perder sesiones
+ante la **caída de un nodo**, un evento excepcional. La presión de memoria es distinta: aparece
+justamente en los picos de audiencia, cuando más usuarios están conectados. Si se aceptara, el
+sistema cerraría sesiones en el peor momento y de forma rutinaria.
+
+**Decisión.** La memoria para sesiones y la memoria para caché se separan:
+
+- **Instancia de caché**, con `allkeys-lru`: todo lo que guarda es reconstruible, así que expulsar lo
+  menos usado es correcto.
+- **Instancia de sesiones**, con `noeviction`: al llenarse rechaza **nuevos** inicios de sesión con
+  error, pero **nunca cierra una sesión vigente**. Se dimensiona con margen sobre la cantidad de
+  sesiones esperada y se vigila `used_memory` contra `maxmemory` para ampliar antes de llegar al límite.
+- Los votos y visitas quedan con las sesiones (sin TTL, no se evictan con ninguna de las dos políticas).
+
+**Alcance en este laboratorio.** El módulo sigue corriendo en **una sola instancia** con
+`volatile-lru`, porque la consigna pide un nodo único y los scripts de prueba operan sobre él. En ese
+entorno el riesgo existe y está documentado: la prueba de §3 lo demuestra en condiciones extremas
+(3 MB de margen). La separación de instancias es la decisión de diseño para un despliegue real y no se
+implementó ni se midió en este hito.
+
+**Alternativa descartada: `volatile-ttl` en una sola instancia.** Evicta primero lo que tiene menos TTL
+restante. Protegería a las sesiones solo si todas las copias de caché vencieran antes que cualquier
+sesión, y no es así: `cache:equipo:*` dura 3600 s y una sesión, 1800 s. Ajustar los TTL para forzar ese
+orden mezclaría dos decisiones distintas (frescura de la caché y vida de la sesión).
 
 ## 4. Límites del nodo local
 
@@ -116,7 +162,7 @@ La Clase 8 distingue tres topologías; el camino natural, de menor a mayor compl
 | :--- | :--- | :--- | :--- |
 | 1. Primary + réplicas (con Sentinel para monitoreo y conmutación) | Copias para lectura y recuperación ante caída del primary | Continuidad del acceso; es la **réplica asincrónica regional** que fijó el Hito 3 para sesiones | Las réplicas pueden estar brevemente atrasadas; las escrituras siguen concentradas en el primary |
 | 2. Redis Cluster | Reparte las claves en slots entre nodos | Capacidad de memoria y de escritura más allá de una máquina; es el **reparto por usuario** del Hito 3 | Una operación con varias claves exige que caigan en el mismo slot. Este modelo ya opera sobre una sola clave por unidad, así que no necesita *hash tags* |
-| 3. Separar instancias de caché y de sesiones | Una instancia para copias reconstruibles (donde `allkeys-lru` es razonable) y otra para sesiones | Evita que la presión de la caché evicte sesiones | Más piezas que operar |
+| 3. Separar instancias de caché y de sesiones (**decisión de diseño**, §3.3) | Una instancia de caché con `allkeys-lru` y otra de sesiones con `noeviction` | Evita que la presión de la caché evicte sesiones vigentes | Más piezas que operar y dos límites de memoria que vigilar |
 
 Medidas previas a escalar: medir los **bytes por sesión** para dimensionar la RAM, revisar la
 frecuencia de snapshot y la política de sincronización de AOF según la pérdida tolerable, y

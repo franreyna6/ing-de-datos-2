@@ -60,7 +60,7 @@ sesión** (bloque 4), por eso la renovación es una operación explícita y sepa
 | Situación | Qué ve la aplicación | Qué debe hacer |
 | :--- | :--- | :--- |
 | La sesión venció o se cerró | `TTL` = -2, `HGETALL` vacío | Tratar la petición como **no autenticada** y pedir un nuevo inicio de sesión. **No se reconstruye** la sesión desde otra fuente: una sesión es estado temporal |
-| La sesión fue **evictada** por presión de memoria | Igual que una sesión vencida | Igual: reautenticar (ver `memoria_y_escalabilidad.md`) |
+| La sesión fue **evictada** por presión de memoria | Igual que una sesión vencida, aunque su TTL no había terminado | Reautenticar. Es un caso **no deseado**: rompe el ciclo de vida de 30 min. En el laboratorio de una instancia el riesgo existe; la decisión para producción es separar la instancia de sesiones (`noeviction`) de la de caché (ver `memoria_y_escalabilidad.md` §3.3) |
 | La sesión está suspendida | Existe, con `estado` ≠ `activa` | Negar el acceso, informar la causa y no renovar. Es una marca de **corto plazo**: como no se renueva, la sesión vence en ≤ 30 min y la distinción con "vencida" desaparece. La suspensión duradera pertenece a la fuente de verdad del usuario (MongoDB, Hito 4) |
 | Redis no está disponible | Error de conexión (se muestra en `04_cache.log`, bloque 7) | No se pueden validar sesiones: las operaciones protegidas se niegan y se pide reintentar, y el contenido público (partidos, equipos) se sirve desde su fuente de verdad. Es el modo degradado: se prioriza que el contenido público siga disponible, pero **no** se aceptan sesiones sin poder validarlas |
 
