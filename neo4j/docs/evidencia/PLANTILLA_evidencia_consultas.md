@@ -30,7 +30,7 @@ iguales (1633 nodos, 2186 relaciones), lo que confirma que el uso de `MERGE` evi
 
 ![CRUD - Update minuto](05_crud_update1.png)
 
-**UPDATE** — lectura de una propiedad de relación (condición local/visitante):
+**UPDATE** — actualización de una propiedad de relación: `SET d.resultado` en `DISPUTA` (antes `null`, después `empate`):
 
 ![CRUD - Update condicion](06_crud_update2.png)
 

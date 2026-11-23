@@ -30,9 +30,21 @@ MATCH (v:Evento {codigo: 'EV-TEST-1'})
 SET v.minuto = 60
 RETURN v.codigo AS evento, v.minuto AS minutoActualizado;
 
-// Actualizar una propiedad de relacion: marcar la condicion de una participacion.
+// Actualizar una propiedad de relacion: registrar el resultado de cada equipo
+// en su participacion (DISPUTA), calculado a partir de los goles del partido.
+// Patron acotado a un partido. Devuelve el valor antes y despues del SET para
+// que la evidencia muestre la modificacion. Es idempotente: repetirlo deja el
+// mismo valor.
 MATCH (p:Partido {codigo: 'F2030-001'})-[d:DISPUTA]->(e:Equipo)
-RETURN p.codigo AS partido, e.codigo AS equipo, d.condicion AS condicion;
+WITH p, d, e, d.resultado AS antes
+SET d.resultado = CASE
+      WHEN p.golesLocal = p.golesVisitante THEN 'empate'
+      WHEN (d.condicion = 'local'     AND p.golesLocal     > p.golesVisitante)
+        OR (d.condicion = 'visitante' AND p.golesVisitante > p.golesLocal) THEN 'victoria'
+      ELSE 'derrota'
+    END
+RETURN p.codigo AS partido, e.codigo AS equipo, d.condicion AS condicion,
+       antes, d.resultado AS despues;
 
 // --- DELETE (acotado) ---------------------------------------------------------
 // Eliminar SOLO una relacion puntual del evento de prueba.
