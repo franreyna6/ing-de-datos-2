@@ -1,0 +1,1113 @@
+[
+  {
+    "codigo": "ARG",
+    "nombre": "Argentina",
+    "confederacion": "CONMEBOL",
+    "rankingFIFA": 1,
+    "sedeBase": "Buenos Aires",
+    "anfitrion": true,
+    "colores": [
+      "celeste",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Lionel Scaloni",
+      "nacionalidad": "Argentina"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "BRA",
+    "nombre": "Brasil",
+    "confederacion": "CONMEBOL",
+    "rankingFIFA": 5,
+    "sedeBase": "Rio de Janeiro",
+    "anfitrion": false,
+    "colores": [
+      "amarillo",
+      "verde"
+    ],
+    "directorTecnico": {
+      "nombre": "Dorival Junior",
+      "nacionalidad": "Brasil"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "URU",
+    "nombre": "Uruguay",
+    "confederacion": "CONMEBOL",
+    "rankingFIFA": 16,
+    "sedeBase": "Montevideo",
+    "anfitrion": true,
+    "colores": [
+      "celeste"
+    ],
+    "directorTecnico": {
+      "nombre": "Marcelo Bielsa",
+      "nacionalidad": "Argentina"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "COL",
+    "nombre": "Colombia",
+    "confederacion": "CONMEBOL",
+    "rankingFIFA": 12,
+    "sedeBase": "Bogota",
+    "anfitrion": false,
+    "colores": [
+      "amarillo",
+      "azul",
+      "rojo"
+    ],
+    "directorTecnico": {
+      "nombre": "Nestor Lorenzo",
+      "nacionalidad": "Argentina"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "ECU",
+    "nombre": "Ecuador",
+    "confederacion": "CONMEBOL",
+    "rankingFIFA": 31,
+    "sedeBase": "Quito",
+    "anfitrion": false,
+    "colores": [
+      "amarillo",
+      "azul"
+    ],
+    "directorTecnico": {
+      "nombre": "Sebastian Beccacece",
+      "nacionalidad": "Argentina"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "PAR",
+    "nombre": "Paraguay",
+    "confederacion": "CONMEBOL",
+    "rankingFIFA": 48,
+    "sedeBase": "Asuncion",
+    "anfitrion": true,
+    "colores": [
+      "rojo",
+      "blanco",
+      "azul"
+    ],
+    "directorTecnico": {
+      "nombre": "Gustavo Alfaro",
+      "nacionalidad": "Argentina"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "CHI",
+    "nombre": "Chile",
+    "confederacion": "CONMEBOL",
+    "rankingFIFA": 45,
+    "sedeBase": "Santiago",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Ricardo Gareca",
+      "nacionalidad": "Argentina"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "PER",
+    "nombre": "Peru",
+    "confederacion": "CONMEBOL",
+    "rankingFIFA": 40,
+    "sedeBase": "Lima",
+    "anfitrion": false,
+    "colores": [
+      "blanco",
+      "rojo"
+    ],
+    "directorTecnico": {
+      "nombre": "Oscar Ibanez",
+      "nacionalidad": "Argentina"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "VEN",
+    "nombre": "Venezuela",
+    "confederacion": "CONMEBOL",
+    "rankingFIFA": 50,
+    "sedeBase": "Caracas",
+    "anfitrion": false,
+    "colores": [
+      "vinotinto"
+    ],
+    "directorTecnico": {
+      "nombre": "Fernando Batista",
+      "nacionalidad": "Argentina"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "BOL",
+    "nombre": "Bolivia",
+    "confederacion": "CONMEBOL",
+    "rankingFIFA": 85,
+    "sedeBase": "La Paz",
+    "anfitrion": false,
+    "colores": [
+      "verde",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Oscar Villegas",
+      "nacionalidad": "Bolivia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "ESP",
+    "nombre": "Espana",
+    "confederacion": "UEFA",
+    "rankingFIFA": 2,
+    "sedeBase": "Madrid",
+    "anfitrion": true,
+    "colores": [
+      "rojo",
+      "amarillo"
+    ],
+    "directorTecnico": {
+      "nombre": "Luis de la Fuente",
+      "nacionalidad": "Espana"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "FRA",
+    "nombre": "Francia",
+    "confederacion": "UEFA",
+    "rankingFIFA": 3,
+    "sedeBase": "Paris",
+    "anfitrion": false,
+    "colores": [
+      "azul",
+      "blanco",
+      "rojo"
+    ],
+    "directorTecnico": {
+      "nombre": "Didier Deschamps",
+      "nacionalidad": "Francia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "ENG",
+    "nombre": "Inglaterra",
+    "confederacion": "UEFA",
+    "rankingFIFA": 4,
+    "sedeBase": "Londres",
+    "anfitrion": false,
+    "colores": [
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Thomas Tuchel",
+      "nacionalidad": "Alemania"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "POR",
+    "nombre": "Portugal",
+    "confederacion": "UEFA",
+    "rankingFIFA": 6,
+    "sedeBase": "Lisboa",
+    "anfitrion": true,
+    "colores": [
+      "rojo",
+      "verde"
+    ],
+    "directorTecnico": {
+      "nombre": "Roberto Martinez",
+      "nacionalidad": "Espana"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "NED",
+    "nombre": "Paises Bajos",
+    "confederacion": "UEFA",
+    "rankingFIFA": 7,
+    "sedeBase": "Amsterdam",
+    "anfitrion": false,
+    "colores": [
+      "naranja"
+    ],
+    "directorTecnico": {
+      "nombre": "Ronald Koeman",
+      "nacionalidad": "Paises Bajos"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "BEL",
+    "nombre": "Belgica",
+    "confederacion": "UEFA",
+    "rankingFIFA": 8,
+    "sedeBase": "Bruselas",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "amarillo",
+      "negro"
+    ],
+    "directorTecnico": {
+      "nombre": "Domenico Tedesco",
+      "nacionalidad": "Alemania"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "GER",
+    "nombre": "Alemania",
+    "confederacion": "UEFA",
+    "rankingFIFA": 9,
+    "sedeBase": "Berlin",
+    "anfitrion": false,
+    "colores": [
+      "blanco",
+      "negro"
+    ],
+    "directorTecnico": {
+      "nombre": "Julian Nagelsmann",
+      "nacionalidad": "Alemania"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "ITA",
+    "nombre": "Italia",
+    "confederacion": "UEFA",
+    "rankingFIFA": 10,
+    "sedeBase": "Roma",
+    "anfitrion": false,
+    "colores": [
+      "azul"
+    ],
+    "directorTecnico": {
+      "nombre": "Luciano Spalletti",
+      "nacionalidad": "Italia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "CRO",
+    "nombre": "Croacia",
+    "confederacion": "UEFA",
+    "rankingFIFA": 11,
+    "sedeBase": "Zagreb",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Zlatko Dalic",
+      "nacionalidad": "Croacia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "SUI",
+    "nombre": "Suiza",
+    "confederacion": "UEFA",
+    "rankingFIFA": 18,
+    "sedeBase": "Berna",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Murat Yakin",
+      "nacionalidad": "Suiza"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "DEN",
+    "nombre": "Dinamarca",
+    "confederacion": "UEFA",
+    "rankingFIFA": 19,
+    "sedeBase": "Copenhague",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Brian Riemer",
+      "nacionalidad": "Dinamarca"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "AUT",
+    "nombre": "Austria",
+    "confederacion": "UEFA",
+    "rankingFIFA": 22,
+    "sedeBase": "Viena",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Ralf Rangnick",
+      "nacionalidad": "Alemania"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "UKR",
+    "nombre": "Ucrania",
+    "confederacion": "UEFA",
+    "rankingFIFA": 25,
+    "sedeBase": "Kiev",
+    "anfitrion": false,
+    "colores": [
+      "amarillo",
+      "azul"
+    ],
+    "directorTecnico": {
+      "nombre": "Serhiy Rebrov",
+      "nacionalidad": "Ucrania"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "SWE",
+    "nombre": "Suecia",
+    "confederacion": "UEFA",
+    "rankingFIFA": 33,
+    "sedeBase": "Estocolmo",
+    "anfitrion": false,
+    "colores": [
+      "amarillo",
+      "azul"
+    ],
+    "directorTecnico": {
+      "nombre": "Jon Dahl Tomasson",
+      "nacionalidad": "Dinamarca"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "POL",
+    "nombre": "Polonia",
+    "confederacion": "UEFA",
+    "rankingFIFA": 34,
+    "sedeBase": "Varsovia",
+    "anfitrion": false,
+    "colores": [
+      "blanco",
+      "rojo"
+    ],
+    "directorTecnico": {
+      "nombre": "Michal Probierz",
+      "nacionalidad": "Polonia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "TUR",
+    "nombre": "Turquia",
+    "confederacion": "UEFA",
+    "rankingFIFA": 27,
+    "sedeBase": "Estambul",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Vincenzo Montella",
+      "nacionalidad": "Italia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "MEX",
+    "nombre": "Mexico",
+    "confederacion": "CONCACAF",
+    "rankingFIFA": 17,
+    "sedeBase": "Ciudad de Mexico",
+    "anfitrion": false,
+    "colores": [
+      "verde",
+      "blanco",
+      "rojo"
+    ],
+    "directorTecnico": {
+      "nombre": "Javier Aguirre",
+      "nacionalidad": "Mexico"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "USA",
+    "nombre": "Estados Unidos",
+    "confederacion": "CONCACAF",
+    "rankingFIFA": 15,
+    "sedeBase": "Washington D.C.",
+    "anfitrion": false,
+    "colores": [
+      "azul",
+      "blanco",
+      "rojo"
+    ],
+    "directorTecnico": {
+      "nombre": "Mauricio Pochettino",
+      "nacionalidad": "Argentina"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "CAN",
+    "nombre": "Canada",
+    "confederacion": "CONCACAF",
+    "rankingFIFA": 30,
+    "sedeBase": "Toronto",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Jesse Marsch",
+      "nacionalidad": "Estados Unidos"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "PAN",
+    "nombre": "Panama",
+    "confederacion": "CONCACAF",
+    "rankingFIFA": 41,
+    "sedeBase": "Ciudad de Panama",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "azul",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Thomas Christiansen",
+      "nacionalidad": "Espana"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "CRC",
+    "nombre": "Costa Rica",
+    "confederacion": "CONCACAF",
+    "rankingFIFA": 46,
+    "sedeBase": "San Jose",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "blanco",
+      "azul"
+    ],
+    "directorTecnico": {
+      "nombre": "Miguel Herrera",
+      "nacionalidad": "Mexico"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "JAM",
+    "nombre": "Jamaica",
+    "confederacion": "CONCACAF",
+    "rankingFIFA": 55,
+    "sedeBase": "Kingston",
+    "anfitrion": false,
+    "colores": [
+      "amarillo",
+      "verde",
+      "negro"
+    ],
+    "directorTecnico": {
+      "nombre": "Steve McClaren",
+      "nacionalidad": "Inglaterra"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "HON",
+    "nombre": "Honduras",
+    "confederacion": "CONCACAF",
+    "rankingFIFA": 72,
+    "sedeBase": "Tegucigalpa",
+    "anfitrion": false,
+    "colores": [
+      "azul",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Reinaldo Rueda",
+      "nacionalidad": "Colombia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "HAI",
+    "nombre": "Haiti",
+    "confederacion": "CONCACAF",
+    "rankingFIFA": 83,
+    "sedeBase": "Puerto Principe",
+    "anfitrion": false,
+    "colores": [
+      "azul",
+      "rojo"
+    ],
+    "directorTecnico": {
+      "nombre": "Sebastien Migne",
+      "nacionalidad": "Francia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "MAR",
+    "nombre": "Marruecos",
+    "confederacion": "CAF",
+    "rankingFIFA": 14,
+    "sedeBase": "Rabat",
+    "anfitrion": true,
+    "colores": [
+      "rojo",
+      "verde"
+    ],
+    "directorTecnico": {
+      "nombre": "Walid Regragui",
+      "nacionalidad": "Marruecos"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "SEN",
+    "nombre": "Senegal",
+    "confederacion": "CAF",
+    "rankingFIFA": 20,
+    "sedeBase": "Dakar",
+    "anfitrion": false,
+    "colores": [
+      "verde",
+      "amarillo",
+      "rojo"
+    ],
+    "directorTecnico": {
+      "nombre": "Pape Thiaw",
+      "nacionalidad": "Senegal"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "EGY",
+    "nombre": "Egipto",
+    "confederacion": "CAF",
+    "rankingFIFA": 32,
+    "sedeBase": "El Cairo",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "blanco",
+      "negro"
+    ],
+    "directorTecnico": {
+      "nombre": "Hossam Hassan",
+      "nacionalidad": "Egipto"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "NGA",
+    "nombre": "Nigeria",
+    "confederacion": "CAF",
+    "rankingFIFA": 43,
+    "sedeBase": "Abuya",
+    "anfitrion": false,
+    "colores": [
+      "verde",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Eric Chelle",
+      "nacionalidad": "Mali"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "ALG",
+    "nombre": "Argelia",
+    "confederacion": "CAF",
+    "rankingFIFA": 36,
+    "sedeBase": "Argel",
+    "anfitrion": false,
+    "colores": [
+      "verde",
+      "blanco",
+      "rojo"
+    ],
+    "directorTecnico": {
+      "nombre": "Vladimir Petkovic",
+      "nacionalidad": "Bosnia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "CIV",
+    "nombre": "Costa de Marfil",
+    "confederacion": "CAF",
+    "rankingFIFA": 37,
+    "sedeBase": "Yamusukro",
+    "anfitrion": false,
+    "colores": [
+      "naranja",
+      "blanco",
+      "verde"
+    ],
+    "directorTecnico": {
+      "nombre": "Emerse Fae",
+      "nacionalidad": "Costa de Marfil"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "TUN",
+    "nombre": "Tunez",
+    "confederacion": "CAF",
+    "rankingFIFA": 47,
+    "sedeBase": "Tunez",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Sami Trabelsi",
+      "nacionalidad": "Tunez"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "CMR",
+    "nombre": "Camerun",
+    "confederacion": "CAF",
+    "rankingFIFA": 51,
+    "sedeBase": "Yaunde",
+    "anfitrion": false,
+    "colores": [
+      "verde",
+      "rojo",
+      "amarillo"
+    ],
+    "directorTecnico": {
+      "nombre": "Marc Brys",
+      "nacionalidad": "Belgica"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "MLI",
+    "nombre": "Mali",
+    "confederacion": "CAF",
+    "rankingFIFA": 52,
+    "sedeBase": "Bamako",
+    "anfitrion": false,
+    "colores": [
+      "verde",
+      "amarillo",
+      "rojo"
+    ],
+    "directorTecnico": {
+      "nombre": "Tom Saintfiet",
+      "nacionalidad": "Belgica"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "GHA",
+    "nombre": "Ghana",
+    "confederacion": "CAF",
+    "rankingFIFA": 71,
+    "sedeBase": "Acra",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "amarillo",
+      "verde"
+    ],
+    "directorTecnico": {
+      "nombre": "Otto Addo",
+      "nacionalidad": "Ghana"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "RSA",
+    "nombre": "Sudafrica",
+    "confederacion": "CAF",
+    "rankingFIFA": 60,
+    "sedeBase": "Pretoria",
+    "anfitrion": false,
+    "colores": [
+      "verde",
+      "amarillo"
+    ],
+    "directorTecnico": {
+      "nombre": "Hugo Broos",
+      "nacionalidad": "Belgica"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "BFA",
+    "nombre": "Burkina Faso",
+    "confederacion": "CAF",
+    "rankingFIFA": 63,
+    "sedeBase": "Uagadugu",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "verde",
+      "amarillo"
+    ],
+    "directorTecnico": {
+      "nombre": "Brama Traore",
+      "nacionalidad": "Burkina Faso"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "JPN",
+    "nombre": "Japon",
+    "confederacion": "AFC",
+    "rankingFIFA": 15,
+    "sedeBase": "Tokio",
+    "anfitrion": false,
+    "colores": [
+      "azul",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Hajime Moriyasu",
+      "nacionalidad": "Japon"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "IRN",
+    "nombre": "Iran",
+    "confederacion": "AFC",
+    "rankingFIFA": 21,
+    "sedeBase": "Teheran",
+    "anfitrion": false,
+    "colores": [
+      "blanco",
+      "rojo",
+      "verde"
+    ],
+    "directorTecnico": {
+      "nombre": "Amir Ghalenoei",
+      "nacionalidad": "Iran"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "KOR",
+    "nombre": "Corea del Sur",
+    "confederacion": "AFC",
+    "rankingFIFA": 23,
+    "sedeBase": "Seul",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "azul"
+    ],
+    "directorTecnico": {
+      "nombre": "Hong Myung-bo",
+      "nacionalidad": "Corea del Sur"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "AUS",
+    "nombre": "Australia",
+    "confederacion": "AFC",
+    "rankingFIFA": 26,
+    "sedeBase": "Canberra",
+    "anfitrion": false,
+    "colores": [
+      "amarillo",
+      "verde"
+    ],
+    "directorTecnico": {
+      "nombre": "Tony Popovic",
+      "nacionalidad": "Australia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "KSA",
+    "nombre": "Arabia Saudita",
+    "confederacion": "AFC",
+    "rankingFIFA": 58,
+    "sedeBase": "Riad",
+    "anfitrion": false,
+    "colores": [
+      "verde",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Herve Renard",
+      "nacionalidad": "Francia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "QAT",
+    "nombre": "Qatar",
+    "confederacion": "AFC",
+    "rankingFIFA": 44,
+    "sedeBase": "Doha",
+    "anfitrion": false,
+    "colores": [
+      "granate",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Luis Garcia",
+      "nacionalidad": "Espana"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "UAE",
+    "nombre": "Emiratos Arabes Unidos",
+    "confederacion": "AFC",
+    "rankingFIFA": 65,
+    "sedeBase": "Abu Dabi",
+    "anfitrion": false,
+    "colores": [
+      "blanco",
+      "rojo",
+      "verde",
+      "negro"
+    ],
+    "directorTecnico": {
+      "nombre": "Paulo Bento",
+      "nacionalidad": "Portugal"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "IRQ",
+    "nombre": "Irak",
+    "confederacion": "AFC",
+    "rankingFIFA": 57,
+    "sedeBase": "Bagdad",
+    "anfitrion": false,
+    "colores": [
+      "blanco",
+      "rojo",
+      "negro"
+    ],
+    "directorTecnico": {
+      "nombre": "Jesus Casas",
+      "nacionalidad": "Espana"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "UZB",
+    "nombre": "Uzbekistan",
+    "confederacion": "AFC",
+    "rankingFIFA": 68,
+    "sedeBase": "Taskent",
+    "anfitrion": false,
+    "colores": [
+      "azul",
+      "blanco",
+      "verde"
+    ],
+    "directorTecnico": {
+      "nombre": "Timur Kapadze",
+      "nacionalidad": "Uzbekistan"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "JOR",
+    "nombre": "Jordania",
+    "confederacion": "AFC",
+    "rankingFIFA": 70,
+    "sedeBase": "Aman",
+    "anfitrion": false,
+    "colores": [
+      "negro",
+      "blanco",
+      "verde",
+      "rojo"
+    ],
+    "directorTecnico": {
+      "nombre": "Jamal Sellami",
+      "nacionalidad": "Marruecos"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "CHN",
+    "nombre": "China",
+    "confederacion": "AFC",
+    "rankingFIFA": 90,
+    "sedeBase": "Pekin",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "amarillo"
+    ],
+    "directorTecnico": {
+      "nombre": "Branko Ivankovic",
+      "nacionalidad": "Croacia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "VIE",
+    "nombre": "Vietnam",
+    "confederacion": "AFC",
+    "rankingFIFA": 116,
+    "sedeBase": "Hanoi",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "amarillo"
+    ],
+    "directorTecnico": {
+      "nombre": "Kim Sang-sik",
+      "nacionalidad": "Corea del Sur"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "NZL",
+    "nombre": "Nueva Zelanda",
+    "confederacion": "OFC",
+    "rankingFIFA": 89,
+    "sedeBase": "Wellington",
+    "anfitrion": false,
+    "colores": [
+      "blanco",
+      "negro"
+    ],
+    "directorTecnico": {
+      "nombre": "Darren Bazeley",
+      "nacionalidad": "Inglaterra"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "NCL",
+    "nombre": "Nueva Caledonia",
+    "confederacion": "OFC",
+    "rankingFIFA": 152,
+    "sedeBase": "Numea",
+    "anfitrion": false,
+    "colores": [
+      "azul",
+      "rojo",
+      "verde"
+    ],
+    "directorTecnico": {
+      "nombre": "Johann Sidaner",
+      "nacionalidad": "Francia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "FIJ",
+    "nombre": "Fiyi",
+    "confederacion": "OFC",
+    "rankingFIFA": 165,
+    "sedeBase": "Suva",
+    "anfitrion": false,
+    "colores": [
+      "azul",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Rob Sherman",
+      "nacionalidad": "Nueva Zelanda"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "SOL",
+    "nombre": "Islas Salomon",
+    "confederacion": "OFC",
+    "rankingFIFA": 138,
+    "sedeBase": "Honiara",
+    "anfitrion": false,
+    "colores": [
+      "azul",
+      "amarillo",
+      "verde"
+    ],
+    "directorTecnico": {
+      "nombre": "Felipe Vega-Arango",
+      "nacionalidad": "Espana"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "VAN",
+    "nombre": "Vanuatu",
+    "confederacion": "OFC",
+    "rankingFIFA": 168,
+    "sedeBase": "Port Vila",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "verde",
+      "amarillo",
+      "negro"
+    ],
+    "directorTecnico": {
+      "nombre": "Etienne Mermer",
+      "nacionalidad": "Francia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  },
+  {
+    "codigo": "TAH",
+    "nombre": "Tahiti",
+    "confederacion": "OFC",
+    "rankingFIFA": 158,
+    "sedeBase": "Papeete",
+    "anfitrion": false,
+    "colores": [
+      "rojo",
+      "blanco"
+    ],
+    "directorTecnico": {
+      "nombre": "Samuel Garcia",
+      "nacionalidad": "Francia"
+    },
+    "fechaActualizacion": "2026-09-04T20:05:54+00:00"
+  }
+]

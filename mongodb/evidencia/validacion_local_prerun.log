@@ -1,0 +1,95 @@
+Cargados: 64 equipos, 1024 jugadores
+Errores de schema en equipos:   0   (esperado 0)
+Errores de schema en jugadores: 0   (esperado 0)
+Jugadores huerfanos: 0   (esperado 0)
+Duplicados equipos.codigo:   0   (esperado 0)
+Duplicados jugadores.codigo: 0   (esperado 0)
+Colisiones (equipoCodigo, dorsal): 0   (esperado 0)
+
+mongomock: equipos=64   jugadores=1024
+
+[A.1] findOne(codigo='ARG'):
+  ARG  Argentina  ranking=1  DT=Lionel Scaloni
+
+[A.2] findOne(equipoCodigo='ARG', dorsal=10):
+  #10  Rodrigo Herrera  (Defensor)
+
+[B.1] Anfitriones:
+  ARG  Argentina  (Buenos Aires)
+  URU  Uruguay  (Montevideo)
+  PAR  Paraguay  (Asuncion)
+  ESP  Espana  (Madrid)
+  POR  Portugal  (Lisboa)
+  MAR  Marruecos  (Rabat)
+
+[B.2] Top-10 CONMEBOL:
+  #  1  ARG  Argentina
+  #  5  BRA  Brasil
+  # 12  COL  Colombia
+  # 16  URU  Uruguay
+  # 31  ECU  Ecuador
+  # 40  PER  Peru
+  # 45  CHI  Chile
+  # 48  PAR  Paraguay
+  # 50  VEN  Venezuela
+
+[B.3] Delanteros de Brasil convocados:
+  #25  Ivan Torres  goles=7
+  #22  Sergio Silva  goles=7
+  #18  Gonzalo Gonzalez  goles=13
+  #12  Facundo Garcia  goles=7
+
+[C.2] Capitanes (primeros 10):
+  ALG  #22  Bongani Benatia  (Mediocampista)
+  ARG  #11  Luis Castro  (Mediocampista)
+  AUS  #27  Wu Liu  (Mediocampista)
+  AUT  #22  Kevin Kovac  (Mediocampista)
+  BEL  #12  Thomas Lopez  (Mediocampista)
+  BFA  #14  Achraf Osimhen  (Delantero)
+  BOL  #16  Carlos Fernandez  (Mediocampista)
+  BRA  #11  Miguel Gonzalez  (Defensor)
+  CAN  #21  Andre Vargas  (Defensor)
+  CHI  # 8  Gonzalo Perez  (Delantero)
+  ... total capitanes: 64
+
+[D.1] Top valor de mercado - pagina 1 (skip=0, limit=5):
+    93.0 MEUR  ARG  Nicolas Martinez  (Delantero)
+    86.6 MEUR  CRO  Michael Silva  (Delantero)
+    81.4 MEUR  ESP  Andre Dubois  (Mediocampista)
+    81.4 MEUR  FRA  Michael Kovac  (Delantero)
+    79.5 MEUR  BRA  Sergio Silva  (Delantero)
+
+[D.1] Top valor de mercado - pagina 2 (skip=5, limit=5):
+    78.5 MEUR  COL  Rodrigo Sanchez  (Delantero)
+    77.0 MEUR  ARG  Carlos Molina  (Delantero)
+    76.7 MEUR  ESP  Marco Ivanov  (Mediocampista)
+    76.7 MEUR  ENG  Lucas Kowalski  (Delantero)
+    76.7 MEUR  POR  Piotr Berg  (Delantero)
+
+[AGG 1] Jugadores/equipos/edad-promedio por confederacion:
+  UEFA        equipos=16  jugadores= 256
+  AFC         equipos=12  jugadores= 192
+  CAF         equipos=12  jugadores= 192
+  CONMEBOL    equipos=10  jugadores= 160
+  CONCACAF    equipos= 8  jugadores= 128
+  OFC         equipos= 6  jugadores=  96
+
+[AGG 2] Top-10 selecciones por valor de mercado acumulado:
+   1. ARG  Argentina               CONMEBOL   rank=  1  valor=  724.5 MEUR
+   2. ESP  Espana                  UEFA       rank=  2  valor=  709.1 MEUR
+   3. BEL  Belgica                 UEFA       rank=  8  valor=  663.1 MEUR
+   4. ENG  Inglaterra              UEFA       rank=  4  valor=  623.4 MEUR
+   5. FRA  Francia                 UEFA       rank=  3  valor=  588.9 MEUR
+   6. SEN  Senegal                 CAF        rank= 20  valor=  578.0 MEUR
+   7. POR  Portugal                UEFA       rank=  6  valor=  571.8 MEUR
+   8. BRA  Brasil                  CONMEBOL   rank=  5  valor=  568.0 MEUR
+   9. AUS  Australia               AFC        rank= 26  valor=  566.0 MEUR
+  10. COL  Colombia                CONMEBOL   rank= 12  valor=  548.8 MEUR
+
+[AGG 4] Altura por posicion:
+  Arquero         n= 128  min=185  prom=192.7  max=200
+  Defensor        n= 320  min=175  prom=184.4  max=195
+  Delantero       n= 256  min=168  prom=178.7  max=190
+  Mediocampista   n= 320  min=168  prom=178.2  max=188
+
+[OK] Todos los checks pasaron.

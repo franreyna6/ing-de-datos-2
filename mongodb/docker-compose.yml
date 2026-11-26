@@ -1,0 +1,74 @@
+services:
+  # =========================================================================
+  # MongoDB 7 - Base documental para Equipos y Jugadores del Fixture 2030
+  # =========================================================================
+  # RF1: entorno local reproducible mediante Docker Compose.
+  # RF2: persistencia de datos configurada (volumen nombrado mongo_data).
+  # =========================================================================
+  mongodb:
+    image: mongo:7.0
+    container_name: fixture2030-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      # Credenciales del usuario administrador (root). Documentadas en README.
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      # Base de datos que se crea automáticamente al inicializar.
+      MONGO_INITDB_DATABASE: fixture2030
+    volumes:
+      # Volumen persistente: los datos sobreviven a `docker compose down`
+      # (solo se pierden con `docker compose down -v`).
+      - mongo_data:/data/db
+      # Scripts de inicialización: se ejecutan UNA VEZ al primer arranque
+      # (cuando el volumen /data/db está vacío). Se usan para crear
+      # colecciones con validación JSON Schema, no para cargar datos.
+      - ./init-scripts:/docker-entrypoint-initdb.d:ro
+      # Scripts de operación y JSON de datos, montados de solo lectura para
+      # poder ejecutarlos desde adentro con `docker exec ... mongosh --file`.
+      - ./scripts:/scripts:ro
+      - ./data:/data-fixture:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "-u", "admin", "-p", "admin",
+             "--authenticationDatabase", "admin",
+             "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - fixture-net
+
+  # =========================================================================
+  # Mongo Express - Interfaz web opcional para inspección visual
+  # =========================================================================
+  # No es requisito del hito; se incluye por comodidad para verificar carga
+  # y estructura de documentos desde el navegador (http://localhost:8081).
+  # =========================================================================
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: fixture2030-mongo-express
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+      ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongodb:27017/
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin
+    networks:
+      - fixture-net
+
+volumes:
+  mongo_data:
+    name: fixture2030_mongo_data
+
+networks:
+  fixture-net:
+    name: fixture2030_net
+    driver: bridge

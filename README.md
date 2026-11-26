@@ -4,6 +4,8 @@ Repositorio de los hitos de implementación, un módulo por tecnología.
 
 | Hito | Módulo | Tecnología | Carpeta |
 | :--- | :--- | :--- | :--- |
+| 4 | Equipos y jugadores (documental) | MongoDB | [`mongodb/`](mongodb/) |
+| 5 | Grafo de equipos, jugadores, partidos y sedes | Neo4j | [`neo4j/`](neo4j/) |
 | 6 | Comentarios masivos | Apache Cassandra | [`cassandra/`](cassandra/) |
 | 7 | Caché de usuarios y sesiones | Redis | [`redis/`](redis/) |
 | 8 | Series temporales de estadísticas | InfluxDB | [`influxdb/`](influxdb/) |
