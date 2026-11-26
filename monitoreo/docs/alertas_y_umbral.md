@@ -39,7 +39,7 @@ Alertmanager agrupa por `alertname` y `componente`, manda las críticas a *guard
 | Componente afectado | la base indicada en `fuente` (MongoDB, Neo4j, Cassandra, Redis, InfluxDB o IRIS) |
 | Impacto en el Fixture | Las rutas de esa base responden 503 y el resto sigue en 200, porque los adaptadores están separados (Hito 10). Por ejemplo, Cassandra caída deja sin comentarios pero no sin fichas ni estadísticas. Redis caído deja sin sesiones y sin caché, y las lecturas de comentarios pasan a Cassandra. |
 | Acción | `docker ps --filter name=fixture2030`, `docker logs --tail 50 fixture2030-<base>`. Si está detenida, `docker start` (nunca `down -v`). Confirmar que vuelve a verde el panel *Estado de salud*. En producción: verificar que las réplicas restantes atienden (Hito 3) y escalar al responsable del módulo. |
-| Razón del umbral | 1 minuto = 4 chequeos seguidos fallidos. Un timeout aislado no la dispara, y avisa antes de que un pico de gol acumule errores. Detecta en 1 a 1,5 minutos (ver la prueba B). |
+| Razón del umbral | 1 minuto = 4 chequeos seguidos fallidos. Un timeout aislado no la dispara, y avisa antes de que un pico de gol acumule errores. Medido: +90 s con Redis y +85 s con Cassandra (ver "Tiempos medidos"). |
 | Decisión que habilita | Saber **qué** base y **qué** funcionalidad están afectadas, y declarar el modo degradado en vez de tratarlo como caída total. |
 
 Es la versión del Fixture del *"CRITICAL: Cassandra Node Down"* de la Clase 14, generalizada a las seis bases.
@@ -131,3 +131,23 @@ Es la versión del Fixture del *"CRITICAL: Cassandra Node Down"* de la Clase 14,
 ## Tiempo de detección esperado
 
 Una alerta con `for: 1m` sobre un chequeo de 15 s tarda, desde la caída, entre 1 y 1,5 minutos en pasar a firing. Se suman el próximo chequeo (hasta 15 s), el próximo scrape (hasta 15 s), la evaluación (hasta 15 s) y el minuto de `for`. Los tiempos **medidos** están en el informe de la prueba controlada y en [`limitaciones_y_evidencia.md`](limitaciones_y_evidencia.md).
+
+## Tiempos medidos (corrida final 20261126-054628)
+
+Tiempos desde el `docker stop`, con resolución de 15 s. Fuente: `../evidencia/prueba_de_falla/20261126-054628/resumen.md` (series `ALERTS` de Prometheus).
+
+| Evento | Redis caído bajo carga (A) | Cassandra caída (B) |
+| :--- | --: | --: |
+| La métrica ve la caída (`redis_up`, chequeo de la API) | +15 s | +10 s |
+| `SondaExternaFallida` en firing | +75 s | +70 s |
+| `BaseNoDisponible` en firing | +90 s | +85 s |
+| `CacheComentariosDegradada` en firing | +90 s | — |
+| `TasaErrores5xxAlta` en firing | +105 s (sesiones con 503) | no llegó a firing |
+| La métrica ve la recuperación, desde el `docker start` | +15 s | +56 s (arranque de Cassandra) |
+
+Las cuatro alertas de A cayeron dentro de la ventana esperada de 1 a 1,5 minutos. La única que no se disparó con Redis caído fue `LatenciaAPIp95SobreSLO`: el p95 subió de 23,7 a 32,8 ms, por debajo de los 50 ms, gracias al corte rápido. Sin él (corrida 1), el p95 llegó a 4,7 s.
+
+**Lo que aprendimos de los umbrales:**
+
+- `TasaErrores5xxAlta` pasó a *pending* durante B sin carga: con pocas requests, unas pocas respuestas 503 ya superan el 1 %. En producción conviene exigir además un mínimo de tráfico, por ejemplo `and sum(rate(fixture_api_requests_total[1m])) > 1`. No lo cambiamos para no alterar la regla después de medir.
+- `SondaExternaFallida` llega antes que `BaseNoDisponible` porque la sonda no espera al chequeo de la API. Las dos juntas confirman que el problema es la base y no el camino de red.

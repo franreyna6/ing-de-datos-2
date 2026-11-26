@@ -1,6 +1,6 @@
 # Demostración controlada para la defensa
 
-Objetivo: mostrar en vivo, en unos 9 minutos (minutos 8 a 17 del [guion](guion_de_20_minutos.md)), que las decisiones defendidas corresponden al sistema construido (RF16). **Cada request se vincula con una decisión de base de datos**: nunca se dice solo "la aplicación funciona" (sección 6.3).
+Objetivo: mostrar en vivo que las decisiones defendidas corresponden al sistema construido (RF16). Ocupa el bloque Operación (minutos 9:00 a 14:00 del [guion](guion_de_20_minutos.md)); la alerta y la recuperación se terminan de mostrar en el bloque Evidencia. **Cada request se vincula con una decisión de base de datos**: nunca se dice solo "la aplicación funciona" (sección 6.3).
 
 ## Preparación (antes de entrar, unos 10 minutos)
 
@@ -10,32 +10,46 @@ Objetivo: mostrar en vivo, en unos 9 minutos (minutos 8 a 17 del [guion](guion_d
    .\monitoreo\scripts\iniciar_monitoreo.ps1 --con-bases
    ```
 
-2. En otra terminal, levantar la API con la caché del Hito 12:
+2. Probar IRIS, que es la base que más problemas dio en Windows (puertos reservados y contraseña de `_SYSTEM`):
 
    ```powershell
-   cd api; .\.venv\Scripts\Activate.ps1
-   $env:CACHE_COMENTARIOS_TTL_S = "2"
-   python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+   .\monitoreo\scripts\probar_iris.ps1
    ```
 
-3. Esperar a que `/salud` muestre las seis bases disponibles (Cassandra e IRIS tardan 1 a 2 minutos) y correr:
+   Tiene que terminar con "IRIS OK: la API va a poder usarlo".
+
+3. En otra terminal, levantar la API con las credenciales locales del Hito 11, la caché del Hito 12 y el corte rápido (queda en primer plano; Ctrl+C la detiene):
+
+   ```powershell
+   .\monitoreo\scripts\iniciar_api_monitoreada.ps1
+   ```
+
+4. Esperar a que `/salud` muestre las seis bases disponibles (Cassandra e IRIS tardan 1 a 2 minutos) y correr:
 
    ```powershell
    .\monitoreo\scripts\verificar_targets.ps1 --esperar 60
    ```
 
-   Tiene que terminar sin targets DOWN.
+   Tiene que terminar con 13/13 targets UP.
 
-4. Dejar abiertas estas pestañas:
+5. Opcional, para que `/sesiones/S0001` devuelva 200 en vez de 404 (la sesión de laboratorio del Hito 7 vence por TTL):
+
+   ```powershell
+   docker exec fixture2030-redis redis-cli HSET sesion:S0001 usuario_id U0001 rol hincha estado activa
+   docker exec fixture2030-redis redis-cli EXPIRE sesion:S0001 1800
+   ```
+
+6. Dejar abiertas estas pestañas:
    - Grafana: http://localhost:3000, tablero *Fixture 2030 - War Room*, rango *Last 15 minutes*.
    - Prometheus: http://localhost:9090/targets
    - Swagger: http://127.0.0.1:8000/docs
    - Alertmanager: http://localhost:9093
-   - Postman con la colección `monitoreo/defensa/postman_demo_h13.json` importada. Sus variables ya apuntan a datos de laboratorio que devuelven 200.
+   - Portal de IRIS, si preguntan por el modelo de objetos: http://localhost:18773/csp/sys/UtilHome.csp (o el puerto 52773 si Windows no lo reservó).
+   - Postman con la colección `monitoreo/defensa/postman_demo_h13.json` importada. Sus variables ya apuntan a datos de laboratorio que devuelven 200 (la sesión, solo si se hizo el paso 5).
 
-5. Tener a mano, como plan B, la carpeta `monitoreo/evidencia/` y la presentación.
+7. Tener a mano, como plan B, la carpeta `monitoreo/evidencia/` y la presentación.
 
-## Flujo 1 — Un partido atravesando las seis bases (Postman, unos 4 minutos)
+## Flujo 1 — Un partido atravesando las seis bases (Postman, unos 2 minutos)
 
 Mismo partido y mismo equipo; cada request la atiende una base distinta. Lo que hay que **decir** en cada paso es la columna "Por qué esta base".
 
@@ -52,7 +66,7 @@ Mismo partido y mismo equipo; cada request la atiende una base distinta. Lo que 
 
 Con Swagger se puede mostrar lo mismo como contrato: rutas, parámetros y códigos 400, 404 y 503 declarados.
 
-## Flujo 2 — Observar el sistema bajo carga y ante una falla (Grafana, unos 5 minutos)
+## Flujo 2 — Observar el sistema bajo carga y ante una falla (Grafana, unos 3 minutos más la espera de la alerta)
 
 1. Generar carga mixta sobre las seis bases (dejarlo corriendo en una terminal):
 
@@ -78,8 +92,9 @@ Con Swagger se puede mostrar lo mismo como contrato: rutas, parámetros y códig
    - Aciertos de caché a 0 %.
    - Las lecturas pasan a Cassandra: la serie de Cassandra sube en "Operaciones por base".
    - `/sesiones` en 503; el resto sigue en 200.
+   - Panel *Corte rápido*: unas 75 llamadas por segundo a Redis que la API ya no intenta. Sin esto, cada request esperaba 2,4 s (corrida 1).
    - Mensaje: *"La caída de la caché degrada, no tira el Fixture. Lo que se pierde son las sesiones, que en el Hito 2 aceptamos perder."*
-   - Al minuto aparece la alerta en Alertmanager.
+   - La alerta aparece en Alertmanager: en la corrida final, `SondaExternaFallida` a los 75 s y `BaseNoDisponible` (crítica) a los 90 s.
 
 4. Recuperación:
 
@@ -87,9 +102,9 @@ Con Swagger se puede mostrar lo mismo como contrato: rutas, parámetros y códig
    docker start fixture2030-redis
    ```
 
-   Redis vuelve a verde y la caché recupera sus aciertos. Las anotaciones del tablero marcan los dos momentos.
+   Redis vuelve a verde a los 15 s y la caché recupera el 80 % de aciertos a los 45 s. Las anotaciones del tablero marcan los dos momentos.
 
-Si no hay tiempo para esperar la alerta, mostrar la misma prueba ya registrada en `monitoreo/evidencia/prueba_de_falla/<etiqueta>/resumen.md` y sus capturas.
+Si no hay tiempo para esperar la alerta, mostrar la misma prueba ya registrada en `monitoreo/evidencia/prueba_de_falla/20261126-054628/resumen.md` y sus capturas (diapositiva 9).
 
 ## Flujo opcional — Clientes nativos (si preguntan por una estructura concreta)
 
@@ -108,7 +123,7 @@ Si no hay tiempo para esperar la alerta, mostrar la misma prueba ya registrada e
 | :--- | :--- |
 | Una base no levanta | Es parte de la demo: mostrar en Grafana que el monitoreo la detecta, qué rutas siguen funcionando (`/salud`) y la alerta. |
 | La API no arranca | Mostrar Swagger desde `api/openapi/openapi.yaml` y la evidencia del Hito 11 y de este hito (`evidencia/prometheus_targets.md`). |
-| Docker Desktop o la PC no responden | Presentar desde el repositorio en GitHub: capturas de `monitoreo/evidencia/dashboards/` y el informe `evidencia/prueba_de_falla/<etiqueta>/resumen.md`, todo con fecha y commit. |
+| Docker Desktop o la PC no responden | Presentar desde el repositorio en GitHub: capturas de `monitoreo/evidencia/dashboards/` y el informe `evidencia/prueba_de_falla/20261126-054628/resumen.md`, todo con fecha y commit. |
 | No hay tiempo | Saltar el Flujo 2 en vivo y mostrar sus capturas (30 segundos). |
 | Sin proyector o sin internet | La presentación es un HTML local (`defensa/presentacion.html`) que no necesita conexión. |
 

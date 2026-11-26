@@ -1,0 +1,667 @@
+{
+  "etiqueta": "20261126-054628",
+  "git": {
+    "commit": "85e91ae8421559259fddd841b753274c645bcfb3",
+    "commit_corto": "85e91ae",
+    "rama": "main",
+    "cambios_sin_commit_en_api_o_monitoreo": true
+  },
+  "usuarios": 20,
+  "fase_s": 150,
+  "cache_verificada": "encendida (MISS y luego HIT)",
+  "cortocircuito_s": "10",
+  "prometheus_scrape_s": 15,
+  "inicio_utc": "2026-11-26T05:51:37Z",
+  "docker_stop_redis_s": 0.6,
+  "marcas_utc": {
+    "inicio": "2026-11-26T05:51:37Z",
+    "falla": "2026-11-26T05:54:07Z",
+    "recuperacion": "2026-11-26T05:56:37Z",
+    "fin": "2026-11-26T05:59:07Z"
+  },
+  "partidos_de_laboratorio": {
+    "P1": "H13-20261126-054628-P1",
+    "P2": "H13-20261126-054628-P2"
+  },
+  "ventanas_escritas": [
+    [
+      "H13-20261126-054628-P1",
+      "2026-11-26T05:50:00+00:00"
+    ],
+    [
+      "H13-20261126-054628-P1",
+      "2026-11-26T05:55:00+00:00"
+    ],
+    [
+      "H13-20261126-054628-P2",
+      "2026-11-26T05:50:00+00:00"
+    ],
+    [
+      "H13-20261126-054628-P2",
+      "2026-11-26T05:55:00+00:00"
+    ]
+  ],
+  "fin_utc": "2026-11-26T06:05:50Z",
+  "capturas": [
+    "prueba_20261126-054628_A_redis_tablero_completo.png",
+    "prueba_20261126-054628_A_redis_salud_infraestructura.png",
+    "prueba_20261126-054628_A_redis_salud_vista_api.png",
+    "prueba_20261126-054628_A_redis_throughput.png",
+    "prueba_20261126-054628_A_redis_latencia_api.png",
+    "prueba_20261126-054628_A_redis_errores.png",
+    "prueba_20261126-054628_A_redis_latencia_por_base.png",
+    "prueba_20261126-054628_A_redis_operaciones_por_base.png",
+    "prueba_20261126-054628_A_redis_cache.png",
+    "prueba_20261126-054628_A_redis_memoria_redis.png",
+    "prueba_20261126-054628_A_redis_escrituras_cassandra.png",
+    "prueba_20261126-054628_A_redis_corte_rapido.png",
+    "prueba_20261126-054628_B_cassandra_tablero_completo.png",
+    "prueba_20261126-054628_B_cassandra_salud_infraestructura.png",
+    "prueba_20261126-054628_B_cassandra_salud_vista_api.png",
+    "prueba_20261126-054628_B_cassandra_throughput.png",
+    "prueba_20261126-054628_B_cassandra_latencia_api.png",
+    "prueba_20261126-054628_B_cassandra_errores.png",
+    "prueba_20261126-054628_B_cassandra_latencia_por_base.png",
+    "prueba_20261126-054628_B_cassandra_operaciones_por_base.png",
+    "prueba_20261126-054628_B_cassandra_cache.png",
+    "prueba_20261126-054628_B_cassandra_memoria_redis.png",
+    "prueba_20261126-054628_B_cassandra_escrituras_cassandra.png",
+    "prueba_20261126-054628_B_cassandra_corte_rapido.png"
+  ],
+  "resumen_a": {
+    "cliente": {
+      "normal": {
+        "requests": 13758,
+        "requests_por_segundo": 91.7,
+        "errores_5xx": 0,
+        "errores_conexion_cliente": 0,
+        "respuestas_4xx": 698,
+        "tasa_error": 0.0,
+        "latencia_cliente_ms": {
+          "p50": 5.53,
+          "p95": 24.03,
+          "p99": 36.26,
+          "max": 69.43
+        },
+        "cache_lecturas_comentarios": {
+          "HIT": 5222,
+          "MISS": 204
+        },
+        "por_operacion": {
+          "detalle": {
+            "requests": 976,
+            "p95_ms": 10.12,
+            "codigos": {
+              "200": 976
+            }
+          },
+          "equipo": {
+            "requests": 1438,
+            "p95_ms": 9.03,
+            "codigos": {
+              "200": 1438
+            }
+          },
+          "escribir_comentario": {
+            "requests": 2137,
+            "p95_ms": 21.96,
+            "codigos": {
+              "201": 2137
+            }
+          },
+          "estadisticas": {
+            "requests": 1056,
+            "p95_ms": 39.29,
+            "codigos": {
+              "200": 1056
+            }
+          },
+          "eventos": {
+            "requests": 1344,
+            "p95_ms": 10.61,
+            "codigos": {
+              "200": 1344
+            }
+          },
+          "jugadores": {
+            "requests": 683,
+            "p95_ms": 8.78,
+            "codigos": {
+              "200": 683
+            }
+          },
+          "leer_comentarios": {
+            "requests": 5426,
+            "p95_ms": 11.88,
+            "codigos": {
+              "200": 5426
+            }
+          },
+          "sesion": {
+            "requests": 698,
+            "p95_ms": 6.73,
+            "codigos": {
+              "404": 698
+            }
+          }
+        }
+      },
+      "falla": {
+        "requests": 13318,
+        "requests_por_segundo": 88.8,
+        "errores_5xx": 673,
+        "errores_conexion_cliente": 0,
+        "respuestas_4xx": 0,
+        "tasa_error": 0.0505,
+        "latencia_cliente_ms": {
+          "p50": 12.13,
+          "p95": 29.85,
+          "p99": 56.08,
+          "max": 4327.99
+        },
+        "cache_lecturas_comentarios": {
+          "HIT": 12,
+          "MISS": 5315
+        },
+        "por_operacion": {
+          "detalle": {
+            "requests": 965,
+            "p95_ms": 12.13,
+            "codigos": {
+              "200": 965
+            }
+          },
+          "equipo": {
+            "requests": 1276,
+            "p95_ms": 11.52,
+            "codigos": {
+              "200": 1276
+            }
+          },
+          "escribir_comentario": {
+            "requests": 2034,
+            "p95_ms": 25.78,
+            "codigos": {
+              "201": 2034
+            }
+          },
+          "estadisticas": {
+            "requests": 1058,
+            "p95_ms": 53.53,
+            "codigos": {
+              "200": 1058
+            }
+          },
+          "eventos": {
+            "requests": 1336,
+            "p95_ms": 13.84,
+            "codigos": {
+              "200": 1336
+            }
+          },
+          "jugadores": {
+            "requests": 649,
+            "p95_ms": 10.62,
+            "codigos": {
+              "200": 649
+            }
+          },
+          "leer_comentarios": {
+            "requests": 5327,
+            "p95_ms": 26.33,
+            "codigos": {
+              "200": 5327
+            }
+          },
+          "sesion": {
+            "requests": 673,
+            "p95_ms": 7.23,
+            "codigos": {
+              "503": 673
+            }
+          }
+        }
+      },
+      "recuperacion": {
+        "requests": 13697,
+        "requests_por_segundo": 91.3,
+        "errores_5xx": 2,
+        "errores_conexion_cliente": 0,
+        "respuestas_4xx": 651,
+        "tasa_error": 0.0001,
+        "latencia_cliente_ms": {
+          "p50": 6.08,
+          "p95": 26.88,
+          "p99": 45.28,
+          "max": 187.75
+        },
+        "cache_lecturas_comentarios": {
+          "MISS": 244,
+          "HIT": 5192
+        },
+        "por_operacion": {
+          "detalle": {
+            "requests": 971,
+            "p95_ms": 12.07,
+            "codigos": {
+              "200": 971
+            }
+          },
+          "equipo": {
+            "requests": 1438,
+            "p95_ms": 11.93,
+            "codigos": {
+              "200": 1438
+            }
+          },
+          "escribir_comentario": {
+            "requests": 2063,
+            "p95_ms": 24.15,
+            "codigos": {
+              "201": 2063
+            }
+          },
+          "estadisticas": {
+            "requests": 1053,
+            "p95_ms": 47.25,
+            "codigos": {
+              "200": 1053
+            }
+          },
+          "eventos": {
+            "requests": 1390,
+            "p95_ms": 14.56,
+            "codigos": {
+              "200": 1390
+            }
+          },
+          "jugadores": {
+            "requests": 693,
+            "p95_ms": 12.52,
+            "codigos": {
+              "200": 693
+            }
+          },
+          "leer_comentarios": {
+            "requests": 5436,
+            "p95_ms": 20.12,
+            "codigos": {
+              "200": 5436
+            }
+          },
+          "sesion": {
+            "requests": 653,
+            "p95_ms": 10.08,
+            "codigos": {
+              "503": 2,
+              "404": 651
+            }
+          }
+        }
+      },
+      "total": {
+        "requests": 40773,
+        "requests_por_segundo": 90.6,
+        "errores_5xx": 675,
+        "errores_conexion_cliente": 0,
+        "respuestas_4xx": 1349,
+        "tasa_error": 0.0166,
+        "latencia_cliente_ms": {
+          "p50": 6.66,
+          "p95": 26.75,
+          "p99": 46.12,
+          "max": 4327.99
+        },
+        "cache_lecturas_comentarios": {
+          "HIT": 10426,
+          "MISS": 5763
+        },
+        "por_operacion": {
+          "detalle": {
+            "requests": 2912,
+            "p95_ms": 11.47,
+            "codigos": {
+              "200": 2912
+            }
+          },
+          "equipo": {
+            "requests": 4152,
+            "p95_ms": 10.82,
+            "codigos": {
+              "200": 4152
+            }
+          },
+          "escribir_comentario": {
+            "requests": 6234,
+            "p95_ms": 24.03,
+            "codigos": {
+              "201": 6234
+            }
+          },
+          "estadisticas": {
+            "requests": 3167,
+            "p95_ms": 47.16,
+            "codigos": {
+              "200": 3167
+            }
+          },
+          "eventos": {
+            "requests": 4070,
+            "p95_ms": 13.1,
+            "codigos": {
+              "200": 4070
+            }
+          },
+          "jugadores": {
+            "requests": 2025,
+            "p95_ms": 10.81,
+            "codigos": {
+              "200": 2025
+            }
+          },
+          "leer_comentarios": {
+            "requests": 16189,
+            "p95_ms": 23.4,
+            "codigos": {
+              "200": 16189
+            }
+          },
+          "sesion": {
+            "requests": 2024,
+            "p95_ms": 7.93,
+            "codigos": {
+              "404": 1349,
+              "503": 675
+            }
+          }
+        }
+      }
+    },
+    "prometheus_por_fase": {
+      "normal": {
+        "rps_api": {
+          "promedio": 92.0673,
+          "max": 92.8486,
+          "muestras": 7
+        },
+        "p50_api_s": {
+          "promedio": 0.0045,
+          "max": 0.0045,
+          "muestras": 7
+        },
+        "p95_api_s": {
+          "promedio": 0.0237,
+          "max": 0.024,
+          "muestras": 7
+        },
+        "p99_api_s": {
+          "promedio": 0.0433,
+          "max": 0.0443,
+          "muestras": 7
+        },
+        "tasa_5xx": {
+          "promedio": 0.0,
+          "max": 0.0,
+          "muestras": 7
+        },
+        "aciertos_cache": {
+          "promedio": 0.962,
+          "max": 0.9647,
+          "muestras": 7
+        },
+        "p95_comentarios_s": {
+          "promedio": 0.0097,
+          "max": 0.0101,
+          "muestras": 7
+        },
+        "p95_dep_redis_s": {
+          "promedio": 0.0025,
+          "max": 0.0025,
+          "muestras": 7
+        },
+        "p95_dep_cassandra_s": {
+          "promedio": 0.0242,
+          "max": 0.0243,
+          "muestras": 7
+        },
+        "lecturas_cassandra_por_s": {
+          "promedio": 1.381,
+          "max": 1.4445,
+          "muestras": 7
+        },
+        "redis_up_exporter": {
+          "promedio": 1.0,
+          "max": 1.0,
+          "muestras": 7
+        },
+        "redis_sonda": {
+          "promedio": 1.0,
+          "max": 1.0,
+          "muestras": 7
+        },
+        "redis_disponible_api": {
+          "promedio": 1.0,
+          "max": 1.0,
+          "muestras": 7
+        },
+        "cassandra_disponible_api": {
+          "promedio": 1.0,
+          "max": 1.0,
+          "muestras": 7
+        },
+        "cassandra_sonda_tcp": {
+          "promedio": 1.0,
+          "max": 1.0,
+          "muestras": 7
+        },
+        "alertas_firing": {
+          "promedio": 0.0,
+          "max": 0.0,
+          "muestras": 7
+        },
+        "corte_redis_abierto": {
+          "promedio": 0.0,
+          "max": 0.0,
+          "muestras": 7
+        },
+        "rechazos_corte_redis_por_s": null
+      },
+      "falla": {
+        "rps_api": {
+          "promedio": 88.475,
+          "max": 89.2484,
+          "muestras": 6
+        },
+        "p50_api_s": {
+          "promedio": 0.0104,
+          "max": 0.011,
+          "muestras": 6
+        },
+        "p95_api_s": {
+          "promedio": 0.0328,
+          "max": 0.0368,
+          "muestras": 6
+        },
+        "p99_api_s": {
+          "promedio": 0.0625,
+          "max": 0.0733,
+          "muestras": 6
+        },
+        "tasa_5xx": {
+          "promedio": 0.0495,
+          "max": 0.0538,
+          "muestras": 6
+        },
+        "aciertos_cache": {
+          "promedio": 0.0,
+          "max": 0.0,
+          "muestras": 6
+        },
+        "p95_comentarios_s": {
+          "promedio": 0.0249,
+          "max": 0.0253,
+          "muestras": 6
+        },
+        "p95_dep_redis_s": {
+          "promedio": 0.0024,
+          "max": 0.0024,
+          "muestras": 6
+        },
+        "p95_dep_cassandra_s": {
+          "promedio": 0.0242,
+          "max": 0.0242,
+          "muestras": 6
+        },
+        "lecturas_cassandra_por_s": {
+          "promedio": 35.4944,
+          "max": 36.5588,
+          "muestras": 6
+        },
+        "redis_up_exporter": {
+          "promedio": 0.0,
+          "max": 0.0,
+          "muestras": 6
+        },
+        "redis_sonda": {
+          "promedio": 0.0,
+          "max": 0.0,
+          "muestras": 6
+        },
+        "redis_disponible_api": {
+          "promedio": 0.0,
+          "max": 0.0,
+          "muestras": 6
+        },
+        "cassandra_disponible_api": {
+          "promedio": 1.0,
+          "max": 1.0,
+          "muestras": 6
+        },
+        "cassandra_sonda_tcp": {
+          "promedio": 1.0,
+          "max": 1.0,
+          "muestras": 6
+        },
+        "alertas_firing": {
+          "promedio": 3.3333,
+          "max": 4.0,
+          "muestras": 6
+        },
+        "corte_redis_abierto": {
+          "promedio": 1.0,
+          "max": 1.0,
+          "muestras": 6
+        },
+        "rechazos_corte_redis_por_s": {
+          "promedio": 75.3187,
+          "max": 77.4513,
+          "muestras": 6
+        }
+      },
+      "recuperacion": {
+        "rps_api": {
+          "promedio": 91.134,
+          "max": 91.6728,
+          "muestras": 6
+        },
+        "p50_api_s": {
+          "promedio": 0.0049,
+          "max": 0.0051,
+          "muestras": 6
+        },
+        "p95_api_s": {
+          "promedio": 0.0269,
+          "max": 0.0303,
+          "muestras": 6
+        },
+        "p99_api_s": {
+          "promedio": 0.0482,
+          "max": 0.0535,
+          "muestras": 6
+        },
+        "tasa_5xx": {
+          "promedio": 0.0,
+          "max": 0.0,
+          "muestras": 6
+        },
+        "aciertos_cache": {
+          "promedio": 0.9618,
+          "max": 0.9631,
+          "muestras": 6
+        },
+        "p95_comentarios_s": {
+          "promedio": 0.0145,
+          "max": 0.0164,
+          "muestras": 6
+        },
+        "p95_dep_redis_s": {
+          "promedio": 0.0036,
+          "max": 0.0042,
+          "muestras": 6
+        },
+        "p95_dep_cassandra_s": {
+          "promedio": 0.0243,
+          "max": 0.0244,
+          "muestras": 6
+        },
+        "lecturas_cassandra_por_s": {
+          "promedio": 1.3927,
+          "max": 1.5334,
+          "muestras": 6
+        },
+        "redis_up_exporter": {
+          "promedio": 1.0,
+          "max": 1.0,
+          "muestras": 6
+        },
+        "redis_sonda": {
+          "promedio": 1.0,
+          "max": 1.0,
+          "muestras": 6
+        },
+        "redis_disponible_api": {
+          "promedio": 1.0,
+          "max": 1.0,
+          "muestras": 6
+        },
+        "cassandra_disponible_api": {
+          "promedio": 1.0,
+          "max": 1.0,
+          "muestras": 6
+        },
+        "cassandra_sonda_tcp": {
+          "promedio": 1.0,
+          "max": 1.0,
+          "muestras": 6
+        },
+        "alertas_firing": {
+          "promedio": 0.0,
+          "max": 0.0,
+          "muestras": 6
+        },
+        "corte_redis_abierto": {
+          "promedio": 0.0,
+          "max": 0.0,
+          "muestras": 6
+        },
+        "rechazos_corte_redis_por_s": {
+          "promedio": 0.0,
+          "max": 0.0,
+          "muestras": 6
+        }
+      }
+    },
+    "linea_de_tiempo_utc": {
+      "redis_up_exporter_en_0": "2026-11-26T05:54:22Z",
+      "redis_disponible_api_en_0": "2026-11-26T05:54:22Z",
+      "redis_up_exporter_en_1": "2026-11-26T05:56:52Z",
+      "redis_disponible_api_en_1": "2026-11-26T05:56:52Z",
+      "aciertos_cache_bajo_0_8": "2026-11-26T05:54:22Z",
+      "aciertos_cache_vuelve_0_8": "2026-11-26T05:57:22Z",
+      "alerta_SondaExternaFallida_redis_firing": "2026-11-26T05:55:22Z",
+      "alerta_BaseNoDisponible_redis_firing": "2026-11-26T05:55:37Z",
+      "alerta_CacheComentariosDegradada_redis_firing": "2026-11-26T05:55:37Z",
+      "alerta_TasaErrores5xxAlta_api_firing": "2026-11-26T05:55:52Z"
+    }
+  }
+}

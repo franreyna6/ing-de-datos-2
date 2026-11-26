@@ -1,0 +1,163 @@
+{
+  "etiqueta": "20261126-054628",
+  "git": {
+    "commit": "85e91ae8421559259fddd841b753274c645bcfb3",
+    "commit_corto": "85e91ae",
+    "rama": "main",
+    "cambios_sin_commit_en_api_o_monitoreo": true
+  },
+  "usuarios": 20,
+  "duracion_s": 181,
+  "inicio_utc": "2026-11-26T05:46:54Z",
+  "fin_utc": "2026-11-26T05:49:55Z",
+  "cortocircuito_s": "10",
+  "api": {
+    "rps": 91.64208042688817,
+    "p50_s": 0.004506010419696006,
+    "p95_s": 0.024027392788774853,
+    "p99_s": 0.044386223628330675,
+    "tasa_5xx": 0.0,
+    "aciertos_cache": 0.9638885783486251,
+    "bases_disponibles": 6.0,
+    "targets_up": 13.0,
+    "targets_total": 13.0,
+    "sondas_ok": 7.0,
+    "sondas_total": 7.0
+  },
+  "por_base": {
+    "influxdb": {
+      "p50_s": 0.020329490504631953,
+      "p95_s": 0.045740145829120074,
+      "ops_por_s": 7.092005889087337
+    },
+    "mongodb": {
+      "p50_s": 0.0017093346996261735,
+      "p95_s": 0.004665713890207841,
+      "ops_por_s": 13.942467345699184
+    },
+    "neo4j": {
+      "p50_s": 0.004193288252227611,
+      "p95_s": 0.00935447175577599,
+      "ops_por_s": 9.01261280918353
+    },
+    "iris": {
+      "p50_s": 0.0027780167360785413,
+      "p95_s": 0.0058265590655100005,
+      "ops_por_s": 6.474916277870974
+    },
+    "redis": {
+      "p50_s": 0.0013088794356795489,
+      "p95_s": 0.002486870927791143,
+      "ops_por_s": 42.19494557396082
+    },
+    "cassandra": {
+      "p50_s": 0.016778435115235614,
+      "p95_s": 0.02425456238199787,
+      "ops_por_s": 15.542738627866221
+    }
+  },
+  "cliente": {
+    "requests": 16607,
+    "requests_por_segundo": 91.7,
+    "errores_5xx": 0,
+    "errores_conexion_cliente": 0,
+    "respuestas_4xx": 847,
+    "tasa_error": 0.0,
+    "latencia_cliente_ms": {
+      "p50": 5.53,
+      "p95": 24.23,
+      "p99": 37.58,
+      "max": 80.55
+    },
+    "cache_lecturas_comentarios": {
+      "MISS": 237,
+      "HIT": 6335
+    },
+    "por_operacion": {
+      "detalle": {
+        "requests": 1176,
+        "p95_ms": 10.19,
+        "codigos": {
+          "200": 1176
+        }
+      },
+      "equipo": {
+        "requests": 1704,
+        "p95_ms": 9.33,
+        "codigos": {
+          "200": 1704
+        }
+      },
+      "escribir_comentario": {
+        "requests": 2570,
+        "p95_ms": 22.56,
+        "codigos": {
+          "201": 2570
+        }
+      },
+      "estadisticas": {
+        "requests": 1276,
+        "p95_ms": 40.31,
+        "codigos": {
+          "200": 1276
+        }
+      },
+      "eventos": {
+        "requests": 1643,
+        "p95_ms": 11.43,
+        "codigos": {
+          "200": 1643
+        }
+      },
+      "jugadores": {
+        "requests": 819,
+        "p95_ms": 9.4,
+        "codigos": {
+          "200": 819
+        }
+      },
+      "leer_comentarios": {
+        "requests": 6572,
+        "p95_ms": 12.2,
+        "codigos": {
+          "200": 6572
+        }
+      },
+      "sesion": {
+        "requests": 847,
+        "p95_ms": 7.32,
+        "codigos": {
+          "404": 847
+        }
+      }
+    }
+  },
+  "capturas": [
+    "operacion_20261126-054628_tablero_completo.png",
+    "operacion_20261126-054628_salud_infraestructura.png",
+    "operacion_20261126-054628_salud_vista_api.png",
+    "operacion_20261126-054628_throughput.png",
+    "operacion_20261126-054628_latencia_api.png",
+    "operacion_20261126-054628_errores.png",
+    "operacion_20261126-054628_latencia_por_base.png",
+    "operacion_20261126-054628_operaciones_por_base.png",
+    "operacion_20261126-054628_cache.png",
+    "operacion_20261126-054628_memoria_redis.png",
+    "operacion_20261126-054628_escrituras_cassandra.png",
+    "operacion_20261126-054628_corte_rapido.png"
+  ],
+  "partidos_de_laboratorio": {
+    "P1": "H13-20261126-054628-P1",
+    "P2": "H13-20261126-054628-P2"
+  },
+  "ventanas_escritas": [
+    [
+      "H13-20261126-054628-P1",
+      "2026-11-26T05:45:00+00:00"
+    ],
+    [
+      "H13-20261126-054628-P2",
+      "2026-11-26T05:45:00+00:00"
+    ]
+  ]
+}

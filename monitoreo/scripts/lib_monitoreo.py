@@ -91,7 +91,8 @@ def info_git() -> dict:
             return r.stdout.strip()
         except Exception:
             return ""
-    estado = g("status", "--porcelain", "--", "api", "monitoreo")
+    # La evidencia que la propia corrida va escribiendo no cuenta como "codigo sin commit".
+    estado = g("status", "--porcelain", "--", "api", "monitoreo", ":(exclude)monitoreo/evidencia")
     return {"commit": g("rev-parse", "HEAD"), "commit_corto": g("rev-parse", "--short", "HEAD"),
             "rama": g("rev-parse", "--abbrev-ref", "HEAD"),
             "cambios_sin_commit_en_api_o_monitoreo": bool(estado)}
@@ -186,13 +187,21 @@ _PATRONES_SECRETOS = [
 ]
 
 
+# Valores de laboratorio que ya estan publicados en los docker-compose del
+# repositorio (por ejemplo, la contrasena por defecto de Neo4j es "fixture2030").
+# No son secretos, y taparlos rompia la evidencia: "fixture2030-redis" salia
+# como "***-redis" (paso en la corrida 20261126-054628, corregido a mano).
+_VALORES_PUBLICOS = {"fixture2030", "admin", "SYS", "_SYSTEM", "neo4j"}
+
+
 def enmascarar(texto: str) -> str:
     texto = _PATRONES_SECRETOS[0].sub("apiv3_***", texto)
     texto = _PATRONES_SECRETOS[1].sub(r"\1***", texto)
     texto = _PATRONES_SECRETOS[2].sub(r"\1***:***\2", texto)
     texto = _PATRONES_SECRETOS[3].sub(r"\1***", texto)
     for clave, valor in {**config_conectividad(), **leer_env()}.items():
-        if valor and len(valor) >= 4 and any(p in clave for p in ("PASSWORD", "TOKEN", "URI")):
+        if (valor and len(valor) >= 4 and valor not in _VALORES_PUBLICOS
+                and any(p in clave for p in ("PASSWORD", "TOKEN", "URI"))):
             texto = texto.replace(valor, "***")
     tok = token_influx()
     if tok:

@@ -38,19 +38,40 @@ Desde la raíz del repositorio, con Docker Desktop abierto:
 ./monitoreo/scripts/ejecutar_todo_h13.sh           # Linux / macOS
 ```
 
-Tarda unos 20 minutos y hace lo siguiente:
+Tarda unos 25 minutos y hace lo siguiente:
 
-1. Inicia las seis bases. Si un contenedor ya existe, solo hace `docker start`: no lo recrea ni toca sus datos.
-2. Levanta el monitoreo.
-3. Levanta la API con la caché del Hito 12 encendida y espera a que `/salud` vea las seis bases.
-4. Verifica los targets.
-5. Corre la prueba de falla controlada bajo carga: caída de Redis y, después, de Cassandra.
-6. Guarda informe, series y capturas.
-7. Verifica los targets otra vez y detiene la API.
+1. Inicia las seis bases. Si un contenedor ya existe, solo hace `docker start`: no lo recrea ni toca sus datos. Si Windows tiene reservado el puerto 52773, levanta IRIS con puertos alternativos (ver "Casos conocidos").
+2. Levanta el monitoreo y conecta Prometheus a la red de IRIS.
+3. Levanta la API con las credenciales locales del Hito 11 (`conectividad/config/configuracion.env`), la caché del Hito 12 y el corte rápido, y espera a que `/salud` vea las seis bases.
+4. Verifica los 13 targets.
+5. Mide la **operación normal** bajo carga durante 180 s (comparación entre bases, RF7).
+6. Corre la **prueba de falla controlada** bajo carga: caída de Redis y, después, de Cassandra.
+7. Guarda informes, series y capturas; verifica los targets otra vez y detiene la API.
 
 Las bases y el monitoreo quedan corriendo para la demo. Toda la salida queda en `evidencia/resultados_sin_secretos/ejecucion_<etiqueta>.log`.
 
-Con `--sin-cortocircuito` la API se levanta sin el corte rápido (`CORTOCIRCUITO_S=0`, comportamiento del Hito 12), para comparar con la mejora.
+Opciones útiles:
+
+| Opción | Efecto |
+| :--- | :--- |
+| `--operacion-normal 0` | Saltea la medición de operación normal |
+| `--solo-operacion-normal` | Mide solo la operación normal (unos 5 minutos) |
+| `--sin-cortocircuito` | API sin corte rápido (`CORTOCIRCUITO_S=0`, comportamiento del Hito 12), para comparar con la mejora |
+| `--sin-cassandra` | Saltea el experimento B |
+
+Antes de la corrida completa conviene `.\monitoreo\scripts\probar_iris.ps1`: prueba IRIS por capas (contenedor, puertos, credenciales, driver de la API y monitoreo) en menos de un minuto.
+
+## Resultados de la corrida final (20261126-054628)
+
+| Qué | Resultado | Evidencia |
+| :--- | :--- | :--- |
+| Targets | 13/13 UP, 7/7 sondas OK, 6/6 bases disponibles para la API | `evidencia/prometheus_targets.md` |
+| Operación normal (20 usuarios, 181 s) | 91,6 requests/s; p50 4,5 ms, p95 24,0 ms, p99 44,4 ms; 0 % de 5xx; caché 96,4 % | `evidencia/operacion_normal/20261126-054628/resumen.md` |
+| Caída de Redis bajo carga | requests/s 92,1 → 88,5; p95 23,7 → 32,8 ms; 5 % de 5xx (solo sesiones, 503); detección +15 s, alerta +75/+90 s | `evidencia/prueba_de_falla/20261126-054628/resumen.md` |
+| Caída de Cassandra | Solo comentarios da 503; Mongo, Neo4j e IRIS siguen en 200; alerta crítica +85 s | ídem, sección B |
+| Mejora (corte rápido) | Sin ella (corrida 1), con Redis caído: 53,6 → 9,4 requests/s y p95 de comentarios de 4,9 s. Con ella: 92,1 → 88,5 requests/s y 24,9 ms | `docs/limitaciones_y_evidencia.md` |
+
+Lectura completa y límites: [`docs/limitaciones_y_evidencia.md`](docs/limitaciones_y_evidencia.md).
 
 ## Opción 2: paso a paso
 
@@ -58,11 +79,8 @@ Con `--sin-cortocircuito` la API se levanta sin el corte rápido (`CORTOCIRCUITO
 # 1. Bases y monitoreo (crea monitoreo/.env y monitoreo/secretos/, fuera de Git)
 .\monitoreo\scripts\iniciar_monitoreo.ps1 --con-bases
 
-# 2. API del Hito 10 con métricas (terminal aparte; la caché del Hito 12 es opcional)
-cd api; .\.venv\Scripts\Activate.ps1
-$env:CACHE_COMENTARIOS_TTL_S = "2"
-python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
-cd ..
+# 2. API del Hito 10 con métricas, caché y corte rápido (terminal aparte; Ctrl+C la detiene)
+.\monitoreo\scripts\iniciar_api_monitoreada.ps1
 
 # 3. Verificar que Prometheus lee cada target (guarda evidencia/prometheus_targets.*)
 .\monitoreo\scripts\verificar_targets.ps1 --esperar 60
@@ -84,6 +102,7 @@ En Linux o macOS se usan los mismos scripts con extensión `.sh`.
 | Prometheus | http://localhost:9090 | `Status → Targets` (estado de cada target), `Alerts` (reglas) y `Graph` (PromQL) |
 | Alertmanager | http://localhost:9093 | Alertas recibidas y su agrupación por severidad |
 | API | http://localhost:8000/docs y `/metrics` | Swagger y métricas en formato Prometheus |
+| Portal de IRIS | http://localhost:52773/csp/sys/UtilHome.csp, o **http://localhost:18773/...** si IRIS corre con puertos alternativos | Clases y objetos del Hito 9 |
 
 ## Validar que un target está UP
 
@@ -108,6 +127,8 @@ En Linux o macOS se usan los mismos scripts con extensión `.sh`.
 | `api-fixture` | La API no está corriendo o corre código sin `/metrics` | Levantarla (paso 2) y abrir http://localhost:8000/metrics |
 | `influxdb` | `401`: falta el token o `monitoreo/secretos/influxdb3-token` está vacío | Verificar que exista `influxdb/.influxdb3-token` (Hito 8) y volver a correr `iniciar_monitoreo` |
 | `iris` | IRIS todavía arrancando (tarda 1 a 2 minutos). En Windows, contenedor creado sin el volumen de Docker: IRIS no puede hacer `chown` de `/durable` y no abre sus puertos (README del Hito 9). | Esperar. Si no levanta: `cd iris; .\scripts\ejecutar_todo.ps1 -VolumenDocker` |
+| `iris` (Windows) | `ports are not available`: Windows reserva un rango que incluye el 52773 (`netsh interface ipv4 show excludedportrange protocol=tcp`) | `iniciar_monitoreo` recrea IRIS con `compose/iris-puertos-windows.yml` (1972 y **18773**). Prometheus la lee por la red de Docker, así que el target no cambia. |
+| API → IRIS | `Access Denied`: IRIS Community obliga a cambiar la contraseña de `_SYSTEM` (Hito 11, C1) | Poner la contraseña real en `conectividad/config/configuracion.env` (fuera de Git). `probar_iris` lo verifica. |
 | `mongodb` | El exporter no puede autenticarse | Revisar `MONGODB_EXPORTER_URI` en `monitoreo/.env` |
 | `sonda-tcp` de Cassandra | El nodo está arrancando (1 a 2 minutos) | Esperar a que `/salud` de la API la vea disponible |
 
@@ -137,7 +158,7 @@ El paso a paso de la demo, con lo que se muestra y el plan B si algo falla, est�
 - `monitoreo/.env` (contraseña de Grafana generada al azar y URI del exporter de Mongo) y `monitoreo/secretos/` (token de InfluxDB) están en `.gitignore`.
 - Prometheus lee el token de InfluxDB desde un archivo (`credentials_file`); el token no aparece en ningún `.yml`.
 - Todos los puertos se publican solo en `127.0.0.1`.
-- Los scripts pasan toda la evidencia por `enmascarar()` (`scripts/lib_monitoreo.py`) antes de escribirla.
+- Los scripts pasan toda la evidencia por `enmascarar()` (`scripts/lib_monitoreo.py`) antes de escribirla. Tapa los valores de claves `PASSWORD`, `TOKEN` y `URI` de `monitoreo/.env` y de `conectividad/config/configuracion.env`, salvo los valores de laboratorio que ya están publicados en los `docker-compose` (por ejemplo `fixture2030`).
 - El tablero y las capturas muestran métricas, nunca credenciales.
 
 ## Trazabilidad (RNF2)

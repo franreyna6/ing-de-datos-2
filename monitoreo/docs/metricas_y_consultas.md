@@ -135,4 +135,4 @@ redis_memory_used_bytes / redis_memory_max_bytes
 | **Distribución** | Comparación por base (Q5, operaciones por fuente), escrituras por partido | Cómo se reparte el trabajo entre bases y partidos. La distribución entre nodos y regiones **no** existe en el laboratorio. |
 | **Recuperación** | Tiempo entre `docker start` y la vuelta de Q6 a 1; Q7 volviendo a su nivel | Tiempo de recuperación medido en la prueba controlada. |
 
-Los valores medidos están en [`limitaciones_y_evidencia.md`](limitaciones_y_evidencia.md) y en el informe de la prueba (`../evidencia/prueba_de_falla/<etiqueta>/resumen.md`).
+Los valores medidos están en [`limitaciones_y_evidencia.md`](limitaciones_y_evidencia.md) y en el informe de la prueba ([`../evidencia/prueba_de_falla/20261126-054628/resumen.md`](../evidencia/prueba_de_falla/20261126-054628/resumen.md)).

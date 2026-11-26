@@ -1,0 +1,792 @@
+{
+  "fecha_utc": "2026-11-26T05:46:54Z",
+  "git": {
+    "commit": "85e91ae8421559259fddd841b753274c645bcfb3",
+    "commit_corto": "85e91ae",
+    "rama": "main",
+    "cambios_sin_commit_en_api_o_monitoreo": true
+  },
+  "servicios": {
+    "prometheus_listo": true,
+    "alertmanager_listo": true,
+    "grafana_listo": true
+  },
+  "resumen": {
+    "targets": 13,
+    "up": 13,
+    "down": 0,
+    "sondas_fallidas": 0
+  },
+  "targets": [
+    {
+      "job": "api-fixture",
+      "componente": "api",
+      "mecanismo": "instrumentacion_propia",
+      "capa": "aplicacion",
+      "hito": "10",
+      "instance": "host.docker.internal:8000",
+      "scrape_url": "http://host.docker.internal:8000/metrics",
+      "estado": "UP",
+      "ultimo_error": "",
+      "duracion_ultimo_scrape_s": 0.0057,
+      "ultimo_scrape": "2026-11-26T05:46:49.694752341Z"
+    },
+    {
+      "job": "influxdb",
+      "componente": "influxdb",
+      "mecanismo": "endpoint_nativo",
+      "capa": "infraestructura",
+      "hito": "8",
+      "instance": "host.docker.internal:8181",
+      "scrape_url": "http://host.docker.internal:8181/metrics",
+      "estado": "UP",
+      "ultimo_error": "",
+      "duracion_ultimo_scrape_s": 0.0247,
+      "ultimo_scrape": "2026-11-26T05:46:49.896344476Z"
+    },
+    {
+      "job": "iris",
+      "componente": "iris",
+      "mecanismo": "endpoint_nativo",
+      "capa": "infraestructura",
+      "hito": "9",
+      "instance": "fixture2030-iris:52773",
+      "scrape_url": "http://fixture2030-iris:52773/api/monitor/metrics",
+      "estado": "UP",
+      "ultimo_error": "",
+      "duracion_ultimo_scrape_s": 0.0464,
+      "ultimo_scrape": "2026-11-26T05:46:52.055669481Z"
+    },
+    {
+      "job": "mongodb",
+      "componente": "mongodb",
+      "mecanismo": "exporter",
+      "capa": "infraestructura",
+      "hito": "4",
+      "instance": "mongodb-exporter:9216",
+      "scrape_url": "http://mongodb-exporter:9216/metrics",
+      "estado": "UP",
+      "ultimo_error": "",
+      "duracion_ultimo_scrape_s": 0.1913,
+      "ultimo_scrape": "2026-11-26T05:46:46.857150106Z"
+    },
+    {
+      "job": "redis",
+      "componente": "redis",
+      "mecanismo": "exporter",
+      "capa": "infraestructura",
+      "hito": "7",
+      "instance": "redis-exporter:9121",
+      "scrape_url": "http://redis-exporter:9121/metrics",
+      "estado": "UP",
+      "ultimo_error": "",
+      "duracion_ultimo_scrape_s": 0.0288,
+      "ultimo_scrape": "2026-11-26T05:46:47.198811871Z"
+    },
+    {
+      "job": "sonda-http",
+      "componente": "neo4j",
+      "mecanismo": "sonda_blackbox",
+      "capa": "infraestructura",
+      "hito": "5",
+      "instance": "http://host.docker.internal:7474/",
+      "scrape_url": "http://blackbox-exporter:9115/probe?module=http_servicio&target=http%3A%2F%2Fhost.docker.internal%3A7474%2F",
+      "estado": "UP",
+      "ultimo_error": "",
+      "duracion_ultimo_scrape_s": 0.021,
+      "ultimo_scrape": "2026-11-26T05:46:47.08274129Z",
+      "sonda_ok": true
+    },
+    {
+      "job": "sonda-http",
+      "componente": "influxdb",
+      "mecanismo": "sonda_blackbox",
+      "capa": "infraestructura",
+      "hito": "8",
+      "instance": "http://host.docker.internal:8181/health",
+      "scrape_url": "http://blackbox-exporter:9115/probe?module=http_servicio&target=http%3A%2F%2Fhost.docker.internal%3A8181%2Fhealth",
+      "estado": "UP",
+      "ultimo_error": "",
+      "duracion_ultimo_scrape_s": 0.0121,
+      "ultimo_scrape": "2026-11-26T05:46:46.751108099Z",
+      "sonda_ok": true
+    },
+    {
+      "job": "sonda-redis",
+      "componente": "redis",
+      "mecanismo": "sonda_blackbox",
+      "capa": "infraestructura",
+      "hito": "7",
+      "instance": "host.docker.internal:6379",
+      "scrape_url": "http://blackbox-exporter:9115/probe?module=redis_ping&target=host.docker.internal%3A6379",
+      "estado": "UP",
+      "ultimo_error": "",
+      "duracion_ultimo_scrape_s": 0.0087,
+      "ultimo_scrape": "2026-11-26T05:46:53.60372416Z",
+      "sonda_ok": true
+    },
+    {
+      "job": "sonda-tcp",
+      "componente": "iris",
+      "mecanismo": "sonda_blackbox",
+      "capa": "infraestructura",
+      "hito": "9",
+      "instance": "host.docker.internal:1972",
+      "scrape_url": "http://blackbox-exporter:9115/probe?module=tcp_connect&target=host.docker.internal%3A1972",
+      "estado": "UP",
+      "ultimo_error": "",
+      "duracion_ultimo_scrape_s": 0.0049,
+      "ultimo_scrape": "2026-11-26T05:46:48.713367126Z",
+      "sonda_ok": true
+    },
+    {
+      "job": "sonda-tcp",
+      "componente": "mongodb",
+      "mecanismo": "sonda_blackbox",
+      "capa": "infraestructura",
+      "hito": "4",
+      "instance": "host.docker.internal:27017",
+      "scrape_url": "http://blackbox-exporter:9115/probe?module=tcp_connect&target=host.docker.internal%3A27017",
+      "estado": "UP",
+      "ultimo_error": "",
+      "duracion_ultimo_scrape_s": 0.0038,
+      "ultimo_scrape": "2026-11-26T05:46:50.299266184Z",
+      "sonda_ok": true
+    },
+    {
+      "job": "sonda-tcp",
+      "componente": "neo4j",
+      "mecanismo": "sonda_blackbox",
+      "capa": "infraestructura",
+      "hito": "5",
+      "instance": "host.docker.internal:7687",
+      "scrape_url": "http://blackbox-exporter:9115/probe?module=tcp_connect&target=host.docker.internal%3A7687",
+      "estado": "UP",
+      "ultimo_error": "",
+      "duracion_ultimo_scrape_s": 0.0035,
+      "ultimo_scrape": "2026-11-26T05:46:51.950906245Z",
+      "sonda_ok": true
+    },
+    {
+      "job": "sonda-tcp",
+      "componente": "cassandra",
+      "mecanismo": "sonda_blackbox",
+      "capa": "infraestructura",
+      "hito": "6",
+      "instance": "host.docker.internal:9042",
+      "scrape_url": "http://blackbox-exporter:9115/probe?module=tcp_connect&target=host.docker.internal%3A9042",
+      "estado": "UP",
+      "ultimo_error": "",
+      "duracion_ultimo_scrape_s": 0.0063,
+      "ultimo_scrape": "2026-11-26T05:46:47.844506604Z",
+      "sonda_ok": true
+    },
+    {
+      "job": "prometheus",
+      "componente": "prometheus",
+      "mecanismo": "endpoint_nativo",
+      "capa": "monitoreo",
+      "hito": "",
+      "instance": "localhost:9090",
+      "scrape_url": "http://localhost:9090/metrics",
+      "estado": "UP",
+      "ultimo_error": "",
+      "duracion_ultimo_scrape_s": 0.0061,
+      "ultimo_scrape": "2026-11-26T05:46:40.043762347Z"
+    }
+  ],
+  "reglas_de_alerta": {
+    "BaseNoDisponible": {
+      "grupo": "fixture2030-disponibilidad",
+      "estado": "inactive",
+      "severidad": "critica",
+      "salud": "ok"
+    },
+    "SondaExternaFallida": {
+      "grupo": "fixture2030-disponibilidad",
+      "estado": "inactive",
+      "severidad": "advertencia",
+      "salud": "ok"
+    },
+    "TargetDeMonitoreoCaido": {
+      "grupo": "fixture2030-disponibilidad",
+      "estado": "firing",
+      "severidad": "advertencia",
+      "salud": "ok"
+    },
+    "LatenciaAPIp95SobreSLO": {
+      "grupo": "fixture2030-rendimiento",
+      "estado": "inactive",
+      "severidad": "advertencia",
+      "salud": "ok"
+    },
+    "TasaErrores5xxAlta": {
+      "grupo": "fixture2030-rendimiento",
+      "estado": "inactive",
+      "severidad": "critica",
+      "salud": "ok"
+    },
+    "CacheComentariosDegradada": {
+      "grupo": "fixture2030-rendimiento",
+      "estado": "inactive",
+      "severidad": "advertencia",
+      "salud": "ok"
+    },
+    "RedisMemoriaAlta": {
+      "grupo": "fixture2030-rendimiento",
+      "estado": "inactive",
+      "severidad": "advertencia",
+      "salud": "ok"
+    }
+  },
+  "metricas_por_job": {
+    "api-fixture": {
+      "cantidad_de_metricas": 24,
+      "ejemplos": [
+        "ALERTS",
+        "ALERTS_FOR_STATE",
+        "fixture_api_request_duration_seconds_bucket",
+        "fixture_api_request_duration_seconds_count",
+        "fixture_api_request_duration_seconds_sum",
+        "fixture_api_requests_total",
+        "fixture_cache_comentarios_total",
+        "fixture_comentarios_creados_total",
+        "fixture_cortocircuito_abierto",
+        "fixture_cortocircuito_rechazos_total",
+        "fixture_dependencia_chequeo_seconds",
+        "fixture_dependencia_disponible",
+        "fixture_dependencia_duration_seconds_bucket",
+        "fixture_dependencia_duration_seconds_count",
+        "fixture_dependencia_duration_seconds_sum"
+      ]
+    },
+    "influxdb": {
+      "cantidad_de_metricas": 138,
+      "ejemplos": [
+        "datafusion_mem_pool_bytes",
+        "http_request_duration_seconds_bucket",
+        "http_request_duration_seconds_count",
+        "http_request_duration_seconds_sum",
+        "http_requests_total",
+        "http_response_body_size_bytes_bucket",
+        "http_response_body_size_bytes_count",
+        "http_response_body_size_bytes_sum",
+        "influxdb3_last_values_cache_query_duration_seconds_bucket",
+        "influxdb3_last_values_cache_query_duration_seconds_count",
+        "influxdb3_last_values_cache_query_duration_seconds_sum",
+        "influxdb3_parquet_cache_access_total",
+        "influxdb3_parquet_cache_size_bytes",
+        "influxdb3_parquet_cache_size_number_of_files",
+        "influxdb_iox_query_log_compute_duration_seconds_bucket",
+        "influxdb_iox_query_log_compute_duration_seconds_count",
+        "influxdb_iox_query_log_compute_duration_seconds_sum",
+        "influxdb_iox_query_log_deduplicated_parquet_files_bucket",
+        "influxdb_iox_query_log_deduplicated_parquet_files_count",
+        "influxdb_iox_query_log_deduplicated_parquet_files_sum",
+        "influxdb_iox_query_log_deduplicated_partitions_bucket",
+        "influxdb_iox_query_log_deduplicated_partitions_count",
+        "influxdb_iox_query_log_deduplicated_partitions_sum",
+        "influxdb_iox_query_log_end2end_duration_seconds_bucket",
+        "influxdb_iox_query_log_end2end_duration_seconds_count"
+      ]
+    },
+    "iris": {
+      "cantidad_de_metricas": 124,
+      "ejemplos": [
+        "ALERTS",
+        "ALERTS_FOR_STATE",
+        "iris_cache_efficiency",
+        "iris_cached_query_by_ns",
+        "iris_cpu_pct",
+        "iris_cpu_usage",
+        "iris_csp_activity",
+        "iris_csp_actual_connections",
+        "iris_csp_gateway_latency",
+        "iris_csp_in_use_connections",
+        "iris_csp_private_connections",
+        "iris_csp_sessions",
+        "iris_db_expansion_size_mb",
+        "iris_db_file_limit_percent",
+        "iris_db_free_space",
+        "iris_db_latency",
+        "iris_db_max_size_mb",
+        "iris_db_size_mb",
+        "iris_directory_space",
+        "iris_disk_percent_full",
+        "iris_ecp_conn",
+        "iris_ecp_conn_max",
+        "iris_ecps_conn",
+        "iris_ecps_conn_max",
+        "iris_glo_a_seize_per_sec"
+      ]
+    },
+    "mongodb": {
+      "cantidad_de_metricas": 2495,
+      "ejemplos": [
+        "collector_scrape_time_ms",
+        "mongodb_asserts_total",
+        "mongodb_connections",
+        "mongodb_currentop_query_uptime",
+        "mongodb_dbstats_avgObjSize",
+        "mongodb_dbstats_collections",
+        "mongodb_dbstats_dataSize",
+        "mongodb_dbstats_freeStorageSize",
+        "mongodb_dbstats_fsTotalSize",
+        "mongodb_dbstats_fsUsedSize",
+        "mongodb_dbstats_indexFreeStorageSize",
+        "mongodb_dbstats_indexSize",
+        "mongodb_dbstats_indexes",
+        "mongodb_dbstats_objects",
+        "mongodb_dbstats_ok",
+        "mongodb_dbstats_scaleFactor",
+        "mongodb_dbstats_storageSize",
+        "mongodb_dbstats_totalFreeStorageSize",
+        "mongodb_dbstats_totalSize",
+        "mongodb_dbstats_views",
+        "mongodb_end",
+        "mongodb_extra_info_page_faults_total",
+        "mongodb_instance_local_time",
+        "mongodb_instance_uptime_seconds",
+        "mongodb_memory"
+      ]
+    },
+    "prometheus": {
+      "cantidad_de_metricas": 293,
+      "ejemplos": [
+        "net_conntrack_dialer_conn_attempted_total",
+        "net_conntrack_dialer_conn_closed_total",
+        "net_conntrack_dialer_conn_established_total",
+        "net_conntrack_dialer_conn_failed_total",
+        "net_conntrack_listener_conn_accepted_total",
+        "net_conntrack_listener_conn_closed_total",
+        "prometheus_api_remote_read_queries",
+        "prometheus_build_info",
+        "prometheus_config_last_reload_success_timestamp_seconds",
+        "prometheus_config_last_reload_successful",
+        "prometheus_engine_queries",
+        "prometheus_engine_queries_concurrent_max",
+        "prometheus_engine_query_duration_seconds",
+        "prometheus_engine_query_duration_seconds_count",
+        "prometheus_engine_query_duration_seconds_sum",
+        "prometheus_engine_query_log_enabled",
+        "prometheus_engine_query_log_failures_total",
+        "prometheus_engine_query_samples_total",
+        "prometheus_http_request_duration_seconds_bucket",
+        "prometheus_http_request_duration_seconds_count",
+        "prometheus_http_request_duration_seconds_sum",
+        "prometheus_http_requests_total",
+        "prometheus_http_response_size_bytes_bucket",
+        "prometheus_http_response_size_bytes_count",
+        "prometheus_http_response_size_bytes_sum"
+      ]
+    },
+    "redis": {
+      "cantidad_de_metricas": 222,
+      "ejemplos": [
+        "redis_acl_access_denied_auth_total",
+        "redis_acl_access_denied_channel_total",
+        "redis_acl_access_denied_cmd_total",
+        "redis_acl_access_denied_key_total",
+        "redis_active_defrag_running",
+        "redis_allocator_active_bytes",
+        "redis_allocator_allocated_bytes",
+        "redis_allocator_frag_bytes",
+        "redis_allocator_frag_ratio",
+        "redis_allocator_resident_bytes",
+        "redis_allocator_rss_bytes",
+        "redis_allocator_rss_ratio",
+        "redis_aof_base_size_bytes",
+        "redis_aof_buffer_length",
+        "redis_aof_current_rewrite_duration_sec",
+        "redis_aof_current_size_bytes",
+        "redis_aof_delayed_fsync",
+        "redis_aof_enabled",
+        "redis_aof_last_bgrewrite_status",
+        "redis_aof_last_cow_size_bytes",
+        "redis_aof_last_rewrite_duration_sec",
+        "redis_aof_last_write_status",
+        "redis_aof_pending_bio_fsync",
+        "redis_aof_pending_rewrite",
+        "redis_aof_rewrite_in_progress"
+      ]
+    },
+    "sonda-http": {
+      "cantidad_de_metricas": 18,
+      "ejemplos": [
+        "probe_dns_lookup_time_seconds",
+        "probe_duration_seconds",
+        "probe_failed_due_to_regex",
+        "probe_http_content_length",
+        "probe_http_duration_seconds",
+        "probe_http_redirects",
+        "probe_http_ssl",
+        "probe_http_status_code",
+        "probe_http_uncompressed_body_length",
+        "probe_http_version",
+        "probe_ip_addr_hash",
+        "probe_ip_protocol",
+        "probe_success"
+      ]
+    },
+    "sonda-redis": {
+      "cantidad_de_metricas": 13,
+      "ejemplos": [
+        "ALERTS",
+        "ALERTS_FOR_STATE",
+        "probe_dns_lookup_time_seconds",
+        "probe_duration_seconds",
+        "probe_failed_due_to_regex",
+        "probe_ip_addr_hash",
+        "probe_ip_protocol",
+        "probe_success"
+      ]
+    },
+    "sonda-tcp": {
+      "cantidad_de_metricas": 13,
+      "ejemplos": [
+        "ALERTS",
+        "ALERTS_FOR_STATE",
+        "probe_dns_lookup_time_seconds",
+        "probe_duration_seconds",
+        "probe_failed_due_to_regex",
+        "probe_ip_addr_hash",
+        "probe_ip_protocol",
+        "probe_success"
+      ]
+    }
+  },
+  "consultas_documentadas": [
+    {
+      "id": "Q1",
+      "nombre": "Targets UP por job",
+      "unidad": "1 = UP, 0 = DOWN",
+      "ventana": "instantanea",
+      "expr": "up",
+      "resultado": [
+        {
+          "etiquetas": {
+            "__name__": "up",
+            "componente": "neo4j",
+            "instance": "host.docker.internal:7687",
+            "job": "sonda-tcp"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "up",
+            "componente": "redis",
+            "instance": "host.docker.internal:6379",
+            "job": "sonda-redis"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "up",
+            "componente": "prometheus",
+            "instance": "localhost:9090",
+            "job": "prometheus"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "up",
+            "componente": "influxdb",
+            "instance": "http://host.docker.internal:8181/health",
+            "job": "sonda-http"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "up",
+            "componente": "mongodb",
+            "instance": "mongodb-exporter:9216",
+            "job": "mongodb"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "up",
+            "componente": "redis",
+            "instance": "redis-exporter:9121",
+            "job": "redis"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "up",
+            "componente": "neo4j",
+            "instance": "http://host.docker.internal:7474/",
+            "job": "sonda-http"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "up",
+            "componente": "cassandra",
+            "instance": "host.docker.internal:9042",
+            "job": "sonda-tcp"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "up",
+            "componente": "iris",
+            "instance": "host.docker.internal:1972",
+            "job": "sonda-tcp"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "up",
+            "componente": "api",
+            "instance": "host.docker.internal:8000",
+            "job": "api-fixture"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "up",
+            "componente": "influxdb",
+            "instance": "host.docker.internal:8181",
+            "job": "influxdb"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "up",
+            "componente": "mongodb",
+            "instance": "host.docker.internal:27017",
+            "job": "sonda-tcp"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "up",
+            "componente": "iris",
+            "instance": "fixture2030-iris:52773",
+            "job": "iris"
+          },
+          "valor": "1"
+        }
+      ]
+    },
+    {
+      "id": "Q2",
+      "nombre": "Throughput de la API",
+      "unidad": "requests/s",
+      "ventana": "1 min",
+      "expr": "sum(rate(fixture_api_requests_total[1m]))",
+      "resultado": []
+    },
+    {
+      "id": "Q3",
+      "nombre": "Latencia p95 de la API",
+      "unidad": "segundos",
+      "ventana": "1 min",
+      "expr": "histogram_quantile(0.95, sum by (le) (rate(fixture_api_request_duration_seconds_bucket[1m])))",
+      "resultado": []
+    },
+    {
+      "id": "Q4",
+      "nombre": "Tasa de errores 5xx de la API",
+      "unidad": "proporcion (0-1)",
+      "ventana": "1 min",
+      "expr": "sum(rate(fixture_api_requests_total{estado=~\"5..\"}[1m])) / sum(rate(fixture_api_requests_total[1m]))",
+      "resultado": []
+    },
+    {
+      "id": "Q5",
+      "nombre": "Latencia p95 por base",
+      "unidad": "segundos",
+      "ventana": "1 min",
+      "expr": "histogram_quantile(0.95, sum by (le, fuente) (rate(fixture_dependencia_duration_seconds_bucket[1m])))",
+      "resultado": []
+    },
+    {
+      "id": "Q6",
+      "nombre": "Disponibilidad por base vista por la API",
+      "unidad": "1 = disponible",
+      "ventana": "instantanea",
+      "expr": "fixture_dependencia_disponible",
+      "resultado": [
+        {
+          "etiquetas": {
+            "__name__": "fixture_dependencia_disponible",
+            "componente": "api",
+            "fuente": "mongodb",
+            "instance": "host.docker.internal:8000",
+            "job": "api-fixture"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "fixture_dependencia_disponible",
+            "componente": "api",
+            "fuente": "neo4j",
+            "instance": "host.docker.internal:8000",
+            "job": "api-fixture"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "fixture_dependencia_disponible",
+            "componente": "api",
+            "fuente": "cassandra",
+            "instance": "host.docker.internal:8000",
+            "job": "api-fixture"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "fixture_dependencia_disponible",
+            "componente": "api",
+            "fuente": "redis",
+            "instance": "host.docker.internal:8000",
+            "job": "api-fixture"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "fixture_dependencia_disponible",
+            "componente": "api",
+            "fuente": "influxdb",
+            "instance": "host.docker.internal:8000",
+            "job": "api-fixture"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "fixture_dependencia_disponible",
+            "componente": "api",
+            "fuente": "iris",
+            "instance": "host.docker.internal:8000",
+            "job": "api-fixture"
+          },
+          "valor": "1"
+        }
+      ]
+    },
+    {
+      "id": "Q7",
+      "nombre": "Tasa de aciertos de la cache de comentarios",
+      "unidad": "proporcion (0-1)",
+      "ventana": "1 min",
+      "expr": "sum(rate(fixture_cache_comentarios_total{estado=\"HIT\"}[1m])) / sum(rate(fixture_cache_comentarios_total{estado=~\"HIT|MISS\"}[1m]))",
+      "resultado": []
+    },
+    {
+      "id": "Q8",
+      "nombre": "Memoria de Redis usada / maxima",
+      "unidad": "proporcion (0-1)",
+      "ventana": "instantanea",
+      "expr": "redis_memory_used_bytes / redis_memory_max_bytes",
+      "resultado": [
+        {
+          "etiquetas": {
+            "componente": "redis",
+            "instance": "redis-exporter:9121",
+            "job": "redis"
+          },
+          "valor": "0.016068954467773438"
+        }
+      ]
+    },
+    {
+      "id": "Q9",
+      "nombre": "Sondas externas que fallan",
+      "unidad": "1 = OK, 0 = falla",
+      "ventana": "instantanea",
+      "expr": "probe_success",
+      "resultado": [
+        {
+          "etiquetas": {
+            "__name__": "probe_success",
+            "componente": "neo4j",
+            "instance": "host.docker.internal:7687",
+            "job": "sonda-tcp"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "probe_success",
+            "componente": "redis",
+            "instance": "host.docker.internal:6379",
+            "job": "sonda-redis"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "probe_success",
+            "componente": "influxdb",
+            "instance": "http://host.docker.internal:8181/health",
+            "job": "sonda-http"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "probe_success",
+            "componente": "neo4j",
+            "instance": "http://host.docker.internal:7474/",
+            "job": "sonda-http"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "probe_success",
+            "componente": "cassandra",
+            "instance": "host.docker.internal:9042",
+            "job": "sonda-tcp"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "probe_success",
+            "componente": "iris",
+            "instance": "host.docker.internal:1972",
+            "job": "sonda-tcp"
+          },
+          "valor": "1"
+        },
+        {
+          "etiquetas": {
+            "__name__": "probe_success",
+            "componente": "mongodb",
+            "instance": "host.docker.internal:27017",
+            "job": "sonda-tcp"
+          },
+          "valor": "1"
+        }
+      ]
+    },
+    {
+      "id": "Q10",
+      "nombre": "Escrituras en Cassandra por partido",
+      "unidad": "escrituras/s",
+      "ventana": "1 min",
+      "expr": "sum by (partido) (rate(fixture_comentarios_creados_total[1m]))",
+      "resultado": []
+    }
+  ]
+}

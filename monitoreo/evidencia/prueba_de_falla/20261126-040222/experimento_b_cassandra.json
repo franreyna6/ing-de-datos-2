@@ -1,0 +1,304 @@
+{
+  "marcas": {
+    "inicio": 1795666707.3561342,
+    "detenido": 1795666714.485465,
+    "api_ve_caida": 1795666734.5517988,
+    "alerta_firing": 1795666819.617976,
+    "inicio_recuperacion": 1795666826.7418299,
+    "api_ve_disponible": 1795667017.7439866,
+    "comentarios_200": 1795666992.7298,
+    "fin": 1795667064.8905897
+  },
+  "rutas_antes": [
+    {
+      "fuente": "cassandra",
+      "ruta": "/partidos/F2030-063/comentarios",
+      "http": 200,
+      "codigo_error": "",
+      "request_id": "d246c0bf",
+      "latencia_ms": 21.1
+    },
+    {
+      "fuente": "mongodb",
+      "ruta": "/equipos/ARG",
+      "http": 404,
+      "codigo_error": "NOT_FOUND",
+      "request_id": "9e409f22",
+      "latencia_ms": 12.8
+    },
+    {
+      "fuente": "neo4j",
+      "ruta": "/partidos/F2030-001/eventos",
+      "http": 200,
+      "codigo_error": "",
+      "request_id": "61103c42",
+      "latencia_ms": 6.0
+    },
+    {
+      "fuente": "iris",
+      "ruta": "/partidos/F2030-001/detalle",
+      "http": 503,
+      "codigo_error": "DEPENDENCY_UNAVAILABLE",
+      "request_id": "626773af",
+      "latencia_ms": 2074.2
+    },
+    {
+      "fuente": "redis",
+      "ruta": "/sesiones/S0001",
+      "http": 404,
+      "codigo_error": "NOT_FOUND",
+      "request_id": "4252112c",
+      "latencia_ms": 16.9
+    }
+  ],
+  "rutas_durante": [
+    {
+      "fuente": "cassandra",
+      "ruta": "/partidos/F2030-063/comentarios",
+      "http": 503,
+      "codigo_error": "DEPENDENCY_UNAVAILABLE",
+      "request_id": "058ce540",
+      "latencia_ms": 13.1
+    },
+    {
+      "fuente": "mongodb",
+      "ruta": "/equipos/ARG",
+      "http": 404,
+      "codigo_error": "NOT_FOUND",
+      "request_id": "ee938d3f",
+      "latencia_ms": 15.9
+    },
+    {
+      "fuente": "neo4j",
+      "ruta": "/partidos/F2030-001/eventos",
+      "http": 200,
+      "codigo_error": "",
+      "request_id": "afb4af26",
+      "latencia_ms": 5.9
+    },
+    {
+      "fuente": "iris",
+      "ruta": "/partidos/F2030-001/detalle",
+      "http": 503,
+      "codigo_error": "DEPENDENCY_UNAVAILABLE",
+      "request_id": "7a3d7524",
+      "latencia_ms": 2068.3
+    },
+    {
+      "fuente": "redis",
+      "ruta": "/sesiones/S0001",
+      "http": 404,
+      "codigo_error": "NOT_FOUND",
+      "request_id": "887ebd64",
+      "latencia_ms": 15.9
+    }
+  ],
+  "rutas_despues": [
+    {
+      "fuente": "cassandra",
+      "ruta": "/partidos/F2030-063/comentarios",
+      "http": 200,
+      "codigo_error": "",
+      "request_id": "347af8bd",
+      "latencia_ms": 44.4
+    },
+    {
+      "fuente": "mongodb",
+      "ruta": "/equipos/ARG",
+      "http": 404,
+      "codigo_error": "NOT_FOUND",
+      "request_id": "6de08761",
+      "latencia_ms": 13.6
+    },
+    {
+      "fuente": "neo4j",
+      "ruta": "/partidos/F2030-001/eventos",
+      "http": 200,
+      "codigo_error": "",
+      "request_id": "0d494c72",
+      "latencia_ms": 21.3
+    },
+    {
+      "fuente": "iris",
+      "ruta": "/partidos/F2030-001/detalle",
+      "http": 503,
+      "codigo_error": "DEPENDENCY_UNAVAILABLE",
+      "request_id": "b70e2853",
+      "latencia_ms": 2064.1
+    },
+    {
+      "fuente": "redis",
+      "ruta": "/sesiones/S0001",
+      "http": 404,
+      "codigo_error": "NOT_FOUND",
+      "request_id": "fe5ade20",
+      "latencia_ms": 3.0
+    }
+  ],
+  "alertas": [
+    {
+      "alerta": "BaseNoDisponible",
+      "estado": "firing",
+      "componente": "iris",
+      "origen": "api-fixture",
+      "severidad": "critica",
+      "desde": 1795666647.356,
+      "hasta": 1795667052.356,
+      "desde_utc": "2026-11-26T04:17:27Z",
+      "hasta_utc": "2026-11-26T04:24:12Z"
+    },
+    {
+      "alerta": "LatenciaAPIp95SobreSLO",
+      "estado": "firing",
+      "componente": "api",
+      "origen": "",
+      "severidad": "advertencia",
+      "desde": 1795666647.356,
+      "hasta": 1795666767.356,
+      "desde_utc": "2026-11-26T04:17:27Z",
+      "hasta_utc": "2026-11-26T04:19:27Z"
+    },
+    {
+      "alerta": "SondaExternaFallida",
+      "estado": "firing",
+      "componente": "cassandra",
+      "origen": "sonda-tcp",
+      "severidad": "advertencia",
+      "desde": 1795666647.356,
+      "hasta": 1795667052.356,
+      "desde_utc": "2026-11-26T04:17:27Z",
+      "hasta_utc": "2026-11-26T04:24:12Z"
+    },
+    {
+      "alerta": "SondaExternaFallida",
+      "estado": "firing",
+      "componente": "iris",
+      "origen": "sonda-tcp",
+      "severidad": "advertencia",
+      "desde": 1795666647.356,
+      "hasta": 1795667052.356,
+      "desde_utc": "2026-11-26T04:17:27Z",
+      "hasta_utc": "2026-11-26T04:24:12Z"
+    },
+    {
+      "alerta": "SondaExternaFallida",
+      "estado": "firing",
+      "componente": "mongodb",
+      "origen": "sonda-tcp",
+      "severidad": "advertencia",
+      "desde": 1795666647.356,
+      "hasta": 1795667052.356,
+      "desde_utc": "2026-11-26T04:17:27Z",
+      "hasta_utc": "2026-11-26T04:24:12Z"
+    },
+    {
+      "alerta": "SondaExternaFallida",
+      "estado": "firing",
+      "componente": "neo4j",
+      "origen": "sonda-tcp",
+      "severidad": "advertencia",
+      "desde": 1795666647.356,
+      "hasta": 1795667052.356,
+      "desde_utc": "2026-11-26T04:17:27Z",
+      "hasta_utc": "2026-11-26T04:24:12Z"
+    },
+    {
+      "alerta": "SondaExternaFallida",
+      "estado": "firing",
+      "componente": "redis",
+      "origen": "sonda-redis",
+      "severidad": "advertencia",
+      "desde": 1795666647.356,
+      "hasta": 1795667052.356,
+      "desde_utc": "2026-11-26T04:17:27Z",
+      "hasta_utc": "2026-11-26T04:24:12Z"
+    },
+    {
+      "alerta": "TargetDeMonitoreoCaido",
+      "estado": "firing",
+      "componente": "iris",
+      "origen": "iris",
+      "severidad": "advertencia",
+      "desde": 1795666647.356,
+      "hasta": 1795667052.356,
+      "desde_utc": "2026-11-26T04:17:27Z",
+      "hasta_utc": "2026-11-26T04:24:12Z"
+    },
+    {
+      "alerta": "TasaErrores5xxAlta",
+      "estado": "firing",
+      "componente": "api",
+      "origen": "",
+      "severidad": "critica",
+      "desde": 1795666647.356,
+      "hasta": 1795666767.356,
+      "desde_utc": "2026-11-26T04:17:27Z",
+      "hasta_utc": "2026-11-26T04:19:27Z"
+    },
+    {
+      "alerta": "BaseNoDisponible",
+      "estado": "pending",
+      "componente": "cassandra",
+      "origen": "api-fixture",
+      "severidad": "critica",
+      "desde": 1795666752.356,
+      "hasta": 1795666797.356,
+      "desde_utc": "2026-11-26T04:19:12Z",
+      "hasta_utc": "2026-11-26T04:19:57Z"
+    },
+    {
+      "alerta": "BaseNoDisponible",
+      "estado": "firing",
+      "componente": "cassandra",
+      "origen": "api-fixture",
+      "severidad": "critica",
+      "desde": 1795666812.356,
+      "hasta": 1795667022.356,
+      "desde_utc": "2026-11-26T04:20:12Z",
+      "hasta_utc": "2026-11-26T04:23:42Z"
+    },
+    {
+      "alerta": "LatenciaAPIp95SobreSLO",
+      "estado": "pending",
+      "componente": "api",
+      "origen": "",
+      "severidad": "advertencia",
+      "desde": 1795666857.356,
+      "hasta": 1795666887.356,
+      "desde_utc": "2026-11-26T04:20:57Z",
+      "hasta_utc": "2026-11-26T04:21:27Z"
+    },
+    {
+      "alerta": "TasaErrores5xxAlta",
+      "estado": "pending",
+      "componente": "api",
+      "origen": "",
+      "severidad": "critica",
+      "desde": 1795666857.356,
+      "hasta": 1795666902.356,
+      "desde_utc": "2026-11-26T04:20:57Z",
+      "hasta_utc": "2026-11-26T04:21:42Z"
+    },
+    {
+      "alerta": "TasaErrores5xxAlta",
+      "estado": "firing",
+      "componente": "api",
+      "origen": "",
+      "severidad": "critica",
+      "desde": 1795666917.356,
+      "hasta": 1795667052.356,
+      "desde_utc": "2026-11-26T04:21:57Z",
+      "hasta_utc": "2026-11-26T04:24:12Z"
+    }
+  ],
+  "marcas_utc": {
+    "inicio": "2026-11-26T04:18:27Z",
+    "detenido": "2026-11-26T04:18:34Z",
+    "api_ve_caida": "2026-11-26T04:18:54Z",
+    "alerta_firing": "2026-11-26T04:20:19Z",
+    "inicio_recuperacion": "2026-11-26T04:20:26Z",
+    "api_ve_disponible": "2026-11-26T04:23:37Z",
+    "comentarios_200": "2026-11-26T04:23:12Z",
+    "fin": "2026-11-26T04:24:24Z"
+  }
+}

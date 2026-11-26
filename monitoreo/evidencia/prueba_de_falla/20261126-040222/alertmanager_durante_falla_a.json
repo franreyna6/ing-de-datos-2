@@ -1,0 +1,182 @@
+[
+  {
+    "alerta": "BaseNoDisponible",
+    "labels": {
+      "alertname": "BaseNoDisponible",
+      "capa": "aplicacion",
+      "componente": "redis",
+      "fuente": "redis",
+      "hito": "10",
+      "instance": "host.docker.internal:8000",
+      "job": "api-fixture",
+      "mecanismo": "instrumentacion_propia",
+      "proyecto": "fixture2030",
+      "severidad": "critica"
+    },
+    "estado": "active",
+    "desde": "2026-11-26T04:14:18.581Z",
+    "resumen": "La API no puede usar redis desde hace mas de 1 minuto."
+  },
+  {
+    "alerta": "BaseNoDisponible",
+    "labels": {
+      "alertname": "BaseNoDisponible",
+      "capa": "aplicacion",
+      "componente": "iris",
+      "fuente": "iris",
+      "hito": "10",
+      "instance": "host.docker.internal:8000",
+      "job": "api-fixture",
+      "mecanismo": "instrumentacion_propia",
+      "proyecto": "fixture2030",
+      "severidad": "critica"
+    },
+    "estado": "active",
+    "desde": "2026-11-26T04:04:48.581Z",
+    "resumen": "La API no puede usar iris desde hace mas de 1 minuto."
+  },
+  {
+    "alerta": "TasaErrores5xxAlta",
+    "labels": {
+      "alertname": "TasaErrores5xxAlta",
+      "componente": "api",
+      "proyecto": "fixture2030",
+      "severidad": "critica"
+    },
+    "estado": "active",
+    "desde": "2026-11-26T04:11:43.424Z",
+    "resumen": "Mas del 1% de las requests de la API terminan en error 5xx."
+  },
+  {
+    "alerta": "SondaExternaFallida",
+    "labels": {
+      "alertname": "SondaExternaFallida",
+      "capa": "infraestructura",
+      "componente": "redis",
+      "hito": "7",
+      "instance": "host.docker.internal:6379",
+      "job": "sonda-redis",
+      "mecanismo": "sonda_blackbox",
+      "modelo": "clave-valor",
+      "proyecto": "fixture2030",
+      "severidad": "advertencia"
+    },
+    "estado": "active",
+    "desde": "2026-11-26T04:04:33.581Z",
+    "resumen": "redis no responde a la sonda sonda-redis (host.docker.internal:6379)."
+  },
+  {
+    "alerta": "SondaExternaFallida",
+    "labels": {
+      "alertname": "SondaExternaFallida",
+      "capa": "infraestructura",
+      "componente": "neo4j",
+      "hito": "5",
+      "instance": "host.docker.internal:7687",
+      "job": "sonda-tcp",
+      "mecanismo": "sonda_blackbox",
+      "modelo": "grafo",
+      "proyecto": "fixture2030",
+      "severidad": "advertencia"
+    },
+    "estado": "active",
+    "desde": "2026-11-26T04:04:33.581Z",
+    "resumen": "neo4j no responde a la sonda sonda-tcp (host.docker.internal:7687)."
+  },
+  {
+    "alerta": "CacheComentariosDegradada",
+    "labels": {
+      "alertname": "CacheComentariosDegradada",
+      "componente": "redis",
+      "proyecto": "fixture2030",
+      "severidad": "advertencia"
+    },
+    "estado": "active",
+    "desde": "2026-11-26T04:14:13.424Z",
+    "resumen": "La cache de comentarios acierta menos del 80% de las lecturas."
+  },
+  {
+    "alerta": "SondaExternaFallida",
+    "labels": {
+      "alertname": "SondaExternaFallida",
+      "capa": "infraestructura",
+      "componente": "iris",
+      "hito": "9",
+      "instance": "host.docker.internal:1972",
+      "job": "sonda-tcp",
+      "mecanismo": "sonda_blackbox",
+      "modelo": "objetos",
+      "proyecto": "fixture2030",
+      "severidad": "advertencia"
+    },
+    "estado": "active",
+    "desde": "2026-11-26T04:04:48.581Z",
+    "resumen": "iris no responde a la sonda sonda-tcp (host.docker.internal:1972)."
+  },
+  {
+    "alerta": "LatenciaAPIp95SobreSLO",
+    "labels": {
+      "alertname": "LatenciaAPIp95SobreSLO",
+      "componente": "api",
+      "proyecto": "fixture2030",
+      "severidad": "advertencia"
+    },
+    "estado": "suppressed",
+    "desde": "2026-11-26T04:11:43.424Z",
+    "resumen": "La latencia p95 de la API supera el SLO de 50 ms."
+  },
+  {
+    "alerta": "SondaExternaFallida",
+    "labels": {
+      "alertname": "SondaExternaFallida",
+      "capa": "infraestructura",
+      "componente": "cassandra",
+      "hito": "6",
+      "instance": "host.docker.internal:9042",
+      "job": "sonda-tcp",
+      "mecanismo": "sonda_blackbox",
+      "modelo": "tabular-columnar",
+      "proyecto": "fixture2030",
+      "severidad": "advertencia"
+    },
+    "estado": "active",
+    "desde": "2026-11-26T04:04:33.581Z",
+    "resumen": "cassandra no responde a la sonda sonda-tcp (host.docker.internal:9042)."
+  },
+  {
+    "alerta": "TargetDeMonitoreoCaido",
+    "labels": {
+      "alertname": "TargetDeMonitoreoCaido",
+      "capa": "infraestructura",
+      "componente": "iris",
+      "hito": "9",
+      "instance": "host.docker.internal:52773",
+      "job": "iris",
+      "mecanismo": "endpoint_nativo",
+      "modelo": "objetos",
+      "proyecto": "fixture2030",
+      "severidad": "advertencia"
+    },
+    "estado": "active",
+    "desde": "2026-11-26T04:04:48.581Z",
+    "resumen": "Prometheus no puede leer las metricas de iris (host.docker.internal:52773)."
+  },
+  {
+    "alerta": "SondaExternaFallida",
+    "labels": {
+      "alertname": "SondaExternaFallida",
+      "capa": "infraestructura",
+      "componente": "mongodb",
+      "hito": "4",
+      "instance": "host.docker.internal:27017",
+      "job": "sonda-tcp",
+      "mecanismo": "sonda_blackbox",
+      "modelo": "documental",
+      "proyecto": "fixture2030",
+      "severidad": "advertencia"
+    },
+    "estado": "active",
+    "desde": "2026-11-26T04:04:48.581Z",
+    "resumen": "mongodb no responde a la sonda sonda-tcp (host.docker.internal:27017)."
+  }
+]

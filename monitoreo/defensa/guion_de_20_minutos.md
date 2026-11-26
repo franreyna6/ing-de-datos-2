@@ -64,18 +64,19 @@ Transición: *"Ahora, las decisiones que hacen que esto aguante un pico de gol."
 
 Seguir [demo.md](demo.md):
 1. **Flujo 1** (Postman): el mismo partido atravesando las seis bases. En cada request, decir qué base lo atiende y por qué.
-2. **Flujo 2** (Grafana): carga mixta. Mostrar latencia p95 por base, aciertos de caché y escrituras por partido. Después, `docker stop fixture2030-redis`: la caché cae a 0 %, las lecturas van a Cassandra, `/sesiones` da 503 y el resto sigue en 200. Por último, `docker start`.
+2. **Flujo 2** (Grafana): carga mixta. Mostrar latencia p95 por base, aciertos de caché y escrituras por partido. Después, `docker stop fixture2030-redis`: la caché cae a 0 %, las lecturas van a Cassandra, `/sesiones` da 503 y el resto sigue en 200. El panel *Corte rápido* muestra unas 75 llamadas por segundo que la API ya no intenta contra Redis. Por último, `docker start`: a los 15 s Redis vuelve a verde.
 
 Mensaje: *"La caída de una base degrada una funcionalidad; no tira el Fixture."*
 
 ## 14:00 - 17:30 · Evidencia (Rodrigo)
 
-- **Prometheus:** siete jobs de scrape sobre la API y las seis bases, cada 15 s. Las de infraestructura miden la base por dentro; las de aplicación, cómo la vive la API. Neo4j Community y Cassandra no exponen métricas internas: se miden con sondas y desde la API, y se dice.
-- **Resultados de la prueba controlada** (`evidencia/prueba_de_falla/<etiqueta>/resumen.md`):
-  - p95 en fase normal, falla y recuperación;
-  - tiempo de detección de la caída y tiempo de recuperación;
-  - aciertos de caché antes, durante y después;
-  - con Cassandra caída: 503 solo en comentarios y alerta crítica a los pocos segundos de cumplirse el minuto de la regla.
+- **Prometheus:** 9 jobs y 13 targets (API, exporters, endpoints nativos y sondas), leídos cada 15 s; en la corrida final, 13/13 UP. Las métricas de infraestructura miden la base por dentro; las de aplicación, cómo la vive la API. Neo4j Community y Cassandra no exponen métricas internas: se miden con sondas y desde la API, y se dice.
+- **Operación normal** (`evidencia/operacion_normal/20261126-054628/resumen.md`): 91,6 requests/s con 20 usuarios; p95 de 24 ms (SLO de 50 ms, SLA de 100 ms); 0 % de errores; caché con 96 % de aciertos. La base más rápida es Redis (p95 de 2,5 ms) y la más lenta InfluxDB (45,7 ms), porque agrega ventanas de tiempo.
+- **Prueba controlada** (`evidencia/prueba_de_falla/20261126-054628/resumen.md`, diapositiva 9):
+  - Redis cae bajo carga: 92,1 → 88,5 requests/s; p95 de 23,7 → 32,8 ms; caché de 96 % a 0 %; Cassandra pasa de 1,4 a 35,5 lecturas/s sin cambiar su p95.
+  - Detección: la métrica a los +15 s; `BaseNoDisponible` crítica a los +90 s. Recuperación: +15 s después del `docker start`.
+  - Cassandra cae: 503 solo en comentarios; Mongo, Neo4j e IRIS en 200; alerta crítica a los +85 s.
+- **La mejora (RF12):** en la corrida 1, sin corte rápido, cada request esperaba 2,4 s a Redis caído: el throughput cayó de 53,6 a 9,4 requests/s. Con el corte rápido cae un 4 %. Lo encontramos gracias al monitoreo y lo medimos (`docs/limitaciones_y_evidencia.md` §4).
 - **Alertas:** siete reglas, cada una con impacto, acción y razón del umbral. El SLO interno de 50 ms es más exigente que el SLA de 100 ms.
 - **Medido y proyectado** (diapositiva): qué medimos (10,6 M de puntos, 1,1 M de comentarios, pruebas de carga y fallas) y qué es proyección (2-3 M de usuarios, multirregión, 99,99 %).
 
@@ -90,15 +91,16 @@ Mensaje: *"La caída de una base degrada una funcionalidad; no tira el Fixture."
 - **Qué mejoraríamos:**
   - réplicas reales y prueba de caída de nodo;
   - exporter JMX para Cassandra;
-  - cortar rápido la caché cuando Redis no responde (mejora sacada de la evidencia de este hito);
+  - ya hecho en este hito: corte rápido por base, sacado de la evidencia; falta un A/B limpio con `--sin-cortocircuito`;
+  - un `/salud` liviano para balanceadores y una alerta de 5xx que exija un mínimo de tráfico;
   - conectar la caché de fichas del Hito 7 a la API.
 - **Frase final:** *"No dijimos que la arquitectura sea perfecta. Les mostramos qué resuelve cada base, qué cuesta y cómo nos damos cuenta cuando algo falla."*
 
 ## Checklist del día
 
 - [ ] `git push` hecho y capturas visibles en GitHub.
-- [ ] Docker Desktop abierto, `iniciar_monitoreo --con-bases` corrido 10 minutos antes, `verificar_targets` sin targets DOWN.
-- [ ] API levantada con `CACHE_COMENTARIOS_TTL_S=2`.
+- [ ] Docker Desktop abierto, `iniciar_monitoreo --con-bases` corrido 10 minutos antes, `probar_iris` en OK y `verificar_targets` con 13/13 UP.
+- [ ] API levantada con `.\monitoreo\scripts\iniciar_api_monitoreada.ps1` (credenciales del Hito 11, caché y corte rápido).
 - [ ] Postman con `postman_demo_h13.json` importada; Grafana en *Last 15 minutes*.
 - [ ] Presentación abierta (`presentacion.html`, se navega con las flechas).
 - [ ] Ensayo cronometrado: si pasa de 20 minutos, recortar el Flujo 1 a 4 requests (Mongo, Neo4j, Cassandra, Redis).

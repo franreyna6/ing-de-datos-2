@@ -1,0 +1,29 @@
+{
+  "api": "ok",
+  "dependencias": [
+    {
+      "fuente": "mongodb",
+      "disponible": true
+    },
+    {
+      "fuente": "neo4j",
+      "disponible": true
+    },
+    {
+      "fuente": "cassandra",
+      "disponible": true
+    },
+    {
+      "fuente": "redis",
+      "disponible": true
+    },
+    {
+      "fuente": "influxdb",
+      "disponible": true
+    },
+    {
+      "fuente": "iris",
+      "disponible": true
+    }
+  ]
+}

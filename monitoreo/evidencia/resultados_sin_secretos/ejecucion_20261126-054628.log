@@ -1,0 +1,130 @@
+
+== Hito 13 - corrida completa, etiqueta 20261126-054628
+   Entorno de la API: prometheus_client ya instalado.
+
+== Bases de datos del TPO (Hitos 4 a 9)
+   mongodb    fixture2030-mongodb      ya estaba corriendo  [27017/tcp -> 0.0.0.0:27017 27017/tcp -> [::]:27017]
+   neo4j      fixture2030-neo4j        ya estaba corriendo  [7474/tcp -> 0.0.0.0:7474 7474/tcp -> [::]:7474 7687/tcp -> 0.0.0.0:7687 7687/tcp -> [::]:7687]
+   cassandra  fixture2030-cassandra    ya estaba corriendo  [9042/tcp -> 0.0.0.0:9042 9042/tcp -> [::]:9042]
+   redis      fixture2030-redis        ya estaba corriendo  [6379/tcp -> 0.0.0.0:6379 6379/tcp -> [::]:6379]
+   influxdb   fixture2030-influxdb     ya estaba corriendo  [8181/tcp -> 127.0.0.1:8181]
+   iris       fixture2030-iris         ya estaba corriendo  [1972/tcp -> 127.0.0.1:1972 52773/tcp -> 127.0.0.1:18773]
+
+== Configuracion local (fuera de Git)
+   .env listo; token de InfluxDB copiado en monitoreo/secretos/
+
+== docker compose up -d (Prometheus, Alertmanager, exporters, Grafana)
+   Prometheus: configuracion recargada
+   Alertmanager: configuracion recargada
+   blackbox: configuracion recargada
+   Prometheus:   http://localhost:9090/targets
+   Grafana:      http://localhost:3000  (tablero 'Fixture 2030 - War Room'; usuario y clave en monitoreo/.env)
+   Alertmanager: http://localhost:9093
+
+== Levantando la API del Hito 10 (cache del Hito 12 encendida)
+   /salud: las 6 bases disponibles.
+
+== Comprobando que Prometheus lee /metrics de la API
+   target api-fixture: UP (API en 127.0.0.1:8000)
+
+== Verificacion de targets (antes de la prueba)
+
+== Verificando Prometheus, Alertmanager y Grafana
+
+== Targets: 13 UP, 0 DOWN, 0 sondas que fallan
+   UP   api-fixture   api        host.docker.internal:8000                
+   UP   influxdb      influxdb   host.docker.internal:8181                
+   UP   iris          iris       fixture2030-iris:52773                   
+   UP   mongodb       mongodb    mongodb-exporter:9216                    
+   UP   redis         redis      redis-exporter:9121                      
+   UP   sonda-http    neo4j      http://host.docker.internal:7474/        
+   UP   sonda-http    influxdb   http://host.docker.internal:8181/health  
+   UP   sonda-redis   redis      host.docker.internal:6379                
+   UP   sonda-tcp     iris       host.docker.internal:1972                
+   UP   sonda-tcp     mongodb    host.docker.internal:27017               
+   UP   sonda-tcp     neo4j      host.docker.internal:7687                
+   UP   sonda-tcp     cassandra  host.docker.internal:9042                
+   UP   prometheus    prometheus localhost:9090                           
+   Evidencia: monitoreo/evidencia/prometheus_targets.json y .md
+
+== Operacion normal: 20 usuarios durante 180 s sobre las 6 bases
+   captura: evidencia\dashboards\operacion_20261126-054628_tablero_completo.png
+   captura: evidencia\dashboards\operacion_20261126-054628_salud_infraestructura.png
+   captura: evidencia\dashboards\operacion_20261126-054628_salud_vista_api.png
+   captura: evidencia\dashboards\operacion_20261126-054628_throughput.png
+   captura: evidencia\dashboards\operacion_20261126-054628_latencia_api.png
+   captura: evidencia\dashboards\operacion_20261126-054628_errores.png
+   captura: evidencia\dashboards\operacion_20261126-054628_latencia_por_base.png
+   captura: evidencia\dashboards\operacion_20261126-054628_operaciones_por_base.png
+   captura: evidencia\dashboards\operacion_20261126-054628_cache.png
+   captura: evidencia\dashboards\operacion_20261126-054628_memoria_redis.png
+   captura: evidencia\dashboards\operacion_20261126-054628_escrituras_cassandra.png
+   captura: evidencia\dashboards\operacion_20261126-054628_corte_rapido.png
+
+== Informe: monitoreo/evidencia/operacion_normal/20261126-054628/resumen.md
+
+== Comprobando requisitos
+   Cache de comentarios: ['MISS', 'HIT'] (encendida)
+
+== Experimento A: caida de Redis bajo carga (20 usuarios, 3 fases de 150 s)
+   Fase normal hasta 2026-11-26T05:54:07Z
+   docker stop fixture2030-redis: ok
+   docker start fixture2030-redis: ok
+   Esperando 45 s mas para que Prometheus registre el final y resuelva las alertas...
+
+== Analizando el experimento A con los datos de Prometheus
+
+== Experimento B: caida de Cassandra sin carga (alerta critica)
+   docker stop fixture2030-cassandra: ok
+   Alerta BaseNoDisponible(cassandra): firing a los 100 s
+   docker start fixture2030-cassandra: ok
+
+== Guardando capturas del tablero con el rango exacto de la prueba
+   captura: evidencia\dashboards\prueba_20261126-054628_A_redis_tablero_completo.png
+   captura: evidencia\dashboards\prueba_20261126-054628_A_redis_salud_infraestructura.png
+   captura: evidencia\dashboards\prueba_20261126-054628_A_redis_salud_vista_api.png
+   captura: evidencia\dashboards\prueba_20261126-054628_A_redis_throughput.png
+   captura: evidencia\dashboards\prueba_20261126-054628_A_redis_latencia_api.png
+   captura: evidencia\dashboards\prueba_20261126-054628_A_redis_errores.png
+   captura: evidencia\dashboards\prueba_20261126-054628_A_redis_latencia_por_base.png
+   captura: evidencia\dashboards\prueba_20261126-054628_A_redis_operaciones_por_base.png
+   captura: evidencia\dashboards\prueba_20261126-054628_A_redis_cache.png
+   captura: evidencia\dashboards\prueba_20261126-054628_A_redis_memoria_redis.png
+   captura: evidencia\dashboards\prueba_20261126-054628_A_redis_escrituras_cassandra.png
+   captura: evidencia\dashboards\prueba_20261126-054628_A_redis_corte_rapido.png
+   captura: evidencia\dashboards\prueba_20261126-054628_B_cassandra_tablero_completo.png
+   captura: evidencia\dashboards\prueba_20261126-054628_B_cassandra_salud_infraestructura.png
+   captura: evidencia\dashboards\prueba_20261126-054628_B_cassandra_salud_vista_api.png
+   captura: evidencia\dashboards\prueba_20261126-054628_B_cassandra_throughput.png
+   captura: evidencia\dashboards\prueba_20261126-054628_B_cassandra_latencia_api.png
+   captura: evidencia\dashboards\prueba_20261126-054628_B_cassandra_errores.png
+   captura: evidencia\dashboards\prueba_20261126-054628_B_cassandra_latencia_por_base.png
+   captura: evidencia\dashboards\prueba_20261126-054628_B_cassandra_operaciones_por_base.png
+   captura: evidencia\dashboards\prueba_20261126-054628_B_cassandra_cache.png
+   captura: evidencia\dashboards\prueba_20261126-054628_B_cassandra_memoria_redis.png
+   captura: evidencia\dashboards\prueba_20261126-054628_B_cassandra_escrituras_cassandra.png
+   captura: evidencia\dashboards\prueba_20261126-054628_B_cassandra_corte_rapido.png
+
+== Listo. Informe: monitoreo/evidencia/prueba_de_falla/20261126-054628/resumen.md
+
+== Verificacion de targets (despues de la prueba: todo deberia volver a UP)
+
+== Verificando Prometheus, Alertmanager y Grafana
+
+== Targets: 13 UP, 0 DOWN, 0 sondas que fallan
+   UP   api-fixture   api        host.docker.internal:8000                
+   UP   influxdb      influxdb   host.docker.internal:8181                
+   UP   iris          iris       fixture2030-iris:52773                   
+   UP   mongodb       mongodb    mongodb-exporter:9216                    
+   UP   redis         redis      redis-exporter:9121                      
+   UP   sonda-http    neo4j      http://host.docker.internal:7474/        
+   UP   sonda-http    influxdb   http://host.docker.internal:8181/health  
+   UP   sonda-redis   redis      host.docker.internal:6379                
+   UP   sonda-tcp     iris       host.docker.internal:1972                
+   UP   sonda-tcp     mongodb    host.docker.internal:27017               
+   UP   sonda-tcp     neo4j      host.docker.internal:7687                
+   UP   sonda-tcp     cassandra  host.docker.internal:9042                
+   UP   prometheus    prometheus localhost:9090                           
+   Evidencia: monitoreo/evidencia/prometheus_targets.json y .md
+
+== Fin. La API se detuvo; las bases y el monitoreo siguen corriendo (http://localhost:3000).

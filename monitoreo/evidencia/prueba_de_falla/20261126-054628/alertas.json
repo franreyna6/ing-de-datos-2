@@ -1,0 +1,149 @@
+{
+  "experimento_a": [
+    {
+      "alerta": "SondaExternaFallida",
+      "estado": "pending",
+      "componente": "redis",
+      "origen": "sonda-redis",
+      "severidad": "advertencia",
+      "desde": 1795672462.853,
+      "hasta": 1795672507.853,
+      "desde_utc": "2026-11-26T05:54:22Z",
+      "hasta_utc": "2026-11-26T05:55:07Z"
+    },
+    {
+      "alerta": "BaseNoDisponible",
+      "estado": "pending",
+      "componente": "redis",
+      "origen": "api-fixture",
+      "severidad": "critica",
+      "desde": 1795672477.853,
+      "hasta": 1795672522.853,
+      "desde_utc": "2026-11-26T05:54:37Z",
+      "hasta_utc": "2026-11-26T05:55:22Z"
+    },
+    {
+      "alerta": "CacheComentariosDegradada",
+      "estado": "pending",
+      "componente": "redis",
+      "origen": "",
+      "severidad": "advertencia",
+      "desde": 1795672477.853,
+      "hasta": 1795672522.853,
+      "desde_utc": "2026-11-26T05:54:37Z",
+      "hasta_utc": "2026-11-26T05:55:22Z"
+    },
+    {
+      "alerta": "TasaErrores5xxAlta",
+      "estado": "pending",
+      "componente": "api",
+      "origen": "",
+      "severidad": "critica",
+      "desde": 1795672492.853,
+      "hasta": 1795672537.853,
+      "desde_utc": "2026-11-26T05:54:52Z",
+      "hasta_utc": "2026-11-26T05:55:37Z"
+    },
+    {
+      "alerta": "SondaExternaFallida",
+      "estado": "firing",
+      "componente": "redis",
+      "origen": "sonda-redis",
+      "severidad": "advertencia",
+      "desde": 1795672522.853,
+      "hasta": 1795672612.853,
+      "desde_utc": "2026-11-26T05:55:22Z",
+      "hasta_utc": "2026-11-26T05:56:52Z"
+    },
+    {
+      "alerta": "BaseNoDisponible",
+      "estado": "firing",
+      "componente": "redis",
+      "origen": "api-fixture",
+      "severidad": "critica",
+      "desde": 1795672537.853,
+      "hasta": 1795672612.853,
+      "desde_utc": "2026-11-26T05:55:37Z",
+      "hasta_utc": "2026-11-26T05:56:52Z"
+    },
+    {
+      "alerta": "CacheComentariosDegradada",
+      "estado": "firing",
+      "componente": "redis",
+      "origen": "",
+      "severidad": "advertencia",
+      "desde": 1795672537.853,
+      "hasta": 1795672642.853,
+      "desde_utc": "2026-11-26T05:55:37Z",
+      "hasta_utc": "2026-11-26T05:57:22Z"
+    },
+    {
+      "alerta": "TasaErrores5xxAlta",
+      "estado": "firing",
+      "componente": "api",
+      "origen": "",
+      "severidad": "critica",
+      "desde": 1795672552.853,
+      "hasta": 1795672642.853,
+      "desde_utc": "2026-11-26T05:55:52Z",
+      "hasta_utc": "2026-11-26T05:57:22Z"
+    }
+  ],
+  "experimento_b": [
+    {
+      "alerta": "SondaExternaFallida",
+      "estado": "pending",
+      "componente": "cassandra",
+      "origen": "sonda-tcp",
+      "severidad": "advertencia",
+      "desde": 1795672808.466,
+      "hasta": 1795672853.466,
+      "desde_utc": "2026-11-26T06:00:08Z",
+      "hasta_utc": "2026-11-26T06:00:53Z"
+    },
+    {
+      "alerta": "BaseNoDisponible",
+      "estado": "pending",
+      "componente": "cassandra",
+      "origen": "api-fixture",
+      "severidad": "critica",
+      "desde": 1795672823.466,
+      "hasta": 1795672868.466,
+      "desde_utc": "2026-11-26T06:00:23Z",
+      "hasta_utc": "2026-11-26T06:01:08Z"
+    },
+    {
+      "alerta": "SondaExternaFallida",
+      "estado": "firing",
+      "componente": "cassandra",
+      "origen": "sonda-tcp",
+      "severidad": "advertencia",
+      "desde": 1795672868.466,
+      "hasta": 1795672898.466,
+      "desde_utc": "2026-11-26T06:01:08Z",
+      "hasta_utc": "2026-11-26T06:01:38Z"
+    },
+    {
+      "alerta": "BaseNoDisponible",
+      "estado": "firing",
+      "componente": "cassandra",
+      "origen": "api-fixture",
+      "severidad": "critica",
+      "desde": 1795672883.466,
+      "hasta": 1795672958.466,
+      "desde_utc": "2026-11-26T06:01:23Z",
+      "hasta_utc": "2026-11-26T06:02:38Z"
+    },
+    {
+      "alerta": "TasaErrores5xxAlta",
+      "estado": "pending",
+      "componente": "api",
+      "origen": "",
+      "severidad": "critica",
+      "desde": 1795672943.466,
+      "hasta": 1795673003.466,
+      "desde_utc": "2026-11-26T06:02:23Z",
+      "hasta_utc": "2026-11-26T06:03:23Z"
+    }
+  ]
+}

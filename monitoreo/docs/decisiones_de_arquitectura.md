@@ -160,7 +160,7 @@ Ninguna consulta analítica recorre las particiones operacionales en vivo.
 - **Límites en la API:** `limit` con tope de 100 (`MAX_LIMIT`) y **timeout de 3 s por dependencia**. Una base lenta devuelve 503 en esa ruta en vez de retener hilos indefinidamente.
 - **Corte rápido por base** (agregado en este hito, a partir de la evidencia): después de una falla de conexión, la API deja de intentar esa base por 10 s. Responde 503 al instante, o lee sin caché si la que cayó es Redis, en vez de pagar en cada request los 2,4 s que tarda en fallar una conexión en Windows. Ver [`limitaciones_y_evidencia.md`](limitaciones_y_evidencia.md).
 - **Caché delante de la partición caliente** (Hito 12): el 98 % de las lecturas del pico no llega a Cassandra.
-- **Aislamiento entre bases:** se comprobó en este hito (pruebas A y B). La caída de una base no arrastra a las demás rutas.
+- **Aislamiento entre bases:** se comprobó en este hito (pruebas A y B). Con Cassandra detenida, solo comentarios dio 503 y Mongo, Neo4j e IRIS siguieron en 200. Con Redis detenido bajo carga, la API sostuvo 88,5 de 92,1 requests/s.
 
 ### ¿Qué parte de la escalabilidad fue medida y qué parte es proyección?
 
@@ -169,7 +169,7 @@ Ninguna consulta analítica recorre las particiones operacionales en vivo.
 | 10.598.400 puntos cargados en InfluxDB (Hito 8) | 2-3 M de usuarios simultáneos y 100.000+ requests/s (objetivos del TPO) |
 | 1.100.000 comentarios en 96 partidos; distribución por partición (Hito 6) | Réplicas y consistencia entre regiones (Hito 3) |
 | Prueba de carga con 40 a 60 usuarios: p95 de la API de 16 a 26 ms y 0 % de errores, con caché de 0,98 de aciertos (Hito 12) | Comportamiento del clúster ante la caída de un nodo o de una región |
-| Prueba de carga y fallas controladas con monitoreo (este hito) | 99,99 % de disponibilidad anual |
+| Este hito, con 20 usuarios: 91,6 requests/s, p95 de 24 ms y 0 % de errores; una base caída degrada una sola función; detección en 10-15 s y alerta crítica en 85-90 s | 99,99 % de disponibilidad anual |
 
 ### ¿Cómo se interpretan las métricas de Prometheus y Grafana?
 
@@ -195,7 +195,7 @@ Ver [`metricas_y_consultas.md`](metricas_y_consultas.md) (qué mide cada consult
 
 | Costo | Cómo se ve en este repositorio | Mitigación aplicada |
 | :--- | :--- | :--- |
-| Seis motores para instalar, actualizar y respaldar | Seis `docker-compose`, seis drivers en la API, seis convenciones de persistencia; en Windows, desvíos como el volumen de Docker para IRIS | Un compose por módulo y `iniciar_monitoreo --con-bases` para levantarlos igual |
+| Seis motores para instalar, actualizar y respaldar | Seis `docker-compose`, seis drivers en la API, seis convenciones de persistencia; en Windows, desvíos como el volumen de Docker para IRIS, los puertos alternativos cuando Windows reserva el 52773 y la contraseña obligatoria de `_SYSTEM` | Un compose por módulo y `iniciar_monitoreo --con-bases` para levantarlos igual |
 | Seis formas de monitorear | Exporters para Redis y MongoDB, endpoints nativos para InfluxDB (con token) e IRIS. Neo4j Community y Cassandra **sin** métricas internas: solo sondas y la vista de la API. | Una API instrumentada que mide a las seis con las mismas métricas (`fixture_dependencia_*`) |
 | Seis modelos de consistencia | CP para información deportiva, AP para comentarios, sesiones y estadísticas | Decidido por dato en el Hito 3 y documentado por módulo |
 | Sin transacciones entre motores | Un cambio de plantel toca Mongo y Neo4j por separado | Identificadores compartidos y verificación de huérfanos |

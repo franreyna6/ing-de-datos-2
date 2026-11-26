@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fixture Mundial 2030 · Defensa final · Grupo 8</title>
+<style>
+  :root {
+    --tinta: #1d2433; --suave: #5b6475; --linea: #d9dee7; --fondo: #f6f7fa; --blanco: #ffffff;
+    --acento: #0b5cad; --ok: #1f8a4c; --mal: #c0392b; --ad: #b7791f;
+    --mongo: #3f8f4f; --neo: #2f6fb3; --cass: #6b4fa3; --redis: #c2412d; --influx: #1f8f9a; --iris: #b06a1e; --api: #39414f;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #e9ecf2; color: var(--tinta);
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; }
+  .diapo { display: none; position: absolute; inset: 0; margin: auto; width: min(96vw, 170vh); height: min(54vw, 96vh);
+    background: var(--blanco); border-radius: 10px; box-shadow: 0 6px 30px rgba(20,30,50,.15);
+    padding: 3.2% 4.2%; overflow: hidden; flex-direction: column; }
+  .diapo.activa { display: flex; }
+  h1 { font-size: 2.6vw; margin: 0 0 .4em; line-height: 1.15; }
+  h2 { font-size: 2.0vw; margin: 0 0 .6em; color: var(--acento); }
+  h3 { font-size: 1.25vw; margin: .2em 0 .3em; }
+  p, li, td, th { font-size: 1.12vw; line-height: 1.45; }
+  ul { margin: .2em 0 .6em 1.1em; padding: 0; }
+  li { margin: .18em 0; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border-bottom: 1px solid var(--linea); padding: .35em .5em; text-align: left; vertical-align: top; }
+  th { background: var(--fondo); font-weight: 600; }
+  .pie { margin-top: auto; display: flex; justify-content: space-between; color: var(--suave); font-size: .85vw; }
+  .chico { font-size: .95vw; color: var(--suave); }
+  .dos { display: grid; grid-template-columns: 1fr 1fr; gap: 2.2em; }
+  .tres { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2em; }
+  .tarjeta { background: var(--fondo); border-radius: 8px; padding: .8em 1em; border-left: 5px solid var(--acento); }
+  .tarjeta p { margin: .2em 0; }
+  .cifra { font-size: 2.1vw; font-weight: 700; color: var(--acento); }
+  .etq { display: inline-block; padding: .05em .5em; border-radius: 4px; color: #fff; font-size: .9vw; font-weight: 600; }
+  .cp { background: var(--neo); } .ap { background: var(--cass); }
+  .ok { color: var(--ok); font-weight: 600; } .mal { color: var(--mal); font-weight: 600; } .ad { color: var(--ad); font-weight: 600; }
+  .portada { justify-content: center; background: linear-gradient(135deg, #0b3d6e 0%, #0b5cad 60%, #1f8f9a 100%); color: #fff; }
+  .portada h1 { font-size: 3.6vw; } .portada p { font-size: 1.5vw; opacity: .95; }
+  .pregunta { font-size: 1.45vw; border-left: 5px solid #fff; padding-left: .8em; margin-top: 1.2em; max-width: 75%; }
+  img.captura { max-width: 100%; max-height: 52vh; border: 1px solid var(--linea); border-radius: 6px; object-fit: contain; }
+  .nav { position: fixed; bottom: 10px; right: 16px; color: var(--suave); font-size: 12px; }
+  .med { color: var(--ok); font-weight: 600; } .proy { color: var(--ad); font-weight: 600; }
+  svg text { font-family: inherit; }
+  @media print {
+    body { background: #fff; }
+    .diapo { display: flex !important; position: relative; width: 100%; height: auto; aspect-ratio: 16/9;
+      page-break-after: always; box-shadow: none; border-radius: 0; }
+    .nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 1 -->
+<section class="diapo portada activa">
+  <p>Ingeniería de Datos II · Grupo 8 · Hito 13</p>
+  <h1>Fixture Mundial 2030<br>Defensa técnica ante la FIFA</h1>
+  <p>Seis modelos de datos, una API y un sistema que se observa a sí mismo</p>
+  <p class="pregunta">¿Por qué esta combinación de modelos, estructuras, distribución y observabilidad es adecuada para el Fixture 2030?</p>
+</section>
+
+<!-- 2 -->
+<section class="diapo">
+  <h2>El problema: datos con patrones de acceso incompatibles</h2>
+  <div class="dos">
+    <div>
+      <table>
+        <tr><th>Dato</th><th>Volumen (Hito 1)</th><th>Acceso dominante</th></tr>
+        <tr><td>Equipos y jugadores</td><td>64 y 1.500+</td><td>Lectura de la ficha</td></tr>
+        <tr><td>Partidos y eventos</td><td>1.000+ eventos por partido</td><td>Recorrer relaciones</td></tr>
+        <tr><td>Comentarios</td><td>1 M+ por partido</td><td>Escritura masiva sostenida</td></tr>
+        <tr><td>Sesiones</td><td>2-3 M simultáneas</td><td>Validar en &lt; 1 ms, vencer</td></tr>
+        <tr><td>Estadísticas en vivo</td><td>10 M+ puntos por partido</td><td>Ventanas y agregación</td></tr>
+        <tr><td>Partido con reglas</td><td>Estado, eventos, terna</td><td>Invariantes al guardar</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Condiciones del TPO</h3>
+      <div class="tres">
+        <div class="tarjeta"><p class="cifra">&lt; 100 ms</p><p>p95 de las consultas</p></div>
+        <div class="tarjeta"><p class="cifra">99,99 %</p><p>disponibilidad</p></div>
+        <div class="tarjeta"><p class="cifra">6 países</p><p>multirregión</p></div>
+      </div>
+      <p style="margin-top:1em">Conclusión del Hito 1: <b>ningún motor único</b> sostiene a la vez esquemas heterogéneos, relaciones profundas, escritura masiva y agregación temporal con esas condiciones.</p>
+      <p class="chico">Y su costo, escrito desde el principio: cada motor suma infraestructura para instalar, mantener y monitorear.</p>
+    </div>
+  </div>
+  <div class="pie"><span>Fuente: Hito 1 · Análisis de requisitos de datos</span><span>2</span></div>
+</section>
+
+<!-- 3 -->
+<section class="diapo">
+  <h2>La arquitectura construida</h2>
+  <svg viewBox="0 0 1000 430" width="100%" style="flex:1">
+    <rect x="370" y="20" width="260" height="56" rx="8" fill="#eef3fa" stroke="#0b5cad"/>
+    <text x="500" y="44" text-anchor="middle" font-size="17" font-weight="600" fill="#1d2433">Aplicaciones del Fixture</text>
+    <text x="500" y="64" text-anchor="middle" font-size="13" fill="#5b6475">Postman · Swagger · front</text>
+    <line x1="500" y1="76" x2="500" y2="112" stroke="#5b6475" stroke-width="2"/>
+    <rect x="300" y="112" width="400" height="62" rx="8" fill="#39414f"/>
+    <text x="500" y="139" text-anchor="middle" font-size="18" font-weight="600" fill="#fff">API integrada (Hito 10) · /metrics (Hito 13)</text>
+    <text x="500" y="160" text-anchor="middle" font-size="13" fill="#dfe4ec">un adaptador por base · timeout 3 s · 503 aislado por ruta</text>
+    <g font-size="14" text-anchor="middle">
+      <g><line x1="500" y1="174" x2="95" y2="250" stroke="#aab3c2"/><rect x="15" y="250" width="160" height="92" rx="8" fill="#3f8f4f"/>
+        <text x="95" y="276" fill="#fff" font-weight="700">MongoDB · H4</text><text x="95" y="298" fill="#fff">Documental</text><text x="95" y="318" fill="#fff">equipos y jugadores</text><text x="95" y="336" fill="#e7f3ea" font-size="12">CP · sin particionar</text></g>
+      <g><line x1="500" y1="174" x2="260" y2="250" stroke="#aab3c2"/><rect x="180" y="250" width="160" height="92" rx="8" fill="#2f6fb3"/>
+        <text x="260" y="276" fill="#fff" font-weight="700">Neo4j · H5</text><text x="260" y="298" fill="#fff">Grafo</text><text x="260" y="318" fill="#fff">partidos, sedes, goles</text><text x="260" y="336" fill="#e6eefa" font-size="12">CP · recorridos</text></g>
+      <g><line x1="500" y1="174" x2="425" y2="250" stroke="#aab3c2"/><rect x="345" y="250" width="160" height="92" rx="8" fill="#6b4fa3"/>
+        <text x="425" y="276" fill="#fff" font-weight="700">Cassandra · H6</text><text x="425" y="298" fill="#fff">Tabular / columnar</text><text x="425" y="318" fill="#fff">comentarios masivos</text><text x="425" y="336" fill="#eee8f7" font-size="12">AP · (partido, ventana)</text></g>
+      <g><line x1="500" y1="174" x2="590" y2="250" stroke="#aab3c2"/><rect x="510" y="250" width="160" height="92" rx="8" fill="#c2412d"/>
+        <text x="590" y="276" fill="#fff" font-weight="700">Redis · H7/H12</text><text x="590" y="298" fill="#fff">Clave / valor</text><text x="590" y="318" fill="#fff">sesiones y caché</text><text x="590" y="336" fill="#fbe9e6" font-size="12">AP · TTL</text></g>
+      <g><line x1="500" y1="174" x2="755" y2="250" stroke="#aab3c2"/><rect x="675" y="250" width="160" height="92" rx="8" fill="#1f8f9a"/>
+        <text x="755" y="276" fill="#fff" font-weight="700">InfluxDB · H8</text><text x="755" y="298" fill="#fff">Series temporales</text><text x="755" y="318" fill="#fff">estadísticas en vivo</text><text x="755" y="336" fill="#e3f4f5" font-size="12">AP · retención</text></g>
+      <g><line x1="500" y1="174" x2="920" y2="250" stroke="#aab3c2"/><rect x="840" y="250" width="150" height="92" rx="8" fill="#b06a1e"/>
+        <text x="915" y="276" fill="#fff" font-weight="700">IRIS · H9</text><text x="915" y="298" fill="#fff">Objetos</text><text x="915" y="318" fill="#fff">partido con reglas</text><text x="915" y="336" fill="#fbeee0" font-size="12">invariantes</text></g>
+    </g>
+    <rect x="15" y="368" width="975" height="52" rx="8" fill="#f6f7fa" stroke="#d9dee7"/>
+    <text x="500" y="390" text-anchor="middle" font-size="15" font-weight="600" fill="#1d2433">Observabilidad (Hito 13): Prometheus cada 15 s · exporters · sondas · Grafana · Alertmanager</text>
+    <text x="500" y="410" text-anchor="middle" font-size="13" fill="#5b6475">mismos identificadores en todas las bases: código FIFA (ARG), jugador (ARG-10-…), partido (F2030-001)</text>
+  </svg>
+  <div class="pie"><span>Cada ruta declara qué base la atiende; ninguna mezcla modelos</span><span>3</span></div>
+</section>
+
+<!-- 4 -->
+<section class="diapo">
+  <h2>Cada dato en el modelo que abarata su acceso dominante</h2>
+  <table>
+    <tr><th>Base</th><th>Estructura implementada</th><th>Qué sería caro con otra estructura</th></tr>
+    <tr><td><b>MongoDB</b></td><td>Documentos validados (JSON Schema estricto), referencia jugador → equipo, 7 índices por consulta</td><td>En SQL, la ficha completa son 3-4 joins y cada campo nuevo es un ALTER TABLE</td></tr>
+    <tr><td><b>Neo4j</b></td><td>5 etiquetas, 5 relaciones; el gol es un nodo</td><td>"Goleadores con su equipo" en documentos: varias consultas y un join a mano en la aplicación</td></tr>
+    <tr><td><b>Cassandra</b></td><td>Partición <code>(partido_id, ventana 5 min)</code>, orden por <code>creado_en DESC</code></td><td>Un índice relacional por tiempo concentra todas las escrituras del partido en el mismo extremo</td></tr>
+    <tr><td><b>Redis</b></td><td>Sesión = Hash con TTL de 1.800 s; caché del feed con TTL de 2 s; <code>volatile-lru</code></td><td>Sin TTL nativo hacen falta jobs de borrado; en disco no se sostiene &lt; 1 ms</td></tr>
+    <tr><td><b>InfluxDB</b></td><td>Tags solo para lo que se filtra; agregación según el significado de cada medida; resumen de 1 minuto</td><td>"Posesión promedio cada 5 min" sobre millones de filas con GROUP BY, sin retención</td></tr>
+    <tr><td><b>IRIS</b></td><td>Partido con estado; eventos y terna como hijos; herencia de Persona</td><td>En documentos o en SQL, la regla "sin eventos antes de EnJuego" queda en cada aplicación</td></tr>
+  </table>
+  <div class="pie"><span>Detalle con las 10 preguntas por base: monitoreo/docs/decisiones_de_arquitectura.md</span><span>4</span></div>
+</section>
+
+<!-- 5 -->
+<section class="diapo">
+  <h2>Distribución: cómo escala Cassandra en un pico de gol</h2>
+  <div class="dos">
+    <div>
+      <table>
+        <tr><th>Clave de partición</th><th>Pico por partición (partido extremo)</th></tr>
+        <tr><td>Solo <code>partido_id</code></td><td class="mal">1.000.000 de filas ≈ 162 MiB, sin límite</td></tr>
+        <tr><td><code>(partido_id, ventana 15 min)</code></td><td class="ad">≈ 279.000 filas ≈ 45 MiB</td></tr>
+        <tr><td><b><code>(partido_id, ventana 5 min)</code></b></td><td class="ok">≈ 93.000 filas ≈ 15 MiB (elegida)</td></tr>
+        <tr><td><code>(partido_id, ventana 1 min)</code></td><td>≈ 18.600 filas, pero un partido chico necesita 2+ particiones por feed</td></tr>
+      </table>
+      <p class="chico">Estimaciones de diseño del Hito 6. <span class="med">Medido</span> sobre 1,1 M de comentarios: 2.688 particiones, mediana de 215 filas, máximo de 12.087.</p>
+    </div>
+    <div>
+      <ul>
+        <li>Una lectura del feed toca <b>una</b> partición.</li>
+        <li>El riesgo que queda: el <b>hotspot dentro de la ventana</b>. El bucket reparte en el tiempo, no en el mismo instante.</li>
+        <li>Umbral de revisión: 100.000 filas o 500 escrituras/s por partición. Si se supera, ventana de 1 minuto o un <i>shard</i> extra en la clave.</li>
+        <li>Lecturas repetidas del pico: la caché de Redis (Hito 12) evitó que el <b>98 %</b> llegara a Cassandra <span class="med">[medido]</span>.</li>
+        <li>Resto: MongoDB sin particionar con réplica por región, Redis repartido por usuario, InfluxDB con retención y resumen de 1 minuto.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="pie"><span>Hito 6 · decisiones de particionamiento · Hito 12 · hipótesis y optimización</span><span>5</span></div>
+</section>
+
+<!-- 6 -->
+<section class="diapo">
+  <h2>Consistencia: CAP decidido por dato</h2>
+  <div class="dos">
+    <table>
+      <tr><th>Dato</th><th>Postura</th><th>Qué puede ser eventual</th></tr>
+      <tr><td>Equipos, jugadores, partidos y goles</td><td><span class="etq cp">CP</span></td><td>Nada: un resultado oficial no se lee viejo. Escritura por mayoría.</td></tr>
+      <tr><td>Comentarios</td><td><span class="etq ap">AP</span></td><td>Orden y visibilidad entre regiones; la caché suma hasta 2 s</td></tr>
+      <tr><td>Sesiones</td><td><span class="etq ap">AP</span></td><td>Se acepta perder una sesión: el usuario se vuelve a autenticar</td></tr>
+      <tr><td>Estadísticas en vivo</td><td><span class="etq ap">AP</span></td><td>Puntos tardíos o desordenados; la ingesta no se detiene</td></tr>
+      <tr><td>Partido con reglas (IRIS)</td><td>fuerte en el objeto</td><td>Nada: la invariante se aplica al guardar</td></tr>
+    </table>
+    <div>
+      <h3>¿Qué pasa si se cae una región?</h3>
+      <ul>
+        <li>Lo <b>CP</b> rechaza escrituras que no alcanzan mayoría: mejor no publicar que publicar un resultado contradictorio.</li>
+        <li>Lo <b>AP</b> sigue con las réplicas que quedan y converge después.</li>
+        <li>En el laboratorio hay <b>un nodo por base</b>: la replicación es <span class="proy">diseño</span>, no medición.</li>
+        <li>Lo que sí medimos: qué pasa cuando <b>una base entera</b> no está (pruebas A y B de este hito).</li>
+      </ul>
+    </div>
+  </div>
+  <div class="pie"><span>Hito 3 · arquitectura distribuida</span><span>6</span></div>
+</section>
+
+<!-- 7 -->
+<section class="diapo">
+  <h2>¿Por qué no SQL? ¿Por qué no una sola base?</h2>
+  <div class="dos">
+    <div>
+      <h3>Lo que SQL haría mejor (y lo decimos)</h3>
+      <ul>
+        <li>Idempotencia de reintentos por clave primaria.</li>
+        <li>Integridad referencial y joins para reportes.</li>
+        <li>Para equipos y partidos (volumen chico y fijo) sería una opción válida (Hito 1).</li>
+      </ul>
+      <h3>Lo que haría caro</h3>
+      <ul>
+        <li>Las escrituras del partido caliente compiten por el mismo índice; escala sobre todo verticalmente.</li>
+        <li>Sin TTL ni retención nativos: jobs de borrado para sesiones y estadísticas.</li>
+        <li>Recorridos de relaciones con joins recursivos.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Por qué no una única estructura</h3>
+      <p>Cada estructura vuelve barata una operación y cara otra. La partición por ventana que absorbe un millón de comentarios no sirve para recorrer gol → jugador → equipo, y el grafo no está hecho para 10 M de puntos por partido.</p>
+      <h3>Cómo se integran sin una base única</h3>
+      <ul>
+        <li>Identificadores compartidos desde el Hito 4.</li>
+        <li>Una API con un adaptador por base.</li>
+        <li>Cruces analíticos en el Data Mart (Hito 12), no en las bases operacionales.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="pie"><span>Hito 12 · comparación relacional (análisis conceptual, no medido)</span><span>7</span></div>
+</section>
+
+<!-- 8 -->
+<section class="diapo">
+  <h2>Observabilidad: cómo nos damos cuenta</h2>
+  <div class="tres">
+    <div class="tarjeta" style="border-color:var(--api)"><h3>Aplicación</h3><p>La API mide cada request y cada llamada a cada base: latencia, throughput, errores, caché y escrituras por partido.</p><p class="chico">Instrumentación propia</p></div>
+    <div class="tarjeta" style="border-color:var(--redis)"><h3>Infraestructura</h3><p>Exporters de Redis y MongoDB; <code>/metrics</code> nativo de InfluxDB (con token) e IRIS.</p><p class="chico">Lo que pasa dentro del motor</p></div>
+    <div class="tarjeta" style="border-color:var(--neo)"><h3>Sondas externas</h3><p>TCP, PING de Redis y HTTP: "¿la base acepta conexiones?". Única vista posible de Neo4j Community y Cassandra sin JMX.</p><p class="chico">Lo que vería un cliente</p></div>
+  </div>
+  <table style="margin-top:1em">
+    <tr><th>SLI</th><th>SLO del laboratorio</th><th>Alerta</th><th>Decisión que habilita</th></tr>
+    <tr><td>Disponibilidad por base</td><td>chequeo OK</td><td><b>BaseNoDisponible</b> (crítica, 1 min)</td><td>Qué funcionalidad está degradada</td></tr>
+    <tr><td>p95 de la API</td><td>&lt; 50 ms (SLA del TPO: 100 ms)</td><td>LatenciaAPIp95SobreSLO</td><td>Mirar la latencia por base antes que la API</td></tr>
+    <tr><td>5xx / total</td><td>&lt; 1 %</td><td><b>TasaErrores5xxAlta</b> (crítica)</td><td>¿Es una base (503) o la API (500)?</td></tr>
+    <tr><td>Aciertos de caché</td><td>≥ 80 %</td><td>CacheComentariosDegradada</td><td>Anticipar la carga sobre Cassandra</td></tr>
+    <tr><td>Memoria de Redis</td><td>&lt; 85 % (Clase 14)</td><td>RedisMemoriaAlta</td><td>Ampliar antes de desalojar sesiones</td></tr>
+  </table>
+  <div class="pie"><span>monitoreo/docs/alertas_y_umbral.md · métricas_y_consultas.md</span><span>8</span></div>
+</section>
+
+<!-- 9 -->
+<section class="diapo">
+  <h2>Evidencia: falla controlada bajo carga</h2>
+  <div class="dos" style="gap:1.6em">
+    <div>
+      <p class="chico" style="margin-top:0">Corrida final 20261126-054628 · 20 usuarios virtuales · mezcla de las 6 bases · <code>docker stop</code> real bajo carga</p>
+      <table>
+        <tr><th>A. Redis cae</th><th>Normal</th><th>Falla</th><th>Recup.</th></tr>
+        <tr><td>Requests/s de la API</td><td>92,1</td><td class="ok">88,5</td><td>91,1</td></tr>
+        <tr><td>p95 de la API</td><td>23,7 ms</td><td class="ok">32,8 ms</td><td>26,9 ms</td></tr>
+        <tr><td>Aciertos de caché</td><td>96 %</td><td class="mal">0 %</td><td>96 %</td></tr>
+        <tr><td>Lecturas a Cassandra/s</td><td>1,4</td><td class="ad">35,5</td><td>1,4</td></tr>
+        <tr><td>5xx (solo sesiones)</td><td>0 %</td><td class="ad">5 %</td><td>0 %</td></tr>
+      </table>
+      <p style="margin:.6em 0 .2em"><b>Detección:</b> la métrica a los <b>+15 s</b>; <b>BaseNoDisponible</b> crítica a los <b>+90 s</b>. Vuelve <b>+15 s</b> después del <code>docker start</code>.</p>
+      <p style="margin:.2em 0"><b>B. Cassandra cae:</b> solo comentarios da <span class="mal">503</span>; Mongo, Neo4j e IRIS siguen en <span class="ok">200</span>. Alerta a los +85 s.</p>
+      <p style="margin:.2em 0"><b>Sin el corte rápido</b> (corrida 1): 53,6 → <span class="mal">9,4</span> requests/s y p95 de comentarios de <span class="mal">4,9 s</span>.</p>
+    </div>
+    <div>
+      <img class="captura" style="max-height:33vh; display:block; margin-bottom:.6em" src="../evidencia/dashboards/prueba_20261126-054628_A_redis_throughput.png" alt="Throughput por ruta durante la caída de Redis: se sostiene">
+      <img class="captura" style="max-height:33vh; display:block" src="../evidencia/dashboards/prueba_20261126-054628_A_redis_cache.png" alt="Aciertos de caché: caen a 0 % con Redis detenido y vuelven a 96 %">
+      <p class="chico" style="margin:.3em 0 0">Franja roja: alerta en firing. Capturas generadas por <code>capturar_dashboard.py</code> con el rango exacto de la prueba.</p>
+    </div>
+  </div>
+  <div class="pie"><span>monitoreo/evidencia/prueba_de_falla/20261126-054628/resumen.md · código del commit 127501a</span><span>9</span></div>
+</section>
+
+<!-- 10 -->
+<section class="diapo">
+  <h2>Medido, diseñado y proyectado</h2>
+  <div class="dos">
+    <div>
+      <h3 class="med">Medido (con evidencia en el repositorio)</h3>
+      <ul>
+        <li>10.598.400 puntos cargados en InfluxDB (H8)</li>
+        <li>1.100.000 comentarios en 2.688 particiones (H6)</li>
+        <li>Carga con 40-60 usuarios: p95 de 16-26 ms en la API, 0 % de errores, caché con 98 % de aciertos (H12)</li>
+        <li>Integridad: 0 huérfanos en Mongo; operaciones ilegales rechazadas por IRIS (H4, H9)</li>
+        <li><b>H13:</b> 6/6 bases y 13/13 targets UP; 91,6 requests/s con p95 de 24 ms y 0 % de errores</li>
+        <li><b>H13:</b> una base caída degrada una sola función; detección en 10-15 s y alerta crítica en 85-90 s</li>
+        <li><b>H13:</b> corte rápido: con Redis caído se sostiene el 96 % del throughput (antes, el 18 %)</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="proy">Proyectado (no existe en el laboratorio)</h3>
+      <ul>
+        <li>2-3 M de usuarios y 100.000+ requests/s</li>
+        <li>Réplicas, quórum y caída de una región</li>
+        <li>99,99 % de disponibilidad anual</li>
+        <li>Métricas internas de Neo4j (Enterprise) y Cassandra (JMX)</li>
+      </ul>
+      <p class="chico">Todo corre en una sola máquina (Docker Desktop): bases, API, monitoreo y generador de carga comparten CPU.</p>
+    </div>
+  </div>
+  <div class="pie"><span>monitoreo/docs/limitaciones_y_evidencia.md</span><span>10</span></div>
+</section>
+
+<!-- 11 -->
+<section class="diapo">
+  <h2>Cierre: por qué es adecuada, y qué cuesta</h2>
+  <div class="dos">
+    <div>
+      <h3>Por qué es adecuada</h3>
+      <ul>
+        <li>Cada dato en el modelo que abarata su acceso dominante.</li>
+        <li>La API aísla fallas: una base caída degrada una función, no el Fixture.</li>
+        <li>El monitoreo dice qué base, qué ruta y qué decisión tomar.</li>
+      </ul>
+      <h3>Trade-offs aceptados</h3>
+      <ul>
+        <li>Seis motores para operar y monitorear.</li>
+        <li>Consistencia eventual donde el negocio la tolera.</li>
+        <li>Sin transacciones entre motores.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Siguiente iteración</h3>
+      <ul>
+        <li>A/B limpio del corte rápido (<code>--sin-cortocircuito</code>) y alerta de 5xx con mínimo de tráfico.</li>
+        <li><code>/salud</code> liviano para balanceadores, separado del chequeo profundo.</li>
+        <li>Réplicas reales y prueba de caída de nodo y de región.</li>
+        <li>Exporter JMX para Cassandra.</li>
+        <li>Conectar la caché de fichas del Hito 7 a la API.</li>
+      </ul>
+      <p class="pregunta" style="border-color:var(--acento); color:var(--tinta); max-width:100%">No decimos que sea perfecta: mostramos qué resuelve cada base, qué cuesta y cómo nos damos cuenta cuando algo falla.</p>
+    </div>
+  </div>
+  <div class="pie"><span>Grupo 8 · Ingeniería de Datos II · 2026</span><span>11</span></div>
+</section>
+
+<div class="nav" id="nav"></div>
+<script>
+  const d = Array.from(document.querySelectorAll('.diapo'));
+  let i = 0;
+  function ir(n) { d[i].classList.remove('activa'); i = Math.max(0, Math.min(d.length - 1, n));
+    d[i].classList.add('activa'); document.getElementById('nav').textContent = (i + 1) + ' / ' + d.length + '  ·  ← →'; }
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight', 'PageDown', ' '].includes(e.key)) ir(i + 1);
+    if (['ArrowLeft', 'PageUp'].includes(e.key)) ir(i - 1);
+    if (e.key === 'Home') ir(0); if (e.key === 'End') ir(d.length - 1);
+  });
+  document.addEventListener('click', e => { if (e.clientX > innerWidth / 2) ir(i + 1); else ir(i - 1); });
+  ir(0);
+</script>
+</body>
+</html>

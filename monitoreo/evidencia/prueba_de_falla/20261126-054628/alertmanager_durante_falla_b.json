@@ -1,0 +1,38 @@
+[
+  {
+    "alerta": "BaseNoDisponible",
+    "labels": {
+      "alertname": "BaseNoDisponible",
+      "capa": "aplicacion",
+      "componente": "cassandra",
+      "fuente": "cassandra",
+      "hito": "10",
+      "instance": "host.docker.internal:8000",
+      "job": "api-fixture",
+      "mecanismo": "instrumentacion_propia",
+      "proyecto": "fixture2030",
+      "severidad": "critica"
+    },
+    "estado": "active",
+    "desde": "2026-11-26T06:01:18.581Z",
+    "resumen": "La API no puede usar cassandra desde hace mas de 1 minuto."
+  },
+  {
+    "alerta": "SondaExternaFallida",
+    "labels": {
+      "alertname": "SondaExternaFallida",
+      "capa": "infraestructura",
+      "componente": "cassandra",
+      "hito": "6",
+      "instance": "host.docker.internal:9042",
+      "job": "sonda-tcp",
+      "mecanismo": "sonda_blackbox",
+      "modelo": "tabular-columnar",
+      "proyecto": "fixture2030",
+      "severidad": "advertencia"
+    },
+    "estado": "active",
+    "desde": "2026-11-26T06:01:03.581Z",
+    "resumen": "cassandra no responde a la sonda sonda-tcp (host.docker.internal:9042)."
+  }
+]
