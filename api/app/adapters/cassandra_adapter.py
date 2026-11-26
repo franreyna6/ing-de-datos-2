@@ -210,7 +210,7 @@ class CassandraAdapter:
         if not _PATRON_PARTIDO.match(partido_id):
             # Defensa en profundidad: la ruta ya acota el formato, pero el
             # adaptador no confia en entradas sin validar antes de ir a cqlsh.
-            raise ErrorDependencia(FUENTE, "partido_id con formato no permitido")
+            raise ErrorDependencia(FUENTE, "partido_id con formato no permitido", conexion=False)
         v = ventana_de(instante)
         self._asegurar_modo()
         try:
@@ -242,14 +242,14 @@ class CassandraAdapter:
         duplica. Si no se envia, se genera uno nuevo.
         """
         if not _PATRON_PARTIDO.match(partido_id):
-            raise ErrorDependencia(FUENTE, "partido_id con formato no permitido")
+            raise ErrorDependencia(FUENTE, "partido_id con formato no permitido", conexion=False)
         ahora = dt.datetime.now(dt.timezone.utc)
         v = ventana_de(ahora)
         try:
             cid = uuid.UUID(comentario_id) if comentario_id else uuid.uuid4()
         except ValueError as e:
             # comentario_id con formato invalido: no es culpa de la base.
-            raise ErrorDependencia(FUENTE, f"comentario_id invalido: {e}")
+            raise ErrorDependencia(FUENTE, f"comentario_id invalido: {e}", conexion=False)
         self._asegurar_modo()
         try:
             if self._modo == "driver":

@@ -13,5 +13,6 @@ Repositorio de los hitos de implementación, un módulo por tecnología.
 | 10 | API REST integrada | FastAPI (integra las 6 fuentes) | [`api/`](api/) |
 | 11 | Evaluación de la conectividad | Diagnóstico por capas de las 6 fuentes desde la API | [`conectividad/`](conectividad/) |
 | 12 | Pruebas de carga y optimización | Carga sobre la API (Cassandra + caché Redis), Data Mart y comparación relacional | [`carga-optimizacion/`](carga-optimizacion/) |
+| 13 | Monitoreo y defensa final | Prometheus + Grafana sobre la API y las 6 bases, alertas, prueba de falla y defensa | [`monitoreo/`](monitoreo/) |
 
 Cada carpeta tiene su propio `README.md` con la guía de ejecución.

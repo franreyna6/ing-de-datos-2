@@ -1,0 +1,20 @@
+# Ajuste de puertos de IRIS (Hito 9) para Windows, aplicado por
+# scripts/iniciar_monitoreo solo si Docker no puede publicar el puerto web.
+#
+# Hallazgo del Hito 13: Windows reserva rangos de puertos dentro del rango
+# dinamico (49152-65535) para Hyper-V/WSL, y esos rangos cambian al reiniciar.
+# Cuando 52773 cae en uno, Docker falla con "ports are not available ... bind:
+# Intento de acceso a un socket no permitido" y el contenedor de IRIS queda sin
+# puertos: la API no llega al 1972 y el monitoreo no llega a /api/monitor.
+# Se ve la reserva con:  netsh interface ipv4 show excludedportrange protocol=tcp
+#
+# Este archivo se suma a docker-compose.yml y docker-compose.windows.yml del
+# Hito 9 y reemplaza SOLO la lista de puertos: el portal web pasa al 18773 de
+# la maquina (fuera del rango dinamico). Prometheus lee las metricas de IRIS por
+# la red de Docker (fixture2030-iris:52773), asi que no depende de este puerto.
+# Requiere Docker Compose 2.24 o superior (etiqueta !override).
+services:
+  iris:
+    ports: !override
+      - "127.0.0.1:1972:1972"
+      - "127.0.0.1:18773:52773"

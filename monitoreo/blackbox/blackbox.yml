@@ -1,0 +1,33 @@
+# Modulos de sonda del blackbox_exporter (Hito 13).
+# Una sonda prueba un servicio "desde afuera", como lo haria un cliente.
+modules:
+  # El puerto acepta una conexion TCP. Es la senal mas basica: dice que hay
+  # algo escuchando, no que la base pueda responder consultas.
+  tcp_connect:
+    prober: tcp
+    timeout: 5s
+    tcp:
+      # host.docker.internal tambien resuelve a IPv6 y blackbox prueba IPv6
+      # primero; ahi el puerto no responde. La primera corrida del Hito 13
+      # mostro todas las sondas TCP en falla por esto, con las bases sanas.
+      preferred_ip_protocol: ip4
+
+  # Redis: envia PING y espera +PONG. Prueba el protocolo, no solo el puerto.
+  redis_ping:
+    prober: tcp
+    timeout: 5s
+    tcp:
+      preferred_ip_protocol: ip4
+      query_response:
+        - send: "PING\r\n"
+        - expect: "^\\+PONG"
+
+  # Servicio HTTP que responde. Se acepta 401 porque InfluxDB 3 exige token
+  # incluso en /health: un 401 prueba que el servidor esta vivo y atendiendo.
+  http_servicio:
+    prober: http
+    timeout: 5s
+    http:
+      valid_status_codes: [200, 401]
+      method: GET
+      preferred_ip_protocol: ip4

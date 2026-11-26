@@ -1,0 +1,104 @@
+# Guion de la defensa ante la FIFA (20 minutos, RF13, RNF12)
+
+**Pregunta central:** *¿Por qué esta combinación de modelos, estructuras, estrategias de distribución y mecanismos de observabilidad es adecuada para el Fixture Mundial 2030 bajo las condiciones planteadas?*
+
+**Regla de la exposición:** se defienden **las bases y las decisiones**; las herramientas (Grafana, Postman, Swagger) solo muestran evidencia (Clase 14). Cada número que se dice tiene que estar en el repositorio.
+
+**Reparto sugerido** (los tres conocen todo el trabajo y pueden responder sobre cualquier módulo, como exige la consigna):
+
+| Integrante | Bloques | Bases que presenta |
+| :--- | :--- | :--- |
+| Fermín | Inicio, Arquitectura y Cierre | MongoDB, Neo4j, IRIS |
+| Fran | Decisiones de distribución y consistencia | Cassandra, Redis, InfluxDB |
+| Rodrigo | Operación (demo) y Evidencia | API, Prometheus y Grafana |
+
+El reparto se puede cambiar; lo que importa es que cada bloque tenga un responsable y que los tiempos se respeten.
+
+## Tiempos
+
+| Minuto | Bloque | Quién | Recurso |
+| :--- | :--- | :--- | :--- |
+| 0:00 - 1:30 | Inicio | Fermín | Diapositivas 1-2 |
+| 1:30 - 5:00 | Arquitectura | Fermín | Diapositivas 3-4 |
+| 5:00 - 9:00 | Decisiones | Fran | Diapositivas 5-7 |
+| 9:00 - 14:00 | Operación | Rodrigo | Postman + Grafana en vivo ([demo.md](demo.md)) |
+| 14:00 - 17:30 | Evidencia | Rodrigo | Diapositivas 8-9 + tablero |
+| 17:30 - 19:30 | Cierre | Fermín | Diapositivas 10-11 |
+| 19:30 - 20:00 | Margen | — | — |
+
+Las preguntas de la FIFA pueden llegar en cualquier momento: el que presenta el bloque responde, o deriva al dueño del módulo. Respuestas preparadas en [`../docs/defensa_final.md`](../docs/defensa_final.md).
+
+## 0:00 - 1:30 · Inicio (Fermín)
+
+- **El problema:** el Mundial 2030 junta 64 selecciones, más de mil jugadores, partidos en seis países y millones de hinchas a la vez. Cada tipo de dato tiene un patrón de acceso distinto.
+- **Las condiciones** del Hito 1: p95 menor a 100 ms, 99,99 % de disponibilidad, 2-3 M de sesiones, 1 M+ comentarios por partido y 10 M+ puntos de estadísticas.
+- **La decisión general:** una arquitectura políglota. Seis modelos, cada uno elegido por el patrón de acceso de su dato, detrás de una sola API.
+- **Frase de cierre del bloque:** *"No elegimos seis bases porque sí: cada una resuelve un acceso que las otras harían caro. Y les vamos a mostrar lo que cuesta."*
+
+## 1:30 - 5:00 · Arquitectura (Fermín)
+
+Recorrido por la diapositiva del mapa, una oración por base:
+- **MongoDB:** fichas de equipos y jugadores. Documento validado con JSON Schema; el código FIFA es la clave que comparten todas las bases.
+- **Neo4j:** partidos, sedes y eventos como grafo. El gol es un nodo que se recorre hasta el jugador y su equipo.
+- **Cassandra:** comentarios masivos, particionados por partido y ventana de 5 minutos.
+- **Redis:** sesiones con TTL y la caché del feed.
+- **InfluxDB:** estadísticas por segundo, agregadas por ventanas.
+- **IRIS:** el partido como objeto con reglas (estado, eventos y terna).
+- **API:** una puerta de entrada con un adaptador por base. Si una base falla, solo fallan sus rutas.
+
+Transición: *"Ahora, las decisiones que hacen que esto aguante un pico de gol."*
+
+## 5:00 - 9:00 · Decisiones (Fran)
+
+- **Cassandra en un pico de gol:**
+  - La partición `(partido_id, ventana de 5 min)` convierte una partición ilimitada (unos 162 MiB en el partido extremo) en particiones acotadas (unos 15 MiB en el pico).
+  - Medido: 2.688 particiones, máximo de 12.087 filas.
+  - Riesgo declarado: el hotspot *dentro* de la ventana. Siguiente paso: ventana de 1 minuto o *shard*.
+- **CAP por dato** (diapositiva del mapa CAP):
+  - Información deportiva (MongoDB, Neo4j) es **CP**: un resultado oficial no puede leerse viejo.
+  - Comentarios, sesiones y estadísticas son **AP**: el feed sigue aceptando comentarios aunque una región tarde en verlos, se acepta perder una sesión (el usuario se vuelve a autenticar) y la ingesta de estadísticas no se detiene.
+- **Si se cae una región:** lo CP rechaza escrituras sin mayoría; lo AP sigue con las réplicas que quedan. En el laboratorio hay un solo nodo por base: **la replicación es diseño, no medición**, y lo decimos así.
+- **Por qué no SQL:** para equipos y partidos SQL sería válido (Hito 1). Pero un motor relacional único concentra las escrituras del partido caliente en el mismo índice, no tiene TTL ni downsampling nativos y recorre relaciones con joins recursivos. Comparación completa en el Hito 12.
+
+## 9:00 - 14:00 · Operación (Rodrigo)
+
+Seguir [demo.md](demo.md):
+1. **Flujo 1** (Postman): el mismo partido atravesando las seis bases. En cada request, decir qué base lo atiende y por qué.
+2. **Flujo 2** (Grafana): carga mixta. Mostrar latencia p95 por base, aciertos de caché y escrituras por partido. Después, `docker stop fixture2030-redis`: la caché cae a 0 %, las lecturas van a Cassandra, `/sesiones` da 503 y el resto sigue en 200. Por último, `docker start`.
+
+Mensaje: *"La caída de una base degrada una funcionalidad; no tira el Fixture."*
+
+## 14:00 - 17:30 · Evidencia (Rodrigo)
+
+- **Prometheus:** siete jobs de scrape sobre la API y las seis bases, cada 15 s. Las de infraestructura miden la base por dentro; las de aplicación, cómo la vive la API. Neo4j Community y Cassandra no exponen métricas internas: se miden con sondas y desde la API, y se dice.
+- **Resultados de la prueba controlada** (`evidencia/prueba_de_falla/<etiqueta>/resumen.md`):
+  - p95 en fase normal, falla y recuperación;
+  - tiempo de detección de la caída y tiempo de recuperación;
+  - aciertos de caché antes, durante y después;
+  - con Cassandra caída: 503 solo en comentarios y alerta crítica a los pocos segundos de cumplirse el minuto de la regla.
+- **Alertas:** siete reglas, cada una con impacto, acción y razón del umbral. El SLO interno de 50 ms es más exigente que el SLA de 100 ms.
+- **Medido y proyectado** (diapositiva): qué medimos (10,6 M de puntos, 1,1 M de comentarios, pruebas de carga y fallas) y qué es proyección (2-3 M de usuarios, multirregión, 99,99 %).
+
+## 17:30 - 19:30 · Cierre (Fermín)
+
+- **Por qué es adecuada:** cada dato está en el modelo que abarata su acceso dominante; la API aísla las fallas; el monitoreo permite ver qué base está afectada y decidir.
+- **Trade-offs aceptados:**
+  - seis motores para operar;
+  - consistencia eventual donde el negocio la tolera;
+  - sin transacciones entre motores;
+  - dos bases sin métricas internas en el laboratorio.
+- **Qué mejoraríamos:**
+  - réplicas reales y prueba de caída de nodo;
+  - exporter JMX para Cassandra;
+  - cortar rápido la caché cuando Redis no responde (mejora sacada de la evidencia de este hito);
+  - conectar la caché de fichas del Hito 7 a la API.
+- **Frase final:** *"No dijimos que la arquitectura sea perfecta. Les mostramos qué resuelve cada base, qué cuesta y cómo nos damos cuenta cuando algo falla."*
+
+## Checklist del día
+
+- [ ] `git push` hecho y capturas visibles en GitHub.
+- [ ] Docker Desktop abierto, `iniciar_monitoreo --con-bases` corrido 10 minutos antes, `verificar_targets` sin targets DOWN.
+- [ ] API levantada con `CACHE_COMENTARIOS_TTL_S=2`.
+- [ ] Postman con `postman_demo_h13.json` importada; Grafana en *Last 15 minutes*.
+- [ ] Presentación abierta (`presentacion.html`, se navega con las flechas).
+- [ ] Ensayo cronometrado: si pasa de 20 minutos, recortar el Flujo 1 a 4 requests (Mongo, Neo4j, Cassandra, Redis).

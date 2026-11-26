@@ -1,0 +1,27 @@
+# Alertmanager del Hito 13: recibe las alertas de Prometheus, las agrupa y las
+# muestra en http://localhost:9093.
+#
+# En el laboratorio no se envian notificaciones reales (ni mail ni chat): el
+# receptor no tiene destinos. Asi no hace falta guardar credenciales de ningun
+# servicio externo (RNF6). En produccion, cada severidad iria a un canal distinto
+# (ver docs/alertas_y_umbral.md, columna "quien la atiende").
+route:
+  receiver: guardia-plataforma
+  group_by: [alertname, componente]
+  group_wait: 10s
+  group_interval: 1m
+  repeat_interval: 1h
+  routes:
+    - matchers: [severidad="critica"]
+      receiver: guardia-plataforma
+    - matchers: [severidad="advertencia"]
+      receiver: responsable-del-modulo
+
+receivers:
+  - name: guardia-plataforma
+  - name: responsable-del-modulo
+
+# Si una base esta caida, no tiene sentido avisar ademas que su latencia empeoro.
+inhibit_rules:
+  - source_matchers: [alertname="BaseNoDisponible"]
+    target_matchers: [alertname="LatenciaAPIp95SobreSLO"]

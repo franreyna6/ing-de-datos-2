@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 
+from app.core import cortocircuito
 from app.core.config import obtener_config
 from app.core.errores import ErrorDependencia
 from app.core.registro import logger
@@ -79,11 +80,18 @@ class RedisAdapter:
     # None y el servicio lee Cassandra. Una falla de la cache nunca rompe la
     # lectura de comentarios; solo la vuelve mas lenta.
     def cache_leer(self, clave: str) -> dict | None:
+        # Hito 13: con el corte abierto (Redis fallo hace poco) no se intenta:
+        # se devuelve None al instante y el servicio lee Cassandra.
+        corte = cortocircuito.de(FUENTE)
+        if not corte.permitir():
+            return None
         try:
             valor = self._cli().get(clave)
         except Exception:
+            corte.registrar_falla()
             logger.warning("redis cache no disponible (lectura) clave=%s", clave)
             return None
+        corte.registrar_exito()
         if valor is None:
             return None
         try:
@@ -94,9 +102,13 @@ class RedisAdapter:
     def cache_guardar(self, clave: str, valor: dict, ttl_s: int) -> None:
         # SET con EX: la clave SIEMPRE tiene TTL, nunca queda una entrada sin
         # vencimiento (se valida en validar_integridad.py del Hito 12).
+        corte = cortocircuito.de(FUENTE)
+        if not corte.permitir():
+            return
         try:
             self._cli().set(clave, json.dumps(valor), ex=ttl_s)
         except Exception:
+            corte.registrar_falla()
             logger.warning("redis cache no disponible (escritura) clave=%s", clave)
 
     def cerrar(self) -> None:

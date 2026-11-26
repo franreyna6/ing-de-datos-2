@@ -57,10 +57,17 @@ class MongoAdapter:
 
     def obtener_equipo(self, codigo: str) -> dict | None:
         """Documento de un equipo por codigo, proyectado. None si no existe."""
-        proyeccion = {"_id": 0, "codigo": "$_id", "nombre": 1, "confederacion": 1,
-                      "rankingFIFA": 1, "grupo": 1, "ciudadSede": 1}
+        # Hito 4: el documento tiene _id = ObjectId y el codigo FIFA en el campo
+        # 'codigo' (indice unico). La version del Hito 10 buscaba por _id, que
+        # solo coincidia con datos de prueba cargados con _id = codigo; el
+        # monitoreo del Hito 13 lo detecto (404 en /equipos/ARG). Se busca por
+        # 'codigo' y, por compatibilidad, tambien por _id.
+        proyeccion = {"_id": 0, "codigo": {"$ifNull": ["$codigo", "$_id"]}, "nombre": 1,
+                      "confederacion": 1, "rankingFIFA": 1, "grupo": 1,
+                      "ciudadSede": {"$ifNull": ["$ciudadSede", "$sedeBase"]}}
         try:
-            doc = self._db().equipos.find_one({"_id": codigo}, proyeccion)
+            doc = self._db().equipos.find_one({"$or": [{"codigo": codigo}, {"_id": codigo}]},
+                                              proyeccion)
         except ErrorDependencia:
             raise
         except Exception as e:
@@ -75,8 +82,11 @@ class MongoAdapter:
         filtro: dict = {"equipoCodigo": equipo_codigo}
         if posicion:
             filtro["posicion"] = posicion
-        proyeccion = {"_id": 0, "codigo": "$_id", "nombre": 1, "apellido": 1,
-                      "posicion": 1, "dorsal": 1, "equipoCodigo": 1}
+        # Igual que en obtener_equipo: el codigo de negocio del Hito 4 es el campo
+        # 'codigo' (ARG-10-xxxxxx); _id es un ObjectId que no se expone (antes
+        # se proyectaba _id y la respuesta fallaba la validacion con 500).
+        proyeccion = {"_id": 0, "codigo": {"$ifNull": ["$codigo", "$_id"]}, "nombre": 1,
+                      "apellido": 1, "posicion": 1, "dorsal": 1, "equipoCodigo": 1}
         try:
             cursor = (self._db().jugadores
                       .find(filtro, proyeccion)

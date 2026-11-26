@@ -1,0 +1,134 @@
+# Hito 13 - Configuracion de Prometheus del Fixture 2030 (Grupo 8).
+#
+# Modelo pull (Clase 14): Prometheus llama a cada target y le pide sus metricas
+# (scraping). Si un target no responde, Prometheus lo marca DOWN (up == 0): asi
+# se detecta una caida sin que el servicio caido tenga que avisar nada.
+#
+# Cada target lleva etiquetas que lo vinculan con el Fixture:
+#   componente  base o servicio observado (mongodb, neo4j, cassandra, ...)
+#   modelo      modelo de datos de esa base (documental, grafo, ...)
+#   hito        hito del TPO donde se construyo
+#   capa        aplicacion | infraestructura | monitoreo
+#   mecanismo   instrumentacion_propia | exporter | endpoint_nativo | sonda_blackbox
+# El inventario completo esta en docs/inventario_de_componentes.md.
+#
+# Las bases y la API corren fuera de este compose, en la misma maquina; se
+# alcanzan por sus puertos publicados en host.docker.internal.
+
+global:
+  scrape_interval: 15s       # intervalo de la Clase 14
+  scrape_timeout: 10s
+  evaluation_interval: 15s   # cada cuanto se evaluan las reglas de alerta
+  external_labels:
+    proyecto: fixture2030
+
+rule_files:
+  - /etc/prometheus/reglas/reglas-o-alertas.yml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["alertmanager:9093"]
+
+scrape_configs:
+  # ------------------------------------------------------------------
+  # Capa de monitoreo: Prometheus se observa a si mismo.
+  # ------------------------------------------------------------------
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+        labels: {componente: prometheus, capa: monitoreo, mecanismo: endpoint_nativo}
+
+  # ------------------------------------------------------------------
+  # Capa de aplicacion: la API integrada del Hito 10, instrumentada en el
+  # Hito 13 (api/app/core/metricas.py). Ve a las 6 bases "desde adentro":
+  # latencia y errores por ruta y por fuente, cache y disponibilidad.
+  # ------------------------------------------------------------------
+  - job_name: api-fixture
+    metrics_path: /metrics
+    static_configs:
+      - targets: ["host.docker.internal:8000"]
+        labels: {componente: api, capa: aplicacion, hito: "10", mecanismo: instrumentacion_propia}
+
+  # ------------------------------------------------------------------
+  # Capa de infraestructura: metricas propias de cada base.
+  # ------------------------------------------------------------------
+  - job_name: redis
+    static_configs:
+      - targets: ["redis-exporter:9121"]
+        labels: {componente: redis, modelo: clave-valor, hito: "7", capa: infraestructura, mecanismo: exporter}
+
+  - job_name: mongodb
+    static_configs:
+      - targets: ["mongodb-exporter:9216"]
+        labels: {componente: mongodb, modelo: documental, hito: "4", capa: infraestructura, mecanismo: exporter}
+
+  - job_name: influxdb
+    # InfluxDB 3 Core expone /metrics en formato Prometheus, pero exige token.
+    # El token se lee de un archivo montado (nunca escrito en este yml, RNF6).
+    authorization:
+      type: Bearer
+      credentials_file: /etc/prometheus/secretos/influxdb3-token
+    static_configs:
+      - targets: ["host.docker.internal:8181"]
+        labels: {componente: influxdb, modelo: series-temporales, hito: "8", capa: infraestructura, mecanismo: endpoint_nativo}
+
+  - job_name: iris
+    # InterSystems IRIS publica sus metricas en /api/monitor/metrics.
+    # Se lee por la red de Docker del Hito 9 (iniciar_monitoreo conecta a
+    # Prometheus a esa red), no por el puerto publicado en la maquina: en
+    # Windows el 52773 puede quedar dentro de un rango de puertos reservado
+    # (ver compose/iris-puertos-windows.yml).
+    metrics_path: /api/monitor/metrics
+    static_configs:
+      - targets: ["fixture2030-iris:52773"]
+        labels: {componente: iris, modelo: objetos, hito: "9", capa: infraestructura, mecanismo: endpoint_nativo}
+
+  # ------------------------------------------------------------------
+  # Sondas desde afuera (blackbox): "la base acepta conexiones". Cubren a
+  # Neo4j y Cassandra, que en este laboratorio no exponen metricas propias
+  # (ver docs/limitaciones_y_evidencia.md), y dan una segunda senal para el
+  # resto. El patron de relabel manda la sonda al blackbox_exporter con el
+  # destino como parametro.
+  # ------------------------------------------------------------------
+  - job_name: sonda-tcp
+    metrics_path: /probe
+    params:
+      module: [tcp_connect]
+    static_configs:
+      - targets: ["host.docker.internal:9042"]
+        labels: {componente: cassandra, modelo: tabular-columnar, hito: "6", capa: infraestructura, mecanismo: sonda_blackbox}
+      - targets: ["host.docker.internal:27017"]
+        labels: {componente: mongodb, modelo: documental, hito: "4", capa: infraestructura, mecanismo: sonda_blackbox}
+      - targets: ["host.docker.internal:7687"]
+        labels: {componente: neo4j, modelo: grafo, hito: "5", capa: infraestructura, mecanismo: sonda_blackbox}
+      - targets: ["host.docker.internal:1972"]
+        labels: {componente: iris, modelo: objetos, hito: "9", capa: infraestructura, mecanismo: sonda_blackbox}
+    relabel_configs: &relabel-sonda
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  - job_name: sonda-redis
+    # PING -> +PONG: comprueba el protocolo de Redis, no solo el puerto.
+    metrics_path: /probe
+    params:
+      module: [redis_ping]
+    static_configs:
+      - targets: ["host.docker.internal:6379"]
+        labels: {componente: redis, modelo: clave-valor, hito: "7", capa: infraestructura, mecanismo: sonda_blackbox}
+    relabel_configs: *relabel-sonda
+
+  - job_name: sonda-http
+    metrics_path: /probe
+    params:
+      module: [http_servicio]
+    static_configs:
+      - targets: ["http://host.docker.internal:7474/"]
+        labels: {componente: neo4j, modelo: grafo, hito: "5", capa: infraestructura, mecanismo: sonda_blackbox}
+      - targets: ["http://host.docker.internal:8181/health"]
+        labels: {componente: influxdb, modelo: series-temporales, hito: "8", capa: infraestructura, mecanismo: sonda_blackbox}
+    relabel_configs: *relabel-sonda

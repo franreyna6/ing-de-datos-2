@@ -139,6 +139,10 @@ api/
 | RF19 | `docs/contratos_y_errores.md` §5 |
 | RF20 | repositorio GitHub del grupo |
 
+## Métricas para Prometheus (Hito 13)
+
+La API expone `GET /metrics` en el formato de texto de Prometheus (fuera del contrato OpenAPI). Mide requests, latencia por ruta, duración de cada llamada a una base, disponibilidad de cada fuente (chequeo en segundo plano cada `METRICAS_INTERVALO_S` segundos, 15 por defecto; 0 lo desactiva), resultado de la caché de comentarios y escrituras por partido. Código: `app/core/metricas.py`; pruebas: `tests/test_metricas.py`. Catálogo y consultas PromQL: [`monitoreo/docs/metricas_y_consultas.md`](../monitoreo/docs/metricas_y_consultas.md).
+
 ## Notas de alcance
 - Datos de laboratorio de los hitos previos; no se incorporan datos sensibles.
 - La API no demuestra escala (millones de usuarios): se prueba en una notebook.

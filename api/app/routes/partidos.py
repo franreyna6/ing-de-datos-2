@@ -7,6 +7,7 @@ sub-ruta deja claro que fuente la atiende; ninguna mezcla modelos.
 """
 from fastapi import APIRouter, Query, Path, Body, Response
 
+from app.core import metricas
 from app.schemas.modelos import (EventosDePartido, PaginaComentarios, NuevoComentario,
                                   ComentarioCreado, Estadisticas, DetallePartido,
                                   ErrorResponse)
@@ -41,6 +42,7 @@ def get_comentarios(
     # aciertos desde el generador de carga sin cambiar el cuerpo del contrato.
     pagina, estado_cache = servicios.comentarios_de_partido_con_cache(codigo, instante, limit)
     response.headers["X-Cache"] = estado_cache
+    metricas.CACHE.labels(estado_cache).inc()  # Hito 13: tasa de aciertos
     return pagina
 
 
@@ -50,8 +52,11 @@ def get_comentarios(
              responses={400: {"model": ErrorResponse}, 503: {"model": ErrorResponse}})
 def post_comentario(codigo: str = Path(..., examples=["F2030-063"]),
                     cuerpo: NuevoComentario = Body(...)):
-    return servicios.crear_comentario(codigo, cuerpo.usuarioId, cuerpo.contenido,
-                                      cuerpo.comentarioId)
+    creado = servicios.crear_comentario(codigo, cuerpo.usuarioId, cuerpo.contenido,
+                                        cuerpo.comentarioId)
+    # Hito 13: escrituras de Cassandra por partido (solo si la escritura salio bien).
+    metricas.COMENTARIOS_CREADOS.labels(metricas.etiqueta_partido(codigo)).inc()
+    return creado
 
 
 # --- InfluxDB: estadisticas en una ventana temporal (RF7) ---

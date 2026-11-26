@@ -101,7 +101,7 @@ class InfluxAdapter:
     def estadisticas(self, partido: str, desde_iso: str, hasta_iso: str) -> dict:
         """Puntos de estadisticas de un partido en [desde, hasta)."""
         if not _PATRON_PARTIDO.match(partido):
-            raise ErrorDependencia(FUENTE, "partido con formato no permitido")
+            raise ErrorDependencia(FUENTE, "partido con formato no permitido", conexion=False)
         sql = _SQL_TMPL.format(partido=_esc(partido), desde=_esc(desde_iso),
                                hasta=_esc(hasta_iso))
         filas = self._consultar(sql)

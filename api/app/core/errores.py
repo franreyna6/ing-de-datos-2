@@ -62,13 +62,17 @@ class ErrorDependencia(ErrorAPI):
     http = 503
     code = "DEPENDENCY_UNAVAILABLE"
 
-    def __init__(self, fuente: str, causa: str | None = None) -> None:
+    def __init__(self, fuente: str, causa: str | None = None, conexion: bool = True) -> None:
         super().__init__(
             f"La fuente '{fuente}' no esta disponible en este momento.",
             detalles={"fuente": fuente},
         )
         # causa queda SOLO para el log; no se serializa al cliente.
         self.causa = causa
+        # Hito 13: False cuando el 503 no viene de la base sino de un dato que
+        # el adaptador rechaza por seguridad. Esas fallas no abren el corte
+        # rapido (app/core/cortocircuito.py).
+        self.conexion = conexion
 
 
 def cuerpo_error(code: str, message: str, request_id: str,

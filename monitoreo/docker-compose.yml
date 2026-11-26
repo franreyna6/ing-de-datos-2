@@ -1,0 +1,145 @@
+# Hito 13 - Monitoreo del Fixture 2030 con Prometheus y Grafana (Grupo 8).
+#
+# Este compose levanta SOLO la capa de observabilidad. Las bases (Hitos 4 a 9) y
+# la API (Hito 10) siguen en sus propias carpetas y se levantan como siempre.
+# Prometheus las alcanza por los puertos que esas carpetas ya publican en la
+# maquina, a traves de host.docker.internal. Asi este compose arranca aunque
+# alguna base este apagada: ese target simplemente queda DOWN, que es justo lo
+# que el monitoreo tiene que mostrar.
+#
+# Modelo pull (Clase 14): Prometheus pide /metrics a cada target cada 15 s.
+# Las bases no hablan "Prometheus" de forma nativa, por eso se suman exporters
+# (traductores): redis_exporter, mongodb_exporter y blackbox_exporter.
+#
+# Puertos publicados solo en 127.0.0.1 (acceso local, RNF6):
+#   Prometheus   http://localhost:9090
+#   Grafana      http://localhost:3000   (tablero "Fixture 2030 - War Room")
+#   Alertmanager http://localhost:9093
+#
+# Iniciar: scripts/iniciar_monitoreo.ps1 (o .sh). El script crea .env y la
+# carpeta secretos/ (ambos fuera de Git) antes del "docker compose up -d".
+
+name: monitoreo
+
+x-host-docker: &host-docker
+  # host.docker.internal = la maquina donde corren las bases y la API.
+  # En Docker Desktop ya existe; en Linux lo agrega host-gateway.
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    container_name: fixture2030-prometheus
+    restart: unless-stopped
+    <<: *host-docker
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      # Retencion: 7 dias. Alcanza para la prueba y la defensa; el historial
+      # de largo plazo no es objetivo de este hito (ver docs/limitaciones).
+      - --storage.tsdb.retention.time=7d
+      # Permite recargar la configuracion sin reiniciar (POST /-/reload).
+      - --web.enable-lifecycle
+    ports:
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus:/etc/prometheus/reglas:ro
+      # Token de InfluxDB copiado por iniciar_monitoreo (excluido de Git).
+      - ./secretos:/etc/prometheus/secretos:ro
+      - prometheus-datos:/prometheus
+    depends_on:
+      - alertmanager
+
+  alertmanager:
+    # Prometheus detecta el problema y le delega el aviso (Clase 14).
+    image: prom/alertmanager:v0.27.0
+    container_name: fixture2030-alertmanager
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.yml
+      - --storage.path=/alertmanager
+    ports:
+      - "127.0.0.1:9093:9093"
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+
+  blackbox-exporter:
+    # Prueba desde afuera si cada base acepta conexiones (TCP o HTTP).
+    image: prom/blackbox-exporter:v0.25.0
+    container_name: fixture2030-blackbox-exporter
+    restart: unless-stopped
+    <<: *host-docker
+    command:
+      - --config.file=/etc/blackbox_exporter/config.yml
+    ports:
+      - "127.0.0.1:9115:9115"
+    volumes:
+      - ./blackbox/blackbox.yml:/etc/blackbox_exporter/config.yml:ro
+
+  redis-exporter:
+    # Traduce INFO de Redis (Hito 7) a metricas: memoria, hits/misses, evicciones.
+    image: oliver006/redis_exporter:v1.66.0
+    container_name: fixture2030-redis-exporter
+    restart: unless-stopped
+    <<: *host-docker
+    environment:
+      REDIS_ADDR: "redis://host.docker.internal:6379"
+
+  mongodb-exporter:
+    # Traduce serverStatus/dbStats de MongoDB (Hito 4) a metricas.
+    image: percona/mongodb_exporter:0.40.0
+    container_name: fixture2030-mongodb-exporter
+    restart: unless-stopped
+    <<: *host-docker
+    command:
+      - --collect-all
+      - --compatible-mode
+    environment:
+      # URI con credenciales del laboratorio: viene de .env (fuera de Git, RNF6).
+      MONGODB_URI: "${MONGODB_EXPORTER_URI:?Falta MONGODB_EXPORTER_URI en monitoreo/.env (correr scripts/iniciar_monitoreo)}"
+
+  grafana:
+    # Grafana no guarda datos: se conecta a Prometheus para visualizarlos (Clase 14).
+    image: grafana/grafana:11.3.0
+    container_name: fixture2030-grafana
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: "${GRAFANA_ADMIN_USER:-admin}"
+      GF_SECURITY_ADMIN_PASSWORD: "${GRAFANA_ADMIN_PASSWORD:?Falta GRAFANA_ADMIN_PASSWORD en monitoreo/.env (correr scripts/iniciar_monitoreo)}"
+      # Solo lectura sin login, para mostrar el tablero en la defensa. Escucha
+      # unicamente en 127.0.0.1, asi que no queda expuesto fuera de la maquina.
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Viewer"
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: "/var/lib/grafana/dashboards/fixture2030-war-room.json"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_NEWS_NEWS_FEED_ENABLED: "false"
+      # Renderizado de capturas reproducibles (scripts/capturar_dashboard.py).
+      GF_RENDERING_SERVER_URL: "http://renderer:8081/render"
+      GF_RENDERING_CALLBACK_URL: "http://grafana:3000/"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-datos:/var/lib/grafana
+    depends_on:
+      - prometheus
+      - renderer
+
+  renderer:
+    # Servicio oficial de Grafana que convierte un panel o tablero en PNG.
+    # Se usa solo para guardar capturas de evidencia con un rango de tiempo exacto.
+    image: grafana/grafana-image-renderer:latest
+    container_name: fixture2030-grafana-renderer
+    restart: unless-stopped
+
+volumes:
+  # Datos derivados y regenerables: se conservan entre reinicios y solo se
+  # borran con limpiar_entorno -BorrarDatosMonitoreo (RNF11).
+  prometheus-datos:
+    name: fixture2030_prometheus_datos
+  grafana-datos:
+    name: fixture2030_grafana_datos

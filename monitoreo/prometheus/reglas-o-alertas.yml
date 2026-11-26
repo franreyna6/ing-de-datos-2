@@ -1,0 +1,138 @@
+# Hito 13 - Reglas de alerta del Fixture 2030 (RF9, seccion 5.4).
+#
+# Cada alerta documenta, en sus etiquetas y anotaciones, los ocho datos que pide
+# el enunciado: metrica evaluada, condicion, duracion minima (for), severidad,
+# componente afectado, impacto en el Fixture, accion de investigacion o
+# recuperacion, y por que el umbral es razonable o experimental.
+# La explicacion extendida esta en docs/alertas_y_umbral.md.
+#
+# SLI / SLO / SLA (Clase 14):
+#   SLI = lo que se mide (p. ej. latencia p95 de la API).
+#   SLO = el objetivo interno (p. ej. p95 < 50 ms). Las alertas avisan cuando
+#         el SLI se aleja del SLO por un tiempo sostenido.
+#   SLA = la promesa contractual con la FIFA; no se define en el laboratorio.
+
+groups:
+  - name: fixture2030-disponibilidad
+    rules:
+      - alert: BaseNoDisponible
+        # Chequeo de protocolo que hace la propia API (el de /salud), publicado
+        # por api/app/core/metricas.py cada 15 s.
+        expr: fixture_dependencia_disponible == 0
+        for: 1m
+        labels:
+          severidad: critica
+          componente: "{{ $labels.fuente }}"
+        annotations:
+          resumen: "La API no puede usar {{ $labels.fuente }} desde hace mas de 1 minuto."
+          metrica: "fixture_dependencia_disponible{fuente} (gauge 1/0, chequeo de protocolo de la API)"
+          condicion: "valor == 0 durante 1 minuto"
+          impacto: "Las rutas que dependen de {{ $labels.fuente }} responden 503. El resto del Fixture sigue funcionando (adaptadores separados, Hito 10)."
+          accion: "docker ps / docker logs fixture2030-{{ $labels.fuente }}; si el contenedor esta detenido, docker start. Confirmar recuperacion en el panel 'Estado de salud por base'."
+          razon_umbral: "1 minuto = 4 chequeos seguidos fallidos: descarta un timeout aislado y avisa antes de que un pico de gol acumule errores."
+          quien_atiende: "Guardia de plataforma."
+
+      - alert: SondaExternaFallida
+        # Sonda blackbox "desde afuera": la base no acepta conexiones.
+        expr: probe_success == 0
+        for: 1m
+        labels:
+          severidad: advertencia
+        annotations:
+          resumen: "{{ $labels.componente }} no responde a la sonda {{ $labels.job }} ({{ $labels.instance }})."
+          metrica: "probe_success (blackbox_exporter)"
+          condicion: "valor == 0 durante 1 minuto"
+          impacto: "Confirma desde fuera de la API que la base no acepta conexiones; si BaseNoDisponible no se dispara, el problema esta en el camino de red y no en la base."
+          accion: "Ver lastError del target en http://localhost:9090/targets y el estado del contenedor."
+          razon_umbral: "Mismo criterio de 1 minuto que BaseNoDisponible, para poder comparar las dos vistas."
+          quien_atiende: "Responsable del modulo de esa base."
+
+      - alert: TargetDeMonitoreoCaido
+        # up es generado por Prometheus en cada scrape: 0 = no pudo leer /metrics.
+        expr: up{job!~"sonda-.*"} == 0
+        for: 1m
+        labels:
+          severidad: advertencia
+        annotations:
+          resumen: "Prometheus no puede leer las metricas de {{ $labels.job }} ({{ $labels.instance }})."
+          metrica: "up (generada por Prometheus en cada scrape)"
+          condicion: "valor == 0 durante 1 minuto"
+          impacto: "Se pierde visibilidad de ese componente: no significa necesariamente que la base este caida, sino que no se puede medir."
+          accion: "Abrir http://localhost:9090/targets, leer el error del target y revisar el exporter o el endpoint correspondiente (ver README, 'Investigar un target DOWN')."
+          razon_umbral: "1 minuto = 4 scrapes fallidos seguidos."
+          quien_atiende: "Responsable de observabilidad."
+
+  - name: fixture2030-rendimiento
+    rules:
+      - alert: LatenciaAPIp95SobreSLO
+        # SLI: latencia p95 de la API medida por el histograma propio.
+        expr: |
+          histogram_quantile(0.95,
+            sum by (le) (rate(fixture_api_request_duration_seconds_bucket[1m]))
+          ) > 0.05
+        for: 1m
+        labels:
+          severidad: advertencia
+          componente: api
+        annotations:
+          resumen: "La latencia p95 de la API supera el SLO de 50 ms."
+          metrica: "fixture_api_request_duration_seconds (histogram), p95 en ventana de 1 minuto"
+          condicion: "p95 > 0,05 s durante 1 minuto"
+          impacto: "Los hinchas ven la pantalla del partido lenta; en un pico de gol se acumulan requests en cola."
+          accion: "Mirar el panel 'Latencia p95 por base' para ubicar la fuente lenta antes de tocar la API; revisar la tasa de aciertos de cache."
+          razon_umbral: "En el Hito 12 el p95 medido dentro de la API fue de 16 a 26 ms con 40-60 usuarios. 50 ms es aproximadamente el doble: deja margen para variacion normal y marca una degradacion real. Es un umbral experimental del laboratorio, no un SLA."
+          quien_atiende: "Responsable de la API."
+
+      - alert: TasaErrores5xxAlta
+        expr: |
+          sum(rate(fixture_api_requests_total{estado=~"5.."}[1m]))
+            / sum(rate(fixture_api_requests_total[1m])) > 0.01
+        for: 1m
+        labels:
+          severidad: critica
+          componente: api
+        annotations:
+          resumen: "Mas del 1% de las requests de la API terminan en error 5xx."
+          metrica: "fixture_api_requests_total (counter) por codigo HTTP"
+          condicion: "errores 5xx / total > 1% durante 1 minuto"
+          impacto: "Comentarios, estadisticas o sesiones fallan para los usuarios."
+          accion: "Ver en el panel de errores que ruta falla, cruzar con el estado de salud de su base y con los logs de la API (request_id)."
+          razon_umbral: "En el Hito 12 la tasa de error medida fue 0%. Un 1% sostenido no es ruido."
+          quien_atiende: "Guardia de plataforma."
+
+      - alert: CacheComentariosDegradada
+        expr: |
+          (
+            sum(rate(fixture_cache_comentarios_total{estado="HIT"}[1m]))
+              / sum(rate(fixture_cache_comentarios_total{estado=~"HIT|MISS"}[1m]))
+          ) < 0.8
+        for: 1m
+        labels:
+          severidad: advertencia
+          componente: redis
+        annotations:
+          resumen: "La cache de comentarios acierta menos del 80% de las lecturas."
+          metrica: "fixture_cache_comentarios_total (counter) por estado HIT/MISS"
+          condicion: "HIT / (HIT + MISS) < 0,8 durante 1 minuto, con la cache encendida"
+          impacto: "Las lecturas vuelven a Cassandra: sube la latencia y la carga sobre la particion caliente del partido (el problema que resolvio el Hito 12)."
+          accion: "Verificar que Redis este disponible y su memoria; confirmar que la API corre con CACHE_COMENTARIOS_TTL_S > 0."
+          razon_umbral: "En el Hito 12 la tasa de aciertos medida fue 0,98. Bajar de 0,8 indica que la cache dejo de funcionar, no una variacion normal."
+          quien_atiende: "Responsable del modulo Redis."
+
+      - alert: RedisMemoriaAlta
+        # "WARN: Redis Memory at 85%" (ejemplo de la Clase 14).
+        expr: |
+          (redis_memory_used_bytes / redis_memory_max_bytes) > 0.85
+            and redis_memory_max_bytes > 0
+        for: 2m
+        labels:
+          severidad: advertencia
+          componente: redis
+        annotations:
+          resumen: "Redis usa mas del 85% de su memoria maxima."
+          metrica: "redis_memory_used_bytes / redis_memory_max_bytes (redis_exporter)"
+          condicion: "> 0,85 durante 2 minutos"
+          impacto: "Con maxmemory 100mb y politica volatile-lru (Hito 7), Redis solo puede desalojar claves con TTL. Si se llena con claves sin TTL, rechaza escrituras."
+          accion: "Ver evicciones y claves por tipo; revisar TTL de la cache y de las sesiones; evaluar subir maxmemory."
+          razon_umbral: "85% es el umbral de la Clase 14: deja margen antes de que empiecen los desalojos."
+          quien_atiende: "Responsable del modulo Redis."

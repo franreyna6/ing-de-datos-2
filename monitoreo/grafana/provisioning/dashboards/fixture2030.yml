@@ -1,0 +1,12 @@
+# Carga automatica del tablero desde grafana/dashboards/ (versionado en Git).
+apiVersion: 1
+
+providers:
+  - name: fixture2030
+    folder: Fixture 2030
+    type: file
+    disableDeletion: true
+    allowUiUpdates: false     # el tablero "oficial" es el del repositorio
+    updateIntervalSeconds: 30
+    options:
+      path: /var/lib/grafana/dashboards

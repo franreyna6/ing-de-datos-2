@@ -1,0 +1,2140 @@
+{
+  "uid": "fixture2030-war-room",
+  "title": "Fixture 2030 - War Room (Hito 13)",
+  "description": "Tablero de observabilidad del Fixture Mundial 2030: salud de las 6 bases, latencia, throughput y errores de la API, y comparacion entre bases.",
+  "tags": [
+    "fixture2030",
+    "hito13",
+    "prometheus"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": true,
+  "graphTooltip": 1,
+  "refresh": "10s",
+  "liveNow": false,
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m"
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "fuente",
+        "label": "Base (fuente)",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-fixture2030"
+        },
+        "query": {
+          "query": "label_values(fixture_dependencia_duration_seconds_count, fuente)",
+          "refId": "V"
+        },
+        "definition": "label_values(fixture_dependencia_duration_seconds_count, fuente)",
+        "refresh": 2,
+        "includeAll": true,
+        "multi": true,
+        "allValue": ".*",
+        "sort": 1,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "options": [],
+        "hide": 0
+      },
+      {
+        "name": "partido",
+        "label": "Partido",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-fixture2030"
+        },
+        "query": {
+          "query": "label_values(fixture_comentarios_creados_total, partido)",
+          "refId": "V"
+        },
+        "definition": "label_values(fixture_comentarios_creados_total, partido)",
+        "refresh": 2,
+        "includeAll": true,
+        "multi": true,
+        "allValue": ".*",
+        "sort": 1,
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "options": [],
+        "hide": 0
+      }
+    ]
+  },
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": false,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Eventos de la prueba controlada",
+        "type": "dashboard"
+      },
+      {
+        "datasource": {
+          "type": "prometheus",
+          "uid": "prometheus-fixture2030"
+        },
+        "enable": true,
+        "hide": false,
+        "iconColor": "red",
+        "name": "Alertas de Prometheus (firing)",
+        "expr": "ALERTS{alertstate=\"firing\", alertname!~\"SondaExternaFallida|TargetDeMonitoreoCaido\"}",
+        "step": "15s",
+        "titleFormat": "{{alertname}}",
+        "textFormat": "{{componente}} {{severidad}}",
+        "tagKeys": "severidad,componente",
+        "useValueForTime": false
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "row",
+      "title": "Estado de salud por base de datos",
+      "collapsed": false,
+      "id": 1,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "panels": []
+    },
+    {
+      "type": "stat",
+      "title": "Estado de salud por base: vista de infraestructura (exporters, endpoints nativos y sondas)",
+      "description": "OK = la base responde a su exporter, a su endpoint nativo o a la sonda externa. MongoDB y Redis: exporter (mongodb_up, redis_up). InfluxDB e IRIS: endpoint /metrics nativo (up). Neo4j: sonda HTTP al puerto 7474. Cassandra: sonda TCP al puerto 9042 (solo prueba que el puerto acepta conexiones). API: up del job api-fixture.",
+      "id": 2,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 1,
+        "w": 14,
+        "h": 6
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0,
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "CAIDA",
+                  "color": "red",
+                  "index": 0
+                },
+                "1": {
+                  "text": "OK",
+                  "color": "green",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "value_and_name",
+        "orientation": "vertical",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "max(mongodb_up) or vector(0)",
+          "legendFormat": "MongoDB (H4)",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "min(probe_success{job=\"sonda-http\",componente=\"neo4j\"}) or vector(0)",
+          "legendFormat": "Neo4j (H5)",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "min(probe_success{componente=\"cassandra\"}) or vector(0)",
+          "legendFormat": "Cassandra (H6)",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        },
+        {
+          "refId": "D",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "max(redis_up) or vector(0)",
+          "legendFormat": "Redis (H7)",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        },
+        {
+          "refId": "E",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "max(up{job=\"influxdb\"}) or vector(0)",
+          "legendFormat": "InfluxDB (H8)",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        },
+        {
+          "refId": "F",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "max(up{job=\"iris\"}) or vector(0)",
+          "legendFormat": "IRIS (H9)",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        },
+        {
+          "refId": "G",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "max(up{job=\"api-fixture\"}) or vector(0)",
+          "legendFormat": "API (H10)",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Disponibilidad vista por la API (chequeo de protocolo cada 15 s)",
+      "description": "Gauge fixture_dependencia_disponible: el mismo chequeo de /salud (ping, SELECT, consulta minima) que hace cada adaptador de la API. Es la senal mas fiel: prueba que la base responde consultas, no solo que el puerto este abierto.",
+      "id": 3,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 14,
+        "y": 1,
+        "w": 10,
+        "h": 6
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0,
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "CAIDA",
+                  "color": "red",
+                  "index": 0
+                },
+                "1": {
+                  "text": "OK",
+                  "color": "green",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "value_and_name",
+        "orientation": "vertical",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "fixture_dependencia_disponible",
+          "legendFormat": "{{fuente}}",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Requests por segundo (API)",
+      "description": "sum(rate(fixture_api_requests_total[1m])). Ventana 1 min.",
+      "id": 4,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 7,
+        "w": 4,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "decimals": 1
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value",
+        "orientation": "auto",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "sum(rate(fixture_api_requests_total[1m]))",
+          "legendFormat": "",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Latencia p95 de la API (SLO < 50 ms)",
+      "description": "histogram_quantile(0.95) sobre fixture_api_request_duration_seconds, ventana 1 min. Rojo por encima del SLO de 50 ms.",
+      "id": 5,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 4,
+        "y": 7,
+        "w": 4,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.05
+              }
+            ]
+          },
+          "decimals": 3
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value",
+        "orientation": "auto",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(fixture_api_request_duration_seconds_bucket[1m])))",
+          "legendFormat": "",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Errores 5xx (% de requests)",
+      "description": "5xx / total en la ultima ventana de 1 min. Rojo por encima de 1%.",
+      "id": 6,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 7,
+        "w": 4,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.01
+              }
+            ]
+          },
+          "decimals": 2
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value",
+        "orientation": "auto",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "(sum(rate(fixture_api_requests_total{estado=~\"5..\"}[1m])) or vector(0)) / sum(rate(fixture_api_requests_total[1m]))",
+          "legendFormat": "",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Aciertos de cache de comentarios",
+      "description": "HIT / (HIT + MISS) de la cache de Redis del Hito 12. Rojo por debajo de 80%.",
+      "id": 7,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 7,
+        "w": 4,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0.8
+              }
+            ]
+          },
+          "decimals": 1
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value",
+        "orientation": "auto",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "sum(rate(fixture_cache_comentarios_total{estado=\"HIT\"}[1m])) / sum(rate(fixture_cache_comentarios_total{estado=~\"HIT|MISS\"}[1m]))",
+          "legendFormat": "",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Escrituras en Cassandra por segundo",
+      "description": "Comentarios creados por segundo a traves de la API (counter por partido, sumado).",
+      "id": 8,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 7,
+        "w": 4,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "decimals": 1
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value",
+        "orientation": "auto",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "sum(rate(fixture_comentarios_creados_total[1m]))",
+          "legendFormat": "",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Alertas disparadas ahora",
+      "description": "Cantidad de alertas de Prometheus en estado firing (ver http://localhost:9093).",
+      "id": 9,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 20,
+        "y": 7,
+        "w": 4,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "textMode": "value",
+        "orientation": "auto",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "count(ALERTS{alertstate=\"firing\"}) or vector(0)",
+          "legendFormat": "",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Rendimiento de la API integrada (latencia, throughput y errores)",
+      "collapsed": false,
+      "id": 10,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 11
+      },
+      "panels": []
+    },
+    {
+      "type": "timeseries",
+      "title": "Throughput: requests por segundo por ruta",
+      "description": "sum by (ruta) (rate(fixture_api_requests_total[1m])). 'ruta' es la plantilla de la ruta (cardinalidad controlada). Unidad: requests/s. Ventana: 1 min.",
+      "id": 11,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 8,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "sum by (ruta) (rate(fixture_api_requests_total[1m]))",
+          "legendFormat": "{{ruta}}",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Latencia de la API: p50, p95 y p99 (linea roja = SLO 50 ms)",
+      "description": "histogram_quantile sobre fixture_api_request_duration_seconds, ventana 1 min. Tiempo medido dentro de la API (sin red ni cola del cliente). Unidad: segundos.",
+      "id": 12,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 12,
+        "w": 8,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.05
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "histogram_quantile(0.50, sum by (le) (rate(fixture_api_request_duration_seconds_bucket[1m])))",
+          "legendFormat": "p50",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(fixture_api_request_duration_seconds_bucket[1m])))",
+          "legendFormat": "p95",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(fixture_api_request_duration_seconds_bucket[1m])))",
+          "legendFormat": "p99",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Respuestas no exitosas por segundo (5xx = falla, 4xx = pedido invalido o inexistente)",
+      "description": "sum by (estado, ruta) (rate(fixture_api_requests_total{estado=~\"4..|5..\"}[1m])). Un 503 indica una base no disponible; un 404 es una respuesta correcta de 'no existe'.",
+      "id": 13,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 12,
+        "w": 8,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "sum by (estado, ruta) (rate(fixture_api_requests_total{estado=~\"5..\"}[1m]))",
+          "legendFormat": "{{estado}} {{ruta}}",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "sum by (estado) (rate(fixture_api_requests_total{estado=~\"4..\"}[1m]))",
+          "legendFormat": "{{estado}} (todas las rutas)",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Comparacion entre bases (llamadas que hace la API a cada fuente)",
+      "collapsed": false,
+      "id": 14,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "panels": []
+    },
+    {
+      "type": "timeseries",
+      "title": "Latencia p95 por base de datos",
+      "description": "histogram_quantile(0.95) de fixture_dependencia_duration_seconds por fuente, ventana 1 min. Separa 'la API esta lenta' de 'la base X esta lenta'. Unidad: segundos.",
+      "id": 15,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 22,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "histogram_quantile(0.95, sum by (le, fuente) (rate(fixture_dependencia_duration_seconds_bucket{fuente=~\"$fuente\"}[1m])))",
+          "legendFormat": "{{fuente}}",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Operaciones por segundo por base (y errores)",
+      "description": "sum by (fuente) (rate(fixture_dependencia_duration_seconds_count[1m])). Las series 'error' cuentan llamadas que terminaron en excepcion (base caida o timeout) y 'cortocircuito' las que no se intentaron porque la base habia fallado hace poco.",
+      "id": 16,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 22,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "sum by (fuente) (rate(fixture_dependencia_duration_seconds_count{fuente=~\"$fuente\"}[1m]))",
+          "legendFormat": "{{fuente}}",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "sum by (fuente, resultado) (rate(fixture_dependencia_duration_seconds_count{resultado!=\"ok\",fuente=~\"$fuente\"}[1m]))",
+          "legendFormat": "{{fuente}} {{resultado}}",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Cache (Redis) y escrituras masivas (Cassandra)",
+      "collapsed": false,
+      "id": 17,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 31
+      },
+      "panels": []
+    },
+    {
+      "type": "timeseries",
+      "title": "Tasa de aciertos de cache (linea roja = 80%)",
+      "description": "API: HIT / (HIT + MISS) de la cache de comentarios. Redis: keyspace_hits / (hits + misses) de todas las claves. Ventana 1 min.",
+      "id": 18,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 32,
+        "w": 8,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0.8
+              }
+            ]
+          },
+          "max": 1
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "sum(rate(fixture_cache_comentarios_total{estado=\"HIT\"}[1m])) / sum(rate(fixture_cache_comentarios_total{estado=~\"HIT|MISS\"}[1m]))",
+          "legendFormat": "cache de comentarios (API)",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "sum(rate(redis_keyspace_hits_total[1m])) / (sum(rate(redis_keyspace_hits_total[1m])) + sum(rate(redis_keyspace_misses_total[1m])))",
+          "legendFormat": "Redis, todas las claves",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Memoria de Redis usada / maxima (linea roja = 85%)",
+      "description": "redis_memory_used_bytes / redis_memory_max_bytes (maxmemory 100mb, volatile-lru, Hito 7).",
+      "id": 19,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 32,
+        "w": 8,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.85
+              }
+            ]
+          },
+          "max": 1
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "redis_memory_used_bytes / redis_memory_max_bytes",
+          "legendFormat": "memoria usada",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Escrituras de comentarios en Cassandra por partido",
+      "description": "sum by (partido) (rate(fixture_comentarios_creados_total[1m])). Filtrable con la variable Partido. Unidad: escrituras/s.",
+      "id": 20,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 32,
+        "w": 8,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "sum by (partido) (rate(fixture_comentarios_creados_total{partido=~\"$partido\"}[1m]))",
+          "legendFormat": "{{partido}}",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Metricas propias de cada base y del monitoreo",
+      "collapsed": false,
+      "id": 21,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 41
+      },
+      "panels": []
+    },
+    {
+      "type": "timeseries",
+      "title": "MongoDB: operaciones por segundo (opcounters)",
+      "description": "mongodb_exporter. rate() de los contadores de operaciones del servidor por tipo.",
+      "id": 22,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 42,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "sum by (type) (rate(mongodb_op_counters_total[1m]))",
+          "legendFormat": "{{type}}",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "label_replace(sum by (legacy_op_type) (rate(mongodb_ss_opcounters[1m])), \"type\", \"$1\", \"legacy_op_type\", \"(.*)\")",
+          "legendFormat": "{{type}}",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "IRIS: referencias a globals por segundo",
+      "description": "Endpoint nativo /api/monitor/metrics de IRIS (iris_glo_ref_per_sec).",
+      "id": 23,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 42,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "iris_glo_ref_per_sec",
+          "legendFormat": "referencias a globals/s",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Tiempo de conexion de las sondas externas por base",
+      "description": "probe_duration_seconds del blackbox_exporter: cuanto tarda cada base en aceptar una conexion desde afuera. Unidad: segundos.",
+      "id": 24,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 42,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "probe_duration_seconds",
+          "legendFormat": "{{componente}} ({{job}})",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Duracion del chequeo de disponibilidad por fuente",
+      "description": "fixture_dependencia_chequeo_seconds: cuanto tarda el chequeo de cada base. /salud los hace en serie, asi que su duracion es la suma (ver mejora transversal).",
+      "id": 25,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 50,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "fixture_dependencia_chequeo_seconds",
+          "legendFormat": "{{fuente}}",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Duracion del scrape por target",
+      "description": "scrape_duration_seconds: cuanto tarda Prometheus en leer cada /metrics. Un valor que se acerca al timeout de 10 s anticipa un target DOWN.",
+      "id": 26,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 50,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "scrape_duration_seconds{job!~\"sonda-.*\"}",
+          "legendFormat": "{{job}}",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Muestras recolectadas por scrape",
+      "description": "scrape_samples_scraped: cantidad de series que expone cada target. Sirve para vigilar la cardinalidad.",
+      "id": 27,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 50,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "scrape_samples_scraped{job!~\"sonda-.*\"}",
+          "legendFormat": "{{job}}",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Corte rapido por base: llamadas evitadas por segundo (mejora del Hito 13)",
+      "description": "rate(fixture_cortocircuito_rechazos_total[1m]) por fuente: llamadas que la API no intento porque esa base fallo hace menos de CORTOCIRCUITO_S segundos (responde 503 o lee sin cache al instante, en vez de esperar unos 2,4 s el error de conexion).",
+      "id": 28,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 58,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "sum by (fuente) (rate(fixture_cortocircuito_rechazos_total[1m]))",
+          "legendFormat": "{{fuente}}",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Corte rapido abierto por base",
+      "description": "fixture_cortocircuito_abierto: ABIERTO = la API dejo de intentar esa base por un fallo reciente; cerrado = la base se usa normalmente.",
+      "id": 29,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 58,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0,
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "ABIERTO",
+                  "color": "red",
+                  "index": 0
+                },
+                "1": {
+                  "text": "cerrado",
+                  "color": "green",
+                  "index": 1
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "textMode": "value_and_name",
+        "orientation": "vertical",
+        "wideLayout": true,
+        "showPercentChange": false,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "1 - fixture_cortocircuito_abierto",
+          "legendFormat": "{{fuente}}",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "InfluxDB 3: requests HTTP por segundo (metricas propias)",
+      "description": "Endpoint nativo /metrics de InfluxDB 3 Core (http_requests_total). Incluye las consultas de la API y el propio scrape de Prometheus.",
+      "id": 30,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus-fixture2030"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 58,
+        "w": 8,
+        "h": 8
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "min": 0,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "mean",
+            "max",
+            "lastNotNull"
+          ],
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus-fixture2030"
+          },
+          "expr": "sum(rate(http_requests_total{job=\"influxdb\"}[1m]))",
+          "legendFormat": "requests HTTP/s",
+          "range": true,
+          "instant": false,
+          "interval": ""
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+# Datasource provisionado: Grafana se conecta a Prometheus al arrancar, sin
+# configuracion manual (reproducible, RNF1). Grafana no guarda metricas: solo
+# las consulta (Clase 14).
+apiVersion: 1
+
+datasources:
+  - name: Prometheus Fixture 2030
+    uid: prometheus-fixture2030
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: false
+    jsonData:
+      timeInterval: 15s        # igual al scrape_interval de Prometheus
+      httpMethod: POST

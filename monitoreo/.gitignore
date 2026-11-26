@@ -1,0 +1,10 @@
+# Secretos y configuracion local (RNF6): nunca versionar
+.env
+secretos/
+
+# Logs crudos de la API durante las pruebas (pueden ser grandes). Lo que se
+# versiona es el resumen y la evidencia procesada, sin secretos.
+evidencia/**/api_crudo.log
+
+__pycache__/
+*.pyc
