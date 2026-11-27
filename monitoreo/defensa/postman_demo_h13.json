@@ -36,6 +36,14 @@
     {
       "key": "prometheusUrl",
       "value": "http://127.0.0.1:9090"
+    },
+    {
+      "key": "partidoVivo",
+      "value": "H13-DEMO-URUARG"
+    },
+    {
+      "key": "sesionVivo",
+      "value": ""
     }
   ],
   "item": [
@@ -57,6 +65,243 @@
                   "  pm.response.to.have.status(200);",
                   "  pm.expect(pm.response.json().dependencias).to.be.an('array');",
                   "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Demo en vivo (un partido, seis bases)",
+      "description": "Partido de laboratorio H13-DEMO-URUARG. IRIS decide (reglas), Neo4j conecta el evento, Redis guarda sesion/estado, Cassandra el feed, InfluxDB las estadisticas y MongoDB las fichas. Correr en orden.",
+      "item": [
+        {
+          "name": "1. POST /vivo/partidos - crear (IRIS -> Neo4j -> Redis)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/vivo/partidos",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"{{partidoVivo}}\",\n  \"local\": \"URU\",\n  \"visitante\": \"ARG\",\n  \"sede\": \"CENT\",\n  \"fecha\": \"2030-06-08\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('201 Programado', () => { pm.response.to.have.status(201); pm.expect(pm.response.json().partido.estado).to.eql('Programado'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2. POST iniciar (IRIS valida la transicion)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/vivo/partidos/{{partidoVivo}}/iniciar"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('EnJuego', () => pm.expect(pm.response.json().partido.estado).to.eql('EnJuego'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3. POST /sesiones - login de hincha (Redis, TTL 1800)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/sesiones",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuarioId\": \"u-00042\",\n  \"rol\": \"hincha\",\n  \"partido\": \"{{partidoVivo}}\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('201', () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set('sesionVivo', pm.response.json().sesionId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "4. POST actividad - renueva el TTL (deslizante)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/sesiones/{{sesionVivo}}/actividad"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('TTL vuelve a 1800', () => pm.expect(pm.response.json().ttlSegundos).to.eql(1800));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "5. POST evento - gol (IRIS decide, Neo4j conecta)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/vivo/partidos/{{partidoVivo}}/eventos",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"Gol\",\n  \"minuto\": 23,\n  \"jugadorCodigo\": \"URU-4-blpv45\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('201 y marcador 1-0', () => { pm.response.to.have.status(201); pm.expect(pm.response.json().partido.golesLocal).to.eql(1); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "6. POST comentario (Cassandra, particion partido+ventana)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/partidos/{{partidoVivo}}/comentarios",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuarioId\": \"u-00042\",\n  \"contenido\": \"Golazo en el Centenario\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "7. POST estadisticas (InfluxDB, line protocol)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/vivo/partidos/{{partidoVivo}}/estadisticas",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sede\": \"CENT\",\n  \"grupo\": \"-\",\n  \"puntos\": [\n    {\n      \"equipoId\": \"URU\",\n      \"posesionPct\": 54.5,\n      \"pasesAcum\": 120,\n      \"tirosAcum\": 4,\n      \"recuperacionesAcum\": 18\n    },\n    {\n      \"equipoId\": \"ARG\",\n      \"posesionPct\": 45.5,\n      \"pasesAcum\": 101,\n      \"tirosAcum\": 2,\n      \"recuperacionesAcum\": 15\n    }\n  ]\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('201', () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "8. GET tablero - las 6 bases en paralelo",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/vivo/partidos/{{partidoVivo}}/tablero?local=URU&visitante=ARG"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('6 secciones', () => pm.expect(Object.keys(pm.response.json().secciones)).to.have.length(6));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "9. POST finalizar (IRIS)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/vivo/partidos/{{partidoVivo}}/finalizar"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Finalizado', () => pm.expect(pm.response.json().partido.estado).to.eql('Finalizado'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "10. POST gol con el partido Finalizado -> 409 (regla de IRIS)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/vivo/partidos/{{partidoVivo}}/eventos",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo\": \"Gol\",\n  \"minuto\": 95,\n  \"jugadorCodigo\": \"URU-4-blpv45\"\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('409: IRIS rechaza el evento', () => pm.response.to.have.status(409));"
                 ]
               }
             }

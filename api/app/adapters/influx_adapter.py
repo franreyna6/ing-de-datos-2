@@ -118,4 +118,78 @@ class InfluxAdapter:
                 "puntos": puntos}
 
 
+    # ------------------------------------------- Hito 13: demo en vivo (lectura agregada)
+    def serie_agregada(self, partido: str, desde_iso: str, hasta_iso: str,
+                       paso_s: int = 10) -> list[dict]:
+        """Posesion promedio y acumulados por ventanas de paso_s segundos.
+
+        Es el patron de acceso que justifica InfluxDB (Hito 8): rango de tiempo +
+        agregacion con date_bin. AVG para la posesion (muestra) y MAX para los
+        contadores acumulados (pases, tiros), igual que las agregaciones del Hito 8.
+        """
+        if not _PATRON_PARTIDO.match(partido):
+            raise ErrorDependencia(FUENTE, "partido con formato no permitido", conexion=False)
+        paso = max(1, min(int(paso_s), 300))
+        sql = (
+            f"SELECT date_bin(INTERVAL '{paso} seconds', time) AS ventana, equipo_id, "
+            "AVG(posesion_pct) AS posesion, MAX(pases_acum) AS pases, MAX(tiros_acum) AS tiros "
+            "FROM estadisticas_equipo "
+            f"WHERE partido_id = '{_esc(partido)}' "
+            f"AND time >= '{_esc(desde_iso)}' AND time < '{_esc(hasta_iso)}' "
+            "GROUP BY ventana, equipo_id ORDER BY ventana")
+        filas = self._consultar(sql)
+        return [{"ventana": f.get("ventana"), "equipoId": f.get("equipo_id"),
+                 "posesionPct": f.get("posesion"), "pasesAcum": f.get("pases"),
+                 "tirosAcum": f.get("tiros")} for f in filas]
+
+    # ------------------------------------------- Hito 13: demo en vivo (escritura)
+    def escribir_estadisticas(self, partido: str, sede: str, grupo: str,
+                              puntos: list[dict]) -> int:
+        """Escribe puntos en estadisticas_equipo con line protocol (como el Hito 8).
+
+        Mismo esquema del Hito 8: tags partido_id, equipo_id, sede, grupo (lo que
+        se filtra) y fields numericos (lo que se mide). Precision: segundos.
+        Devuelve la cantidad de puntos escritos.
+        """
+        if not _PATRON_PARTIDO.match(partido):
+            raise ErrorDependencia(FUENTE, "partido con formato no permitido", conexion=False)
+        if not self._cfg.influx_token:
+            raise ErrorDependencia(FUENTE, "falta INFLUXDB3_TOKEN en el entorno")
+
+        def _tag(v: str) -> str:
+            # En line protocol las comas, espacios y '=' de un tag se escapan.
+            return re.sub(r"([,= ])", r"\\\1", str(v))
+
+        lineas = []
+        for p in puntos:
+            lineas.append(
+                "estadisticas_equipo,partido_id=%s,equipo_id=%s,sede=%s,grupo=%s "
+                "posesion_pct=%.1f,pases_acum=%di,tiros_acum=%di,recuperaciones_acum=%di %d"
+                % (_tag(partido), _tag(p["equipoId"]), _tag(sede), _tag(grupo or "-"),
+                   float(p["posesionPct"]), int(p["pasesAcum"]), int(p["tirosAcum"]),
+                   int(p["recuperacionesAcum"]), int(p["ts"])))
+        cuerpo = "\n".join(lineas)
+        ruta = f"/api/v3/write_lp?db={self._cfg.influx_database}&precision=second"
+        conn = self._conn()
+        try:
+            conn.request("POST", ruta, body=cuerpo.encode("utf-8"), headers={
+                "Authorization": f"Bearer {self._cfg.influx_token}",
+                "Content-Type": "text/plain; charset=utf-8"})
+            resp = conn.getresponse()
+            data = resp.read()
+            if resp.status >= 400:
+                logger.warning("influx write status=%s detalle=%s", resp.status,
+                               data[:200].decode("utf-8", "replace"))
+                raise ErrorDependencia(FUENTE, f"HTTP {resp.status}")
+        except ErrorDependencia:
+            raise
+        except Exception as e:
+            logger.warning("influx error de conexion (escritura)")
+            raise ErrorDependencia(FUENTE, str(e))
+        finally:
+            conn.close()
+        logger.info("influx escritura partido=%s puntos=%s", partido, len(lineas))
+        return len(lineas)
+
+
 influx_adapter = InfluxAdapter()

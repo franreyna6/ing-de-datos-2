@@ -91,6 +91,70 @@ class Neo4jAdapter:
         return {"partido": codigo, "fecha": str(partido_fecha) if partido_fecha else None,
                 "eventos": eventos}
 
+    # ------------------------------------------- Hito 13: demo en vivo (escritura)
+    # Solo se escribe sobre partidos de LABORATORIO (H13-DEMO-...), marcados con
+    # laboratorio=true: la demo nunca modifica el fixture real (RNF5 del Hito 13).
+    # El servicio valida el prefijo antes de llegar aca.
+    def crear_partido_lab(self, codigo: str, fecha: str, fase: str, local: str,
+                          visitante: str, sede: str) -> dict | None:
+        """Crea (o recrea limpio) el partido de laboratorio y sus relaciones."""
+        try:
+            with self._obtener_driver().session(database=self._cfg.neo4j_database) as ses:
+                # El context manager hace rollback si no se llega al commit.
+                with ses.begin_transaction() as tx:
+                    # 1. Si quedo de una corrida anterior: borrar sus eventos y relaciones.
+                    tx.run("MATCH (ev:Evento)-[:OCURRE_EN]->(p:Partido {codigo: $c}) "
+                           "WHERE p.laboratorio = true DETACH DELETE ev", c=codigo)
+                    tx.run("MATCH (p:Partido {codigo: $c})-[r:DISPUTA|SE_JUEGA_EN]->() "
+                           "WHERE p.laboratorio = true DELETE r", c=codigo)
+                    # 2. Partido + participaciones + sede (mismo modelo del Hito 5).
+                    fila = tx.run(
+                        "MATCH (l:Equipo {codigo: $local}), (v:Equipo {codigo: $visitante}), "
+                        "      (s:Sede {codigo: $sede}) "
+                        "MERGE (p:Partido {codigo: $c}) "
+                        "SET p.fecha = $fecha, p.fase = $fase, p.golesLocal = 0, "
+                        "    p.golesVisitante = 0, p.laboratorio = true "
+                        "MERGE (p)-[dl:DISPUTA]->(l) SET dl.condicion = 'local' "
+                        "MERGE (p)-[dv:DISPUTA]->(v) SET dv.condicion = 'visitante' "
+                        "MERGE (p)-[:SE_JUEGA_EN]->(s) "
+                        "RETURN p.codigo AS codigo, l.nombre AS local, v.nombre AS visitante, "
+                        "       s.nombre AS sede, s.ciudad AS ciudad",
+                        c=codigo, fecha=fecha, fase=fase, local=local,
+                        visitante=visitante, sede=sede).single()
+                    if fila is None:
+                        return None  # equipo o sede inexistente -> 404 (rollback)
+                    tx.commit()
+                    return dict(fila)
+        except Exception as e:
+            logger.warning("neo4j error crear partido lab=%s", codigo)
+            raise ErrorDependencia(FUENTE, str(e))
+
+    def registrar_evento(self, partido: str, evento: str, tipo: str, minuto: int,
+                         jugador: str, goles_local: int, goles_visitante: int) -> dict | None:
+        """Agrega el evento como NODO conectado al partido y al jugador.
+
+        MERGE por codigo: si la API reintenta, no se duplica el gol. El marcador
+        se copia del que valido IRIS (fuente de verdad del estado del partido).
+        """
+        cypher = (
+            "MATCH (p:Partido {codigo: $p}) WHERE p.laboratorio = true "
+            "MATCH (j:Jugador {codigo: $j})-[:PERTENECE_A]->(e:Equipo) "
+            "MERGE (ev:Evento {codigo: $ev}) "
+            "ON CREATE SET ev.tipo = $tipo, ev.minuto = $minuto, ev.laboratorio = true "
+            "MERGE (ev)-[:OCURRE_EN]->(p) "
+            "MERGE (ev)-[:PROTAGONIZADO_POR]->(j) "
+            "SET p.golesLocal = $gl, p.golesVisitante = $gv "
+            "RETURN ev.codigo AS evento, j.nombre AS jugador, e.codigo AS equipo")
+        try:
+            with self._obtener_driver().session(database=self._cfg.neo4j_database) as ses:
+                fila = ses.execute_write(lambda tx: tx.run(
+                    cypher, p=partido, j=jugador, ev=evento, tipo=tipo, minuto=minuto,
+                    gl=goles_local, gv=goles_visitante).single())
+        except Exception as e:
+            logger.warning("neo4j error registrar evento partido=%s", partido)
+            raise ErrorDependencia(FUENTE, str(e))
+        return dict(fila) if fila else None
+
     def cerrar(self) -> None:
         if self._driver is not None:
             self._driver.close()

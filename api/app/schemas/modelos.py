@@ -149,3 +149,114 @@ class EstadoDependencia(BaseModel):
 class Salud(BaseModel):
     api: str = "ok"
     dependencias: list[EstadoDependencia]
+
+
+# --- Hito 13: demo en vivo (un partido que atraviesa las seis bases) ---
+class NuevoPartidoVivo(BaseModel):
+    codigo: str | None = Field(
+        None, description="Codigo de laboratorio. Debe empezar con H13-DEMO-. "
+                          "Si se omite: H13-DEMO-<LOCAL><VISITANTE>.",
+        examples=["H13-DEMO-URUARG"])
+    local: str = Field(..., min_length=3, max_length=3, examples=["URU"])
+    visitante: str = Field(..., min_length=3, max_length=3, examples=["ARG"])
+    sede: str = Field(..., min_length=2, max_length=10, examples=["CENT"])
+    fecha: str = Field(..., description="AAAA-MM-DD", examples=["2030-06-08"])
+
+
+class NuevoEventoVivo(BaseModel):
+    tipo: str = Field(..., examples=["Gol"], description="Gol | Tarjeta")
+    minuto: int = Field(..., ge=1, le=120, examples=[23])
+    jugadorCodigo: str = Field(..., min_length=3, max_length=30, examples=["URU-4-blpv45"])
+
+
+class RelojVivo(BaseModel):
+    minuto: int = Field(..., ge=0, le=130, examples=[37])
+
+
+class PuntoEstadisticaVivo(BaseModel):
+    equipoId: str = Field(..., min_length=3, max_length=3, examples=["URU"])
+    posesionPct: float = Field(..., ge=0, le=100, examples=[54.5])
+    pasesAcum: int = Field(..., ge=0, examples=[212])
+    tirosAcum: int = Field(..., ge=0, examples=[7])
+    recuperacionesAcum: int = Field(..., ge=0, examples=[31])
+    ts: int | None = Field(None, description="Epoch en segundos (UTC). Si se omite, ahora.")
+
+
+class LoteEstadisticasVivo(BaseModel):
+    sede: str = Field(..., examples=["CENT"])
+    grupo: str | None = Field(None, examples=["-"])
+    puntos: list[PuntoEstadisticaVivo] = Field(..., min_length=1, max_length=500)
+
+
+class PasoTraza(BaseModel):
+    fuente: str = Field(..., examples=["iris"])
+    operacion: str = Field(..., examples=["Fixture.Vivo.RegistrarEvento"])
+    ok: bool
+    ms: float
+    error: str | None = None
+    sincronizado: bool | None = Field(
+        None, description="false si la propagacion a esta base fallo (sin transacciones "
+                          "entre motores: queda a la vista).")
+
+
+class PartidoIris(BaseModel):
+    ok: bool
+    codigo: str
+    estado: str | None = Field(None, examples=["EnJuego"])
+    fecha: str | None = None
+    golesLocal: int | None = None
+    golesVisitante: int | None = None
+    equipoLocal: str | None = None
+    equipoVisitante: str | None = None
+    sede: str | None = None
+    cantidadEventos: int | None = None
+    terna: list[dict] | None = None
+    accion: str | None = None
+    motivo: str | None = None
+
+
+class OperacionVivo(BaseModel):
+    partido: PartidoIris
+    grafo: dict | None = None
+    traza: list[PasoTraza]
+
+
+class EventoVivoRegistrado(OperacionVivo):
+    evento: str = Field(..., examples=["EVD-1A2B3C4D"])
+    tipo: str
+    minuto: int
+    jugador: str
+
+
+class EstadisticasEscritas(BaseModel):
+    partido: str
+    puntosEscritos: int
+
+
+class SeccionTablero(BaseModel):
+    fuente: str = Field(..., examples=["cassandra"])
+    ok: bool
+    http: int = Field(..., examples=[200])
+    ms: float = Field(..., description="Tiempo de ESA base, medido dentro de la API")
+    datos: dict | None = None
+    error: dict | None = None
+
+
+class TableroVivo(BaseModel):
+    partido: str
+    generado: str
+    msTotal: float = Field(..., description="Las bases se consultan en paralelo: el total "
+                                            "se acerca a la mas lenta, no a la suma.")
+    secciones: dict[str, SeccionTablero]
+
+
+class NuevaSesion(BaseModel):
+    usuarioId: str = Field(..., min_length=1, max_length=64, examples=["u-00042"])
+    rol: str = Field("hincha", examples=["hincha"])
+    partido: str | None = Field(None, description="Si se indica, el hincha cuenta como "
+                                                  "conectado a ese partido (HyperLogLog).",
+                                examples=["H13-DEMO-URUARG"])
+
+
+class SesionActiva(Sesion):
+    acciones: int | None = None

@@ -400,6 +400,502 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /sesiones:
+    post:
+      tags:
+      - sesiones
+      summary: Crea una sesion (Redis Hash con TTL de 30 min de inactividad)
+      operationId: post_sesion_sesiones_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevaSesion'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sesion'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /sesiones/{sesion_id}/actividad:
+    post:
+      tags:
+      - sesiones
+      summary: Registra actividad y renueva el TTL (TTL deslizante, Redis)
+      operationId: post_actividad_sesiones__sesion_id__actividad_post
+      parameters:
+      - name: sesion_id
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - s-1a2b3c4d5e6f
+          title: Sesion Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SesionActiva'
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /vivo/partidos:
+    post:
+      tags:
+      - demo en vivo (Hito 13)
+      summary: Crea un partido de laboratorio (IRIS decide; Neo4j y Redis reciben)
+      description: IRIS crea el objeto Partido en estado Programado y designa una
+        terna arbitral NEUTRAL (regla del Hito 9). Despues se crea el partido en el
+        grafo (DISPUTA, SE_JUEGA_EN) y la copia de estado en Redis.
+      operationId: post_partido_vivo_partidos_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevoPartidoVivo'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperacionVivo'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /vivo/partidos/{codigo}/iniciar:
+    post:
+      tags:
+      - demo en vivo (Hito 13)
+      summary: Programado -> EnJuego (IRIS valida la transicion)
+      operationId: post_iniciar_vivo_partidos__codigo__iniciar_post
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - H13-DEMO-URUARG
+          title: Codigo
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperacionVivo'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /vivo/partidos/{codigo}/eventos:
+    post:
+      tags:
+      - demo en vivo (Hito 13)
+      summary: Registra un gol o una tarjeta (IRIS valida; Neo4j lo conecta)
+      description: 'IRIS aplica las reglas del partido: solo EnJuego, minuto 1-120
+        y jugador de uno de los dos equipos. Si las viola: **409** con el motivo que
+        dio IRIS. Si se acepta, el evento se agrega a Neo4j como nodo (evento -> jugador
+        -> equipo) y el marcador se copia a Redis.'
+      operationId: post_evento_vivo_partidos__codigo__eventos_post
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - H13-DEMO-URUARG
+          title: Codigo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NuevoEventoVivo'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventoVivoRegistrado'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /vivo/partidos/{codigo}/finalizar:
+    post:
+      tags:
+      - demo en vivo (Hito 13)
+      summary: EnJuego -> Finalizado (IRIS valida la transicion)
+      operationId: post_finalizar_vivo_partidos__codigo__finalizar_post
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - H13-DEMO-URUARG
+          title: Codigo
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperacionVivo'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /vivo/partidos/{codigo}/reloj:
+    put:
+      tags:
+      - demo en vivo (Hito 13)
+      summary: 'Actualiza el minuto de juego (dato efimero: solo Redis)'
+      operationId: put_reloj_vivo_partidos__codigo__reloj_put
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - H13-DEMO-URUARG
+          title: Codigo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelojVivo'
+      responses:
+        '204':
+          description: Successful Response
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /vivo/partidos/{codigo}/estadisticas:
+    post:
+      tags:
+      - demo en vivo (Hito 13)
+      summary: Escribe estadisticas por segundo (InfluxDB, line protocol)
+      description: 'Mismo esquema del Hito 8: tags partido_id, equipo_id, sede, grupo;
+        fields posesion_pct, pases_acum, tiros_acum, recuperaciones_acum. Lote maximo:
+        500 puntos.'
+      operationId: post_estadisticas_vivo_partidos__codigo__estadisticas_post
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - H13-DEMO-URUARG
+          title: Codigo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoteEstadisticasVivo'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EstadisticasEscritas'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /vivo/partidos/{codigo}/tablero:
+    get:
+      tags:
+      - demo en vivo (Hito 13)
+      summary: Una pantalla, seis bases (consultadas en paralelo)
+      description: 'Devuelve una seccion por base con su propio estado (ok, http,
+        ms). Si una base esta caida, SOLO su seccion trae error: el aislamiento de
+        fallas del Hito 10, visible en una sola respuesta.'
+      operationId: get_tablero_vivo_partidos__codigo__tablero_get
+      parameters:
+      - name: codigo
+        in: path
+        required: true
+        schema:
+          type: string
+          examples:
+          - H13-DEMO-URUARG
+          title: Codigo
+      - name: local
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          examples:
+          - URU
+          title: Local
+      - name: visitante
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          examples:
+          - ARG
+          title: Visitante
+      - name: minutos
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 180
+          minimum: 1
+          description: Ventana de estadisticas a agregar
+          default: 10
+          title: Minutos
+        description: Ventana de estadisticas a agregar
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TableroVivo'
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Bad Request
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Not Found
+        '409':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Conflict
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+          description: Service Unavailable
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   /salud:
     get:
       tags:
@@ -589,8 +1085,7 @@ components:
           - a1b2c3d4
         detalles:
           anyOf:
-          - additionalProperties: true
-            type: object
+          - type: object
           - type: 'null'
           title: Detalles
       type: object
@@ -630,6 +1125,19 @@ components:
       - hasta
       - puntos
       title: Estadisticas
+    EstadisticasEscritas:
+      properties:
+        partido:
+          type: string
+          title: Partido
+        puntosEscritos:
+          type: integer
+          title: Puntosescritos
+      type: object
+      required:
+      - partido
+      - puntosEscritos
+      title: EstadisticasEscritas
     EstadoDependencia:
       properties:
         fuente:
@@ -676,6 +1184,43 @@ components:
           title: Jugadornombre
       type: object
       title: EventoPartido
+    EventoVivoRegistrado:
+      properties:
+        partido:
+          $ref: '#/components/schemas/PartidoIris'
+        grafo:
+          anyOf:
+          - type: object
+          - type: 'null'
+          title: Grafo
+        traza:
+          items:
+            $ref: '#/components/schemas/PasoTraza'
+          type: array
+          title: Traza
+        evento:
+          type: string
+          title: Evento
+          examples:
+          - EVD-1A2B3C4D
+        tipo:
+          type: string
+          title: Tipo
+        minuto:
+          type: integer
+          title: Minuto
+        jugador:
+          type: string
+          title: Jugador
+      type: object
+      required:
+      - partido
+      - traza
+      - evento
+      - tipo
+      - minuto
+      - jugador
+      title: EventoVivoRegistrado
     EventosDePartido:
       properties:
         partido:
@@ -768,6 +1313,60 @@ components:
       - total
       - jugadores
       title: ListaJugadores
+    LoteEstadisticasVivo:
+      properties:
+        sede:
+          type: string
+          title: Sede
+          examples:
+          - CENT
+        grupo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Grupo
+          examples:
+          - '-'
+        puntos:
+          items:
+            $ref: '#/components/schemas/PuntoEstadisticaVivo'
+          type: array
+          maxItems: 500
+          minItems: 1
+          title: Puntos
+      type: object
+      required:
+      - sede
+      - puntos
+      title: LoteEstadisticasVivo
+    NuevaSesion:
+      properties:
+        usuarioId:
+          type: string
+          maxLength: 64
+          minLength: 1
+          title: Usuarioid
+          examples:
+          - u-00042
+        rol:
+          type: string
+          title: Rol
+          default: hincha
+          examples:
+          - hincha
+        partido:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Partido
+          description: Si se indica, el hincha cuenta como conectado a ese partido
+            (HyperLogLog).
+          examples:
+          - H13-DEMO-URUARG
+      type: object
+      required:
+      - usuarioId
+      title: NuevaSesion
     NuevoComentario:
       properties:
         usuarioId:
@@ -796,6 +1395,98 @@ components:
       - usuarioId
       - contenido
       title: NuevoComentario
+    NuevoEventoVivo:
+      properties:
+        tipo:
+          type: string
+          title: Tipo
+          description: Gol | Tarjeta
+          examples:
+          - Gol
+        minuto:
+          type: integer
+          maximum: 120.0
+          minimum: 1.0
+          title: Minuto
+          examples:
+          - 23
+        jugadorCodigo:
+          type: string
+          maxLength: 30
+          minLength: 3
+          title: Jugadorcodigo
+          examples:
+          - URU-4-blpv45
+      type: object
+      required:
+      - tipo
+      - minuto
+      - jugadorCodigo
+      title: NuevoEventoVivo
+    NuevoPartidoVivo:
+      properties:
+        codigo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Codigo
+          description: 'Codigo de laboratorio. Debe empezar con H13-DEMO-. Si se omite:
+            H13-DEMO-<LOCAL><VISITANTE>.'
+          examples:
+          - H13-DEMO-URUARG
+        local:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Local
+          examples:
+          - URU
+        visitante:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Visitante
+          examples:
+          - ARG
+        sede:
+          type: string
+          maxLength: 10
+          minLength: 2
+          title: Sede
+          examples:
+          - CENT
+        fecha:
+          type: string
+          title: Fecha
+          description: AAAA-MM-DD
+          examples:
+          - '2030-06-08'
+      type: object
+      required:
+      - local
+      - visitante
+      - sede
+      - fecha
+      title: NuevoPartidoVivo
+    OperacionVivo:
+      properties:
+        partido:
+          $ref: '#/components/schemas/PartidoIris'
+        grafo:
+          anyOf:
+          - type: object
+          - type: 'null'
+          title: Grafo
+        traza:
+          items:
+            $ref: '#/components/schemas/PasoTraza'
+          type: array
+          title: Traza
+      type: object
+      required:
+      - partido
+      - traza
+      title: OperacionVivo
     PaginaComentarios:
       properties:
         partido:
@@ -816,6 +1507,115 @@ components:
       - ventana
       - comentarios
       title: PaginaComentarios
+    PartidoIris:
+      properties:
+        ok:
+          type: boolean
+          title: Ok
+        codigo:
+          type: string
+          title: Codigo
+        estado:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Estado
+          examples:
+          - EnJuego
+        fecha:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Fecha
+        golesLocal:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Goleslocal
+        golesVisitante:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Golesvisitante
+        equipoLocal:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Equipolocal
+        equipoVisitante:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Equipovisitante
+        sede:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sede
+        cantidadEventos:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Cantidadeventos
+        terna:
+          anyOf:
+          - items:
+              type: object
+            type: array
+          - type: 'null'
+          title: Terna
+        accion:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Accion
+        motivo:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Motivo
+      type: object
+      required:
+      - ok
+      - codigo
+      title: PartidoIris
+    PasoTraza:
+      properties:
+        fuente:
+          type: string
+          title: Fuente
+          examples:
+          - iris
+        operacion:
+          type: string
+          title: Operacion
+          examples:
+          - Fixture.Vivo.RegistrarEvento
+        ok:
+          type: boolean
+          title: Ok
+        ms:
+          type: number
+          title: Ms
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        sincronizado:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Sincronizado
+          description: 'false si la propagacion a esta base fallo (sin transacciones
+            entre motores: queda a la vista).'
+      type: object
+      required:
+      - fuente
+      - operacion
+      - ok
+      - ms
+      title: PasoTraza
     PuntoEstadistica:
       properties:
         time:
@@ -850,6 +1650,67 @@ components:
           title: Recuperacionesacum
       type: object
       title: PuntoEstadistica
+    PuntoEstadisticaVivo:
+      properties:
+        equipoId:
+          type: string
+          maxLength: 3
+          minLength: 3
+          title: Equipoid
+          examples:
+          - URU
+        posesionPct:
+          type: number
+          maximum: 100.0
+          minimum: 0.0
+          title: Posesionpct
+          examples:
+          - 54.5
+        pasesAcum:
+          type: integer
+          minimum: 0.0
+          title: Pasesacum
+          examples:
+          - 212
+        tirosAcum:
+          type: integer
+          minimum: 0.0
+          title: Tirosacum
+          examples:
+          - 7
+        recuperacionesAcum:
+          type: integer
+          minimum: 0.0
+          title: Recuperacionesacum
+          examples:
+          - 31
+        ts:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Ts
+          description: Epoch en segundos (UTC). Si se omite, ahora.
+      type: object
+      required:
+      - equipoId
+      - posesionPct
+      - pasesAcum
+      - tirosAcum
+      - recuperacionesAcum
+      title: PuntoEstadisticaVivo
+    RelojVivo:
+      properties:
+        minuto:
+          type: integer
+          maximum: 130.0
+          minimum: 0.0
+          title: Minuto
+          examples:
+          - 37
+      type: object
+      required:
+      - minuto
+      title: RelojVivo
     Salud:
       properties:
         api:
@@ -865,6 +1726,42 @@ components:
       required:
       - dependencias
       title: Salud
+    SeccionTablero:
+      properties:
+        fuente:
+          type: string
+          title: Fuente
+          examples:
+          - cassandra
+        ok:
+          type: boolean
+          title: Ok
+        http:
+          type: integer
+          title: Http
+          examples:
+          - 200
+        ms:
+          type: number
+          title: Ms
+          description: Tiempo de ESA base, medido dentro de la API
+        datos:
+          anyOf:
+          - type: object
+          - type: 'null'
+          title: Datos
+        error:
+          anyOf:
+          - type: object
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - fuente
+      - ok
+      - http
+      - ms
+      title: SeccionTablero
     SedeRef:
       properties:
         codigo:
@@ -906,6 +1803,63 @@ components:
       - sesionId
       - estado
       title: Sesion
+    SesionActiva:
+      properties:
+        sesionId:
+          type: string
+          title: Sesionid
+        usuarioId:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Usuarioid
+        estado:
+          type: string
+          title: Estado
+          examples:
+          - activa
+        ttlSegundos:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Ttlsegundos
+          examples:
+          - 1800
+        acciones:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Acciones
+      type: object
+      required:
+      - sesionId
+      - estado
+      title: SesionActiva
+    TableroVivo:
+      properties:
+        partido:
+          type: string
+          title: Partido
+        generado:
+          type: string
+          title: Generado
+        msTotal:
+          type: number
+          title: Mstotal
+          description: 'Las bases se consultan en paralelo: el total se acerca a la
+            mas lenta, no a la suma.'
+        secciones:
+          additionalProperties:
+            $ref: '#/components/schemas/SeccionTablero'
+          type: object
+          title: Secciones
+      type: object
+      required:
+      - partido
+      - generado
+      - msTotal
+      - secciones
+      title: TableroVivo
     ValidationError:
       properties:
         loc:
@@ -921,11 +1875,6 @@ components:
         type:
           type: string
           title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
       type: object
       required:
       - loc

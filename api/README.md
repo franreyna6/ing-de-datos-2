@@ -143,6 +143,22 @@ api/
 
 La API expone `GET /metrics` en el formato de texto de Prometheus (fuera del contrato OpenAPI). Mide requests, latencia por ruta, duración de cada llamada a una base, disponibilidad de cada fuente (chequeo en segundo plano cada `METRICAS_INTERVALO_S` segundos, 15 por defecto; 0 lo desactiva), resultado de la caché de comentarios y escrituras por partido. Código: `app/core/metricas.py`; pruebas: `tests/test_metricas.py`. Catálogo y consultas PromQL: [`monitoreo/docs/metricas_y_consultas.md`](../monitoreo/docs/metricas_y_consultas.md).
 
+## Demo en vivo (Hito 13)
+
+Rutas agregadas para la defensa final: un partido de **laboratorio** (`H13-DEMO-...`) que atraviesa las seis bases. Todas aparecen en Swagger, sección *demo en vivo (Hito 13)*.
+
+| Ruta | Base que decide → bases que reciben | Para qué |
+| :--- | :--- | :--- |
+| `POST /vivo/partidos` | IRIS → Neo4j → Redis | Crea el partido Programado con terna arbitral neutral |
+| `POST /vivo/partidos/{codigo}/iniciar` · `/finalizar` | IRIS → Redis | Transiciones de estado validadas por IRIS |
+| `POST /vivo/partidos/{codigo}/eventos` | IRIS → Neo4j → Redis | Gol o tarjeta. Si viola una regla del partido: **409** con el motivo de IRIS |
+| `PUT /vivo/partidos/{codigo}/reloj` | Redis | Minuto de juego (dato efímero) |
+| `POST /vivo/partidos/{codigo}/estadisticas` | InfluxDB | Puntos por segundo (line protocol, esquema del Hito 8) |
+| `GET /vivo/partidos/{codigo}/tablero` | Las 6, en paralelo | Una sección por base con su `ok`, `http` y `ms`: si una base cae, solo su sección falla |
+| `POST /sesiones` · `POST /sesiones/{id}/actividad` | Redis | Login (Hash + TTL de 1.800 s) y TTL deslizante |
+
+Centro de control: **http://localhost:8000/demo** (HTML estático, sin dependencias externas). Requiere compilar `iris/src/Fixture/Vivo.cls` una vez (ver `monitoreo/defensa/demo.md`). Pruebas sin bases: `pytest tests/test_vivo.py -v`.
+
 ## Notas de alcance
 - Datos de laboratorio de los hitos previos; no se incorporan datos sensibles.
 - La API no demuestra escala (millones de usuarios): se prueba en una notebook.

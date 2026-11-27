@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fixture 2030 · Centro de Control</title>
+<!--
+  Hito 13 - Centro de control de la demo (Grupo 8).
+  Un solo archivo, sin librerias ni CDNs: funciona sin internet (RNF7).
+  Todo lo que muestra sale de la API integrada (mismo origen):
+    /vivo/...   demo en vivo (un partido que atraviesa las seis bases)
+    /salud      disponibilidad por base
+    /metrics    las mismas metricas que lee Prometheus (vista de respaldo de Grafana)
+  Grafana, Prometheus y Swagger se embeben en las otras pestanas.
+-->
+<style>
+:root{
+  --bg:#0b1020; --panel:#121a33; --panel2:#18223f; --line:#26335a; --txt:#e8ecf8; --mut:#93a0c4;
+  --acc:#8b5cf6; --acc2:#c4b5fd; --gold:#f5c451; --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
+  --mongo:#22c55e; --neo4j:#38bdf8; --cassandra:#60a5fa; --redis:#f87171; --influxdb:#a78bfa; --iris:#2dd4bf; --api:#f5c451;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.45 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+a{color:var(--acc2)}
+header{display:flex;align-items:center;gap:18px;padding:10px 18px;background:linear-gradient(90deg,#1b1145,#0f1a3d 60%,#0b1020);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.logo{font-weight:800;letter-spacing:.5px;font-size:18px}
+.logo span{color:var(--gold)}
+.sub{color:var(--mut);font-size:12px}
+.salud{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.pill{display:flex;align-items:center;gap:6px;padding:3px 9px;border-radius:99px;background:var(--panel2);border:1px solid var(--line);font-size:12px}
+.dot{width:9px;height:9px;border-radius:50%;background:#555}
+.dot.ok{background:var(--ok);box-shadow:0 0 6px var(--ok)} .dot.bad{background:var(--bad);box-shadow:0 0 6px var(--bad)}
+nav{display:flex;gap:4px;padding:8px 18px 0;border-bottom:1px solid var(--line);background:#0d1430}
+nav button{background:none;border:0;color:var(--mut);padding:9px 14px;font:inherit;font-weight:600;cursor:pointer;border-bottom:3px solid transparent}
+nav button.on{color:var(--txt);border-color:var(--acc)}
+main{padding:14px 18px 30px}
+.tab{display:none}.tab.on{display:block}
+.fila{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input,select{background:var(--panel2);border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:7px 9px;font:inherit}
+input.cod{width:170px} input.eq{width:64px;text-transform:uppercase} input.fe{width:120px}
+.btn{background:var(--panel2);border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:7px 12px;font:inherit;font-weight:600;cursor:pointer}
+.btn:hover{border-color:var(--acc)} .btn.pri{background:var(--acc);border-color:var(--acc)} .btn.gold{background:var(--gold);color:#1b1300;border-color:var(--gold)}
+.btn.red{border-color:#7f1d1d;color:#fecaca} .btn:disabled{opacity:.45;cursor:default}
+.marcador{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:18px;margin:14px 0;padding:16px 22px;border-radius:16px;
+  background:radial-gradient(1200px 200px at 50% -40%,#3b1f8f55,transparent),var(--panel);border:1px solid var(--line)}
+.eqn{font-size:30px;font-weight:800}.eqn small{display:block;font-size:12px;color:var(--mut);font-weight:500}
+.eqn.der{text-align:right}
+.score{font-size:54px;font-weight:900;letter-spacing:4px;text-align:center}
+.reloj{text-align:center;color:var(--gold);font-weight:700}
+.chip{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700;background:var(--panel2);border:1px solid var(--line)}
+.chip.EnJuego{background:#14532d;border-color:#22c55e}.chip.Finalizado{background:#3f3f46}.chip.Programado{background:#1e3a8a}
+.meta{display:flex;justify-content:center;gap:16px;color:var(--mut);font-size:12px;margin-top:4px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media(max-width:1200px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;min-height:240px;position:relative;overflow:hidden}
+.card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,#555)}
+.card h3{margin:0;font-size:15px;display:flex;align-items:center;gap:8px}
+.card .rol{color:var(--mut);font-size:12px;margin:2px 0 8px}
+.card .est{margin-left:auto;font-size:11px;font-weight:600;color:var(--mut);display:flex;gap:6px;align-items:center}
+.card.caida{border-color:#7f1d1d;background:linear-gradient(#2a0d12,var(--panel))}
+.err{background:#2a0d12;border:1px solid #7f1d1d;color:#fecaca;border-radius:8px;padding:8px 10px;font-size:12px;margin-top:6px}
+.vacio{color:var(--mut);font-size:12px;font-style:italic}
+ul.lista{list-style:none;padding:0;margin:0;max-height:190px;overflow:auto}
+ul.lista li{padding:5px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.min{display:inline-block;min-width:34px;color:var(--gold);font-weight:700}
+.badge{font-size:10px;font-weight:800;padding:1px 6px;border-radius:5px;background:#334155}
+.badge.HIT{background:#166534}.badge.MISS{background:#92400e}.badge.OFF{background:#334155}
+.estados{display:flex;gap:6px;margin:6px 0}
+.estados span{flex:1;text-align:center;padding:6px 0;border-radius:8px;background:var(--panel2);border:1px solid var(--line);font-size:12px;color:var(--mut)}
+.estados span.act{background:#134e4a;border-color:var(--iris);color:#fff;font-weight:700}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:12.5px}.kv b{color:var(--mut);font-weight:500}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ficha{background:var(--panel2);border-radius:10px;padding:8px 10px;font-size:12.5px}
+.ficha .n{font-weight:800;font-size:15px}
+.grande{font-size:34px;font-weight:900;color:var(--redis)}
+canvas{width:100%;height:150px;display:block}
+.leyenda{display:flex;gap:12px;font-size:12px;color:var(--mut)}.leyenda i{display:inline-block;width:10px;height:3px;margin-right:4px;vertical-align:middle}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line)}th{color:var(--mut);font-weight:600}
+.traza{max-height:260px;overflow:auto;margin-top:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px 10px}
+.st2{color:var(--ok)}.st4{color:var(--warn)}.st5{color:var(--bad)}
+.aviso{margin:10px 0;padding:10px 14px;border-radius:10px;display:none;font-weight:600}
+.aviso.on{display:block}.aviso.mal{background:#2a0d12;border:1px solid #7f1d1d;color:#fecaca}.aviso.bien{background:#0f2a1c;border:1px solid #166534;color:#bbf7d0}
+iframe{width:100%;height:calc(100vh - 170px);border:1px solid var(--line);border-radius:12px;background:#fff}
+.bases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.num{font-size:22px;font-weight:800}
+.mini{color:var(--mut);font-size:11.5px}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.svgg text{fill:var(--txt);font-size:10px}
+.pie{color:var(--mut);font-size:11.5px;margin-top:8px}
+.tag{font-size:10.5px;color:#cbd5e1;background:#1f2a4d;border-radius:5px;padding:1px 6px;margin-right:4px}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <div class="logo">FIXTURE <span>2030</span> · Centro de Control</div>
+    <div class="sub">Grupo 8 · Ingeniería de Datos II · 6 bases NoSQL detrás de una API</div>
+  </div>
+  <div class="salud" id="salud"></div>
+</header>
+<nav>
+  <button class="on" data-tab="vivo">⚽ Partido en vivo</button>
+  <button data-tab="bases">🗄️ Las 6 bases (métricas)</button>
+  <button data-tab="grafana">📈 Grafana</button>
+  <button data-tab="prom">🔥 Prometheus</button>
+  <button data-tab="swagger">🧩 API · Swagger</button>
+</nav>
+<main>
+
+<!-- ============================ PARTIDO EN VIVO ============================ -->
+<section class="tab on" id="tab-vivo">
+  <div class="fila">
+    <input class="cod" id="codigo" value="H13-DEMO-URUARG" title="Solo partidos de laboratorio H13-DEMO-...">
+    <input class="eq" id="local" value="URU" title="Local (codigo FIFA)">
+    <span class="sub">vs</span>
+    <input class="eq" id="visitante" value="ARG" title="Visitante (codigo FIFA)">
+    <input class="eq" id="sede" value="CENT" title="Sede (codigo del Hito 5)">
+    <input class="fe" id="fecha" value="2030-06-08" title="Fecha">
+    <button class="btn pri" id="bCrear">1 · Crear partido</button>
+    <button class="btn" id="bIniciar">2 · Iniciar</button>
+    <button class="btn" id="bGolL">⚽ Gol local</button>
+    <button class="btn" id="bGolV">⚽ Gol visitante</button>
+    <button class="btn" id="bTarjeta">🟨 Tarjeta</button>
+    <button class="btn" id="bFin">3 · Finalizar</button>
+    <button class="btn red" id="bRegla" title="Intenta un gol con el partido Finalizado: IRIS lo tiene que rechazar">🚫 Probar regla de IRIS</button>
+    <button class="btn gold" id="bAuto">▶ Simular partido</button>
+  </div>
+  <div class="aviso" id="aviso"></div>
+
+  <div class="marcador">
+    <div class="eqn" id="nL">—<small id="nLs">local</small></div>
+    <div>
+      <div class="score" id="score">0 - 0</div>
+      <div class="reloj"><span id="minuto">0'</span> · <span class="chip" id="estado">sin partido</span></div>
+      <div class="meta"><span id="mSede">—</span><span id="mFecha">—</span><span>Hinchas únicos: <b id="mHinchas">0</b></span><span>Tablero: <b id="mMs">—</b> ms (6 bases en paralelo)</span></div>
+    </div>
+    <div class="eqn der" id="nV">—<small id="nVs">visitante</small></div>
+  </div>
+
+  <div class="grid">
+    <div class="card" style="--c:var(--iris)" id="c-iris">
+      <h3>IRIS <span class="tag">objetos</span><span class="est" id="e-iris"></span></h3>
+      <div class="rol">El partido como objeto con reglas · fuente de verdad del estado y del marcador</div>
+      <div class="estados"><span id="s-Programado">Programado</span><span id="s-EnJuego">EnJuego</span><span id="s-Finalizado">Finalizado</span></div>
+      <div id="b-iris" class="vacio">Creá el partido para ver el objeto.</div>
+    </div>
+    <div class="card" style="--c:var(--neo4j)" id="c-neo4j">
+      <h3>Neo4j <span class="tag">grafo</span><span class="est" id="e-neo4j"></span></h3>
+      <div class="rol">El gol es un nodo: evento → jugador → equipo, sin joins</div>
+      <div id="b-neo4j" class="vacio">Sin eventos todavía.</div>
+    </div>
+    <div class="card" style="--c:var(--mongo)" id="c-mongodb">
+      <h3>MongoDB <span class="tag">documental</span><span class="est" id="e-mongodb"></span></h3>
+      <div class="rol">Ficha completa de cada selección en una lectura</div>
+      <div id="b-mongodb" class="vacio">—</div>
+    </div>
+    <div class="card" style="--c:var(--cassandra)" id="c-cassandra">
+      <h3>Cassandra <span class="tag">columnar</span><span class="est" id="e-cassandra"></span></h3>
+      <div class="rol">Feed masivo: partición (partido, ventana de 5 min) · lectura vía caché Redis</div>
+      <div class="fila" style="margin-bottom:6px"><input id="txtCom" style="flex:1" placeholder="Escribí un comentario de hincha…"><button class="btn" id="bCom">Publicar</button></div>
+      <div id="b-cassandra" class="vacio">Sin comentarios en la ventana actual.</div>
+    </div>
+    <div class="card" style="--c:var(--redis)" id="c-redis">
+      <h3>Redis <span class="tag">clave-valor</span><span class="est" id="e-redis"></span></h3>
+      <div class="rol">Sesiones con TTL deslizante · hinchas únicos (HyperLogLog) · estado rápido</div>
+      <div class="dos">
+        <div><div class="mini">Hinchas únicos conectados</div><div class="grande" id="hll">0</div><div class="mini">~12 KB fijos, sea 1 o 3 millones (error ≈0,8 %)</div></div>
+        <div>
+          <div class="mini">Tu sesión de hincha</div>
+          <div id="miSesion" class="vacio">sin sesión</div>
+          <div class="fila" style="margin-top:6px"><button class="btn" id="bLogin">Iniciar sesión</button><button class="btn" id="bAct">Acción (renueva TTL)</button></div>
+        </div>
+      </div>
+      <div id="b-redis" class="pie"></div>
+    </div>
+    <div class="card" style="--c:var(--influxdb)" id="c-influxdb">
+      <h3>InfluxDB <span class="tag">series temporales</span><span class="est" id="e-influxdb"></span></h3>
+      <div class="rol">1 punto/s por equipo · agregado en vivo con date_bin cada 10 s</div>
+      <canvas id="graf" width="600" height="150"></canvas>
+      <div class="leyenda"><span><i style="background:var(--gold)"></i>posesión local %</span><span><i style="background:var(--neo4j)"></i>posesión visitante %</span></div>
+      <div id="b-influxdb" class="pie"></div>
+    </div>
+  </div>
+
+  <div class="traza">
+    <div class="fila" style="justify-content:space-between"><b>Traza de requests</b><span class="mini">Cada request dice qué base la atendió y cuánto tardó <u>dentro de la API</u> (header X-Duracion-ms)</span></div>
+    <table><thead><tr><th>Hora</th><th>Request</th><th>Base(s)</th><th>HTTP</th><th>ms API</th><th>Detalle</th></tr></thead><tbody id="traza"></tbody></table>
+  </div>
+</section>
+
+<!-- ============================ LAS 6 BASES ============================ -->
+<section class="tab" id="tab-bases">
+  <p class="sub" style="margin-top:0">Vista de respaldo calculada en el navegador a partir de <code>/metrics</code> (las mismas series que lee Prometheus). Se actualiza cada 5 s. Si Grafana no está disponible, esta pestaña muestra lo mismo.</p>
+  <div class="kpis">
+    <div class="kpi"><div class="mini">Requests/s (API)</div><div class="num" id="k-rps">—</div></div>
+    <div class="kpi"><div class="mini">Latencia p95 API (SLO 50 ms · SLA 100 ms)</div><div class="num" id="k-p95">—</div></div>
+    <div class="kpi"><div class="mini">Errores 5xx</div><div class="num" id="k-5xx">—</div></div>
+    <div class="kpi"><div class="mini">Aciertos de caché (comentarios)</div><div class="num" id="k-cache">—</div></div>
+    <div class="kpi"><div class="mini">Comentarios escritos/s (Cassandra)</div><div class="num" id="k-com">—</div></div>
+  </div>
+  <div class="bases" id="basesGrid"></div>
+</section>
+
+<!-- ============================ GRAFANA ============================ -->
+<section class="tab" id="tab-grafana">
+  <div class="fila" style="margin-bottom:8px">
+    <span class="sub">Tablero provisionado <b>Fixture 2030 - War Room</b> (Prometheus como fuente).</span>
+    <input id="grafUrl" style="flex:1" value="">
+    <button class="btn" id="bGraf">Recargar</button>
+    <a class="btn" id="aGraf" target="_blank" rel="noopener">Abrir en pestaña ↗</a>
+  </div>
+  <iframe id="fGraf" title="Grafana"></iframe>
+</section>
+
+<!-- ============================ PROMETHEUS ============================ -->
+<section class="tab" id="tab-prom">
+  <div class="fila" style="margin-bottom:8px" id="promLinks"></div>
+  <iframe id="fProm" title="Prometheus"></iframe>
+</section>
+
+<!-- ============================ SWAGGER ============================ -->
+<section class="tab" id="tab-swagger">
+  <div class="fila" style="margin-bottom:8px"><span class="sub">Contrato OpenAPI generado por FastAPI. La sección <b>demo en vivo (Hito 13)</b> agrega las escrituras que usa esta pantalla.</span><a class="btn" href="/docs" target="_blank">Abrir /docs ↗</a><a class="btn" href="/openapi.json" target="_blank">openapi.json ↗</a></div>
+  <iframe id="fSwag" title="Swagger" data-src="/docs"></iframe>
+</section>
+</main>
+
+<script>
+"use strict";
+// ---------------------------------------------------------------- utilidades
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const HOST = location.hostname || "localhost";
+const GRAFANA = `http://${HOST}:3000`, PROM = `http://${HOST}:9090`, ALERTM = `http://${HOST}:9093`;
+const BASES = [
+  {id:"mongodb",  n:"MongoDB",   m:"Documental",        d:"64 selecciones y 1.024 jugadores", a:"Ficha completa en 1 lectura (índice único por código)", cap:"CP", p:"Sin particionar: volumen chico y fijo; réplica completa por región", h:"Hito 4"},
+  {id:"neo4j",    n:"Neo4j",     m:"Grafo",             d:"Partidos, sedes y eventos como nodos", a:"Recorridos de 2+ saltos: gol → jugador → equipo", cap:"CP", p:"Instancia única; réplicas de lectura (proyección)", h:"Hito 5"},
+  {id:"cassandra",n:"Cassandra", m:"Columnar",          d:"1,1 M de comentarios", a:"Escritura masiva + últimos N del partido", cap:"AP", p:"Partición (partido_id, ventana de 5 min)", h:"Hito 6"},
+  {id:"redis",    n:"Redis",     m:"Clave-valor",       d:"Sesiones, caché, hinchas (HLL)", a:"Lectura por clave en memoria, con TTL", cap:"AP", p:"Reparto por usuario (Redis Cluster, proyección)", h:"Hitos 7 y 12"},
+  {id:"influxdb", n:"InfluxDB",  m:"Series temporales", d:"10,6 M de puntos", a:"Rango de tiempo + agregación por ventana", cap:"AP", p:"Base viva con retención + resumen de 1 min", h:"Hito 8"},
+  {id:"iris",     n:"IRIS",      m:"Objetos",           d:"Partido con estado, eventos y terna", a:"Reglas junto al dato (invariantes al guardar)", cap:"Fuerte en el objeto", p:"Instancia única; mirroring (proyección)", h:"Hito 9"},
+];
+let partido = null;           // {codigo, local, visitante}
+let planteles = {};           // equipo -> [jugadores]
+let minuto = 0, auto = null, sesion = null;
+
+function aviso(txt, bien) {
+  const a = $("aviso"); a.textContent = txt; a.className = "aviso on " + (bien ? "bien" : "mal");
+  clearTimeout(aviso.t); aviso.t = setTimeout(() => a.className = "aviso", 7000);
+}
+
+// Todas las llamadas pasan por aca: miden, y dejan la fila en la traza.
+async function api(metodo, ruta, cuerpo, bases, opciones = {}) {
+  const t0 = performance.now();
+  let r, datos = null;
+  try {
+    r = await fetch(ruta, {method: metodo, headers: cuerpo ? {"Content-Type": "application/json"} : {},
+                          body: cuerpo ? JSON.stringify(cuerpo) : undefined});
+    const txt = await r.text();
+    try { datos = txt ? JSON.parse(txt) : null; } catch { datos = txt; }
+  } catch (e) {
+    fila(metodo, ruta, bases, 0, Math.round(performance.now() - t0), "API no responde");
+    throw e;
+  }
+  if (!opciones.silencioso || !r.ok) {
+    let det = "";
+    if (r.headers.get("X-Cache")) det += `caché ${r.headers.get("X-Cache")} `;
+    if (datos && datos.traza) det += datos.traza.map(p => `${p.fuente} ${p.ok ? "✓" : "✗"} ${p.ms}ms`).join(" → ");
+    if (datos && datos.error) det += `${datos.error.code}: ${datos.error.message}`;
+    fila(metodo, ruta, bases, r.status, r.headers.get("X-Duracion-ms") || "—", det, r.headers.get("X-Request-ID"));
+  }
+  return {ok: r.ok, status: r.status, datos, cache: r.headers.get("X-Cache")};
+}
+function fila(metodo, ruta, bases, st, ms, det, rid) {
+  const tb = $("traza"); const tr = document.createElement("tr");
+  const c = st >= 500 || st === 0 ? "st5" : st >= 400 ? "st4" : "st2";
+  tr.innerHTML = `<td>${new Date().toLocaleTimeString()}</td><td><b>${metodo}</b> ${esc(ruta)}</td><td>${esc(bases)}</td>` +
+    `<td class="${c}">${st || "—"}</td><td>${esc(ms)}</td><td>${esc(det)}${rid ? ` <span class="mini">req ${esc(rid)}</span>` : ""}</td>`;
+  tb.prepend(tr); while (tb.children.length > 60) tb.lastChild.remove();
+}
+
+// ---------------------------------------------------------------- salud
+async function salud() {
+  try {
+    const r = await fetch("/salud"); const d = await r.json();
+    $("salud").innerHTML = d.dependencias.map(x =>
+      `<span class="pill"><span class="dot ${x.disponible ? "ok" : "bad"}"></span>${x.fuente}</span>`).join("");
+  } catch { $("salud").innerHTML = `<span class="pill"><span class="dot bad"></span>API no responde</span>`; }
+}
+
+// ---------------------------------------------------------------- partido
+function leerForm() {
+  return {codigo: $("codigo").value.trim().toUpperCase(), local: $("local").value.trim().toUpperCase(),
+          visitante: $("visitante").value.trim().toUpperCase(), sede: $("sede").value.trim().toUpperCase(),
+          fecha: $("fecha").value.trim()};
+}
+async function cargarPlantel(eq) {
+  const r = await api("GET", `/equipos/${eq}/jugadores?limit=100`, null, "MongoDB", {silencioso: true});
+  planteles[eq] = r.ok ? r.datos.jugadores : [];
+}
+function goleador(eq) {
+  const p = planteles[eq] || [];
+  const pref = p.filter(j => j.posicion === "Delantero" || j.posicion === "Mediocampista");
+  const lista = pref.length ? pref : p;
+  return lista.length ? lista[Math.floor(Math.random() * lista.length)] : null;
+}
+async function crear() {
+  const f = leerForm();
+  const r = await api("POST", "/vivo/partidos", f, "IRIS → Neo4j → Redis");
+  if (!r.ok) { aviso(r.datos?.error?.message || "No se pudo crear el partido"); return; }
+  partido = {codigo: r.datos.partido.codigo, local: f.local, visitante: f.visitante, sede: f.sede};
+  minuto = 0;
+  await Promise.all([cargarPlantel(f.local), cargarPlantel(f.visitante)]);
+  aviso(`Partido ${partido.codigo} creado en IRIS (Programado, terna neutral) y en el grafo.`, true);
+  tablero();
+}
+async function iniciar() {
+  if (!partido) return aviso("Primero creá el partido.");
+  const r = await api("POST", `/vivo/partidos/${partido.codigo}/iniciar`, null, "IRIS → Redis");
+  if (!r.ok) aviso(r.datos?.error?.message || "Error"); else aviso("Programado → EnJuego (validado por IRIS).", true);
+  tablero();
+}
+async function evento(tipo, eq, min) {
+  if (!partido) return aviso("Primero creá el partido.");
+  const j = goleador(eq);
+  if (!j) return aviso(`No hay plantel cargado para ${eq} (¿MongoDB caído?).`);
+  const m = Math.max(1, Math.min(120, min || minuto || 1));
+  const r = await api("POST", `/vivo/partidos/${partido.codigo}/eventos`,
+                      {tipo, minuto: m, jugadorCodigo: j.codigo}, "IRIS → Neo4j → Redis");
+  if (!r.ok) aviso(r.status === 409 ? `IRIS rechazó: ${r.datos.error.detalles?.motivo || r.datos.error.message}` : (r.datos?.error?.message || "Error"));
+  else if (tipo === "Gol") {
+    aviso(`¡GOL de ${eq}! ${j.nombre || j.codigo} (${m}'). IRIS lo validó y Neo4j lo conectó.`, true);
+    pico(eq);
+  }
+  tablero();
+  return r;
+}
+async function finalizar() {
+  if (!partido) return aviso("Primero creá el partido.");
+  const r = await api("POST", `/vivo/partidos/${partido.codigo}/finalizar`, null, "IRIS → Redis");
+  if (!r.ok) aviso(r.datos?.error?.message || "Error"); else aviso("EnJuego → Finalizado.", true);
+  pararAuto(); tablero();
+}
+async function probarRegla() {
+  if (!partido) return aviso("Primero creá el partido.");
+  // Intencional: un gol en el minuto 95 con el partido en el estado que tenga.
+  await evento("Gol", partido.local, 95);
+}
+
+// ---------------------------------------------------------------- comentarios y sesiones
+const FRASES = ["¡Vamos!", "Qué jugada", "Esto es un Mundial", "100 años de historia", "Árbitro, ¡era falta!",
+  "Ese arquero es una pared", "¡Qué golazo!", "Se viene el segundo", "Tremendo partido", "Dale que se puede",
+  "Así se juega", "No lo puedo creer", "Centenario lleno", "Qué atajada", "Hay que presionar más arriba"];
+async function comentar(texto, silencioso) {
+  if (!partido) return aviso("Primero creá el partido.");
+  const u = sesion ? sesion.usuarioId : "u-" + String(Math.floor(Math.random() * 99999)).padStart(5, "0");
+  return api("POST", `/partidos/${partido.codigo}/comentarios`, {usuarioId: u, contenido: texto}, "Cassandra", {silencioso});
+}
+async function pico(eq) {
+  // Pico de gol: una ráfaga de comentarios (la carga real la genera el simulador).
+  const ps = [];
+  for (let i = 0; i < 12; i++) ps.push(comentar(`${eq} ${FRASES[Math.floor(Math.random() * FRASES.length)]} ⚽`, true));
+  await Promise.allSettled(ps);
+}
+async function login() {
+  const u = "u-" + String(Math.floor(Math.random() * 99999)).padStart(5, "0");
+  const r = await api("POST", "/sesiones", {usuarioId: u, rol: "hincha", partido: partido?.codigo}, "Redis");
+  if (r.ok) { sesion = r.datos; sesion.vence = Date.now() + r.datos.ttlSegundos * 1000; }
+}
+async function accion() {
+  if (!sesion) return aviso("Primero iniciá sesión.");
+  const r = await api("POST", `/sesiones/${sesion.sesionId}/actividad`, null, "Redis");
+  if (r.ok) { sesion.vence = Date.now() + r.datos.ttlSegundos * 1000; sesion.acciones = r.datos.acciones; }
+  else if (r.status === 404) { aviso("La sesión venció: hay que volver a autenticarse (404, no 503)."); sesion = null; }
+}
+setInterval(() => {
+  if (!sesion) { $("miSesion").className = "vacio"; $("miSesion").textContent = "sin sesión"; return; }
+  const s = Math.max(0, Math.round((sesion.vence - Date.now()) / 1000));
+  $("miSesion").className = "";
+  $("miSesion").innerHTML = `<div class="kv"><b>clave</b><span>sesion:${esc(sesion.sesionId)}</span><b>usuario</b><span>${esc(sesion.usuarioId)}</span>` +
+    `<b>TTL</b><span>${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")} (se renueva con cada acción)</span><b>acciones</b><span>${sesion.acciones ?? 0}</span></div>`;
+}, 1000);
+
+// ---------------------------------------------------------------- tablero (6 bases)
+function estadoCard(sec, id) {
+  const e = $("e-" + id), c = $("c-" + id);
+  if (!sec) { e.innerHTML = ""; return false; }
+  e.innerHTML = `<span class="dot ${sec.ok ? "ok" : "bad"}"></span>${sec.http} · ${sec.ms} ms`;
+  c.classList.toggle("caida", !sec.ok && sec.http >= 500);
+  if (!sec.ok) {
+    $("b-" + id).className = "";
+    $("b-" + id).innerHTML = `<div class="err"><b>${sec.http} ${esc(sec.error?.code)}</b><br>${esc(sec.error?.message)}` +
+      (sec.http >= 500 ? `<br><br>Esta base no responde: <b>solo esta sección</b> se degrada; las otras siguen funcionando.` : "") + `</div>`;
+  }
+  return sec.ok;
+}
+async function tablero() {
+  if (!partido) return;
+  const q = `?local=${partido.local}&visitante=${partido.visitante}&minutos=15`;
+  let r;
+  try { r = await api("GET", `/vivo/partidos/${partido.codigo}/tablero${q}`, null, "las 6 en paralelo", {silencioso: true}); }
+  catch { return; }
+  if (!r.ok || !r.datos?.secciones) return;
+  const s = r.datos.secciones;
+  $("mMs").textContent = r.datos.msTotal;
+  // --- IRIS
+  if (estadoCard(s.partido, "iris")) {
+    const p = s.partido.datos;
+    ["Programado", "EnJuego", "Finalizado"].forEach(x => $("s-" + x).classList.toggle("act", p.estado === x));
+    $("score").textContent = `${p.golesLocal} - ${p.golesVisitante}`;
+    $("estado").textContent = p.estado; $("estado").className = "chip " + p.estado;
+    $("mSede").textContent = p.sede; $("mFecha").textContent = p.fecha;
+    $("b-iris").className = "";
+    $("b-iris").innerHTML = `<div class="kv"><b>Objeto</b><span>Fixture.Partido ${esc(p.codigo)}</span>` +
+      `<b>Marcador</b><span>${p.golesLocal}-${p.golesVisitante} (validado contra los goles en %OnBeforeSave)</span>` +
+      `<b>Eventos hijos</b><span>${p.cantidadEventos}</span></div>` +
+      `<div class="mini" style="margin-top:6px">Terna arbitral (neutral por regla):</div>` +
+      `<ul class="lista">${(p.terna || []).map(t => `<li>${esc(t.rol)}: ${esc(t.arbitro)} <span class="mini">(${esc(t.nacionalidad)})</span></li>`).join("")}</ul>`;
+  }
+  // --- Neo4j
+  if (estadoCard(s.eventos, "neo4j")) {
+    const ev = s.eventos.datos.eventos || [];
+    $("b-neo4j").className = ev.length ? "" : "vacio";
+    $("b-neo4j").innerHTML = ev.length ? grafo(ev) +
+      `<ul class="lista">${ev.slice().reverse().map(e => `<li><span class="min">${e.minuto}'</span>${e.tipo === "Gol" ? "⚽" : "🟨"} ${esc(e.jugadorNombre)} <span class="mini">${esc(e.jugadorCodigo)}</span></li>`).join("")}</ul>`
+      : "Sin eventos todavía.";
+  }
+  // --- MongoDB
+  if (estadoCard(s.equipos, "mongodb")) {
+    const f = s.equipos.datos;
+    $("nL").innerHTML = `${esc(f.local.nombre)}<small>${esc(f.local.codigo)} · ${esc(f.local.confederacion)}</small>`;
+    $("nV").innerHTML = `${esc(f.visitante.nombre)}<small>${esc(f.visitante.codigo)} · ${esc(f.visitante.confederacion)}</small>`;
+    const fic = (e) => `<div class="ficha"><div class="n">${esc(e.nombre)}</div><div class="kv"><b>Código</b><span>${esc(e.codigo)}</span>` +
+      `<b>Confed.</b><span>${esc(e.confederacion)}</span><b>Ranking</b><span>${esc(e.rankingFIFA)}</span><b>Grupo</b><span>${esc(e.grupo || "—")}</span>` +
+      `<b>Plantel</b><span>${(planteles[e.codigo] || []).length} jugadores</span></div></div>`;
+    $("b-mongodb").className = "";
+    $("b-mongodb").innerHTML = `<div class="dos">${fic(f.local)}${fic(f.visitante)}</div>` +
+      `<div class="pie">El código FIFA (${esc(f.local.codigo)}) es la clave que comparten las 6 bases.</div>`;
+  }
+  // --- Cassandra
+  if (estadoCard(s.comentarios, "cassandra")) {
+    const c = s.comentarios.datos;
+    const lis = (c.comentarios || []).map(x => `<li><span class="mini">${esc((x.creadoEn || "").slice(11, 19))}</span> <b>${esc(x.usuarioId)}</b>: ${esc(x.contenido)}</li>`).join("");
+    $("b-cassandra").className = "";
+    $("b-cassandra").innerHTML = `<div class="mini" style="margin-bottom:4px">Partición <b>(${esc(c.partido)}, ${esc((c.ventana || "").slice(11, 16))})</b> · caché <span class="badge ${esc(c.cache)}">${esc(c.cache)}</span></div>` +
+      (lis ? `<ul class="lista">${lis}</ul>` : `<div class="vacio">Sin comentarios en la ventana actual.</div>`);
+  }
+  // --- Redis
+  if (estadoCard(s.vivo, "redis")) {
+    const v = s.vivo.datos;
+    $("hll").textContent = v.hinchasUnicos.toLocaleString("es-AR");
+    $("mHinchas").textContent = v.hinchasUnicos.toLocaleString("es-AR");
+    if (v.estado.minuto !== undefined && !auto) minuto = parseInt(v.estado.minuto) || minuto;
+    $("minuto").textContent = (v.estado.minuto ?? minuto) + "'";
+    $("b-redis").innerHTML = `Hash <b>vivo:partido:${esc(partido.codigo)}</b> → minuto ${esc(v.estado.minuto)} · ${esc(v.estado.golesLocal)}-${esc(v.estado.golesVisitante)} · ${esc(v.estado.ultimoEvento || "")}`;
+  }
+  // --- InfluxDB
+  if (estadoCard(s.estadisticas, "influxdb")) {
+    const pts = s.estadisticas.datos.puntos || [];
+    dibujar(pts);
+    const ult = (eq) => pts.filter(p => p.equipoId === eq).slice(-1)[0];
+    const a = ult(partido.local), b = ult(partido.visitante);
+    $("b-influxdb").innerHTML = pts.length
+      ? `${esc(partido.local)}: ${fmt(a?.posesionPct)} % · tiros ${a?.tirosAcum ?? 0} · pases ${a?.pasesAcum ?? 0} &nbsp;|&nbsp; ${esc(partido.visitante)}: ${fmt(b?.posesionPct)} % · tiros ${b?.tirosAcum ?? 0} · pases ${b?.pasesAcum ?? 0}<br>${pts.length} ventanas de 10 s (SQL con date_bin, últimos 15 min)`
+      : "Todavía no hay puntos: se escriben cuando el partido está en juego.";
+  }
+}
+const fmt = (x) => x == null ? "—" : Number(x).toFixed(1);
+
+function grafo(ev) {
+  // Mini grafo: Partido en el centro, eventos alrededor, cada uno con su jugador.
+  const W = 360, H = 120, cx = W / 2, cy = H / 2, n = Math.min(ev.length, 10);
+  let s = `<svg class="svgg" viewBox="0 0 ${W} ${H}" width="100%" height="${H}">`;
+  for (let i = 0; i < n; i++) {
+    const e = ev[ev.length - n + i], ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+    const x = cx + Math.cos(ang) * 95, y = cy + Math.sin(ang) * 42;
+    s += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#38bdf8" stroke-opacity=".5"/>` +
+      `<circle cx="${x}" cy="${y}" r="9" fill="${e.tipo === "Gol" ? "#22c55e" : "#f5c451"}"/><text x="${x}" y="${y + 3}" text-anchor="middle" style="font-size:8px;fill:#0b1020;font-weight:700">${e.minuto}</text>`;
+  }
+  s += `<circle cx="${cx}" cy="${cy}" r="16" fill="#8b5cf6"/><text x="${cx}" y="${cy + 3}" text-anchor="middle" style="font-size:8px;font-weight:700">Partido</text></svg>`;
+  return s + `<div class="mini">(:Evento)-[:OCURRE_EN]->(:Partido) · (:Evento)-[:PROTAGONIZADO_POR]->(:Jugador)-[:PERTENECE_A]->(:Equipo)</div>`;
+}
+function dibujar(pts) {
+  const cv = $("graf"), g = cv.getContext("2d"), W = cv.width, H = cv.height;
+  g.clearRect(0, 0, W, H);
+  g.strokeStyle = "#26335a"; g.lineWidth = 1;
+  for (const v of [30, 50, 70]) { const y = H - (v - 20) / 60 * H; g.beginPath(); g.moveTo(0, y); g.lineTo(W, y); g.stroke();
+    g.fillStyle = "#93a0c4"; g.font = "10px sans-serif"; g.fillText(v + "%", 2, y - 2); }
+  const serie = (eq, color) => {
+    const p = pts.filter(x => x.equipoId === eq && x.posesionPct != null);
+    if (p.length < 2) return;
+    g.strokeStyle = color; g.lineWidth = 2.2; g.beginPath();
+    p.forEach((x, i) => { const px = 28 + i / (p.length - 1) * (W - 32), py = H - (x.posesionPct - 20) / 60 * H; i ? g.lineTo(px, py) : g.moveTo(px, py); });
+    g.stroke();
+  };
+  if (partido) { serie(partido.local, "#f5c451"); serie(partido.visitante, "#38bdf8"); }
+}
+
+// ---------------------------------------------------------------- simulación en el navegador
+// Liviana (una sola "tribuna"): minuto a minuto escribe estadísticas en InfluxDB,
+// comentarios en Cassandra y el reloj en Redis; goles y tarjetas por IRIS → Neo4j.
+// La carga de miles de hinchas la genera monitoreo/demo/simular_partido_en_vivo.py.
+const est = {};
+function iniEst() {
+  for (const eq of [partido.local, partido.visitante]) est[eq] = {pases: 0, tiros: 0, rec: 0};
+  est.pos = 50 + (Math.random() * 10 - 5);
+}
+async function tick() {
+  if (!partido) return pararAuto();
+  minuto += 1;
+  if (minuto === 46) aviso("Entretiempo (45'). Los hinchas comentan: pico de escritura en Cassandra.", true);
+  if (minuto > 90) { await finalizar(); return; }
+  api("PUT", `/vivo/partidos/${partido.codigo}/reloj`, {minuto}, "Redis", {silencioso: true});
+  // Estadísticas: 2 puntos (uno por equipo) con timestamp del segundo actual.
+  est.pos = Math.max(32, Math.min(68, est.pos + (Math.random() - .5) * 4));
+  const pts = [];
+  for (const [eq, pos] of [[partido.local, est.pos], [partido.visitante, 100 - est.pos]]) {
+    const e = est[eq]; e.pases += 3 + Math.floor(Math.random() * 6); if (Math.random() < .12) e.tiros++; if (Math.random() < .4) e.rec++;
+    pts.push({equipoId: eq, posesionPct: Math.round(pos * 10) / 10, pasesAcum: e.pases, tirosAcum: e.tiros, recuperacionesAcum: e.rec});
+  }
+  api("POST", `/vivo/partidos/${partido.codigo}/estadisticas`, {sede: partido.sede, grupo: "-", puntos: pts}, "InfluxDB", {silencioso: true});
+  if (Math.random() < .7) comentar(FRASES[Math.floor(Math.random() * FRASES.length)], true);
+  if (Math.random() < .045) evento("Gol", Math.random() < .5 ? partido.local : partido.visitante, minuto);
+  else if (Math.random() < .03) evento("Tarjeta", Math.random() < .5 ? partido.local : partido.visitante, minuto);
+  tablero();
+}
+async function alternarAuto() {
+  if (auto) return pararAuto();
+  if (!partido) await crear();
+  if (!partido) return;
+  const t = await api("GET", `/vivo/partidos/${partido.codigo}/tablero?local=${partido.local}&visitante=${partido.visitante}`, null, "las 6 en paralelo", {silencioso: true});
+  if (t.datos?.secciones?.partido?.datos?.estado === "Programado") await iniciar();
+  else if (t.datos?.secciones?.partido?.datos?.estado === "Finalizado") { await crear(); await iniciar(); }
+  iniEst();
+  if (!sesion) await login();
+  $("bAuto").textContent = "⏸ Pausar simulación";
+  auto = setInterval(tick, 1000);   // 1 minuto de juego por segundo: 90' en 90 s
+}
+function pararAuto() { if (auto) clearInterval(auto); auto = null; $("bAuto").textContent = "▶ Simular partido"; }
+
+// ---------------------------------------------------------------- pestaña "Las 6 bases" (/metrics)
+let previo = null;
+function parsear(txt) {
+  const m = {};
+  for (const l of txt.split("\n")) {
+    if (!l || l[0] === "#") continue;
+    const k = l.match(/^([a-zA-Z_:][\w:]*)(\{([^}]*)\})?\s+([^\s]+)/); if (!k) continue;
+    const lab = {}; (k[3] || "").replace(/(\w+)="((?:[^"\\]|\\.)*)"/g, (_, a, b) => lab[a] = b);
+    (m[k[1]] = m[k[1]] || []).push({lab, v: parseFloat(k[4])});
+  }
+  return m;
+}
+const suma = (m, n, f) => (m[n] || []).filter(x => !f || f(x.lab)).reduce((a, x) => a + x.v, 0);
+function cubetas(m, n, f) {
+  const b = {}; for (const x of (m[n + "_bucket"] || [])) if (!f || f(x.lab)) b[x.lab.le] = (b[x.lab.le] || 0) + x.v; return b;
+}
+function cuantil(q, ahora, antes) {
+  const les = Object.keys(ahora).filter(k => k !== "+Inf").map(Number).sort((a, b) => a - b);
+  const d = (le) => (ahora[le] || 0) - ((antes || {})[le] || 0);
+  const tot = d("+Inf"); if (tot <= 0) return null;
+  const obj = q * tot; let prevLe = 0, prevC = 0;
+  for (const le of les) { const c = d(String(le)); if (c >= obj) return prevLe + (le - prevLe) * ((obj - prevC) / Math.max(c - prevC, 1e-9)); prevLe = le; prevC = c; }
+  return les[les.length - 1];
+}
+async function metricas() {
+  let txt; try { txt = await (await fetch("/metrics")).text(); } catch { return; }
+  const m = parsear(txt), t = Date.now() / 1000;
+  const snap = {t, req: suma(m, "fixture_api_requests_total"), r5: suma(m, "fixture_api_requests_total", l => l.estado[0] === "5"),
+    api: cubetas(m, "fixture_api_request_duration_seconds"),
+    hit: suma(m, "fixture_cache_comentarios_total", l => l.estado === "HIT"), cac: suma(m, "fixture_cache_comentarios_total", l => l.estado !== "OFF"),
+    com: suma(m, "fixture_comentarios_creados_total"), dep: {}};
+  for (const b of BASES) snap.dep[b.id] = {h: cubetas(m, "fixture_dependencia_duration_seconds", l => l.fuente === b.id),
+    err: suma(m, "fixture_dependencia_duration_seconds_count", l => l.fuente === b.id && l.resultado !== "ok"),
+    disp: suma(m, "fixture_dependencia_disponible", l => l.fuente === b.id), corte: suma(m, "fixture_cortocircuito_abierto", l => l.fuente === b.id)};
+  if (previo) {
+    const dt = Math.max(t - previo.t, 1), dr = snap.req - previo.req;
+    $("k-rps").textContent = (dr / dt).toFixed(1);
+    const p95 = cuantil(.95, snap.api, previo.api);
+    $("k-p95").textContent = p95 == null ? "—" : (p95 * 1000).toFixed(1) + " ms";
+    $("k-p95").style.color = p95 == null ? "" : p95 * 1000 > 100 ? "var(--bad)" : p95 * 1000 > 50 ? "var(--warn)" : "var(--ok)";
+    $("k-5xx").textContent = dr > 0 ? ((snap.r5 - previo.r5) / dr * 100).toFixed(1) + " %" : "0 %";
+    const dc = snap.cac - previo.cac;
+    $("k-cache").textContent = dc > 0 ? ((snap.hit - previo.hit) / dc * 100).toFixed(0) + " %" : "—";
+    $("k-com").textContent = ((snap.com - previo.com) / dt).toFixed(1);
+    $("basesGrid").innerHTML = BASES.map(b => {
+      const a = snap.dep[b.id], p = previo.dep[b.id];
+      const ops = ((a.h["+Inf"] || 0) - (p.h["+Inf"] || 0)) / dt, q = cuantil(.95, a.h, p.h), e = (a.err - p.err) / dt;
+      return `<div class="card" style="--c:var(--${b.id})"><h3>${b.n} <span class="tag">${b.m}</span><span class="est"><span class="dot ${a.disp ? "ok" : "bad"}"></span>${a.disp ? "disponible" : "NO disponible"}${a.corte ? " · corte abierto" : ""}</span></h3>` +
+        `<div class="rol">${b.h} · ${b.d}</div><div class="dos" style="margin:8px 0"><div><div class="mini">ops/s</div><div class="num">${ops.toFixed(1)}</div></div>` +
+        `<div><div class="mini">p95 de la base</div><div class="num">${q == null ? "—" : (q * 1000).toFixed(1) + " ms"}</div></div></div>` +
+        `<div class="kv"><b>Patrón de acceso</b><span>${b.a}</span><b>Distribución</b><span>${b.p}</span><b>Consistencia</b><span>${b.cap}</span><b>Errores/s</b><span>${e.toFixed(2)}</span></div></div>`;
+    }).join("");
+  }
+  previo = snap;
+}
+
+// ---------------------------------------------------------------- pestañas
+const URL_GRAF = `${GRAFANA}/d/fixture2030-war-room/?orgId=1&kiosk&refresh=5s&from=now-15m&to=now`;
+$("grafUrl").value = URL_GRAF; $("aGraf").href = URL_GRAF;
+$("bGraf").onclick = () => { $("fGraf").src = $("grafUrl").value; $("aGraf").href = $("grafUrl").value; };
+const consultas = [
+  ["Targets", `${PROM}/targets`], ["Alertas", `${PROM}/alerts`],
+  ["p95 API", `${PROM}/graph?g0.expr=${encodeURIComponent("histogram_quantile(0.95, sum by (le) (rate(fixture_api_request_duration_seconds_bucket[1m])))")}&g0.tab=0&g0.range_input=15m`],
+  ["p95 por base", `${PROM}/graph?g0.expr=${encodeURIComponent("histogram_quantile(0.95, sum by (le, fuente) (rate(fixture_dependencia_duration_seconds_bucket[1m])))")}&g0.tab=0&g0.range_input=15m`],
+  ["Requests/s por ruta", `${PROM}/graph?g0.expr=${encodeURIComponent("sum by (ruta) (rate(fixture_api_requests_total[1m]))")}&g0.tab=0&g0.range_input=15m`],
+  ["Escrituras Cassandra por partido", `${PROM}/graph?g0.expr=${encodeURIComponent("sum by (partido) (rate(fixture_comentarios_creados_total[1m]))")}&g0.tab=0&g0.range_input=15m`],
+  ["Disponibilidad", `${PROM}/graph?g0.expr=${encodeURIComponent("fixture_dependencia_disponible")}&g0.tab=1`],
+  ["Alertmanager ↗", ALERTM],
+];
+$("promLinks").innerHTML = consultas.map(([n, u], i) => `<button class="btn" data-u="${esc(u)}">${n}</button>`).join("") +
+  `<a class="btn" href="${PROM}" target="_blank" rel="noopener">Abrir Prometheus ↗</a>`;
+$("promLinks").onclick = (e) => { const u = e.target.dataset?.u; if (!u) return; if (u === ALERTM) window.open(u, "_blank"); else $("fProm").src = u; };
+function abrirTab(b) {
+  document.querySelectorAll("nav button").forEach(x => x.classList.toggle("on", x === b));
+  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x.id === "tab-" + b.dataset.tab));
+  if (b.dataset.tab === "grafana" && !$("fGraf").src) $("fGraf").src = URL_GRAF;
+  if (b.dataset.tab === "prom" && !$("fProm").src) $("fProm").src = `${PROM}/targets`;
+  if (b.dataset.tab === "swagger" && !$("fSwag").src) $("fSwag").src = "/docs";
+  history.replaceState(null, "", "#" + b.dataset.tab);
+}
+document.querySelectorAll("nav button").forEach(b => b.onclick = () => abrirTab(b));
+// Marcadores directos para la demo: /demo/#bases, #grafana, #prom, #swagger
+const inicial = document.querySelector(`nav button[data-tab="${location.hash.slice(1)}"]`);
+if (inicial) abrirTab(inicial);
+
+// ---------------------------------------------------------------- botones
+$("bCrear").onclick = crear; $("bIniciar").onclick = iniciar; $("bFin").onclick = finalizar;
+$("bGolL").onclick = () => evento("Gol", partido?.local);
+$("bGolV").onclick = () => evento("Gol", partido?.visitante);
+$("bTarjeta").onclick = () => evento("Tarjeta", Math.random() < .5 ? partido?.local : partido?.visitante);
+$("bRegla").onclick = probarRegla; $("bAuto").onclick = alternarAuto;
+$("bLogin").onclick = login; $("bAct").onclick = accion;
+$("bCom").onclick = async () => { const t = $("txtCom").value.trim(); if (!t) return; await comentar(t); $("txtCom").value = ""; tablero(); };
+$("txtCom").onkeydown = (e) => { if (e.key === "Enter") $("bCom").click(); };
+
+// Si el partido ya existe (otra pestaña o el simulador), se retoma.
+(async () => {
+  salud(); setInterval(salud, 10000);
+  metricas(); setInterval(metricas, 5000);
+  const f = leerForm();
+  const r = await api("GET", `/vivo/partidos/${f.codigo}/tablero?local=${f.local}&visitante=${f.visitante}`, null, "las 6 en paralelo", {silencioso: true}).catch(() => null);
+  if (r?.ok && r.datos.secciones.partido.ok) {
+    partido = {codigo: f.codigo, local: f.local, visitante: f.visitante, sede: f.sede};
+    await Promise.all([cargarPlantel(f.local), cargarPlantel(f.visitante)]);
+    tablero();
+  }
+  setInterval(() => { if (!auto) tablero(); }, 2500);
+})();
+</script>
+</body>
+</html>

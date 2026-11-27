@@ -149,6 +149,10 @@ El monitoreo no carga datos propios: observa los que cada hito ya cargó en su b
 
 La prueba de carga del Hito 13 escribe comentarios **solo** en partidos de laboratorio propios de cada corrida (`H13-<etiqueta>-P1/P2`), nunca en partidos reales del fixture (RNF5).
 
+## Demo final en vivo
+
+Partido de laboratorio que atraviesa las seis bases, con hinchas virtuales, una falla controlada y una regla de IRIS rechazada en vivo. Centro de control: **http://localhost:8000/demo**. Simulador: `.\monitoreo\scripts\simular_partido_en_vivo.ps1` (90 minutos de juego en unos 3 minutos; guarda su evidencia en `evidencia/demo_en_vivo/<etiqueta>/`). Guion minuto a minuto, preparación y plan B: [`defensa/demo.md`](defensa/demo.md).
+
 ## Repetir la demostración
 
 El paso a paso de la demo, con lo que se muestra y el plan B si algo falla, está en [`defensa/demo.md`](defensa/demo.md).

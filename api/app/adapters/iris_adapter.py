@@ -98,6 +98,30 @@ class IrisAdapter:
             "cantidadEventos": cant_eventos,
         }
 
+    # ------------------------------------------- Hito 13: demo en vivo (escritura)
+    # Las escrituras NO van por SQL: van por los metodos de dominio del Hito 9,
+    # invocados con el Native API (Fixture.Vivo.cls). Asi la regla vive junto al
+    # dato y se aplica sin importar que aplicacion escriba. Devuelve el dict del
+    # JSON de IRIS: {"ok": bool, ..., "motivo" si se rechazo}. Un rechazo de
+    # regla NO es una base caida (no abre el corte rapido): lo traduce el
+    # servicio a 409.
+    def vivo(self, metodo: str, *args) -> dict:
+        import json as _json
+        try:
+            import iris  # intersystems-irispython
+            nativo = iris.createIRIS(self._conexion())
+            texto = nativo.classMethodValue("Fixture.Vivo", metodo, *args)
+        except Exception as e:
+            logger.warning("iris error vivo metodo=%s", metodo)
+            # Si la conexion quedo rota, se descarta para reconectar la proxima vez.
+            self.cerrar()
+            raise ErrorDependencia(FUENTE, str(e))
+        try:
+            return _json.loads(texto)
+        except (TypeError, ValueError):
+            raise ErrorDependencia(FUENTE, f"respuesta inesperada de Fixture.Vivo.{metodo}",
+                                   conexion=False)
+
     def cerrar(self) -> None:
         if self._conn is not None:
             try:

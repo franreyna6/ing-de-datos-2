@@ -236,3 +236,13 @@ iris/
 ## Evidencia de ejecución
 
 La evidencia se genera corriendo el script: el log de la corrida (`docs/evidencia/logs/`) contiene la compilación, los conteos de la carga y cada operación con su resultado (`[ACEPTADO]` o `[RECHAZADO]` y el motivo que devuelve IRIS). Cada verificación se calcula consultando la base, de modo que lo que se declara en este README coincide con lo que se ejecuta. La lista de capturas del Terminal y del Portal, y qué debe verse en cada una, está en [`docs/evidencia/README.md`](docs/evidencia/README.md).
+
+## Hito 13: escritura desde la API (`Fixture.Vivo`)
+
+`src/Fixture/Vivo.cls` expone a la API los métodos de dominio de `Fixture.Partido` (`Iniciar`, `RegistrarEvento`, `Finalizar`), invocados por el Native API de Python. Devuelve JSON y solo modifica partidos de laboratorio (`H13-DEMO-...`). Si ya estaban cargadas las clases del Hito 9, se compila sola sin tocar los datos:
+
+```
+docker exec -it fixture2030-iris iris session IRIS -U USER
+USER> Do $system.OBJ.Load("/iris/src/Fixture/Vivo.cls","ck")
+USER> Write ##class(Fixture.Vivo).Estado("F2030-001")
+```

@@ -17,14 +17,16 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse, Response
+from fastapi.responses import JSONResponse, RedirectResponse, Response
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
 from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 from starlette.routing import Match
 
 from app.core import metricas
 from app.core.errores import ErrorAPI, ErrorValidacion, cuerpo_error
 from app.core.registro import logger, nuevo_request_id, set_request_id, get_request_id
-from app.routes import equipos, partidos, sesiones
+from app.routes import equipos, partidos, sesiones, vivo
 from app.schemas.modelos import Salud
 from app.services import servicios
 from app.adapters.cassandra_adapter import cassandra_adapter
@@ -38,14 +40,18 @@ from app.adapters.redis_adapter import redis_adapter
 # Se envuelven los metodos publicos de cada adaptador. Ver app/core/metricas.py
 # y app/core/cortocircuito.py (mejora transversal sacada de la evidencia).
 metricas.instrumentar_adaptador(mongo_adapter, "mongodb", ["obtener_equipo", "listar_jugadores"])
-metricas.instrumentar_adaptador(neo4j_adapter, "neo4j", ["eventos_de_partido"])
+metricas.instrumentar_adaptador(neo4j_adapter, "neo4j", ["eventos_de_partido",
+                                                         "crear_partido_lab", "registrar_evento"])
 metricas.instrumentar_adaptador(cassandra_adapter, "cassandra",
                                 ["leer_comentarios", "escribir_comentario"])
 metricas.instrumentar_adaptador(redis_adapter, "redis",
-                                ["obtener_sesion", "cache_leer", "cache_guardar"],
-                                sin_corte=("cache_leer", "cache_guardar"))
-metricas.instrumentar_adaptador(influx_adapter, "influxdb", ["estadisticas"])
-metricas.instrumentar_adaptador(iris_adapter, "iris", ["detalle_partido"])
+                                ["obtener_sesion", "cache_leer", "cache_guardar",
+                                 "crear_sesion", "renovar_sesion", "vivo_leer",
+                                 "vivo_guardar_estado"],
+                                sin_corte=("cache_leer", "cache_guardar", "vivo_guardar_estado"))
+metricas.instrumentar_adaptador(influx_adapter, "influxdb",
+                                ["estadisticas", "serie_agregada", "escribir_estadisticas"])
+metricas.instrumentar_adaptador(iris_adapter, "iris", ["detalle_partido", "vivo"])
 
 _CHEQUEOS = {
     "mongodb": mongo_adapter.verificar,
@@ -76,6 +82,17 @@ app = FastAPI(
 app.include_router(equipos.router)
 app.include_router(partidos.router)
 app.include_router(sesiones.router)
+app.include_router(vivo.router)
+
+# --- Hito 13: centro de control de la demo (HTML estatico, sin dependencias
+# externas: funciona sin internet). No forma parte del contrato OpenAPI.
+_DEMO = Path(__file__).parent / "static" / "demo"
+app.mount("/demo", StaticFiles(directory=_DEMO, html=True), name="demo")
+
+
+@app.get("/", include_in_schema=False)
+def raiz():
+    return RedirectResponse("/demo/")
 
 
 def _plantilla_de_ruta(request: Request) -> str:
@@ -91,6 +108,12 @@ def _plantilla_de_ruta(request: Request) -> str:
     return "sin_ruta"
 
 
+def _se_mide(path: str) -> bool:
+    """/metrics no se mide a si misma; los archivos estaticos de la demo, tampoco
+    (no son trafico del Fixture y no deben mezclarse con la latencia de la API)."""
+    return path != "/metrics" and not path.startswith("/demo") and path != "/"
+
+
 # --- Request-id: correlacion respuesta <-> logs (RF18, RNF10) ---
 @app.middleware("http")
 async def middleware_request_id(request: Request, call_next):
@@ -103,7 +126,7 @@ async def middleware_request_id(request: Request, call_next):
     except Exception:
         # Error no previsto: lo responde el manejador de Exception (500). Se
         # cuenta igual para que la tasa de errores no lo pierda (Hito 13).
-        if request.url.path != "/metrics":
+        if _se_mide(request.url.path):
             ruta = _plantilla_de_ruta(request)
             metricas.REQUESTS.labels(request.method, ruta, "500").inc()
             metricas.DURACION.labels(request.method, ruta).observe(time.perf_counter() - t0)
@@ -115,7 +138,7 @@ async def middleware_request_id(request: Request, call_next):
     respuesta.headers["X-Duracion-ms"] = f"{dur_ms:.2f}"
     # Hito 13: la misma duracion alimenta las metricas de Prometheus (RF4).
     # /metrics no se mide a si misma para no mezclar el scrape con el trafico real.
-    if request.url.path != "/metrics":
+    if _se_mide(request.url.path):
         ruta = _plantilla_de_ruta(request)
         metricas.REQUESTS.labels(request.method, ruta, str(respuesta.status_code)).inc()
         metricas.DURACION.labels(request.method, ruta).observe(dur_ms / 1000)
