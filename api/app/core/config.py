@@ -67,6 +67,9 @@ class Config:
         # El token NO tiene valor por defecto: se lee del entorno o de un archivo
         # local (RNF7). Si falta, el adaptador responde 503 y lo explica.
         self.influx_token: str = _leer("INFLUXDB3_TOKEN", "")
+        # Hito 13 (demo en vivo): escrituras sin esperar el flush del WAL (~1 s).
+        # 1 = rapido (se puede perder ~1 s de puntos si el servidor cae); 0 = durable.
+        self.influx_no_sync: bool = _leer("INFLUX_NO_SYNC", "1") not in ("0", "false", "no")
 
         # --- IRIS (Hito 9) ---
         self.iris_host: str = _leer("IRIS_HOST", "localhost")

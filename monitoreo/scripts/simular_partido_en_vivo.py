@@ -130,6 +130,9 @@ class Partido:
         self.minuto, self.marcador, self.estado = 0, [0, 0], "Programado"
         self.pico_hasta = 0.0
         self.terminado = threading.Event()
+        # Los hinchas entran cuando el partido ya existe en todas las bases (si no,
+        # sus lecturas de eventos darian 404 mientras se crea).
+        self.en_juego = threading.Event()
         self.goles = []
         self.rechazo = None
 
@@ -172,6 +175,7 @@ def arbitro(a, p: Partido, reg: Registro, planteles: dict):
         p.terminado.set()
         return
     p.estado = "EnJuego"
+    p.en_juego.set()
     print("  Pitazo inicial: Programado -> EnJuego (validado por IRIS)\n")
 
     stats = {eq: {"pases": 0, "tiros": 0, "rec": 0} for eq in (p.local, p.visit)}
@@ -237,6 +241,9 @@ def hincha(n: int, a, p: Partido, reg: Registro):
     cli = Cliente(a.api)
     rnd = random.Random(a.semilla * 1000 + n)
     usuario = f"u-{n:05d}"
+    while not p.en_juego.wait(0.5):
+        if p.terminado.is_set():
+            return
     st, js, ms, cab = cli.pedir("POST", "/sesiones",
                                 {"usuarioId": usuario, "rol": "hincha", "partido": p.codigo})
     reg.anotar("login", "redis", st, ms, cab)

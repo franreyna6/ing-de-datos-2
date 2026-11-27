@@ -169,7 +169,14 @@ class InfluxAdapter:
                    float(p["posesionPct"]), int(p["pasesAcum"]), int(p["tirosAcum"]),
                    int(p["recuperacionesAcum"]), int(p["ts"])))
         cuerpo = "\n".join(lineas)
-        ruta = f"/api/v3/write_lp?db={self._cfg.influx_database}&precision=second"
+        # no_sync=true: InfluxDB 3 confirma la escritura apenas la valida y la deja
+        # en el WAL, sin esperar el flush (cada 1 s por defecto). Sin esto, cada
+        # POST tardaba ~1 s (medido en el ensayo del 27/11). Trade-off aceptado
+        # para estadisticas en vivo (subsistema AP, Hito 3): ante una caida del
+        # servidor se puede perder hasta ~1 s de puntos. INFLUX_NO_SYNC=0 vuelve
+        # al comportamiento durable por defecto.
+        ruta = (f"/api/v3/write_lp?db={self._cfg.influx_database}&precision=second"
+                f"&no_sync={'true' if self._cfg.influx_no_sync else 'false'}")
         conn = self._conn()
         try:
             conn.request("POST", ruta, body=cuerpo.encode("utf-8"), headers={
