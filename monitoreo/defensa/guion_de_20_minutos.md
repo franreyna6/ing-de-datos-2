@@ -1,5 +1,7 @@
 # Guion de la defensa ante la FIFA (20 minutos, RF13, RNF12)
 
+> **Versión final (27/11):** la defensa se da con [`presentacion_final.pptx`](presentacion_final.pptx) y el speech completo palabra por palabra, con el banco de preguntas, está en [`speech_defensa_final.docx`](speech_defensa_final.docx). Reparto: Fermín 0-5 (problema, arquitectura, MongoDB, Neo4j e IRIS), Fran 5-10 (Cassandra, Redis, InfluxDB, CAP y comparación relacional), demo en vivo 10-15 ([`demo.md`](demo.md)) y Rodrigo 15-20 (observabilidad, evidencia y cierre). Lo de abajo es el guion anterior, que sigue valiendo como resumen de contenidos.
+
 **Pregunta central:** *¿Por qué esta combinación de modelos, estructuras, estrategias de distribución y mecanismos de observabilidad es adecuada para el Fixture Mundial 2030 bajo las condiciones planteadas?*
 
 **Regla de la exposición:** se defienden **las bases y las decisiones**; las herramientas (Grafana, Postman, Swagger) solo muestran evidencia (Clase 14). Cada número que se dice tiene que estar en el repositorio.
